@@ -7,6 +7,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CommonIcons from './utils/CommonIcons';
+import D_HomeSearchScreen from './screens/Dictionary/D_HomeSearchScreen';
+import D_WordDefinitionScreen from './screens/Dictionary/D_WordDefinitionScreen';
 
 
 function HomeScreen() {
@@ -37,14 +39,43 @@ function AccountScreen() {
 
 
 
+const DictionaryStackNavigator = createStackNavigator();
+const DictionaryStack = () => {
+    return (
+        <DictionaryStackNavigator.Navigator>
+            <DictionaryStackNavigator.Screen
+                name={"HomeSearch"}
+                component={D_HomeSearchScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+            <DictionaryStackNavigator.Screen
+                name={"WordDefinition"}
+                component={D_WordDefinitionScreen}
+            />
+        </DictionaryStackNavigator.Navigator>
+    )
+}
+
+
+
+
 // 
 const HomeStackNavigator = createStackNavigator();
 const HomeStack = () => {
     return (
-        <HomeStackNavigator.Navigator>
+        <HomeStackNavigator.Navigator
+            screenOptions={{
+                headerShown: false
+            }}
+        >
             <HomeStackNavigator.Screen
                 component={HomeScreen}
                 name={"Home"}
+                options={{
+                    headerShown: false
+                }}
             />
             <HomeStackNavigator.Screen
                 component={SettingsScreen}
@@ -62,15 +93,42 @@ const HomeStack = () => {
 const TabBottomNavigator = createBottomTabNavigator();
 const TabBottom = () => {
     return (
-        <TabBottomNavigator.Navigator>
+        <TabBottomNavigator.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+
+                    if (route.name === 'HomeStack') {
+                        iconName = CommonIcons.homeCircle
+
+                    } else if (route.name === 'Settings') {
+                        iconName = CommonIcons.bookMarker
+                    } else if (route.name === 'Messages') {
+                        iconName = CommonIcons.messages
+                    } else if (route.name === 'Accounts') {
+                        iconName = CommonIcons.account
+                    }
+                    else if (route.name === 'Notification') {
+                        iconName = CommonIcons.bell
+                    }
+                    else {
+                        iconName = CommonIcons.newsPaper
+                    }
+
+                    // You can return any component that you like here!
+                    return <MaterialCommunityIcon name={iconName} size={size} color={color} />;
+                },
+            })}
+
+        >
 
             <TabBottomNavigator.Screen
                 name="TabAccoung"
                 component={AccountScreen}
             />
             <TabBottomNavigator.Screen
-                name="TabHome"
-                component={HomeStack}
+                name="TabDictionary"
+                component={DictionaryStack}
                 options={{
                     tabBarLabel: "",
                     tabBarIcon: () => (
@@ -88,15 +146,21 @@ const TabBottom = () => {
                                 shadowRadius: 7.49,
 
                                 elevation: 12,
+                                width: 70,
+                                height: 70,
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: 40,
 
-                                // borderTopRightRadius:22,
-                                // borderTopLeftRadius:22
                             }}
                         >
                             <MaterialCommunityIcon
                                 name={CommonIcons.search}
                                 color={'coral'}
-                                size={22}
+                                size={42}
+
                             />
                         </View>
                     )
