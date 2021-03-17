@@ -4,11 +4,35 @@ import { Chip } from 'react-native-paper';
 import CommonColor from '../../utils/CommonColor'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../utils/CommonIcons';
+import Sound from 'react-native-sound';
 
 const D_WordDefinitionScreen = (props) => {
 
 
-    const { wordDefinition,wordExplaination } = props;
+    const { wordDefinition, wordExplaination } = props;
+
+    const handleSoundUs = async () => {
+
+        const sound = new Sound("https://www.oxfordlearnersdictionaries.com/media/english/uk_pron/d/dev/devel/develop__gb_3.mp3", null, (error) => {
+            if (error) {
+                console.warn("errors in sound, Sorry!! We will fix this state in the near future.Thank");
+            }
+            // play when loaded
+            sound.play();
+        });
+
+    }
+    const handleSoundUk = async () => {
+
+        const sound = new Sound(wordDefinition.sound_uk, null, (error) => {
+            if (error) {
+                console.warn("errors in sound, Sorry!! We will fix this state in the near future.Thank");
+            }
+            // play when loaded
+            sound.play();
+        });
+
+    }
 
     return (
         <View style={styles.container}>
@@ -32,13 +56,15 @@ const D_WordDefinitionScreen = (props) => {
                             <Text style={styles.textPronunciation}><Text style={{ color: 'white', backgroundColor: '#E16624' }}>uk</Text>{wordDefinition?.pronunciation_uk}</Text>
                         </View>
                         <View>
-                            <MaterialCommunityIcon style={{ backgroundColor: CommonColor.secondary }}
-                                icon={CommonIcons.arrowRight}
+                            <MaterialCommunityIcon 
+                                style={{ backgroundColor: CommonColor.secondary,margin:12 }}
+                                name={CommonIcons.backArrow}
                                 color={CommonColor.secondary}
                                 size={26}
+                                onPress={handleSoundUs}
                             />
                             <MaterialCommunityIcon style={{ backgroundColor: CommonColor.secondary }}
-                                icon={CommonIcons.arrowRightChevron}
+                                name={CommonIcons.arrowRightChevron}
                                 color={CommonColor.secondary}
                                 size={26}
                             />

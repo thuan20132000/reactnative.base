@@ -14,6 +14,8 @@ target 'reactnative_base' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNSound', :path => '../node_modules/react-native-sound'
+
   target 'reactnative_baseTests' do
     inherit! :complete
     # Pods for testing
