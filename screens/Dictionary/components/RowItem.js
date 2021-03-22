@@ -35,7 +35,7 @@ const RowItem = ({
                 >
                     {label}
                 </Text>
-
+                
             </View>
 
             {
