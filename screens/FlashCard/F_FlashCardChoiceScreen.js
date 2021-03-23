@@ -11,9 +11,16 @@ import CardVocabulary from './components/CardVocabulary'
 import CardMeaning from './components/CardMeaning'
 
 
-const F_FlashCardChoiceScreen = () => {
+const F_FlashCardChoiceScreen = (props) => {
 
     const _refCardFlip = useRef();
+
+
+
+
+    const _onPractiseVocabulary = async () => {
+        props.navigation.replace('FlashCardPractice');
+    }
 
     return (
         <ScrollView>
@@ -186,6 +193,8 @@ const F_FlashCardChoiceScreen = () => {
                             backgroundColor:CommonColor.primary
                         }
                     ]}
+
+                    onPress={_onPractiseVocabulary}
                 >
                     <Text
                         style={{

@@ -3,7 +3,7 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator,TransitionPresets } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CommonIcons from './utils/CommonIcons';
@@ -11,6 +11,7 @@ import D_HomeSearchScreen from './screens/Dictionary/D_HomeSearchScreen';
 import D_WordDefinitionScreen from './screens/Dictionary/D_WordDefinitionScreen';
 import F_FlashCardHomeScreen from './screens/FlashCard/F_FlashCardHomeScreen';
 import F_FlashCardChoiceScreen from './screens/FlashCard/F_FlashCardChoiceScreen';
+import F_FLashCardPracticeScreen from './screens/FlashCard/F_FLashCardPracticeScreen';
 
 
 function HomeScreen() {
@@ -53,7 +54,7 @@ const DictionaryStack = () => {
             overshootClamping: true,
             restDisplacementThreshold: 0.01,
             restSpeedThreshold: 0.01,
-            
+
         },
     };
 
@@ -64,9 +65,9 @@ const DictionaryStack = () => {
                     open: config,
                     close: config,
                 },
-                gestureEnabled:true,
+                gestureEnabled: true,
                 ...TransitionPresets.SlideFromRightIOS
-            
+
 
             }}
         >
@@ -105,6 +106,10 @@ const FlashCardStack = () => {
             <FlashCardStackNavigator.Screen
                 name={"FlashCardChoice"}
                 component={F_FlashCardChoiceScreen}
+            />
+            <FlashCardStackNavigator.Screen
+                name={"FlashCardPractice"}
+                component={F_FLashCardPracticeScreen}
             />
 
         </FlashCardStackNavigator.Navigator>
