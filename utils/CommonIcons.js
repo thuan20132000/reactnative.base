@@ -46,6 +46,7 @@ export default {
     cameraplus:'camera-plus-outline',
     
     facebook:'facebook',
-    volumnHigh:'volume-high'
+    volumnHigh:'volume-high',
+    rotateCircle:'rotate-3d-variant'
 
 }

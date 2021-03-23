@@ -9,6 +9,8 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import CommonIcons from './utils/CommonIcons';
 import D_HomeSearchScreen from './screens/Dictionary/D_HomeSearchScreen';
 import D_WordDefinitionScreen from './screens/Dictionary/D_WordDefinitionScreen';
+import F_FlashCardHomeScreen from './screens/FlashCard/F_FlashCardHomeScreen';
+import F_FlashCardChoiceScreen from './screens/FlashCard/F_FlashCardChoiceScreen';
 
 
 function HomeScreen() {
@@ -86,6 +88,33 @@ const DictionaryStack = () => {
 
 
 
+const FlashCardStackNavigator = createStackNavigator();
+const FlashCardStack = () => {
+    return (
+        <FlashCardStackNavigator.Navigator
+            screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS
+
+            }}
+        >
+            <FlashCardStackNavigator.Screen
+                name={"FlashCardHome"}
+                component={F_FlashCardHomeScreen}
+
+            />
+            <FlashCardStackNavigator.Screen
+                name={"FlashCardChoice"}
+                component={F_FlashCardChoiceScreen}
+            />
+
+        </FlashCardStackNavigator.Navigator>
+    )
+}
+
+
+
+
+
 // 
 const HomeStackNavigator = createStackNavigator();
 const HomeStack = () => {
@@ -148,8 +177,8 @@ const TabBottom = () => {
         >
 
             <TabBottomNavigator.Screen
-                name="TabAccoung"
-                component={AccountScreen}
+                name="FlashCard"
+                component={FlashCardStack}
             />
             <TabBottomNavigator.Screen
                 name="TabDictionary"

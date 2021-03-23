@@ -1,5 +1,5 @@
 export default {
-    primary:'#f4a460',
+    primary:'#1e90ff',
     btnSubmit:'cornflowerblue',
     accent:'ghostwhite',
     messagebox:'lightcyan',
