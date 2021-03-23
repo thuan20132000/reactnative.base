@@ -86,6 +86,7 @@ const D_HomeSearchScreen = (props) => {
                         (searchData && searchData.length > 0) &&
                         searchData.map((e, index) =>
                             <SearchItem
+                                key={index.toString()}
                                 label={e.name}
                                 containerStyle={{
                                     backgroundColor: 'white',

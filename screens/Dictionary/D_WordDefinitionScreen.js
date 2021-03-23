@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Chip } from 'react-native-paper';
 import CommonColor from '../../utils/CommonColor'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -7,13 +7,12 @@ import CommonIcons from '../../utils/CommonIcons';
 import Sound from 'react-native-sound';
 import { getVocabularyDefinition } from '../../utils/api_v1';
 import { _onPlaySound } from '../../utils/helper';
+import Voice from '@react-native-voice/voice';
 
 const D_WordDefinitionScreen = (props) => {
 
     const { vocabulary } = props.route.params;
-    // const { wordDefinition, wordExplaination } = props;
-    const [wordDefinition, setWordDefinition] = useState();
-    const [wordExplaination, setWordExplaination] = useState();
+    const [isLoading,setIsLoading] = useState(false);
 
     const [vocabularyData, setVocabularyData] = useState({
         name: '',
@@ -22,11 +21,12 @@ const D_WordDefinitionScreen = (props) => {
         type: '',
         phon_us: '',
         phon_uk: '',
-        definitions:[]
+        definitions: []
 
     })
 
     const _onGetVocabularyDefinitions = async () => {
+        setIsLoading(true);
         let vocabularyData = await getVocabularyDefinition(vocabulary.id);
         setVocabularyData({
             ...vocabularyData,
@@ -36,8 +36,9 @@ const D_WordDefinitionScreen = (props) => {
             phon_us: vocabularyData.data?.phon_us,
             phon_uk: vocabularyData.data?.phon_uk,
             type: vocabularyData.data?.word_type,
-            definitions:vocabularyData.data?.definitions
+            definitions: vocabularyData.data?.definitions
         })
+        setIsLoading(false);
     }
 
     useEffect(() => {
@@ -47,7 +48,28 @@ const D_WordDefinitionScreen = (props) => {
 
     const _onPlayVocabularySound = async (sound_name) => {
         // console.warn(sound_name);
-       await  _onPlaySound(sound_name);
+        //    await  _onPlaySound(sound_name);
+        try {
+            await Voice.start('en-US')
+
+            let x = Voice.onSpeechStart();
+
+            
+
+        } catch (error) {
+            console.warn(error);
+        }
+    }
+
+
+
+    if(isLoading){
+        return (
+            <ActivityIndicator
+                size="large"
+                color={'coral'}
+            />
+        )
     }
 
     return (
@@ -76,14 +98,14 @@ const D_WordDefinitionScreen = (props) => {
                                 name={CommonIcons.volumnHigh}
                                 color={CommonColor.secondary}
                                 size={26}
-                                onPress={()=>_onPlayVocabularySound(vocabularyData.sound_uk)}
-                                
+                                onPress={() => _onPlayVocabularySound(vocabularyData.sound_uk)}
+
                             />
                             <MaterialCommunityIcon
                                 name={CommonIcons.volumnHigh}
                                 color={CommonColor.secondary}
                                 size={26}
-                                onPress={()=>_onPlayVocabularySound(vocabularyData.sound_us)}
+                                onPress={() => _onPlayVocabularySound(vocabularyData.sound_us)}
 
                             />
                         </View>
@@ -97,7 +119,7 @@ const D_WordDefinitionScreen = (props) => {
                     {
                         vocabularyData &&
                         vocabularyData.definitions.map((ex, index) =>
-                            <View style={{ width: '100%', paddingBottom: 12 }} key={index}>
+                            <View style={{ width: '100%', paddingBottom: 12 }} key={index.toString()}>
                                 <View style={styles.explaination}>
                                     {/* <Text style={{...styles.textExplainTitle},[{color:'white',fontSize:22,marginRight:6}]}>
                                            {index+1} 
@@ -105,7 +127,7 @@ const D_WordDefinitionScreen = (props) => {
                                     <Text style={styles.textExplainTitle}><MaterialCommunityIcon name={'star'} color='yellow' />{ex.title} </Text>
                                 </View>
                                 <View style={styles.explainExample}>
-                                    {ex?.example?.map((e, index) => <Text key={index} style={styles.textExplainExample}> - {e}</Text>)}
+                                    {ex?.example?.map((e, index) => <Text key={index.toString()} style={styles.textExplainExample}> - {e}</Text>)}
                                 </View>
                             </View>
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator,TransitionPresets } from '@react-navigation/stack';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CommonIcons from './utils/CommonIcons';
@@ -41,8 +41,33 @@ function AccountScreen() {
 
 const DictionaryStackNavigator = createStackNavigator();
 const DictionaryStack = () => {
+
+    const config = {
+        animation: 'spring',
+        config: {
+            stiffness: 1000,
+            damping: 500,
+            mass: 3,
+            overshootClamping: true,
+            restDisplacementThreshold: 0.01,
+            restSpeedThreshold: 0.01,
+            
+        },
+    };
+
     return (
-        <DictionaryStackNavigator.Navigator>
+        <DictionaryStackNavigator.Navigator
+            screenOptions={{
+                transitionSpec: {
+                    open: config,
+                    close: config,
+                },
+                gestureEnabled:true,
+                ...TransitionPresets.SlideFromRightIOS
+            
+
+            }}
+        >
             <DictionaryStackNavigator.Screen
                 name={"HomeSearch"}
                 component={D_HomeSearchScreen}
