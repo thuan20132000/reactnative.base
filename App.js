@@ -28,6 +28,23 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Router from './Router';
 
+import { Provider as StoreProvider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import ReduxThunk from 'redux-thunk';
+
+import flashcard_list_reducer from './store/reducer/flashCardReducer';
+
+
+
+const rootReducer = combineReducers({
+  flashcard:flashcard_list_reducer
+});
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+
+
+
+
+
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -36,7 +53,12 @@ const App = () => {
   };
 
   return (
-    <Router />
+    <StoreProvider
+      store={store}
+    >
+      <Router />
+
+    </StoreProvider>
   );
 };
 

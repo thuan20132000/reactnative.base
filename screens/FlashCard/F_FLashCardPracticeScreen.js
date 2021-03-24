@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CardDefinition from './components/CardDefinition'
 import CardFlip from 'react-native-card-flip';
@@ -7,29 +7,55 @@ import CommonIcons from '../../utils/CommonIcons';
 import CommonColor from '../../utils/CommonColor';
 import CardWordItem from './components/CardWordItem';
 import Voice from '@react-native-voice/voice';
+import { useDispatch, useSelector } from 'react-redux';
+
+import * as flashcardAction from '../../store/actions/flashcardActions';
+import { _onRandomIndexValue } from '../../utils/helper';
+
 
 const F_FLashCardPracticeScreen = (props) => {
 
+    const dispatch = useDispatch();
     const _refCardFlip = useRef();
     const [selectedWord, setSelectedWord] = useState();
-    const [correctWord, setCorrectWord] = useState({
-        id: 2,
-        name: 'Element',
-    })
-    const [choiceList, setChoiceList] = useState([
-        {
-            id: 1,
-            name: 'gravity',
-        },
-        {
-            id: 2,
-            name: 'Element',
-        },
-        {
-            id: 3,
-            name: 'Native',
+    const flashcard = useSelector(state => state.flashcard);
+    const [practiceVocabulary, setPracticeVocabulary] = useState();
+    const [anwserChoices, setAwnserChoices] = useState([]);
+
+
+
+    useEffect(() => {
+        setPracticeVocabulary(flashcard.learn_vocabulary_list[0]);
+
+        let choices = [];
+        let vocabularyCorrectIndex = _onRandomIndexValue(3);
+        // console.warn('random -re: ',random);
+
+        choices[vocabularyCorrectIndex] = flashcard.learn_vocabulary_list[0];
+        let random1 = _onRandomIndexValue(9, [0])
+        let random2 = _onRandomIndexValue(9, [0, random1]);
+
+        switch (vocabularyCorrectIndex) {
+            case 0:
+                choices[1] = flashcard.learn_vocabulary_list[random1];
+                choices[2] = flashcard.learn_vocabulary_list[random2];
+                break;
+            case 1:
+                choices[0] = flashcard.learn_vocabulary_list[random1];
+                choices[2] = flashcard.learn_vocabulary_list[random2];
+                break;
+            case 2:
+                choices[1] = flashcard.learn_vocabulary_list[random1];
+                choices[0] = flashcard.learn_vocabulary_list[random2]; 
+                break;
+            default:
+                break;
         }
-    ])
+        setAwnserChoices(choices)
+
+    }, [])
+
+
 
 
 
@@ -38,108 +64,25 @@ const F_FLashCardPracticeScreen = (props) => {
     }
 
     const _onCheckWord = async () => {
-        if (selectedWord.id != correctWord.id) {
+        if (selectedWord.id != practiceVocabulary.id) {
             Alert.alert("Incorrect", "Chon Sai");
             return;
+        } else {
+            props.navigation.push('FlashCardPractice')
+
         }
 
 
         // console.warn("correct");
-        // props.navigation.push('FlashCardPractice')
-
-    }
-
-    const _onSpeechStart = (e) => {
-        console.warn('on speech start: ', e);
-    }
-
-    const _onSpeechEnd = (e) => {
-        console.warn('on speech end: ', e);
-    }
-
-    const _onSpeechResult = async (e) => {
-        console.warn('speech results: ', e);
-    }
-
-    const _onStopRecord = (e) => {
-        Voice.stop();
-        console.warn(Voice.onSpeechResults);
 
     }
 
 
-
-    React.useEffect(() => {
-        Voice.onSpeechStart = _onSpeechStart.bind(this);
-        Voice.onSpeechEnd = _onSpeechEnd.bind(this);
-        Voice.onSpeechResults = _onSpeechResult.bind(this);
-
-    }, [])
-
-    const _onPlayVocabularySound = async (sound_name) => {
-        // console.warn(sound_name);
-        //    await  _onPlaySound(sound_name);
-
-
-
-        try {
-            await Voice.start('en-US');
-
-
-
-
-
-        } catch (error) {
-            console.warn(error);
-        }
-    }
 
     return (
         <View>
 
-            <View
-                style={{
-                    marginBottom: 22
-                }}
-            >
-                <Text
-                    style={{
-                        fontSize: 16,
-                        fontWeight: '700',
-                        marginHorizontal: 12,
-                        marginVertical: 12
-                    }}
-                >
-                    Xem định nghĩa và chọn từ đúng
-                </Text>
 
-
-
-            </View>
-            <View>
-                <IconButton
-                    icon={CommonIcons.rotateCircle}
-                    color={CommonColor.primary}
-                    size={18}
-                    style={{
-                        bottom: 10,
-                        right: 10,
-
-                    }}
-                    onPress={_onPlayVocabularySound}
-                />
-                <IconButton
-                    icon={CommonIcons.bell}
-                    color={CommonColor.primary}
-                    size={18}
-                    style={{
-                        bottom: 10,
-                        right: 10,
-
-                    }}
-                    onPress={_onStopRecord}
-                />
-            </View>
             {/* Word meaning */}
             <CardFlip
                 ref={_refCardFlip}
@@ -151,9 +94,8 @@ const F_FLashCardPracticeScreen = (props) => {
                     containerStyle={{
                         height: 180
                     }}
-                    word_type={'noun'}
-                    firstDefinition={'the act of trying to persuade or to force somebody to do something'}
-                    secondDefinition={`difficulties and worries that are caused by the need to achieve or to behave in a particular way`}
+                    word_type={practiceVocabulary?.type}
+                    firstDefinition={practiceVocabulary?.meaning}
 
                     children={
                         <IconButton
@@ -175,9 +117,8 @@ const F_FLashCardPracticeScreen = (props) => {
                     containerStyle={{
                         height: 180
                     }}
-                    word_type={'noun'}
-                    firstDefinition={'hành động cố gắng thuyết phục hoặc buộc ai đó làm điều gì đó'}
-                    secondDefinition={`difficulties and worries that are caused by the need to achieve or to behave in a particular way`}
+                    word_type={practiceVocabulary?.type}
+                    firstDefinition={practiceVocabulary?.translate}
 
                     children={
                         <IconButton
@@ -207,8 +148,9 @@ const F_FLashCardPracticeScreen = (props) => {
                 ]}
             >
                 {
-                    choiceList.map((e, index) =>
+                    anwserChoices.map((e, index) =>
                         <CardWordItem
+                            key={index.toString()}
                             name={e.name}
                             onItemPress={() => _onSelectWord(e)}
                             isActive={selectedWord && selectedWord.id == e.id ? true : false}

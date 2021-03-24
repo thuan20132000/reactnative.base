@@ -8,7 +8,10 @@ const CardVocabulary = ({
     onItemPress,
     onSoundPress,
     containerStyle,
-    children
+    children,
+    name,
+    type,
+    phon
 }) => {
     return (
         <View
@@ -28,16 +31,16 @@ const CardVocabulary = ({
             <View
                 style={[styles.column]}
             >
-                <Text>(Adj)</Text>
+                <Text>({type})</Text>
                 <Text
                     style={{
                         fontWeight: '700',
                         fontSize: 18
                     }}
                 >
-                    Accurate
+                    {name}
                     </Text>
-                <Text>/a'kju:ti/</Text>
+                <Text>{phon}</Text>
 
             </View>
             {

@@ -1,0 +1,102 @@
+[
+    {
+        "id":1,
+        "name":"migrate",
+        "sound":"sound url",
+        "type":"adj",
+        "phon":"a'kju:ti",
+        "meaning":"Very serious or reverse. Very serious or servere.",
+        "example":"an tell when you use a word incorrectly and will give you ",
+        "translate":"chính xác"
+    },
+    {
+        "id":2,
+        "name":"serious",
+        "sound":"sound url",
+        "type":"adj",
+        "phon":"a'kju:ti",
+        "meaning":"Very serious or reverse. Very serious or servere.",
+        "example":"an tell when you use a word incorrectly and will give you ",
+        "translate":"chính xác"
+    },
+    {
+        "id":3,
+        "name":"when",
+        "sound":"sound url",
+        "type":"adj",
+        "phon":"a'kju:ti",
+        "meaning":"Very serious or reverse. Very serious or servere.",
+        "example":"an tell when you use a word incorrectly and will give you ",
+        "translate":"chính xác"
+    },
+    {
+        "id":4,
+        "name":"incorrectly",
+        "sound":"sound url",
+        "type":"adj",
+        "phon":"a'kju:ti",
+        "meaning":"Very serious or reverse. Very serious or servere.",
+        "example":"an tell when you use a word incorrectly and will give you ",
+        "translate":"chính xác"
+    },
+    {
+        "id":5,
+        "name":"servere",
+        "sound":"sound url",
+        "type":"adj",
+        "phon":"a'kju:ti",
+        "meaning":"Very serious or reverse. Very serious or servere.",
+        "example":"an tell when you use a word incorrectly and will give you ",
+        "translate":"chính xác"
+    },
+    {
+        "id":6,
+        "name":"takes",
+        "sound":"sound url",
+        "type":"adj",
+        "phon":"a'kju:ti",
+        "meaning":"Very serious or reverse. Very serious or servere.",
+        "example":"an tell when you use a word incorrectly and will give you ",
+        "translate":"chính xác"
+    },
+    {
+        "id":7,
+        "name":"default",
+        "sound":"sound url",
+        "type":"adj",
+        "phon":"a'kju:ti",
+        "meaning":"Very serious or reverse. Very serious or servere.",
+        "example":"an tell when you use a word incorrectly and will give you ",
+        "translate":"chính xác"
+    },
+    {
+        "id":8,
+        "name":"change",
+        "sound":"sound url",
+        "type":"adj",
+        "phon":"a'kju:ti",
+        "meaning":"Very serious or reverse. Very serious or servere.",
+        "example":"an tell when you use a word incorrectly and will give you ",
+        "translate":"chính xác"
+    },    
+    {
+        "id":9,
+        "name":"references",
+        "sound":"sound url",
+        "type":"adj",
+        "phon":"a'kju:ti",
+        "meaning":"Very serious or reverse. Very serious or servere.",
+        "example":"an tell when you use a word incorrectly and will give you ",
+        "translate":"chính xác"
+    },
+    {
+        "id":10,
+        "name":"arguments",
+        "sound":"sound url",
+        "type":"adj",
+        "phon":"a'kju:ti",
+        "meaning":"Very serious or reverse. Very serious or servere.",
+        "example":"an tell when you use a word incorrectly and will give you ",
+        "translate":"chính xác"
+    }
+]

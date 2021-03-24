@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -9,17 +9,66 @@ import CommonImages from '../../utils/CommonImages'
 import CardFlip from 'react-native-card-flip';
 import CardVocabulary from './components/CardVocabulary'
 import CardMeaning from './components/CardMeaning'
-
+import { useDispatch, useSelector } from 'react-redux'
+import * as flashcardAction from '../../store/actions/flashcardActions'
 
 const F_FlashCardChoiceScreen = (props) => {
 
     const _refCardFlip = useRef();
+    const dispatch = useDispatch();
+    const topic = props.route?.params;
 
+    const [vocabulary, setVocabulary] = useState();
+
+    const flashcard = useSelector(state => state.flashcard);
+
+    const selected_vocabulary = props.route?.params;
+
+
+
+    const _onSelectVocabulary = async () => {
+        // console.warn(temp_vocabulary);
+        // const random = Math.floor(Math.random() * flashcard.vocabulary_list.length);
+        // console.warn(temp_vocabulary[random]);
+        dispatch(flashcardAction.addVocabulary(vocabulary));
+        console.warn('practice: ', flashcard.practice_vocabulary_list);
+        if (flashcard.topic_vocabulary_list.length <= 1) {
+            props.navigation.replace('FlashCardPractice');
+        } else {
+            props.navigation.replace('FlashCardChoice');
+
+        }
+
+    }
+
+
+    const _onSkipVocabulary = async () => {
+
+        dispatch(flashcardAction.skipVocabulary(vocabulary));
+        if (flashcard.topic_vocabulary_list.length <= 1) {
+            props.navigation.replace('FlashCardPractice');
+        } else {
+            props.navigation.replace('FlashCardChoice');
+
+        }
+
+    }
+
+
+
+    useEffect(() => {
+        if (flashcard.topic_vocabulary_list.length > 0) {
+            setVocabulary(flashcard.topic_vocabulary_list[0]);
+        }
+
+    }, []);
 
 
 
     const _onPractiseVocabulary = async () => {
-        props.navigation.replace('FlashCardPractice');
+        props.navigation.push('FlashCardPractice');
+
+        dispatch(flashcardAction.addVocabulary('accurate'))
     }
 
     return (
@@ -39,6 +88,9 @@ const F_FlashCardChoiceScreen = (props) => {
                         height: 140,
                         alignItems: 'center'
                     }}
+                    name={vocabulary?.name}
+                    type={vocabulary?.type}
+                    phon={vocabulary?.phon}
                     children={
                         <IconButton
                             icon={CommonIcons.rotateCircle}
@@ -98,7 +150,7 @@ const F_FlashCardChoiceScreen = (props) => {
                         color: 'grey'
                     }}
                 >
-                    Very serious or servere. Very serious or servere.
+                    {vocabulary?.meaning}
 
                 </Text>
 
@@ -156,7 +208,7 @@ const F_FlashCardChoiceScreen = (props) => {
                                 fontSize: 16
                             }}
                         >
-                            If you want to customize the transition animations for all of the screens in the navigator, you can specify it in defaultNavigationOptions
+                            {vocabulary?.example}
                         </Text>
                     </View>
                 </View>
@@ -166,15 +218,17 @@ const F_FlashCardChoiceScreen = (props) => {
 
             {/* Vocabulary Options */}
             <View
-                style={[styles.row,{
-                    justifyContent:'space-around',
-                    marginVertical:22
+                style={[styles.row, {
+                    justifyContent: 'space-around',
+                    marginVertical: 22
                 }]}
             >
                 <TouchableOpacity
                     style={[
                         styles.buttonSelect
                     ]}
+                    onPress={_onSkipVocabulary}
+
                 >
                     <Text
                         style={{
@@ -190,11 +244,11 @@ const F_FlashCardChoiceScreen = (props) => {
                     style={[
                         styles.buttonSelect,
                         {
-                            backgroundColor:CommonColor.primary
+                            backgroundColor: CommonColor.primary
                         }
                     ]}
 
-                    onPress={_onPractiseVocabulary}
+                    onPress={_onSelectVocabulary}
                 >
                     <Text
                         style={{
