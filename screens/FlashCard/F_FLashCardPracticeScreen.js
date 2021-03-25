@@ -6,11 +6,10 @@ import { IconButton } from 'react-native-paper';
 import CommonIcons from '../../utils/CommonIcons';
 import CommonColor from '../../utils/CommonColor';
 import CardWordItem from './components/CardWordItem';
-import Voice from '@react-native-voice/voice';
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as flashcardAction from '../../store/actions/flashcardActions';
-import { _onRandomIndexValue } from '../../utils/helper';
+import { _onCheckItemExistInArray, _onCheckNumberEven, _onRandomIndexValue, _onSwapRandomArrayElement } from '../../utils/helper';
 
 
 const F_FLashCardPracticeScreen = (props) => {
@@ -22,36 +21,42 @@ const F_FLashCardPracticeScreen = (props) => {
     const [practiceVocabulary, setPracticeVocabulary] = useState();
     const [anwserChoices, setAwnserChoices] = useState([]);
 
+    const selectedVocabulary = flashcard.practice_vocabulary_list[0];
 
 
     useEffect(() => {
-        setPracticeVocabulary(flashcard.learn_vocabulary_list[0]);
 
-        let choices = [];
-        let vocabularyCorrectIndex = _onRandomIndexValue(3);
-        // console.warn('random -re: ',random);
+        let topicVocabulary = flashcard.topic_vocabulary_list;
+        setPracticeVocabulary(selectedVocabulary);
 
-        choices[vocabularyCorrectIndex] = flashcard.learn_vocabulary_list[0];
-        let random1 = _onRandomIndexValue(9, [0])
-        let random2 = _onRandomIndexValue(9, [0, random1]);
 
-        switch (vocabularyCorrectIndex) {
-            case 0:
-                choices[1] = flashcard.learn_vocabulary_list[random1];
-                choices[2] = flashcard.learn_vocabulary_list[random2];
-                break;
-            case 1:
-                choices[0] = flashcard.learn_vocabulary_list[random1];
-                choices[2] = flashcard.learn_vocabulary_list[random2];
-                break;
-            case 2:
-                choices[1] = flashcard.learn_vocabulary_list[random1];
-                choices[0] = flashcard.learn_vocabulary_list[random2]; 
-                break;
-            default:
-                break;
+        try {
+            let choices = [];
+            choices.push(selectedVocabulary);
+            let compareVocabulary = topicVocabulary.filter(e => e.id != selectedVocabulary.id);
+
+            compareVocabulary.filter((e, index) => {
+
+                if (choices.length >= 3) {
+                    return;
+                }
+
+                let check = _onCheckItemExistInArray(e, choices);
+                if (!check) {
+                    let random_value = Math.floor(Math.random() * 10);
+                    let checkEven = _onCheckNumberEven(random_value);
+                    if (checkEven) {
+                        choices.push(e);
+                    }
+                }
+            });
+            let swap_choices = _onSwapRandomArrayElement(choices);
+            setAwnserChoices(swap_choices);
+
+        } catch (error) {
+            console.warn('error: ', flashcard.learn_vocabulary_list);
         }
-        setAwnserChoices(choices)
+
 
     }, [])
 
@@ -64,12 +69,26 @@ const F_FLashCardPracticeScreen = (props) => {
     }
 
     const _onCheckWord = async () => {
-        if (selectedWord.id != practiceVocabulary.id) {
-            Alert.alert("Incorrect", "Chon Sai");
-            return;
-        } else {
-            props.navigation.push('FlashCardPractice')
 
+        try {
+            if (selectedWord.id != practiceVocabulary.id) {
+                Alert.alert("Incorrect", "Chon Sai");
+                return;
+            }
+
+            dispatch(flashcardAction.addLearntVocabulary(selectedVocabulary));
+            if (flashcard.practice_vocabulary_list.length <= 1) {
+                props.navigation.replace('FlashCardPracticeFinish')
+
+            } else {
+                props.navigation.replace('FlashCardPractice')
+
+            }
+
+
+
+        } catch (error) {
+            console.warn('error: ', error);
         }
 
 
@@ -148,7 +167,7 @@ const F_FLashCardPracticeScreen = (props) => {
                 ]}
             >
                 {
-                    anwserChoices.map((e, index) =>
+                    anwserChoices?.map((e, index) =>
                         <CardWordItem
                             key={index.toString()}
                             name={e.name}

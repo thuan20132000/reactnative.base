@@ -12,6 +12,7 @@ import D_WordDefinitionScreen from './screens/Dictionary/D_WordDefinitionScreen'
 import F_FlashCardHomeScreen from './screens/FlashCard/F_FlashCardHomeScreen';
 import F_FlashCardChoiceScreen from './screens/FlashCard/F_FlashCardChoiceScreen';
 import F_FLashCardPracticeScreen from './screens/FlashCard/F_FLashCardPracticeScreen';
+import F_FlashCardPracticeFinishScreen from './screens/FlashCard/F_FlashCardPracticeFinishScreen';
 
 
 function HomeScreen() {
@@ -110,6 +111,10 @@ const FlashCardStack = () => {
             <FlashCardStackNavigator.Screen
                 name={"FlashCardPractice"}
                 component={F_FLashCardPracticeScreen}
+            />
+            <FlashCardStackNavigator.Screen
+                name={"FlashCardPracticeFinish"}
+                component={F_FlashCardPracticeFinishScreen}
             />
 
         </FlashCardStackNavigator.Navigator>

@@ -2,6 +2,7 @@ export const ADD_VOCABULARY_TO_LEARN = 'ADD_VOCABULARY_TO_LEARN'
 export const SET_VOCABULARY_LIST = 'SET_VOCABULARY_LIST'
 export const RESET_LEARN_VOCABULARY_LIST = 'RESET_LEARN_VOCABULARY_LIST'
 export const SKIP_VOCABULARY_TO_LEARN = 'SKIP_VOCABULARY_TO_LEARN'
+export const ADD_LEARNT_VOCABULARY = 'ADD_LEARNT_VOCABULARY'
  
 
 
@@ -37,6 +38,17 @@ export const setTopicVocabularyList = (vocabulary_list) => {
     }
 }
 
+
+
+
+
+export const addLearntVocabulary = (vocabulary) => {
+    return {
+        vocabulary:vocabulary,
+        type:ADD_LEARNT_VOCABULARY
+
+    }
+}
 
 
 

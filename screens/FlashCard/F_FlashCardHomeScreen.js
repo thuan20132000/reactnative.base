@@ -12,7 +12,7 @@ const F_FlashCardHomeScreen = (props) => {
     const flashcard = useSelector(state => state.flashcard);
 
     useEffect(() => {
-
+        console.warn('ee');
         const unsubscribe = props.navigation.addListener('focus', () => {
             // The screen is focused
             // Call any action

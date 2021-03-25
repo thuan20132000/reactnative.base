@@ -32,7 +32,8 @@ const F_FlashCardChoiceScreen = (props) => {
         // console.warn(temp_vocabulary[random]);
         dispatch(flashcardAction.addVocabulary(vocabulary));
         console.warn('practice: ', flashcard.practice_vocabulary_list);
-        if (flashcard.topic_vocabulary_list.length <= 1) {
+        
+        if (flashcard.vocabulary_stack.length <= 1) {
             props.navigation.replace('FlashCardPractice');
         } else {
             props.navigation.replace('FlashCardChoice');
@@ -45,7 +46,7 @@ const F_FlashCardChoiceScreen = (props) => {
     const _onSkipVocabulary = async () => {
 
         dispatch(flashcardAction.skipVocabulary(vocabulary));
-        if (flashcard.topic_vocabulary_list.length <= 1) {
+        if (flashcard.vocabulary_stack.length <= 1) {
             props.navigation.replace('FlashCardPractice');
         } else {
             props.navigation.replace('FlashCardChoice');
@@ -58,7 +59,7 @@ const F_FlashCardChoiceScreen = (props) => {
 
     useEffect(() => {
         if (flashcard.topic_vocabulary_list.length > 0) {
-            setVocabulary(flashcard.topic_vocabulary_list[0]);
+            setVocabulary(flashcard.vocabulary_stack[0]);
         }
 
     }, []);

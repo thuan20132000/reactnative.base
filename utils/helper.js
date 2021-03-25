@@ -30,12 +30,12 @@ export const _onRandomIndexValue = (number = 3, except = []) => {
             random = Math.floor(Math.random() * number);
             let count = 0;
             except.forEach(element => {
-                if(element == random){
-                    count +=1;
+                if (element == random) {
+                    count += 1;
                     return;
                 }
             });
-            if(count==0){
+            if (count == 0) {
                 break;
             }
         }
@@ -44,4 +44,65 @@ export const _onRandomIndexValue = (number = 3, except = []) => {
         random = Math.floor(Math.random() * number);
     }
     return random;
+}
+
+
+
+export const _onCheckItemExistInArray = (item, array = []) => {
+
+    let isExists = false;
+    for (let i = 0; i < array.length; i++) {
+        if (item.id == array[i].id) {
+            isExists = true;
+            break;
+        }
+    }
+    return isExists;
+
+}
+
+
+
+
+export const _onCheckNumberEven = (number) => {
+    if (number % 2 != 0) {
+        return true
+    }
+    return false
+}
+
+
+
+export const _onSwapRandomArrayElement = (array = []) => {
+
+    let new_array = [];
+    let count = 0;
+
+    while (true) {
+
+        if (count >= 20) {
+            return new_array;
+        }
+        array.forEach(element => {
+
+            let checkExists = _onCheckItemExistInArray(element, new_array);
+            if (!checkExists) {
+
+                let random_value = Math.floor(Math.random() * 10);
+                let checkEven = _onCheckNumberEven(random_value);
+                if (checkEven) {
+                    new_array.push(element)
+                }
+
+            }
+
+
+        });
+        if (new_array.length >= 3) {
+            return new_array
+        }
+        count += 1;
+    }
+
+
 }
