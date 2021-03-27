@@ -66,6 +66,7 @@ const F_FLashCardPracticeScreen = (props) => {
 
     const _onSelectWord = async (word) => {
         setSelectedWord(word);
+        console.warn(word)
     }
 
     const _onCheckWord = async () => {
@@ -113,8 +114,8 @@ const F_FLashCardPracticeScreen = (props) => {
                     containerStyle={{
                         height: 180
                     }}
-                    word_type={practiceVocabulary?.type}
-                    firstDefinition={practiceVocabulary?.meaning}
+                    word_type={practiceVocabulary?.word_type}
+                    firstDefinition={practiceVocabulary?.definition}
 
                     children={
                         <IconButton

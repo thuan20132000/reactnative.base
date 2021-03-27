@@ -1,18 +1,29 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import CardTopic from './components/CardTopic'
 import * as flashcardAction from '../../store/actions/flashcardActions';
 import { useDispatch, useSelector } from 'react-redux';
 import vocabulary_list from '../../data/flashcard.json';
+import { getTopicList, getTopicVocabulary } from '../../utils/api_v1';
 
 const F_FlashCardHomeScreen = (props) => {
 
     const dispatch = useDispatch();
 
     const flashcard = useSelector(state => state.flashcard);
+    const [topicList, setTopicList] = useState([]);
+
+    const _onFetchTopicList = async () => {
+        let fetchRes = await getTopicList();
+        if (fetchRes.status) {
+            setTopicList(fetchRes.data);
+        }
+    }
 
     useEffect(() => {
-        console.warn('ee');
+
+        _onFetchTopicList();
+
         const unsubscribe = props.navigation.addListener('focus', () => {
             // The screen is focused
             // Call any action
@@ -26,54 +37,35 @@ const F_FlashCardHomeScreen = (props) => {
     }, [props.navigation]);
 
 
-    // useEffect(() => {
-    //     console.warn('reset: ',flashcard);
 
-    // }, [flashcard])
 
-    const _onSelectTopic = (topic) => {
-        dispatch(flashcardAction.setTopicVocabularyList(vocabulary_list));
+    const _onSelectTopic = async (topic) => {
 
-        props.navigation.navigate('FlashCardChoice', {
-            topic: topic
-        })
+        let fetchRes = await getTopicVocabulary(topic.id);
+        if (fetchRes.status && fetchRes.data?.length > 0) {
+            dispatch(flashcardAction.setTopicVocabularyList(fetchRes.data));
+            props.navigation.navigate('FlashCardChoice', {
+                topic: topic
+            })
+        }
+
+
+
     }
 
     return (
         <ScrollView>
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
-            <CardTopic
-                onPress={() => _onSelectTopic('education')}
-            />
+            {
+                topicList.length > 0 &&
+                topicList.map((e, index) =>
+                    <CardTopic key={index.toString()}
+                        onPress={() => _onSelectTopic(e)}
+                        title={e.name}
+                        image_path={e.image}
+                    />
+
+                )
+            }
 
 
 

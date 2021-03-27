@@ -90,8 +90,8 @@ const F_FlashCardChoiceScreen = (props) => {
                         alignItems: 'center'
                     }}
                     name={vocabulary?.name}
-                    type={vocabulary?.type}
-                    phon={vocabulary?.phon}
+                    type={vocabulary?.word_type}
+                    phon={vocabulary?.phon_us}
                     children={
                         <IconButton
                             icon={CommonIcons.rotateCircle}
@@ -142,7 +142,7 @@ const F_FlashCardChoiceScreen = (props) => {
                         fontWeight: '700'
                     }}
                 >
-                    Meaning
+                    Definition
                 </Text>
                 <Text
                     style={{
@@ -151,7 +151,7 @@ const F_FlashCardChoiceScreen = (props) => {
                         color: 'grey'
                     }}
                 >
-                    {vocabulary?.meaning}
+                    {vocabulary?.definition}
 
                 </Text>
 

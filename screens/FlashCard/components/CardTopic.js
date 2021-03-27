@@ -3,9 +3,11 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CommonColor from '../../../utils/CommonColor'
 
 import CommonImages from '../../../utils/CommonImages'
-
+import {url_absolute} from '../../../config/api_config.json'
 const CardTopic = ({
-    onPress
+    onPress,
+    title,
+    image_path
 }) => {
     return (
         <TouchableOpacity
@@ -15,9 +17,11 @@ const CardTopic = ({
             onPress={onPress}
         >
             <Image
+             
                 source={{
-                    uri: CommonImages.avatar
+                    uri: image_path?`${url_absolute}/${image_path}` : CommonImages.avatar
                 }}
+
                 style={{
                     width: 80,
                     height: 80,
@@ -40,7 +44,7 @@ const CardTopic = ({
                         color: 'dodgerblue'
                     }}
                 >
-                    Education
+                    {title}
                 </Text>
                 <Text
                     style={{
