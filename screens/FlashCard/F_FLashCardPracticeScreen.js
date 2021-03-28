@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CardDefinition from './components/CardDefinition'
 import CardFlip from 'react-native-card-flip';
 import { IconButton } from 'react-native-paper';
@@ -9,22 +9,55 @@ import CardWordItem from './components/CardWordItem';
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as flashcardAction from '../../store/actions/flashcardActions';
-import { _onCheckItemExistInArray, _onCheckNumberEven, _onRandomIndexValue, _onSwapRandomArrayElement } from '../../utils/helper';
+import {
+    _onCheckItemExistInArray,
+    _onCheckNumberEven,
+    _onPlayFlashCardSound,
+    _onPlaySoundLocal,
+    _onRandomIndexValue,
+    _onSwapRandomArrayElement
+} from '../../utils/helper';
 
+import Voice from '@react-native-voice/voice';
+import Sound from 'react-native-sound';
 
 const F_FLashCardPracticeScreen = (props) => {
-
+    
+    const flashcard = useSelector(state => state.flashcard);
+    const selectedVocabulary = flashcard.practice_vocabulary_list[0];
+    
     const dispatch = useDispatch();
     const _refCardFlip = useRef();
     const [selectedWord, setSelectedWord] = useState();
-    const flashcard = useSelector(state => state.flashcard);
     const [practiceVocabulary, setPracticeVocabulary] = useState();
     const [anwserChoices, setAwnserChoices] = useState([]);
+    const [isRecording, setIsRecording] = useState(false);
+    const [isCorrectSelected,setIsCorrectSelected] = useState(false);
 
-    const selectedVocabulary = flashcard.practice_vocabulary_list[0];
+
+
+
+
+    const [isPlaySound, setIsPlaySound] = useState(false);
+    let timeoutEvent;
+    const _onSelectWord = async (word) => {
+
+        setSelectedWord(word);
+        setIsPlaySound(true);
+        let res = await _onPlayFlashCardSound(word?.sound_us);
+        timeoutEvent = setTimeout(() => {
+            setIsPlaySound(false);
+
+        }, 1200);
+
+    }
+
+
+
 
 
     useEffect(() => {
+
 
         let topicVocabulary = flashcard.topic_vocabulary_list;
         setPracticeVocabulary(selectedVocabulary);
@@ -54,20 +87,17 @@ const F_FLashCardPracticeScreen = (props) => {
             setAwnserChoices(swap_choices);
 
         } catch (error) {
-            console.warn('error: ', flashcard.learn_vocabulary_list);
+            console.log('error: ', flashcard.learn_vocabulary_list);
         }
 
 
-    }, [])
+        return () => {
+            clearTimeout(timeoutEvent);
+        }
+
+    }, []);
 
 
-
-
-
-    const _onSelectWord = async (word) => {
-        setSelectedWord(word);
-        console.warn(word)
-    }
 
     const _onCheckWord = async () => {
 
@@ -77,19 +107,29 @@ const F_FLashCardPracticeScreen = (props) => {
                 return;
             }
 
-            dispatch(flashcardAction.addLearntVocabulary(selectedVocabulary));
+            // dispatch(flashcardAction.addLearntVocabulary(selectedVocabulary));
             if (flashcard.practice_vocabulary_list.length <= 1) {
                 props.navigation.replace('FlashCardPracticeFinish')
 
             } else {
-                props.navigation.replace('FlashCardPractice')
+                // props.navigation.replace('FlashCardPractice')
+                console.warn('true');
+                const sound = new Sound('openmouth1.mp3', null, (error) => {
+                    if (error) {
+                        return false
+                    }
+                    // play when loaded
+                    sound.play();
+                    _refCardFlip.current.flip();
+                    return true;
+                });
 
             }
 
 
 
         } catch (error) {
-            console.warn('error: ', error);
+            console.log('error: ', error);
         }
 
 
@@ -98,6 +138,62 @@ const F_FLashCardPracticeScreen = (props) => {
     }
 
 
+    const [voiceResult, setVoiceResult] = useState(false);
+    const _onCheckVoiceCorrect = (listened_word_list = []) => {
+
+        if (listened_word_list.length > 0) {
+            listened_word_list.filter((e, index) => {
+                if (e == selectedVocabulary.name) {
+                    setVoiceResult(true);
+                    return;
+                }
+
+            })
+        }
+        setIsRecording(false);
+
+
+    }
+
+
+    const onSpeechEndHandler = (e) => {
+        console.warn("None: ",e);
+
+    }
+    const onSpeechStartHandler = () => {
+        setIsRecording(true);
+        setTimeout(() => {
+            Voice.stop();
+            setIsRecording(false);
+        }, 6000);
+    }
+    const onSpeechResultsHandler = (e) => {
+        let listened_word_list = e.value;
+        _onCheckVoiceCorrect(listened_word_list, selectedVocabulary);
+    }
+
+    const _onVoiceStart = () => {
+        setVoiceResult(false);
+
+        if (isRecording) {
+            Voice.stop();
+        } else {
+            Voice.start('en-US');
+
+        }
+
+    }
+
+    useEffect(() => {
+        Voice.onSpeechStart = onSpeechStartHandler;
+        Voice.onSpeechEnd = onSpeechEndHandler;
+        Voice.onSpeechResults = onSpeechResultsHandler;
+
+        return () => {
+            Voice.destroy().then(Voice.removeAllListeners());
+        }
+
+    }, [practiceVocabulary]);
 
     return (
         <View>
@@ -137,24 +233,57 @@ const F_FLashCardPracticeScreen = (props) => {
                     containerStyle={{
                         height: 180
                     }}
-                    word_type={practiceVocabulary?.type}
-                    firstDefinition={practiceVocabulary?.translate}
+                    word_type={practiceVocabulary?.word_type}
+                    firstDefinition={practiceVocabulary?.meaning}
 
-                    children={
-                        <IconButton
-                            icon={CommonIcons.rotateCircle}
-                            color={CommonColor.primary}
-                            size={18}
+
+                >
+                    <View>
+
+                        <View
                             style={{
-                                position: 'absolute',
-                                bottom: 10,
-                                right: 10
+                                width: 40,
+                                height: 40,
+                                borderWidth: 1,
+                                borderColor: 'red',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: 20
                             }}
-                            onPress={() => _refCardFlip.current.flip()}
-                        />
-                    }
+                        >
+                            {
+                                !isRecording ?
+                                    <IconButton
+                                        icon={CommonIcons.recordCircle}
+                                        size={18}
+                                        color={'red'}
+                                        onPress={(_onVoiceStart)}
+                                    /> :
 
-                />
+                                    <Image
+                                        source={require('../../utils/gif/recording.gif')}
+                                        style={{
+                                            width: 20,
+                                            height: 20
+                                        }}
+                                    />
+                            }
+                        </View>
+
+                    </View>
+                    <IconButton
+                        icon={CommonIcons.rotateCircle}
+                        color={CommonColor.primary}
+                        size={18}
+                        style={{
+                            position: 'absolute',
+                            bottom: 10,
+                            right: 10
+                        }}
+                        onPress={() => _refCardFlip.current.flip()}
+                    />
+                </CardDefinition>
 
 
             </CardFlip>

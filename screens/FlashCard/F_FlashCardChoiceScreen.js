@@ -11,6 +11,7 @@ import CardVocabulary from './components/CardVocabulary'
 import CardMeaning from './components/CardMeaning'
 import { useDispatch, useSelector } from 'react-redux'
 import * as flashcardAction from '../../store/actions/flashcardActions'
+import { _onPlayFlashCardSound, _onPlaySound } from '../../utils/helper'
 
 const F_FlashCardChoiceScreen = (props) => {
 
@@ -25,6 +26,16 @@ const F_FlashCardChoiceScreen = (props) => {
     const selected_vocabulary = props.route?.params;
 
 
+    const [isPlaySound, setIsPlaySound] = useState(false);
+    const _onPlayVocabularySound = async () => {
+        setIsPlaySound(true);
+        let res = await _onPlayFlashCardSound(vocabulary?.sound_us);
+        setTimeout(() => {
+            setIsPlaySound(false);
+
+        }, 1200);
+
+    }
 
     const _onSelectVocabulary = async () => {
         // console.warn(temp_vocabulary);
@@ -32,7 +43,7 @@ const F_FlashCardChoiceScreen = (props) => {
         // console.warn(temp_vocabulary[random]);
         dispatch(flashcardAction.addVocabulary(vocabulary));
         console.warn('practice: ', flashcard.practice_vocabulary_list);
-        
+
         if (flashcard.vocabulary_stack.length <= 1) {
             props.navigation.replace('FlashCardPractice');
         } else {
@@ -52,7 +63,6 @@ const F_FlashCardChoiceScreen = (props) => {
             props.navigation.replace('FlashCardChoice');
 
         }
-
     }
 
 
@@ -65,12 +75,6 @@ const F_FlashCardChoiceScreen = (props) => {
     }, []);
 
 
-
-    const _onPractiseVocabulary = async () => {
-        props.navigation.push('FlashCardPractice');
-
-        dispatch(flashcardAction.addVocabulary('accurate'))
-    }
 
     return (
         <ScrollView>
@@ -105,7 +109,9 @@ const F_FlashCardChoiceScreen = (props) => {
                             onPress={() => _refCardFlip.current.flip()}
                         />
                     }
-                    onSoundPress={() => console.warn('sound')}
+                    onSoundPress={_onPlayVocabularySound}
+                    isPlayingSound={isPlaySound}
+
                 />
                 <CardMeaning
                     onItemPress={() => _refCardFlip.current.flip()}

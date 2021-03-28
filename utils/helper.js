@@ -1,7 +1,7 @@
 
 import { Alert } from 'react-native';
 import Sound from 'react-native-sound';
-import { file_url } from '../config/api_config.json';
+import { file_url, url_absolute } from '../config/api_config.json';
 
 export const _onPlaySound = async (sound_name) => {
     if (!sound_name) {
@@ -10,12 +10,62 @@ export const _onPlaySound = async (sound_name) => {
     let sound_url = `${file_url}/${sound_name}`;
     const sound = new Sound(sound_url, null, (error) => {
         if (error) {
-            Alert.alert("Thông báo", "Vui lòng kiểm tra kết nối mạng.")
+            return false
         }
         // play when loaded
         sound.play();
+        return true;
     });
 
+}
+
+
+
+export const _onPlayFlashCardSound = async (sound_name) => {
+
+    try {
+
+        if (!sound_name) {
+            return false;
+        }
+        let sound_url = `${url_absolute}/${sound_name}`;
+        const sound = new Sound(sound_url, null, (error) => {
+            if (error) {
+                return false
+            }
+            // play when loaded
+            sound.play();
+
+        });
+        return true;
+    } catch (error) {
+        return false
+    }
+
+}
+
+
+
+
+export const _onPlaySoundLocal = async (sound_path) => {
+    try {
+
+        if (!sound_name) {
+            return false;
+        }
+      
+        const sound = new Sound(sound_path, null, (error) => {
+            if (error) {
+                return false
+            }
+            // play when loaded
+            sound.play();
+
+        });
+        return true;
+    } catch (error) {
+        return false
+    }
 }
 
 

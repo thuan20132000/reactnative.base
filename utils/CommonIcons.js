@@ -47,6 +47,7 @@ export default {
     
     facebook:'facebook',
     volumnHigh:'volume-high',
-    rotateCircle:'rotate-3d-variant'
+    rotateCircle:'rotate-3d-variant',
+    recordCircle:'record-circle',
 
 }

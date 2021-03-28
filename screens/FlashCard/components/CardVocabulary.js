@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import CommonColor from '../../../utils/CommonColor'
 import CommonIcons from '../../../utils/CommonIcons'
@@ -11,22 +11,35 @@ const CardVocabulary = ({
     children,
     name,
     type,
-    phon
+    phon,
+    isPlayingSound = false
 }) => {
     return (
         <View
             style={[styles.row, styles.vocabularyBox, containerStyle]}
             onPress={onItemPress}
         >
+            {
+                isPlayingSound ?
+                    <Image
+                        source={
+                            require('../../../utils/gif/sound_playing.gif')
+                        }
+                        style={{
+                            width: 80,
+                            height: 80,
+                        }}
+                    />
+                    :
+                    <IconButton
+                        icon={CommonIcons.volumnHigh}
+                        color={CommonColor.primary}
+                        size={43}
+                        onPress={onSoundPress}
+                        disabled={isPlayingSound}
 
-            <IconButton
-                icon={CommonIcons.volumnHigh}
-                color={CommonColor.primary}
-                size={43}
-                onPress={onSoundPress}
-               
-
-            />
+                    />
+            }
 
             <View
                 style={[styles.column]}
@@ -39,7 +52,7 @@ const CardVocabulary = ({
                     }}
                 >
                     {name}
-                    </Text>
+                </Text>
                 <Text>{phon}</Text>
 
             </View>
