@@ -20,6 +20,8 @@ import {
 
 import Voice from '@react-native-voice/voice';
 import Sound from 'react-native-sound';
+import { url_absolute } from '../../config/api_config.json';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const F_FLashCardPracticeScreen = (props) => {
 
@@ -33,7 +35,8 @@ const F_FLashCardPracticeScreen = (props) => {
     const [anwserChoices, setAwnserChoices] = useState([]);
     const [isRecording, setIsRecording] = useState(false);
     const [isCorrectSelected, setIsCorrectSelected] = useState(false);
-    const [isAnwsered,setIsAwnsered] = useState(false);
+    const [isAnwsered, setIsAwnsered] = useState(false);
+    const [recordTime, setRecordTime] = useState(0);
 
 
 
@@ -44,11 +47,29 @@ const F_FLashCardPracticeScreen = (props) => {
 
         setSelectedWord(word);
         setIsPlaySound(true);
-        let res = await _onPlayFlashCardSound(word?.sound_us);
-        timeoutEvent = setTimeout(() => {
-            setIsPlaySound(false);
 
-        }, 1200);
+        setTimeout(() => {
+            let path = `${url_absolute}${word?.sound_us}`;
+            var sound = new Sound(path, '', (error) => {
+                /* ... */
+                if (error) {
+                    console.warn('error: ', error);
+                    sound.release()
+                    setIsPlaySound(false);
+
+                }
+            });
+            setTimeout(() => {
+                sound.play((success) => {
+                    /* ... */
+                    sound.release();
+                    setIsPlaySound(false);
+
+
+                });
+            }, 100);
+        }, 100);
+
 
     }
 
@@ -107,15 +128,29 @@ const F_FLashCardPracticeScreen = (props) => {
             setIsAwnsered(true);
 
             if (selectedWord.id != practiceVocabulary.id) {
-                let sound = new Sound('button_incorrect.mp3', Sound.MAIN_BUNDLE, (error) => {
-                    if (error) {
-                        console.warn('error: ', error);
-                        return false
-                    }
-                    // play when loaded
-                    sound.play();
-                    return true;
-                });
+
+                setTimeout(() => {
+                    var sound = new Sound('button_incorrect.mp3', Sound.MAIN_BUNDLE, (error) => {
+                        /* ... */
+                        if (error) {
+                            console.warn('error: ', error);
+                            sound.release()
+                            setIsPlaySound(false);
+
+                        }
+                    });
+                    setTimeout(() => {
+                        sound.play((success) => {
+                            /* ... */
+                            sound.release();
+                            setIsPlaySound(false);
+
+
+                        });
+                    }, 100);
+                }, 100);
+
+
 
 
                 Alert.alert("Incorrect", "Chon Sai");
@@ -142,7 +177,7 @@ const F_FLashCardPracticeScreen = (props) => {
                     return true;
                 });
                 _refCardFlip.current.flip();
-  
+
 
             }
 
@@ -160,7 +195,6 @@ const F_FLashCardPracticeScreen = (props) => {
 
     const [voiceResult, setVoiceResult] = useState(false);
     const _onCheckVoiceCorrect = (listened_word_list = []) => {
-
         if (listened_word_list.length > 0) {
             listened_word_list.filter((e, index) => {
                 if (e == selectedVocabulary.name) {
@@ -179,6 +213,7 @@ const F_FLashCardPracticeScreen = (props) => {
     const onSpeechEndHandler = (e) => {
         console.warn("None: ", e);
 
+
     }
     const onSpeechStartHandler = () => {
         setIsRecording(true);
@@ -193,7 +228,12 @@ const F_FLashCardPracticeScreen = (props) => {
     }
 
     const _onVoiceStart = () => {
+
+        setTimeout(() => {
+            setRecordTime(recordTime + 1);
+        }, 5000);
         setVoiceResult(false);
+
 
         if (isRecording) {
             Voice.stop();
@@ -215,6 +255,10 @@ const F_FLashCardPracticeScreen = (props) => {
 
     }, [practiceVocabulary]);
 
+    useEffect(() => {
+        console.warn('time: ', recordTime);
+    }, [recordTime])
+
     return (
         <View>
 
@@ -233,54 +277,40 @@ const F_FLashCardPracticeScreen = (props) => {
                     word_type={practiceVocabulary?.word_type}
                     firstDefinition={practiceVocabulary?.definition}
 
-                 
+
                 />
 
                 <CardDefinition
                     containerStyle={{
                         height: 220
                     }}
-                    word_type={practiceVocabulary?.word_type}
-                    firstDefinition={`- ${practiceVocabulary?.definition} `}
+                // word_type={practiceVocabulary?.word_type}
+                // firstDefinition={`- ${practiceVocabulary?.definition} `}
 
 
                 >
-                     <View
+
+                    <View>
+                        <Text style={{ fontSize: 22, fontWeight: '700', color: 'red' }} >{practiceVocabulary?.name} <Text style={{ color: 'coral' }} >({practiceVocabulary?.word_type})</Text></Text>
+                        <Text>{practiceVocabulary?.phon_us}</Text>
+                        <Text
                             style={{
-                                width: 40,
-                                height: 40,
-                                borderWidth: 1,
-                                borderColor: 'red',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: 20,
-                                position:'absolute',
-                                right:6,
-                                top:6
+                                color: 'grey',
+                                fontStyle: 'italic',
+                                marginBottom: 6
                             }}
                         >
-                            {
-                                !isRecording ?
-                                    <IconButton
-                                        icon={'account-voice'}
-                                        size={18}
-                                        color={'red'}
-                                        onPress={(_onVoiceStart)}
-                                    /> :
+                            {practiceVocabulary?.definition}
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                color: 'coral'
+                            }}
+                        >
+                            {practiceVocabulary?.example}
+                        </Text>
 
-                                    <Image
-                                        source={require('../../utils/gif/recording.gif')}
-                                        style={{
-                                            width: 20,
-                                            height: 20
-                                        }}
-                                    />
-                            }
-                        </View>
-                    <View>
-                        <Text>{practiceVocabulary?.example}</Text>
-                       
 
                     </View>
                     <IconButton
@@ -293,7 +323,7 @@ const F_FLashCardPracticeScreen = (props) => {
                             right: 10
                         }}
                         onPress={() => _refCardFlip.current.flip()}
-                    
+
                     />
                 </CardDefinition>
 
@@ -315,40 +345,141 @@ const F_FLashCardPracticeScreen = (props) => {
                             name={e.name}
                             onItemPress={() => _onSelectWord(e)}
                             isActive={selectedWord && selectedWord.id == e.id ? true : false}
-                            isDisable={isAnwsered && practiceVocabulary?.id != e.id?true:false}
-                            isHighlight={isAnwsered && practiceVocabulary?.id == e.id?true:false}
-                            
+                            isDisable={isAnwsered && practiceVocabulary?.id != e.id ? true : false}
+                            isHighlight={isAnwsered && practiceVocabulary?.id == e.id ? true : false}
+
                         />
 
                     )
                 }
 
 
-                <TouchableOpacity
-                    style={[styles.buttonCheck,
-                    {
-                        marginTop: 42,
-                    },
-                    selectedWord && {
-                        backgroundColor: CommonColor.primary
-                    }
-                    ]}
 
-                    disabled={selectedWord ? false : true}
-                    onPress={_onCheckWord}
-                >
-                    <Text style={[
-                        styles.buttonText,
+                {
+                    (isAnwsered && recordTime <= 3) &&
+                    <TouchableOpacity
+                        style={[styles.buttonCheck,
                         {
-                            color: 'black'
+                            marginTop: 42,
                         },
                         selectedWord && {
-                            color: 'white'
+                            backgroundColor: 'white'
+                        },
+                        isRecording && {
+                            backgroundColor:'coral'
                         }
-                    ]}>
-                        Kiểm tra
+                        ]}
+                        onLongPress={_onVoiceStart}
+                        disabled={isRecording}
+
+                    >
+                        {
+                            isRecording ?
+                                <IconButton
+                                    icon={'account-voice'}
+                                    size={36}
+                                    color={'red'}
+                                    style={{
+                                        width: 40,
+                                        height: 40
+                                    }}
+                                /> :
+                                <IconButton
+                                    icon={CommonIcons.face_verygood}
+                                    size={36}
+                                    color={'red'}
+                                    style={{
+                                        width: 40,
+                                        height: 40
+                                    }}
+                                />
+
+                        }
+                    </TouchableOpacity>
+                }
+
+                {
+                    !isAnwsered &&
+
+                    <TouchableOpacity
+                        style={[styles.buttonCheck,
+                        {
+                            marginTop: 42,
+                        },
+                        selectedWord && {
+                            backgroundColor: CommonColor.primary
+                        }
+                        ]}
+
+                        disabled={selectedWord ? false : true}
+                        onPress={_onCheckWord}
+                    >
+                        <Text style={[
+                            styles.buttonText,
+                            {
+                                color: 'black'
+                            },
+                            selectedWord && {
+                                color: 'white'
+                            }
+                        ]}>
+                            Kiểm tra
                     </Text>
-                </TouchableOpacity>
+                    </TouchableOpacity>
+
+                }
+
+                {
+                    recordTime > 3 &&
+
+                    <TouchableOpacity
+                        style={[styles.buttonCheck,
+                        {
+                            marginTop: 42,
+                        },
+                        selectedWord && {
+                            backgroundColor: CommonColor.primary
+                        }
+                        ]}
+
+                        disabled={selectedWord ? false : true}
+                        onPress={_onCheckWord}
+                    >
+                        <Text style={[
+                            styles.buttonText,
+                            {
+                                color: 'black'
+                            },
+                            selectedWord && {
+                                color: 'white'
+                            }
+                        ]}>
+                            Next
+                    </Text>
+                    </TouchableOpacity>
+
+                }
+                {
+                    <Text>{recordTime}</Text>
+                }
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        flexWrap: 'wrap'
+                    }}
+                >
+                    {
+                        Array(recordTime).fill({}).map((e, index) =>
+                            <MaterialCommunityIcon
+                                name={CommonIcons.close}
+                                color={'red'}
+                                size={18}
+                            />
+                        )
+                    }
+                </View>
             </View>
         </View>
     )

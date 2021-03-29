@@ -15,14 +15,14 @@ const CardWordItem = ({
             style={[
                 styles.container,
                 isActive && {
-                    backgroundColor:'coral'
+                    backgroundColor:'cornsilk'
                 },
                 isHighlight && {
-                    borderWidth:2,
-                    borderColor:'red'
+                    borderWidth:1,
+                    borderColor:'coral'
                 },
                 isDisable && {
-                    backgroundColor:'darkgray'
+                    backgroundColor:'lightgray'
                 }
             ]}
             onPress={onItemPress}
@@ -34,7 +34,10 @@ const CardWordItem = ({
         >
             <Text
                 style={[
-                    styles.textStyle
+                    styles.textStyle,
+                    isActive && {
+                        color:'red'
+                    }
                 ]}
             >
                 {name}

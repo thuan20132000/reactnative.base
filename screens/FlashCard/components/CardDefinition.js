@@ -17,24 +17,30 @@ const CardDefinition = ({
                 containerStyle
             ]}
         >
-            <Text style={{fontSize:18,fontWeight:'700'}}>Định nghĩa</Text>
-
-            <Text>
-                ({word_type})
-            </Text>
+            <Text style={{ fontSize: 16, fontWeight: '700',color:'grey' }}>Definition</Text>
+            {
+                word_type &&
+                <Text>
+                    ({word_type})
+                </Text>
+            }
             {
                 name &&
                 <Text>{name}</Text>
             }
-            <Text
-                style={{
-                    fontSize:16,
-                    marginTop:6,
-                    fontStyle:'italic'
-                }}
-            >
-                {firstDefinition}
-            </Text>
+            {
+                firstDefinition &&
+                <Text
+                    style={{
+                        fontSize: 16,
+                        marginTop: 6,
+                        fontStyle: 'italic'
+                    }}
+                >
+                    {firstDefinition}
+                </Text>
+
+            }
             {/* <Text> {secondDefinition}</Text> */}
             {
                 children

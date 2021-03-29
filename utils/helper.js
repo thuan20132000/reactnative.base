@@ -13,8 +13,11 @@ export const _onPlaySound = async (sound_name) => {
             return false
         }
         // play when loaded
-        sound.play();
-        return true;
+        sound.play( () => {
+            sound.release()
+        });
+
+
     });
 
 }

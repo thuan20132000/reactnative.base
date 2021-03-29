@@ -12,7 +12,8 @@ import CardMeaning from './components/CardMeaning'
 import { useDispatch, useSelector } from 'react-redux'
 import * as flashcardAction from '../../store/actions/flashcardActions'
 import { _onPlayFlashCardSound, _onPlaySound } from '../../utils/helper'
-import Sound from 'react-native-sound';
+var Sound = require('react-native-sound');
+
 
 const F_FlashCardChoiceScreen = (props) => {
 
@@ -25,23 +26,38 @@ const F_FlashCardChoiceScreen = (props) => {
     const flashcard = useSelector(state => state.flashcard);
 
     const selected_vocabulary = props.route?.params;
-
+    let timeoutEvent;
 
     const [isPlaySound, setIsPlaySound] = useState(false);
     const _onPlayVocabularySound = async () => {
+        setIsPlaySound(true);
+        // let res = await _onPlayFlashCardSound(vocabulary?.sound_us);
+        // setTimeout(() => {
 
-        try {
-            
-            setIsPlaySound(true);
-            let res = await _onPlayFlashCardSound(vocabulary?.sound_us);
+        // }, 1200);
+        let path = `http://askme-it.com${vocabulary.sound_us}`;
+
+        setTimeout(() => {
+            var sound = new Sound(path, '', (error) => {
+                /* ... */
+                if (error) {
+                    console.warn('error: ', error);
+                    setIsPlaySound(false);
+
+                    // sound.release()
+
+                }
+            });
             setTimeout(() => {
-                setIsPlaySound(false);
-    
-            }, 1200);
-        } catch (error) {
-            console.warn('error: ',error);            
-        }
+                sound.play((success) => {
+                    /* ... */
+                    console.warn('success: ', success);
+                    setIsPlaySound(false);
+                    // sound.release();
 
+                });
+            }, 100);
+        }, 100);
     }
 
     const _onSelectVocabulary = async () => {
@@ -49,28 +65,37 @@ const F_FlashCardChoiceScreen = (props) => {
         // const random = Math.floor(Math.random() * flashcard.vocabulary_list.length);
         // console.warn(temp_vocabulary[random]);
         // console.warn('practice: ', flashcard.practice_vocabulary_list.length);
-
-        try {
-            const sound = new Sound('button_start_topic.mp3', Sound.MAIN_BUNDLE, (error) => {
+        timeoutEvent = setTimeout(() => {
+            var sound = new Sound('button_start_topic.mp3', Sound.MAIN_BUNDLE, (error) => {
+                /* ... */
                 if (error) {
                     console.warn('error: ', error);
-                    return false
+                    sound.release()
+                    setIsPlaySound(false);
+
                 }
-                // play when loaded
-                sound.play();
-                return true;
             });
-    
-            if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 4) {
-                props.navigation.replace('FlashCardPractice');
-            } else {
-                dispatch(flashcardAction.addVocabulary(vocabulary));
-                props.navigation.replace('FlashCardChoice');
-    
-            }
-            
-        } catch (error) {
-            console.warn('error: ',error)            
+            timeoutEvent = setTimeout(() => {
+                sound.play((success) => {
+                    /* ... */
+                    sound.release();
+                    setIsPlaySound(false);
+
+
+                });
+            }, 100);
+        }, 100);
+
+
+        if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 4) {
+            props.navigation.replace('FlashCardPractice');
+        } else {
+            dispatch(flashcardAction.addVocabulary(vocabulary));
+            props.navigation.replace('FlashCardChoice');
+
+
+
+
         }
 
     }
@@ -94,6 +119,10 @@ const F_FlashCardChoiceScreen = (props) => {
             setVocabulary(flashcard.vocabulary_stack[0]);
         }
 
+        // return () => {
+        //     clearTimeout(timeoutEvent);
+        // }
+
     }, []);
 
 
@@ -103,7 +132,12 @@ const F_FlashCardChoiceScreen = (props) => {
 
 
 
-           
+            <CardFlip
+                ref={_refCardFlip}
+                style={{
+                    height: 140
+                }}
+            >
                 <CardVocabulary
                     onItemPress={() => _refCardFlip.current.flip()}
                     containerStyle={{
@@ -113,11 +147,44 @@ const F_FlashCardChoiceScreen = (props) => {
                     name={vocabulary?.name}
                     type={vocabulary?.word_type}
                     phon={vocabulary?.phon_us}
+                    children={
+                        <IconButton
+                            icon={CommonIcons.rotateCircle}
+                            color={CommonColor.primary}
+                            size={18}
+                            style={{
+                                position: 'absolute',
+                                bottom: 10,
+                                right: 10
+                            }}
+                            onPress={() => _refCardFlip.current.flip()}
+                        />
+                    }
                     onSoundPress={_onPlayVocabularySound}
                     isPlayingSound={isPlaySound}
 
                 />
-              
+                <CardMeaning
+                    onItemPress={() => _refCardFlip.current.flip()}
+                    containerStyle={{
+                        height: 140
+                    }}
+                    children={
+                        <IconButton
+                            icon={CommonIcons.rotateCircle}
+                            color={CommonColor.primary}
+                            size={18}
+                            style={{
+                                position: 'absolute',
+                                bottom: 10,
+                                right: 10
+                            }}
+                            onPress={() => _refCardFlip.current.flip()}
+                        />
+                    }
+                />
+
+            </CardFlip>
 
 
 
