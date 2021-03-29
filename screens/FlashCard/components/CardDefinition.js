@@ -7,6 +7,7 @@ const CardDefinition = ({
     firstDefinition,
     secondDefinition,
     children,
+    name
 
 }) => {
     return (
@@ -21,6 +22,10 @@ const CardDefinition = ({
             <Text>
                 ({word_type})
             </Text>
+            {
+                name &&
+                <Text>{name}</Text>
+            }
             <Text
                 style={{
                     fontSize:16,

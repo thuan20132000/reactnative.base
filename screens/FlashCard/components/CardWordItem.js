@@ -6,7 +6,9 @@ import CommonColor from '../../../utils/CommonColor'
 const CardWordItem = ({
     name,
     onItemPress,
-    isActive = false
+    isActive = false,
+    isDisable = false,
+    isHighlight = false
 }) => {
     return (
         <TouchableOpacity
@@ -14,9 +16,19 @@ const CardWordItem = ({
                 styles.container,
                 isActive && {
                     backgroundColor:'coral'
+                },
+                isHighlight && {
+                    borderWidth:2,
+                    borderColor:'red'
+                },
+                isDisable && {
+                    backgroundColor:'darkgray'
                 }
             ]}
             onPress={onItemPress}
+            disabled={isDisable}
+
+            
 
 
         >

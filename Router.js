@@ -107,10 +107,16 @@ const FlashCardStack = () => {
             <FlashCardStackNavigator.Screen
                 name={"FlashCardChoice"}
                 component={F_FlashCardChoiceScreen}
+                options={{
+                    title:"Word Selection"
+                }}
             />
             <FlashCardStackNavigator.Screen
                 name={"FlashCardPractice"}
                 component={F_FLashCardPracticeScreen}
+                options={{
+                    title:"Practice"
+                }}
             />
             <FlashCardStackNavigator.Screen
                 name={"FlashCardPracticeFinish"}

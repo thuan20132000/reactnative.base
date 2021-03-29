@@ -5,6 +5,8 @@ import * as flashcardAction from '../../store/actions/flashcardActions';
 import { useDispatch, useSelector } from 'react-redux';
 import vocabulary_list from '../../data/flashcard.json';
 import { getTopicList, getTopicVocabulary } from '../../utils/api_v1';
+import { _onPlaySoundLocal } from '../../utils/helper';
+import Sound from 'react-native-sound';
 
 const F_FlashCardHomeScreen = (props) => {
 
@@ -41,6 +43,7 @@ const F_FlashCardHomeScreen = (props) => {
 
     const _onSelectTopic = async (topic) => {
 
+      
         let fetchRes = await getTopicVocabulary(topic.id);
         if (fetchRes.status && fetchRes.data?.length > 0) {
             dispatch(flashcardAction.setTopicVocabularyList(fetchRes.data));

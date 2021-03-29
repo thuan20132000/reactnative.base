@@ -22,18 +22,18 @@ import Voice from '@react-native-voice/voice';
 import Sound from 'react-native-sound';
 
 const F_FLashCardPracticeScreen = (props) => {
-    
+
     const flashcard = useSelector(state => state.flashcard);
     const selectedVocabulary = flashcard.practice_vocabulary_list[0];
-    
+
     const dispatch = useDispatch();
     const _refCardFlip = useRef();
     const [selectedWord, setSelectedWord] = useState();
     const [practiceVocabulary, setPracticeVocabulary] = useState();
     const [anwserChoices, setAwnserChoices] = useState([]);
     const [isRecording, setIsRecording] = useState(false);
-    const [isCorrectSelected,setIsCorrectSelected] = useState(false);
-
+    const [isCorrectSelected, setIsCorrectSelected] = useState(false);
+    const [isAnwsered,setIsAwnsered] = useState(false);
 
 
 
@@ -102,10 +102,29 @@ const F_FLashCardPracticeScreen = (props) => {
     const _onCheckWord = async () => {
 
         try {
+
+
+            setIsAwnsered(true);
+
             if (selectedWord.id != practiceVocabulary.id) {
+                let sound = new Sound('button_incorrect.mp3', Sound.MAIN_BUNDLE, (error) => {
+                    if (error) {
+                        console.warn('error: ', error);
+                        return false
+                    }
+                    // play when loaded
+                    sound.play();
+                    return true;
+                });
+
+
                 Alert.alert("Incorrect", "Chon Sai");
+                _refCardFlip.current.flip();
+
                 return;
             }
+
+
 
             // dispatch(flashcardAction.addLearntVocabulary(selectedVocabulary));
             if (flashcard.practice_vocabulary_list.length <= 1) {
@@ -113,16 +132,17 @@ const F_FLashCardPracticeScreen = (props) => {
 
             } else {
                 // props.navigation.replace('FlashCardPractice')
-                console.warn('true');
-                const sound = new Sound('openmouth1.mp3', null, (error) => {
+                let sound = new Sound('button_correct.mp3', Sound.MAIN_BUNDLE, (error) => {
                     if (error) {
+                        console.warn('error: ', error);
                         return false
                     }
                     // play when loaded
                     sound.play();
-                    _refCardFlip.current.flip();
                     return true;
                 });
+                _refCardFlip.current.flip();
+  
 
             }
 
@@ -157,7 +177,7 @@ const F_FLashCardPracticeScreen = (props) => {
 
 
     const onSpeechEndHandler = (e) => {
-        console.warn("None: ",e);
+        console.warn("None: ", e);
 
     }
     const onSpeechStartHandler = () => {
@@ -203,44 +223,29 @@ const F_FLashCardPracticeScreen = (props) => {
             <CardFlip
                 ref={_refCardFlip}
                 style={{
-                    height: 180
+                    height: 220
                 }}
             >
                 <CardDefinition
                     containerStyle={{
-                        height: 180
+                        height: 220
                     }}
                     word_type={practiceVocabulary?.word_type}
                     firstDefinition={practiceVocabulary?.definition}
 
-                    children={
-                        <IconButton
-                            icon={CommonIcons.rotateCircle}
-                            color={CommonColor.primary}
-                            size={18}
-                            style={{
-                                position: 'absolute',
-                                bottom: 10,
-                                right: 10,
-
-                            }}
-                            onPress={() => _refCardFlip.current.flip()}
-                        />
-                    }
+                 
                 />
 
                 <CardDefinition
                     containerStyle={{
-                        height: 180
+                        height: 220
                     }}
                     word_type={practiceVocabulary?.word_type}
-                    firstDefinition={practiceVocabulary?.meaning}
+                    firstDefinition={`- ${practiceVocabulary?.definition} `}
 
 
                 >
-                    <View>
-
-                        <View
+                     <View
                             style={{
                                 width: 40,
                                 height: 40,
@@ -249,13 +254,16 @@ const F_FLashCardPracticeScreen = (props) => {
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                borderRadius: 20
+                                borderRadius: 20,
+                                position:'absolute',
+                                right:6,
+                                top:6
                             }}
                         >
                             {
                                 !isRecording ?
                                     <IconButton
-                                        icon={CommonIcons.recordCircle}
+                                        icon={'account-voice'}
                                         size={18}
                                         color={'red'}
                                         onPress={(_onVoiceStart)}
@@ -270,6 +278,9 @@ const F_FLashCardPracticeScreen = (props) => {
                                     />
                             }
                         </View>
+                    <View>
+                        <Text>{practiceVocabulary?.example}</Text>
+                       
 
                     </View>
                     <IconButton
@@ -282,6 +293,7 @@ const F_FLashCardPracticeScreen = (props) => {
                             right: 10
                         }}
                         onPress={() => _refCardFlip.current.flip()}
+                    
                     />
                 </CardDefinition>
 
@@ -303,6 +315,9 @@ const F_FLashCardPracticeScreen = (props) => {
                             name={e.name}
                             onItemPress={() => _onSelectWord(e)}
                             isActive={selectedWord && selectedWord.id == e.id ? true : false}
+                            isDisable={isAnwsered && practiceVocabulary?.id != e.id?true:false}
+                            isHighlight={isAnwsered && practiceVocabulary?.id == e.id?true:false}
+                            
                         />
 
                     )
