@@ -7,7 +7,8 @@ const CardDefinition = ({
     firstDefinition,
     secondDefinition,
     children,
-    name
+    name,
+    meaning
 
 }) => {
     return (
@@ -17,30 +18,53 @@ const CardDefinition = ({
                 containerStyle
             ]}
         >
-            <Text style={{ fontSize: 16, fontWeight: '700',color:'grey' }}>Definition</Text>
             {
-                word_type &&
-                <Text>
-                    ({word_type})
+                meaning &&
+                <Text
+                    style={{
+                        fontSize: 22,
+                        fontWeight: '700',
+                        color: 'black'
+                    }}
+                >
+                    {meaning}
                 </Text>
             }
             {
-                name &&
-                <Text>{name}</Text>
-            }
-            {
-                firstDefinition &&
+                word_type &&
                 <Text
                     style={{
-                        fontSize: 16,
-                        marginTop: 6,
                         fontStyle: 'italic'
                     }}
                 >
-                    {firstDefinition}
+                    ({word_type})
                 </Text>
-
             }
+            <View
+                style={{
+                    marginVertical:6
+                }}
+            >
+                
+                {
+                    name &&
+                    <Text>{name}</Text>
+                }
+                {
+                    firstDefinition &&
+                    <Text
+                        style={{
+                            fontSize: 16,
+                            marginTop: 6,
+                            fontStyle: 'italic'
+                        }}
+                    >
+                        {firstDefinition}
+                    </Text>
+
+                }
+
+            </View>
             {/* <Text> {secondDefinition}</Text> */}
             {
                 children

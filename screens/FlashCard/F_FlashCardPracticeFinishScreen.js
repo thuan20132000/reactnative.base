@@ -1,15 +1,44 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 
 import { useSelector } from 'react-redux';
+import Sound from 'react-native-sound';
+import CommonColor from '../../utils/CommonColor';
 
 
-const F_FlashCardPracticeFinishScreen = () => {
+const F_FlashCardPracticeFinishScreen = (props) => {
 
 
 
     const flashcard = useSelector(state => state.flashcard);
-    console.warn(flashcard);
+
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            var sound = new Sound('congratulation.mp3', Sound.MAIN_BUNDLE, (error) => {
+                /* ... */
+                if (error) {
+                    console.log('error: ', error);
+                    sound.release()
+    
+                }
+            });
+            setTimeout(() => {
+                sound.play((success) => {
+                    /* ... */
+                    sound.release();
+    
+                });
+            }, 100);
+        }, 100);
+        
+    }, []);
+
+
+
+    const _onBackHome = () => {
+        props.navigation.goBack();
+    }
 
     return (
         <View
@@ -27,15 +56,44 @@ const F_FlashCardPracticeFinishScreen = () => {
             <View>
                 <Image
                     source={
-                        require('../../utils/photos/congratulation1.png')
+                        require('../../utils/gif/congratulation.gif')
                     }
                     style={{
-                        width: 120,
-                        height: 120
+                        width: 220,
+                        height: 220
                     }}
                 />
             </View>
-            <Text>Congratulation, You just learnt  {flashcard.learnt_vocabulary_list.length} vocabulary today.</Text>
+            <Text
+                style={{
+                    fontSize:14,
+                    textAlign:'center',
+                    fontWeight:'700',
+                    padding:16
+                }}
+            >
+                Chúc mừng , bạn đã học thêm <Text style={{color:"red"}}>{flashcard.learnt_vocabulary_list.length} </Text> từ vựng hôm nay.
+            </Text>
+
+            <TouchableOpacity
+                style={{
+                    padding:12,
+                    backgroundColor:CommonColor.primary,
+                    paddingHorizontal:22,
+                    borderRadius:6
+                }}
+                onPress={_onBackHome}
+            >
+                <Text
+                    style={{
+                        fontSize:18,
+                        fontWeight:'700',
+                        color:'white'
+                    }}
+                >
+                    Tiếp tục
+                </Text>
+            </TouchableOpacity>
 
         </View>
     )

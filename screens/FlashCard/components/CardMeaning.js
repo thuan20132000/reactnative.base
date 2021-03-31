@@ -5,17 +5,33 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 const CardMeaning = ({
     onItemPress,
     containerStyle,
-    children
+    children,
+    meaning,
+    example
 }) => {
     return (
         <View
             style={[
                 styles.vocabularyBox,
-                containerStyle
+                containerStyle,
+                {
+                    alignItems:'flex-start',
+                    justifyContent:'center'
+                }
             ]}
             onPress={onItemPress}
         >
-            <Text>Accurate</Text>
+            <Text
+                style={{
+                    fontSize:24,
+                    fontWeight:'700',
+                    color:'grey',
+                    marginHorizontal:12
+                }}
+            >
+                {meaning}
+            </Text>
+          
 
         {
             children

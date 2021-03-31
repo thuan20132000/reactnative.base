@@ -90,25 +90,31 @@ const FlashCardStack = () => {
             <FlashCardStackNavigator.Screen
                 name={"FlashCardHome"}
                 component={F_FlashCardHomeScreen}
+                options={{
+                    title:"Chọn chủ đề"
+                }}
 
             />
             <FlashCardStackNavigator.Screen
                 name={"FlashCardChoice"}
                 component={F_FlashCardChoiceScreen}
                 options={{
-                    title:"Word Selection"
+                    title:"Chọn từ"
                 }}
             />
             <FlashCardStackNavigator.Screen
                 name={"FlashCardPractice"}
                 component={F_FLashCardPracticeScreen}
                 options={{
-                    title:"Practice"
+                    title:"Luyện tập"
                 }}
             />
             <FlashCardStackNavigator.Screen
                 name={"FlashCardPracticeFinish"}
                 component={F_FlashCardPracticeFinishScreen}
+                options={{
+                    title:"Hoàn thành"
+                }}
             />
 
         </FlashCardStackNavigator.Navigator>

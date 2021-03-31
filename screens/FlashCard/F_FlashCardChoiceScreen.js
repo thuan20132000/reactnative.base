@@ -171,6 +171,8 @@ const F_FlashCardChoiceScreen = (props) => {
                     containerStyle={{
                         height: 140
                     }}
+                    meaning={vocabulary?.meaning}
+                
                     children={
                         <IconButton
                             icon={CommonIcons.rotateCircle}
@@ -181,7 +183,9 @@ const F_FlashCardChoiceScreen = (props) => {
                                 bottom: 10,
                                 right: 10
                             }}
+                            
                             onPress={() => _refCardFlip.current.flip()}
+                            
                         />
                     }
                 />

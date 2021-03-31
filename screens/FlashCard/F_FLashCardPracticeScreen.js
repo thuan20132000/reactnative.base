@@ -136,7 +136,6 @@ const F_FLashCardPracticeScreen = (props) => {
 
 
 
-                Alert.alert("Incorrect", "Chon Sai");
                 _refCardFlip.current.flip();
                 dispatch(flashcardActions.refreshPracticeVocabulary())
 
@@ -194,8 +193,8 @@ const F_FLashCardPracticeScreen = (props) => {
                 <ProgressBar
                     progress={(5 - flashcard.practice_vocabulary_list.length) / 5}
                     color={'red'}
-                    style={{    
-                        height:8
+                    style={{
+                        height: 8
                     }}
                 />
             </View>
@@ -209,9 +208,25 @@ const F_FLashCardPracticeScreen = (props) => {
                     containerStyle={{
                         height: 220
                     }}
+                    meaning={practiceVocabulary?.meaning}
                     word_type={practiceVocabulary?.word_type}
                     firstDefinition={practiceVocabulary?.definition}
 
+                    children={
+                        isAnwsered &&
+                        <IconButton
+                            icon={CommonIcons.rotateCircle}
+                            color={CommonColor.primary}
+                            size={18}
+                            style={{
+                                position: 'absolute',
+                                bottom: 10,
+                                right: 10
+                            }}
+                            onPress={() => _refCardFlip.current.flip()}
+
+                        />
+                    }
 
                 />
 
@@ -317,14 +332,18 @@ const F_FLashCardPracticeScreen = (props) => {
                     }
                 ]}
             >
-
-                <Button
-                    icon={CommonIcons.checkboxCircleMark}
-                    mode="outlined"
-                    onPress={_onCheckWord}
-                >
-                    Check
-                </Button>
+                {
+                    !isAnwsered &&
+                    <Button
+                        icon={CommonIcons.checkboxCircleMark}
+                        mode="outlined"
+                        onPress={_onCheckWord}
+                        disabled={selectedWord?false:true}
+                        color={'red'}
+                    >
+                        Check
+                    </Button>
+                }
 
                 {
                     isAnwsered &&
@@ -332,6 +351,7 @@ const F_FLashCardPracticeScreen = (props) => {
                         icon={CommonIcons.arrowRightChevron}
                         mode="contained"
                         onPress={_onNextCard}
+                        color={CommonColor.primary}
                     >
                         Next
                     </Button>
