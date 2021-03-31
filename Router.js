@@ -61,16 +61,7 @@ const DictionaryStack = () => {
 
     return (
         <DictionaryStackNavigator.Navigator
-            screenOptions={{
-                transitionSpec: {
-                    open: config,
-                    close: config,
-                },
-                gestureEnabled: true,
-                ...TransitionPresets.SlideFromRightIOS
-
-
-            }}
+     
         >
             <DictionaryStackNavigator.Screen
                 name={"HomeSearch"}
@@ -94,10 +85,7 @@ const FlashCardStackNavigator = createStackNavigator();
 const FlashCardStack = () => {
     return (
         <FlashCardStackNavigator.Navigator
-            screenOptions={{
-                ...TransitionPresets.SlideFromRightIOS
-
-            }}
+           
         >
             <FlashCardStackNavigator.Screen
                 name={"FlashCardHome"}

@@ -12,8 +12,7 @@ import CardMeaning from './components/CardMeaning'
 import { useDispatch, useSelector } from 'react-redux'
 import * as flashcardAction from '../../store/actions/flashcardActions'
 import { _onPlayFlashCardSound, _onPlaySound } from '../../utils/helper'
-var Sound = require('react-native-sound');
-
+import Sound from 'react-native-sound'
 
 const F_FlashCardChoiceScreen = (props) => {
 
@@ -26,7 +25,6 @@ const F_FlashCardChoiceScreen = (props) => {
     const flashcard = useSelector(state => state.flashcard);
 
     const selected_vocabulary = props.route?.params;
-    let timeoutEvent;
 
     const [isPlaySound, setIsPlaySound] = useState(false);
     const _onPlayVocabularySound = async () => {
@@ -35,28 +33,27 @@ const F_FlashCardChoiceScreen = (props) => {
         // setTimeout(() => {
 
         // }, 1200);
-        let path = `http://askme-it.com${vocabulary.sound_us}`;
+        let path = `http://54.251.133.13${vocabulary.sound_us}`;
+        console.warn(path);
 
         setTimeout(() => {
             var sound = new Sound(path, '', (error) => {
                 /* ... */
                 if (error) {
-                    console.warn('error: ', error);
+                    console.log('error: ', error);
                     setIsPlaySound(false);
 
-                    // sound.release()
+                    return;
 
                 }
+                sound.play((success) => console.log('play success'));
             });
-            setTimeout(() => {
-                sound.play((success) => {
-                    /* ... */
-                    console.warn('success: ', success);
-                    setIsPlaySound(false);
-                    // sound.release();
 
-                });
-            }, 100);
+            setTimeout(() => {
+                setIsPlaySound(false);
+                sound.release();
+            }, 1200);
+
         }, 100);
     }
 
@@ -65,36 +62,31 @@ const F_FlashCardChoiceScreen = (props) => {
         // const random = Math.floor(Math.random() * flashcard.vocabulary_list.length);
         // console.warn(temp_vocabulary[random]);
         // console.warn('practice: ', flashcard.practice_vocabulary_list.length);
-        timeoutEvent = setTimeout(() => {
-            var sound = new Sound('button_start_topic.mp3', Sound.MAIN_BUNDLE, (error) => {
+        setTimeout(() => {
+            var sound = new Sound('button_correct.mp3', Sound.MAIN_BUNDLE, (error) => {
                 /* ... */
                 if (error) {
-                    console.warn('error: ', error);
+                    console.log('error: ', error);
                     sound.release()
-                    setIsPlaySound(false);
+                    return;
 
                 }
+                sound.play();
             });
-            timeoutEvent = setTimeout(() => {
-                sound.play((success) => {
-                    /* ... */
-                    sound.release();
-                    setIsPlaySound(false);
+
+            setTimeout(() => {
+                sound.release();
+            }, 1200);
 
 
-                });
-            }, 100);
         }, 100);
 
 
+        dispatch(flashcardAction.addVocabulary(vocabulary));
         if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 4) {
             props.navigation.replace('FlashCardPractice');
         } else {
-            dispatch(flashcardAction.addVocabulary(vocabulary));
             props.navigation.replace('FlashCardChoice');
-
-
-
 
         }
 
@@ -104,12 +96,25 @@ const F_FlashCardChoiceScreen = (props) => {
     const _onSkipVocabulary = async () => {
 
         dispatch(flashcardAction.skipVocabulary(vocabulary));
-        if (flashcard.vocabulary_stack.length <= 1) {
+        if (flashcard.vocabulary_stack.length <= 1 && flashcard.practice_vocabulary_list.length > 0) {
             props.navigation.replace('FlashCardPractice');
-        } else {
-            props.navigation.replace('FlashCardChoice');
-
+            return;
         }
+
+        if (flashcard.vocabulary_stack.length == 1 && flashcard.practice_vocabulary_list.length <= 0) {
+            console.warn('empty');
+            props.navigation.goBack();
+            return;
+        }
+        props.navigation.replace('FlashCardChoice');
+        return;
+
+        // if (flashcard.vocabulary_stack.length < 1) {
+        //     props.navigation.goBack();
+        // }
+        // else {
+
+        // }
     }
 
 
@@ -119,9 +124,6 @@ const F_FlashCardChoiceScreen = (props) => {
             setVocabulary(flashcard.vocabulary_stack[0]);
         }
 
-        // return () => {
-        //     clearTimeout(timeoutEvent);
-        // }
 
     }, []);
 

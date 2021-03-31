@@ -3,7 +3,8 @@ import {
     SET_VOCABULARY_LIST,
     RESET_LEARN_VOCABULARY_LIST,
     SKIP_VOCABULARY_TO_LEARN,
-    ADD_LEARNT_VOCABULARY
+    ADD_LEARNT_VOCABULARY,
+    REFRESH_PRACTICE_VOCABULARY,
 } from '../actions/flashcardActions'
 
 
@@ -54,6 +55,14 @@ export default (state = initialState, action) => {
                 ...state,
                 vocabulary_stack: new_vocabulary_stack,
                 skip_vocabulary_list: new_skip_vocabulary_list,
+            }
+
+
+        case REFRESH_PRACTICE_VOCABULARY:
+            var new_practice_vocabulary_list = state.practice_vocabulary_list.sort((a,b) => b.name - a.name).reverse()
+            return {
+                ...state,
+                practice_vocabulary_list:new_practice_vocabulary_list
             }
 
         case SET_VOCABULARY_LIST:

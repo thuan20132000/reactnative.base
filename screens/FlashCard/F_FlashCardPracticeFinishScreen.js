@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 const F_FlashCardPracticeFinishScreen = () => {
@@ -12,11 +12,31 @@ const F_FlashCardPracticeFinishScreen = () => {
     console.warn(flashcard);
 
     return (
-        <View>
-            <Text>Practice Finished</Text>
-            <Text>
-                {flashcard.learnt_vocabulary_list.length}
-            </Text>
+        <View
+            style={[
+                {
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    alignItems: 'center',
+                    flex: 1,
+                    backgroundColor: 'white'
+                }
+            ]}
+        >
+            <View>
+                <Image
+                    source={
+                        require('../../utils/photos/congratulation1.png')
+                    }
+                    style={{
+                        width: 120,
+                        height: 120
+                    }}
+                />
+            </View>
+            <Text>Congratulation, You just learnt  {flashcard.learnt_vocabulary_list.length} vocabulary today.</Text>
+
         </View>
     )
 }

@@ -76,7 +76,11 @@ export const getVocabularyDefinition = async (vocabulary_id) => {
 export const getTopicList = async () => {
     try {
         let url = `${api_flashcard_v1}/topic`
-        let fetchData = await fetch(url);
+        let fetchData = await fetch(url, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
 
         if (!fetchData.ok) {
             return {
@@ -87,7 +91,7 @@ export const getTopicList = async () => {
         }
 
         let dataRes = await fetchData.json();
-
+        console.log(dataRes);
         if (!dataRes.status) {
             return {
                 status: false,

@@ -7,7 +7,6 @@ import CommonIcons from '../../utils/CommonIcons';
 import Sound from 'react-native-sound';
 import { getVocabularyDefinition } from '../../utils/api_v1';
 import { _onPlaySound } from '../../utils/helper';
-import Voice from '@react-native-voice/voice';
 
 const D_WordDefinitionScreen = (props) => {
 
@@ -50,11 +49,7 @@ const D_WordDefinitionScreen = (props) => {
         // console.warn(sound_name);
         //    await  _onPlaySound(sound_name);
         try {
-            await Voice.start('en-US')
-
-            let x = Voice.onSpeechStart();
-
-            
+            console.warn(sound_name);
 
         } catch (error) {
             console.warn(error);

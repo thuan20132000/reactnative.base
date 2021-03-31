@@ -1,6 +1,6 @@
 {
-    "api_v1_url":"http://askme-it.com/dictionary/api/v1",
-    "file_url":"http://askme-it.com/media/audio",
-    "api_flashcard_v1":"http://askme-it.com/flashcard",
-    "url_absolute":"http://askme-it.com"
+    "api_v1_url":"http://54.251.133.13/dictionary/api/v1",
+    "file_url":"http://54.251.133.13/media/audio",
+    "api_flashcard_v1":"http://54.251.133.13/flashcard",
+    "url_absolute":"http://54.251.133.13"
 }
