@@ -189,6 +189,9 @@ const TabBottom = () => {
             <TabBottomNavigator.Screen
                 name="FlashCard"
                 component={FlashCardStack}
+                options={{
+                    title:"Học Từ Vựng"
+                }}
             />
             <TabBottomNavigator.Screen
                 name="TabDictionary"
@@ -234,6 +237,9 @@ const TabBottom = () => {
             <TabBottomNavigator.Screen
                 name="TabSetting"
                 component={SettingsScreen}
+                options={{
+                    title:"Thiết Lập"
+                }}
             />
         </TabBottomNavigator.Navigator>
     )

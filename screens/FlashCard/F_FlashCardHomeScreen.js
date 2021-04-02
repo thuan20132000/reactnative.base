@@ -4,7 +4,7 @@ import CardTopic from './components/CardTopic'
 import * as flashcardAction from '../../store/actions/flashcardActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTopicList, getTopicVocabulary } from '../../utils/api_v1';
-import { _onPlaySoundLocal } from '../../utils/helper';
+import { getLearntVocabularyByTopic, saveLearntVocabularyByTopic, _onPlaySoundLocal } from '../../utils/helper';
 
 const F_FlashCardHomeScreen = (props) => {
 
@@ -14,6 +14,7 @@ const F_FlashCardHomeScreen = (props) => {
     const [topicList, setTopicList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [localTopicVocabulary, setLocalTopicVocabulary] = useState([]);
 
 
     useEffect(() => {
@@ -45,30 +46,41 @@ const F_FlashCardHomeScreen = (props) => {
         _onFetchTopicList();
     }, [])
 
-
+    function getFields(input, field) {
+        var output = [];
+        for (var i=0; i < input.length ; ++i)
+            output.push(input[i][field]);
+        return output;
+    }
+    
 
     const _onSelectTopic = async (topic) => {
+        // setIsLoading(true);
 
-        setIsLoading(true);
+        // get learnt vocabulary from localstorage
+
+        // getLearntVocabularyByTopic(topic.slug)
+       
+        let res = await getLearntVocabularyByTopic(topic.slug);
         let fetchRes = await getTopicVocabulary(topic.id);
-
-
+        let fields_id = getFields(res,'ID');
+        let topic_vocabulary = fetchRes.data.filter((e) => !fields_id.includes(e.ID));
+        console.warn('final: ',topic_vocabulary.length);       
+        // console.log(fetchRes);
         setIsLoading(false);
         if (fetchRes.status && fetchRes.data?.length > 0) {
-            dispatch(flashcardAction.setTopicVocabularyList(fetchRes.data));
+            dispatch(flashcardAction.setTopicVocabularyList(fetchRes.data,topic_vocabulary,topic.slug));
             props.navigation.navigate('FlashCardChoice', {
                 topic: topic
             })
         }
 
-
-
-
     }
+
 
     return (
         <>
-          
+
 
             <ScrollView>
                 {
@@ -78,6 +90,7 @@ const F_FlashCardHomeScreen = (props) => {
                             onPress={() => _onSelectTopic(e)}
                             title={e.name}
                             image_path={e.image}
+                            topic_vocabulary_number={65}
                         />
 
                     )

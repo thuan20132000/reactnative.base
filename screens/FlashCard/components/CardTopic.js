@@ -3,12 +3,43 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CommonColor from '../../../utils/CommonColor'
 
 import CommonImages from '../../../utils/CommonImages'
-import {url_absolute} from '../../../config/api_config.json'
+import { url_absolute } from '../../../config/api_config.json'
+import { filterDuplicate, getLearntVocabularyByTopic } from '../../../utils/helper'
+import { useSelector } from 'react-redux';
+
 const CardTopic = ({
     onPress,
     title,
-    image_path
+    image_path,
+    topic_vocabulary_number
 }) => {
+
+    const flashcard = useSelector(state => state.flashcard);
+
+    const [learntVocabulary, setLearntVocabulary] = React.useState(0);
+
+    React.useEffect(() => {
+        let topic_name = title.toLowerCase();
+        getLearntVocabularyByTopic(topic_name).then(value => {
+
+            console.warn(value);
+            let set = new Set();
+
+
+            // console.warn('set: ',deduplicate)
+            if (value) {
+                setLearntVocabulary(value.length);
+                // value.forEach(element => {
+                //     set.add(element);
+                // });
+                filterDuplicate(value).then(value => setLearntVocabulary(value.length));
+            }
+
+            
+
+
+        });
+    }, [flashcard.learnt_vocabulary_list]);
     return (
         <TouchableOpacity
             style={[
@@ -17,9 +48,9 @@ const CardTopic = ({
             onPress={onPress}
         >
             <Image
-             
+
                 source={{
-                    uri: image_path?`${url_absolute}/${image_path}` : CommonImages.avatar
+                    uri: image_path ? `${url_absolute}/${image_path}` : CommonImages.avatar
                 }}
 
                 style={{
@@ -52,7 +83,7 @@ const CardTopic = ({
                         fontSize: 16,
                     }}
                 >
-                    0/75
+                    {learntVocabulary}/{topic_vocabulary_number}
                 </Text>
 
             </View>

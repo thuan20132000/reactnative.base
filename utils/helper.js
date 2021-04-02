@@ -2,6 +2,12 @@
 import { Alert } from 'react-native';
 import Sound from 'react-native-sound';
 import { file_url, url_absolute } from '../config/api_config.json';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
+
+
 
 export const _onPlaySound = async (sound_name) => {
     if (!sound_name) {
@@ -13,7 +19,7 @@ export const _onPlaySound = async (sound_name) => {
             return false
         }
         // play when loaded
-        sound.play( () => {
+        sound.play(() => {
             sound.release()
         });
 
@@ -56,7 +62,7 @@ export const _onPlaySoundLocal = async (sound_path) => {
         if (!sound_name) {
             return false;
         }
-      
+
         const sound = new Sound(sound_path, null, (error) => {
             if (error) {
                 return false
@@ -105,7 +111,7 @@ export const _onCheckItemExistInArray = (item, array = []) => {
 
     let isExists = false;
     for (let i = 0; i < array.length; i++) {
-        if (item.id == array[i].id) {
+        if (item.ID == array[i].ID) {
             isExists = true;
             break;
         }
@@ -158,4 +164,73 @@ export const _onSwapRandomArrayElement = (array = []) => {
     }
 
 
+}
+
+
+
+
+
+
+export const saveLearntVocabularyByTopic = async (topic, values) => {
+
+    try {
+
+        let vocabulary_list = await getLearntVocabularyByTopic(topic);
+        let new_learnt_vocabulary_list = [];
+        if (values && values.length > 0) {
+            new_learnt_vocabulary_list = vocabulary_list.concat(values);
+        }
+
+        const jsonValue = JSON.stringify(new_learnt_vocabulary_list);
+        await AsyncStorage.setItem(`@learnt_${topic}_vocabulary`, jsonValue);
+
+        return true;
+    } catch (e) {
+        // saving error
+        return false
+    }
+
+}
+
+
+
+
+export const getLearntVocabularyByTopic = async (topic) => {
+
+    try {
+        const jsonValue = await AsyncStorage.getItem(`@learnt_${topic}_vocabulary`);
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+        // error reading value
+        return false;
+    }
+
+}
+
+
+
+
+export const filterDuplicate = async (values = []) => {
+    try {
+        let newValues = [];
+        let mapValue = new Map();
+
+        for (let item of values) {
+            if (!mapValue.has(item.id)) {
+                mapValue.set(item.id, item);
+                newValues.push(item);
+            }
+        }
+        return newValues
+    } catch (error) {
+        console.warn(error)
+        return false;
+    }
+}
+
+
+
+
+export const removeDuplicateTwoArray = async (arr1 = [],arr2 = []) => {
+    return;
 }

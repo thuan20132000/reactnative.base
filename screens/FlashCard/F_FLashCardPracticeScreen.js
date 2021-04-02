@@ -76,7 +76,7 @@ const F_FLashCardPracticeScreen = (props) => {
         try {
             let choices = [];
             choices.push(selectedVocabulary);
-            let compareVocabulary = topicVocabulary.filter(e => e.id != selectedVocabulary.id);
+            let compareVocabulary = topicVocabulary.filter(e => e.ID != selectedVocabulary.ID);
 
             compareVocabulary.filter((e, index) => {
 
@@ -113,7 +113,7 @@ const F_FLashCardPracticeScreen = (props) => {
 
             setIsAwnsered(true);
 
-            if (selectedWord.id != practiceVocabulary.id) {
+            if (selectedWord.ID != practiceVocabulary.ID) {
 
                 setTimeout(() => {
                     var sound = new Sound('button_incorrect.mp3', Sound.MAIN_BUNDLE, (error) => {
@@ -311,9 +311,9 @@ const F_FLashCardPracticeScreen = (props) => {
                             key={index.toString()}
                             name={e.name}
                             onItemPress={() => _onSelectWord(e)}
-                            isActive={selectedWord && selectedWord.id == e.id ? true : false}
-                            isDisable={isAnwsered && practiceVocabulary?.id != e.id ? true : false}
-                            isHighlight={isAnwsered && practiceVocabulary?.id == e.id ? true : false}
+                            isActive={selectedWord && selectedWord.ID == e.ID ? true : false}
+                            isDisable={isAnwsered && practiceVocabulary?.ID != e.ID ? true : false}
+                            isHighlight={isAnwsered && practiceVocabulary?.ID == e.ID ? true : false}
 
                         />
 

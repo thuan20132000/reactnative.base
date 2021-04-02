@@ -1,9 +1,10 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View,TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
 import { useSelector } from 'react-redux';
 import Sound from 'react-native-sound';
 import CommonColor from '../../utils/CommonColor';
+import { getLearntVocabularyByTopic, saveLearntVocabularyByTopic } from '../../utils/helper';
 
 
 const F_FlashCardPracticeFinishScreen = (props) => {
@@ -20,24 +21,32 @@ const F_FlashCardPracticeFinishScreen = (props) => {
                 if (error) {
                     console.log('error: ', error);
                     sound.release()
-    
+
                 }
             });
             setTimeout(() => {
                 sound.play((success) => {
                     /* ... */
                     sound.release();
-    
+
                 });
             }, 100);
         }, 100);
-        
+
     }, []);
 
 
 
-    const _onBackHome = () => {
+    const _onBackHome = async () => {
+
+        console.warn(flashcard.topic);
+
+        // console.warn(flashcard.learnt_vocabulary_list);
+        let res = await saveLearntVocabularyByTopic(flashcard.topic, flashcard.learnt_vocabulary_list);
+        // let getRes = await getLearntVocabularyByTopic('education');
+        // console.warn('sas: ',getRes.length);
         props.navigation.goBack();
+
     }
 
     return (
@@ -66,29 +75,29 @@ const F_FlashCardPracticeFinishScreen = (props) => {
             </View>
             <Text
                 style={{
-                    fontSize:14,
-                    textAlign:'center',
-                    fontWeight:'700',
-                    padding:16
+                    fontSize: 14,
+                    textAlign: 'center',
+                    fontWeight: '700',
+                    padding: 16
                 }}
             >
-                Chúc mừng , bạn đã học thêm <Text style={{color:"red"}}>{flashcard.learnt_vocabulary_list.length} </Text> từ vựng hôm nay.
+                Chúc mừng , bạn đã học thêm <Text style={{ color: "red" }}>{flashcard.learnt_vocabulary_list.length} </Text> từ vựng hôm nay.
             </Text>
 
             <TouchableOpacity
                 style={{
-                    padding:12,
-                    backgroundColor:CommonColor.primary,
-                    paddingHorizontal:22,
-                    borderRadius:6
+                    padding: 12,
+                    backgroundColor: CommonColor.primary,
+                    paddingHorizontal: 22,
+                    borderRadius: 6
                 }}
                 onPress={_onBackHome}
             >
                 <Text
                     style={{
-                        fontSize:18,
-                        fontWeight:'700',
-                        color:'white'
+                        fontSize: 18,
+                        fontWeight: '700',
+                        color: 'white'
                     }}
                 >
                     Tiếp tục

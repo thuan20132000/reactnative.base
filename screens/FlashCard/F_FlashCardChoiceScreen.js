@@ -34,7 +34,6 @@ const F_FlashCardChoiceScreen = (props) => {
 
         // }, 1200);
         let path = `http://54.251.133.13${vocabulary.sound_us}`;
-        console.warn(path);
 
         setTimeout(() => {
             var sound = new Sound(path, '', (error) => {
@@ -81,7 +80,7 @@ const F_FlashCardChoiceScreen = (props) => {
 
         }, 100);
 
-
+        console.warn(vocabulary);
         dispatch(flashcardAction.addVocabulary(vocabulary));
         if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 4) {
             props.navigation.replace('FlashCardPractice');
@@ -102,19 +101,13 @@ const F_FlashCardChoiceScreen = (props) => {
         }
 
         if (flashcard.vocabulary_stack.length == 1 && flashcard.practice_vocabulary_list.length <= 0) {
-            console.warn('empty');
             props.navigation.goBack();
             return;
         }
         props.navigation.replace('FlashCardChoice');
         return;
 
-        // if (flashcard.vocabulary_stack.length < 1) {
-        //     props.navigation.goBack();
-        // }
-        // else {
-
-        // }
+  
     }
 
 
