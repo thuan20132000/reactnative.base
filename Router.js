@@ -15,6 +15,7 @@ import F_FLashCardPracticeScreen from './screens/FlashCard/F_FLashCardPracticeSc
 import F_FlashCardPracticeFinishScreen from './screens/FlashCard/F_FlashCardPracticeFinishScreen';
 import F_TopicVocabularyListScreen from './screens/FlashCard/F_TopicVocabularyListScreen';
 import F_VocabularyDefinitionScreen from './screens/FlashCard/F_VocabularyDefinitionScreen';
+import D_SearchHistoryScreen from './screens/Dictionary/D_SearchHistoryScreen';
 
 
 function HomeScreen() {
@@ -75,6 +76,10 @@ const DictionaryStack = () => {
             <DictionaryStackNavigator.Screen
                 name={"WordDefinition"}
                 component={D_WordDefinitionScreen}
+            />
+            <DictionaryStackNavigator.Screen
+                name={"SearchHistory"}
+                component={D_SearchHistoryScreen}
             />
         </DictionaryStackNavigator.Navigator>
     )
@@ -145,7 +150,7 @@ const FlashCardStack = () => {
             <FlashCardStackNavigator.Screen
                 name={"VocabularyDefinition"}
                 component={F_VocabularyDefinitionScreen}
-                
+
             />
 
         </FlashCardStackNavigator.Navigator>

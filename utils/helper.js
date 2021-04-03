@@ -177,7 +177,7 @@ export const saveLearntVocabularyByTopic = async (topic, values) => {
 
         let vocabulary_list = await getLearntVocabularyByTopic(topic);
         let new_learnt_vocabulary_list = [];
-        if(vocabulary_list == null){
+        if (vocabulary_list == null) {
             vocabulary_list = [];
         }
         if (values && values.length > 0) {
@@ -190,10 +190,58 @@ export const saveLearntVocabularyByTopic = async (topic, values) => {
         return true;
     } catch (e) {
         // saving error
-        console.warn('error: ',e);
+        console.warn('error: ', e);
         return false
     }
 
+}
+
+
+export const getSearchedvocabularyList = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem(`@favorite_vocabulary_list`);
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+        // error reading value
+        console.log('error: ', e);
+        return false;
+    }
+}
+
+export const saveSearchedVocabulary = async (vocabulary) => {
+    try {
+
+        let vocabulary_list = await getSearchedvocabularyList();
+
+        let new_favorite_vocabulary_list = [];
+        if (vocabulary_list === false) {
+            return false;
+        }
+        if (vocabulary_list === null) {
+            new_favorite_vocabulary_list.push(vocabulary)
+        } else {
+            let isExists = _onCheckItemExistInArray(vocabulary, vocabulary_list);
+
+            if (isExists) {
+                new_favorite_vocabulary_list = vocabulary_list.filter(e => e.ID != vocabulary.ID);
+            } else {
+                // new_favorite_vocabulary_list.push(vocabulary);
+                new_favorite_vocabulary_list =  [...vocabulary_list,vocabulary]
+                console.warn('vocaL: ',new_favorite_vocabulary_list);
+            }
+        }
+
+
+
+        const jsonValue = JSON.stringify(new_favorite_vocabulary_list);
+        await AsyncStorage.setItem(`@favorite_vocabulary_list`, jsonValue);
+
+        return true;
+    } catch (e) {
+        // saving error
+        console.warn('error: ', e);
+        return false
+    }
 }
 
 
@@ -235,6 +283,6 @@ export const filterDuplicate = async (values = []) => {
 
 
 
-export const removeDuplicateTwoArray = async (arr1 = [],arr2 = []) => {
+export const removeDuplicateTwoArray = async (arr1 = [], arr2 = []) => {
     return;
 }

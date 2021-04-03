@@ -36,6 +36,7 @@ const F_TopicVocabularyListScreen = (props) => {
 
 
     const _onPlaySound = (sound) => {
+        console.warn(sound);
         let path = `${url_absolute}${sound}`;
         setTimeout(() => {
             var sound = new Sound(path, '', (error) => {
@@ -70,6 +71,7 @@ const F_TopicVocabularyListScreen = (props) => {
                 (learntVocabularyList && learntVocabularyList.length > 0)
                 && learntVocabularyList.map((e, index) =>
                     <ItemVocabulary
+                        key={index.toString()}
                         name={e.name}
                         phon={e.phon_uk}
                         type={e.word_type}

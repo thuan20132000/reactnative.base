@@ -4,6 +4,7 @@ import CommonColor from '../../../utils/CommonColor'
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CommonIcons from '../../../utils/CommonIcons';
+import { IconButton } from 'react-native-paper';
 
 const SearchItem = ({
     label,
@@ -13,31 +14,27 @@ const SearchItem = ({
     value,
     valueStyle,
     onSoundUsPress,
-    onSoundUkPress
+    onSoundUkPress,
 
 }) => {
     return (
         <View
-            style={[{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}, containerStyle]}
+            style={[{ display: 'flex',borderRadius:6, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }, containerStyle]}
 
         >
             <TouchableOpacity
                 onPress={onItemPress}
                 style={[
                     {
-                        paddingVertical:12,
-                        width:'80%'
+                        paddingVertical: 12,
+                        width: '80%',
                     }
                 ]}
             >
                 <View
                     style={[{ display: 'flex', flexDirection: 'row', alignItems: 'center' }]}
                 >
-                    <MaterialCommunityIcon
-                        color={CommonColor.primary}
-                        size={16}
-                        name={CommonIcons.heartOutline}
-                    />
+
                     <Text
                         style={[styles.itemText, labelStyle]}
                     >
@@ -57,9 +54,9 @@ const SearchItem = ({
 
             <TouchableOpacity
                 style={{
-                    display:'flex',
-                    flexDirection:'column',
-                    marginRight:22
+                    display: 'flex',
+                    flexDirection: 'column',
+                    marginRight: 2
                 }}
                 onPress={onSoundUsPress}
             >
@@ -72,10 +69,17 @@ const SearchItem = ({
                         alignSelf: 'flex-end',
                         justifyContent: 'flex-end',
                     }}
-                   
+
                 />
-           
+
             </TouchableOpacity>
+            {/* <IconButton
+                color={CommonColor.primary}
+                size={26}
+                icon={CommonIcons.heartOutline}
+                onPress={_onFavoritePress}
+
+            /> */}
 
         </View>
     )

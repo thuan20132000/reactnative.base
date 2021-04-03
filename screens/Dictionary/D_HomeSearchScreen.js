@@ -8,16 +8,18 @@ import RowItem from './components/RowItem';
 import SearchItem from './components/SearchItem';
 import Sound from 'react-native-sound';
 
-import {_onPlaySound} from '../../utils/helper';
+import { url_absolute } from '../../config/api_config.json';
+import { saveSearchedVocabulary } from '../../utils/helper';
 
 const D_HomeSearchScreen = (props) => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const typingTimeoutRef = useRef(null);
     const [searchData, setSearchData] = useState(null);
 
-    const _onNavigateWordDefinition = (e) => {
-        props.navigation.navigate('WordDefinition',{
-            vocabulary:e
+    const _onNavigateWordDefinition = async (e) => {
+        await saveSearchedVocabulary(e);
+        props.navigation.navigate('WordDefinition', {
+            vocabulary: e
         })
     }
 
@@ -49,8 +51,31 @@ const D_HomeSearchScreen = (props) => {
 
     const _onPlayVocabularySound = async (sound_name) => {
         // console.warn(sound_name);
-       await  _onPlaySound(sound_name);
+        let path = `${url_absolute}${sound_name}`;
+        setTimeout(() => {
+            var sound = new Sound(path, '', (error) => {
+                /* ... */
+                if (error) {
+                    console.log('error: ', error);
+                    return;
+
+                }
+                sound.play((success) => console.log('play success'));
+            });
+
+            setTimeout(() => {
+                sound.release();
+            }, 4200);
+
+        }, 100);
     }
+
+
+
+    const _onNavigateToSearchHistory = () => {
+        props.navigation.navigate('SearchHistory');
+    }
+
 
     return (
         <View
@@ -62,8 +87,8 @@ const D_HomeSearchScreen = (props) => {
                     position: 'relative',
                     justifyContent: 'flex-start',
                     zIndex: 999,
-                    display:'flex',
-                    flex:1
+                    display: 'flex',
+                    flex: 1
 
                 }}
             >
@@ -100,11 +125,10 @@ const D_HomeSearchScreen = (props) => {
                                     color: 'black',
                                     fontWeight: '700'
                                 }}
-                                onItemPress={()=>_onNavigateWordDefinition(e)}
+                                onItemPress={() => _onNavigateWordDefinition(e)}
                                 value={e.word_type}
-                                onSoundUsPress={()=>_onPlayVocabularySound(e.sound_uk)}
-                                // onSoundUkPress={()=>_onPlayVocabularySound(e.sound_us)}
-
+                                onSoundUsPress={() => _onPlayVocabularySound(e.sound_us)}
+                            // onSoundUkPress={()=>_onPlayVocabularySound(e.sound_us)}
 
                             />
                         )
@@ -127,11 +151,11 @@ const D_HomeSearchScreen = (props) => {
                         display: 'flex',
                         position: 'relative',
                         // zIndex: -1,
-                        bottom:0,
-                        flexDirection:'row',
-                        justifyContent:'space-around',
-                        alignItems:'center',
-                        
+                        bottom: 0,
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        alignItems: 'center',
+
 
 
                     }}
@@ -142,7 +166,7 @@ const D_HomeSearchScreen = (props) => {
                             backgroundColor: CommonColor.primary,
                             paddingVertical: 18,
                             marginVertical: 6,
-                            width:'46%'
+                            width: '46%'
 
                         }}
                         leftIconSize={26}
@@ -159,7 +183,7 @@ const D_HomeSearchScreen = (props) => {
                             backgroundColor: CommonColor.primary,
                             paddingVertical: 18,
                             marginVertical: 6,
-                            width:'46%'
+                            width: '46%'
 
                         }}
                         leftIconSize={26}
@@ -168,6 +192,7 @@ const D_HomeSearchScreen = (props) => {
                             color: 'black',
                             fontWeight: '500'
                         }}
+                        onItemPress={_onNavigateToSearchHistory}
 
                     />
                 </View>
@@ -182,6 +207,6 @@ export default D_HomeSearchScreen
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        flex:1
+        flex: 1
     }
 })
