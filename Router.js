@@ -13,6 +13,8 @@ import F_FlashCardHomeScreen from './screens/FlashCard/F_FlashCardHomeScreen';
 import F_FlashCardChoiceScreen from './screens/FlashCard/F_FlashCardChoiceScreen';
 import F_FLashCardPracticeScreen from './screens/FlashCard/F_FLashCardPracticeScreen';
 import F_FlashCardPracticeFinishScreen from './screens/FlashCard/F_FlashCardPracticeFinishScreen';
+import F_TopicVocabularyListScreen from './screens/FlashCard/F_TopicVocabularyListScreen';
+import F_VocabularyDefinitionScreen from './screens/FlashCard/F_VocabularyDefinitionScreen';
 
 
 function HomeScreen() {
@@ -61,7 +63,7 @@ const DictionaryStack = () => {
 
     return (
         <DictionaryStackNavigator.Navigator
-     
+
         >
             <DictionaryStackNavigator.Screen
                 name={"HomeSearch"}
@@ -83,15 +85,32 @@ const DictionaryStack = () => {
 
 const FlashCardStackNavigator = createStackNavigator();
 const FlashCardStack = () => {
+
+    const config = {
+        animation: 'spring',
+        config: {
+            stiffness: 1000,
+            damping: 500,
+            mass: 3,
+            overshootClamping: true,
+            restDisplacementThreshold: 0.01,
+            restSpeedThreshold: 0.01,
+
+        },
+    };
+
+
     return (
         <FlashCardStackNavigator.Navigator
-           
+            screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS
+            }}
         >
             <FlashCardStackNavigator.Screen
                 name={"FlashCardHome"}
                 component={F_FlashCardHomeScreen}
                 options={{
-                    title:"Chọn chủ đề"
+                    title: "Chọn chủ đề"
                 }}
 
             />
@@ -99,22 +118,34 @@ const FlashCardStack = () => {
                 name={"FlashCardChoice"}
                 component={F_FlashCardChoiceScreen}
                 options={{
-                    title:"Chọn từ"
+                    title: "Chọn từ"
                 }}
             />
             <FlashCardStackNavigator.Screen
                 name={"FlashCardPractice"}
                 component={F_FLashCardPracticeScreen}
                 options={{
-                    title:"Luyện tập"
+                    title: "Luyện tập"
                 }}
             />
             <FlashCardStackNavigator.Screen
                 name={"FlashCardPracticeFinish"}
                 component={F_FlashCardPracticeFinishScreen}
                 options={{
-                    title:"Hoàn thành"
+                    title: "Hoàn thành"
                 }}
+            />
+            <FlashCardStackNavigator.Screen
+                name={"FlashCardTopicVocabulary"}
+                component={F_TopicVocabularyListScreen}
+                options={{
+                    title: "Từng vựng chủ đề"
+                }}
+            />
+            <FlashCardStackNavigator.Screen
+                name={"VocabularyDefinition"}
+                component={F_VocabularyDefinitionScreen}
+                
             />
 
         </FlashCardStackNavigator.Navigator>
@@ -190,7 +221,7 @@ const TabBottom = () => {
                 name="FlashCard"
                 component={FlashCardStack}
                 options={{
-                    title:"Học Từ Vựng"
+                    title: "Học Từ Vựng"
                 }}
             />
             <TabBottomNavigator.Screen
@@ -238,7 +269,7 @@ const TabBottom = () => {
                 name="TabSetting"
                 component={SettingsScreen}
                 options={{
-                    title:"Thiết Lập"
+                    title: "Thiết Lập"
                 }}
             />
         </TabBottomNavigator.Navigator>

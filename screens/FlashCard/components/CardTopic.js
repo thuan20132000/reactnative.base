@@ -6,40 +6,41 @@ import CommonImages from '../../../utils/CommonImages'
 import { url_absolute } from '../../../config/api_config.json'
 import { filterDuplicate, getLearntVocabularyByTopic } from '../../../utils/helper'
 import { useSelector } from 'react-redux';
+import { getTopicVocabulary } from '../../../utils/api_v1'
+import * as flashcardAction from '../../../store/actions/flashcardActions';
+
 
 const CardTopic = ({
     onPress,
-    title,
     image_path,
-    topic_vocabulary_number
+    topic_vocabulary_number,
+    topic
 }) => {
 
     const flashcard = useSelector(state => state.flashcard);
-
-    const [learntVocabulary, setLearntVocabulary] = React.useState(0);
+    const [learntVocabularyList, setLearntVocabularyList] = React.useState([]);
+    const [leaveVocabularyList,setLeaveVocabularyList] = React.useState(0);
+    
 
     React.useEffect(() => {
-        let topic_name = title.toLowerCase();
+        let topic_name = topic?.slug?.toLowerCase();
         getLearntVocabularyByTopic(topic_name).then(value => {
-
-            console.warn(value);
-            let set = new Set();
-
-
-            // console.warn('set: ',deduplicate)
             if (value) {
-                setLearntVocabulary(value.length);
-                // value.forEach(element => {
-                //     set.add(element);
-                // });
-                filterDuplicate(value).then(value => setLearntVocabulary(value.length));
+                // setLearntVocabulary(value.length);
+                // filterDuplicate(value).then(value => console.warn('filterd: ',value.length));
+                setLearntVocabularyList(value);
             }
-
-            
-
-
         });
+
+        getTopicVocabulary(topic?.id)
+            .then((data) => {
+
+            })
+
     }, [flashcard.learnt_vocabulary_list]);
+
+
+
     return (
         <TouchableOpacity
             style={[
@@ -75,7 +76,7 @@ const CardTopic = ({
                         color: 'dodgerblue'
                     }}
                 >
-                    {title}
+                    {topic?.name}
                 </Text>
                 <Text
                     style={{
@@ -83,7 +84,7 @@ const CardTopic = ({
                         fontSize: 16,
                     }}
                 >
-                    {learntVocabulary}/{topic_vocabulary_number}
+                    {learntVocabularyList.length}/{topic_vocabulary_number}
                 </Text>
 
             </View>

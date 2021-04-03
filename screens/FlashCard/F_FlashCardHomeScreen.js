@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native'
 import CardTopic from './components/CardTopic'
 import * as flashcardAction from '../../store/actions/flashcardActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,32 +48,51 @@ const F_FlashCardHomeScreen = (props) => {
 
     function getFields(input, field) {
         var output = [];
-        for (var i=0; i < input.length ; ++i)
+        for (var i = 0; i < input.length; ++i)
             output.push(input[i][field]);
         return output;
     }
-    
+
 
     const _onSelectTopic = async (topic) => {
-        // setIsLoading(true);
+        setIsLoading(true);
 
-        // get learnt vocabulary from localstorage
 
-        // getLearntVocabularyByTopic(topic.slug)
-       
-        let res = await getLearntVocabularyByTopic(topic.slug);
-        let fetchRes = await getTopicVocabulary(topic.id);
-        let fields_id = getFields(res,'ID');
-        let topic_vocabulary = fetchRes.data.filter((e) => !fields_id.includes(e.ID));
-        console.warn('final: ',topic_vocabulary.length);       
-        // console.log(fetchRes);
-        setIsLoading(false);
-        if (fetchRes.status && fetchRes.data?.length > 0) {
-            dispatch(flashcardAction.setTopicVocabularyList(fetchRes.data,topic_vocabulary,topic.slug));
-            props.navigation.navigate('FlashCardChoice', {
-                topic: topic
-            })
+        try {
+            // get learnt vocabulary from localstorage
+            let learnt_vocabulary_list = await getLearntVocabularyByTopic(topic.slug);
+
+
+            if (learnt_vocabulary_list?.length == topic.vocabulary_total) {
+                props.navigation.navigate('FlashCardTopicVocabulary', {
+                    topic: topic
+                })
+
+            } else {
+                let topic_vocabulary_all_list = await getTopicVocabulary(topic.id);
+                if (learnt_vocabulary_list == null) {
+                    learnt_vocabulary_list = [];
+                }
+                // get learnt vocabulary ID list
+                let fields_id = getFields(learnt_vocabulary_list, 'ID');
+
+                if (topic_vocabulary_all_list.status && topic_vocabulary_all_list.data?.length > 0) {
+                    let leave_vocabulary_list = topic_vocabulary_all_list.data.filter((e) => !fields_id.includes(e.ID));
+
+                    dispatch(flashcardAction.setTopicVocabularyList(topic_vocabulary_all_list.data, leave_vocabulary_list, topic.slug));
+                    props.navigation.navigate('FlashCardChoice', {
+                        topic: topic
+                    })
+                }
+
+            }
+
+        } catch (error) {
+            console.log('error: ', error);
         }
+
+
+        setIsLoading(false);
 
     }
 
@@ -88,9 +107,9 @@ const F_FlashCardHomeScreen = (props) => {
                     topicList.map((e, index) =>
                         <CardTopic key={index.toString()}
                             onPress={() => _onSelectTopic(e)}
-                            title={e.name}
                             image_path={e.image}
-                            topic_vocabulary_number={65}
+                            topic_vocabulary_number={e.vocabulary_total}
+                            topic={e}
                         />
 
                     )

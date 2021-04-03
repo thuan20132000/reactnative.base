@@ -177,6 +177,9 @@ export const saveLearntVocabularyByTopic = async (topic, values) => {
 
         let vocabulary_list = await getLearntVocabularyByTopic(topic);
         let new_learnt_vocabulary_list = [];
+        if(vocabulary_list == null){
+            vocabulary_list = [];
+        }
         if (values && values.length > 0) {
             new_learnt_vocabulary_list = vocabulary_list.concat(values);
         }
@@ -187,6 +190,7 @@ export const saveLearntVocabularyByTopic = async (topic, values) => {
         return true;
     } catch (e) {
         // saving error
+        console.warn('error: ',e);
         return false
     }
 
@@ -216,8 +220,8 @@ export const filterDuplicate = async (values = []) => {
         let mapValue = new Map();
 
         for (let item of values) {
-            if (!mapValue.has(item.id)) {
-                mapValue.set(item.id, item);
+            if (!mapValue.has(item.ID)) {
+                mapValue.set(item.ID, item);
                 newValues.push(item);
             }
         }

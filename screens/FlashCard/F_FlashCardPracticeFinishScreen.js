@@ -39,12 +39,13 @@ const F_FlashCardPracticeFinishScreen = (props) => {
 
     const _onBackHome = async () => {
 
-        console.warn(flashcard.topic);
 
-        // console.warn(flashcard.learnt_vocabulary_list);
         let res = await saveLearntVocabularyByTopic(flashcard.topic, flashcard.learnt_vocabulary_list);
-        // let getRes = await getLearntVocabularyByTopic('education');
-        // console.warn('sas: ',getRes.length);
+
+        if(!res){
+            console.warn('error: ',res);
+            return;
+        }
         props.navigation.goBack();
 
     }

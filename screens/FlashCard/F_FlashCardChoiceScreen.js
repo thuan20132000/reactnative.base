@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as flashcardAction from '../../store/actions/flashcardActions'
 import { _onPlayFlashCardSound, _onPlaySound } from '../../utils/helper'
 import Sound from 'react-native-sound'
-
+import {url_absolute} from '../../config/api_config.json'
 const F_FlashCardChoiceScreen = (props) => {
 
     const _refCardFlip = useRef();
@@ -33,7 +33,7 @@ const F_FlashCardChoiceScreen = (props) => {
         // setTimeout(() => {
 
         // }, 1200);
-        let path = `http://54.251.133.13${vocabulary.sound_us}`;
+        let path = `${url_absolute}${vocabulary.sound_us}`;
 
         setTimeout(() => {
             var sound = new Sound(path, '', (error) => {
@@ -57,10 +57,6 @@ const F_FlashCardChoiceScreen = (props) => {
     }
 
     const _onSelectVocabulary = async () => {
-        // console.warn(temp_vocabulary);
-        // const random = Math.floor(Math.random() * flashcard.vocabulary_list.length);
-        // console.warn(temp_vocabulary[random]);
-        // console.warn('practice: ', flashcard.practice_vocabulary_list.length);
         setTimeout(() => {
             var sound = new Sound('button_correct.mp3', Sound.MAIN_BUNDLE, (error) => {
                 /* ... */
@@ -80,7 +76,6 @@ const F_FlashCardChoiceScreen = (props) => {
 
         }, 100);
 
-        console.warn(vocabulary);
         dispatch(flashcardAction.addVocabulary(vocabulary));
         if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 4) {
             props.navigation.replace('FlashCardPractice');
