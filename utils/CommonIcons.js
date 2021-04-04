@@ -49,5 +49,6 @@ export default {
     volumnHigh:'volume-high',
     rotateCircle:'rotate-3d-variant',
     recordCircle:'record-circle',
+    shareVariant:'share-variant'
 
 }

@@ -16,30 +16,15 @@ import F_FlashCardPracticeFinishScreen from './screens/FlashCard/F_FlashCardPrac
 import F_TopicVocabularyListScreen from './screens/FlashCard/F_TopicVocabularyListScreen';
 import F_VocabularyDefinitionScreen from './screens/FlashCard/F_VocabularyDefinitionScreen';
 import D_SearchHistoryScreen from './screens/Dictionary/D_SearchHistoryScreen';
+import S_SettingHomeSceen from './screens/Settings/S_SettingHomeSceen';
+import S_VocabularyRemindScreen from './screens/Settings/S_VocabularyRemindScreen';
+import S_ContributionScreen from './screens/Settings/S_ContributionScreen';
 
 
 function HomeScreen() {
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>Home!</Text>
-        </View>
-    );
-}
-
-function SettingsScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Settings!</Text>
-        </View>
-    );
-}
-
-
-
-function AccountScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Account!</Text>
         </View>
     );
 }
@@ -74,7 +59,7 @@ const DictionaryStack = () => {
                 }}
             />
             <DictionaryStackNavigator.Screen
-                name={"WordDefinition"}
+                name={"VocabularyDefinition"}
                 component={D_WordDefinitionScreen}
             />
             <DictionaryStackNavigator.Screen
@@ -84,6 +69,7 @@ const DictionaryStack = () => {
         </DictionaryStackNavigator.Navigator>
     )
 }
+
 
 
 
@@ -157,6 +143,41 @@ const FlashCardStack = () => {
     )
 }
 
+
+
+
+
+const SettingStackNavigator = createStackNavigator();
+const SettingStack = () => {
+    return (
+        <SettingStackNavigator.Navigator
+            screenOptions={{
+                title: "Thiết lập"
+            }}
+        >
+            <SettingStackNavigator.Screen
+                name={"SettingHome"}
+                component={S_SettingHomeSceen}
+            />
+            <SettingStackNavigator.Screen
+                name={"VocabularyRemind"}
+                component={S_VocabularyRemindScreen}
+            />
+            <SettingStackNavigator.Screen
+                name={"SearchHistory"}
+                component={D_SearchHistoryScreen}
+            />
+            <SettingStackNavigator.Screen
+                name={"Contribution"}
+                component={S_ContributionScreen}
+            />
+            <SettingStackNavigator.Screen
+                name={"VocabularyDefinition"}
+                component={D_WordDefinitionScreen}
+            />
+        </SettingStackNavigator.Navigator>
+    )
+}
 
 
 
@@ -272,7 +293,7 @@ const TabBottom = () => {
             />
             <TabBottomNavigator.Screen
                 name="TabSetting"
-                component={SettingsScreen}
+                component={SettingStack}
                 options={{
                     title: "Thiết Lập"
                 }}

@@ -37,6 +37,7 @@ const F_FlashCardHomeScreen = (props) => {
         const _onFetchTopicList = async () => {
             setIsLoading(true);
             let fetchRes = await getTopicList();
+            console.warn(fetchRes);
             if (fetchRes.status) {
                 console.log(fetchRes);
                 setTopicList(fetchRes.data);

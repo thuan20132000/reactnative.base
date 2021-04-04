@@ -18,7 +18,7 @@ const D_HomeSearchScreen = (props) => {
 
     const _onNavigateWordDefinition = async (e) => {
         await saveSearchedVocabulary(e);
-        props.navigation.navigate('WordDefinition', {
+        props.navigation.navigate('VocabularyDefinition', {
             vocabulary: e
         })
     }
@@ -104,7 +104,7 @@ const D_HomeSearchScreen = (props) => {
                 />
 
                 <ScrollView
-
+                    keyboardShouldPersistTaps={'handled'}
                 >
 
                     {
@@ -151,50 +151,47 @@ const D_HomeSearchScreen = (props) => {
                         display: 'flex',
                         position: 'relative',
                         // zIndex: -1,
-                        bottom: 0,
+                        bottom: 20,
                         flexDirection: 'row',
-                        justifyContent: 'space-around',
-                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        padding:12,
+                        minHeight: 240,
+                        backgroundColor: 'white',
+                        shadowColor: "#000",
+                        shadowOffset: {
+                            width: 0,
+                            height: 5,
+                        },
+                        shadowOpacity: 0.36,
+                        shadowRadius: 6.68,
+
+                        elevation: 11,
+                        marginVertical: 12,
+                        borderRadius:8
+
 
 
 
                     }}
                 >
-                    <RowItem
-                        label={"Từ thông dụng"}
-                        containerStyle={{
-                            backgroundColor: CommonColor.primary,
-                            paddingVertical: 18,
-                            marginVertical: 6,
-                            width: '46%'
-
-                        }}
-                        leftIconSize={26}
-                        leftIconStyle={{ color: CommonColor.secondary }}
-                        labelStyle={{
-                            color: 'black',
-                            fontWeight: '500'
-                        }}
-
-                    />
-                    <RowItem
-                        label={"Từ đã tra"}
-                        containerStyle={{
-                            backgroundColor: CommonColor.primary,
-                            paddingVertical: 18,
-                            marginVertical: 6,
-                            width: '46%'
-
-                        }}
-                        leftIconSize={26}
-                        leftIconStyle={{ color: CommonColor.secondary }}
-                        labelStyle={{
-                            color: 'black',
-                            fontWeight: '500'
-                        }}
-                        onItemPress={_onNavigateToSearchHistory}
-
-                    />
+                    <View>
+                        <Text
+                            style={{
+                                fontSize:16,
+                                fontWeight:'700'
+                            }}
+                        >
+                            Thì hiện tại đơn
+                        </Text>
+                        <Text
+                            style={{
+                                marginHorizontal:12
+                            }}
+                        >
+                           Khẳng định: S + V(s/es) + O
+                        </Text>
+                        <Text>Ex: He walks every day. (Anh ấy đi bộ mỗi ngày.)</Text>
+                    </View>
                 </View>
             }
 

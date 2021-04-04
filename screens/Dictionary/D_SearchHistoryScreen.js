@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { getSearchedvocabularyList } from '../../utils/helper'
 import SearchItem from './components/SearchItem';
 import Sound from 'react-native-sound';
-
+import {url_absolute} from '../../config/api_config.json';
 const D_SearchHistoryScreen = (props) => {
 
     const [searchVocabularyList, setSearchVocabularyList] = React.useState([]);
@@ -11,7 +11,11 @@ const D_SearchHistoryScreen = (props) => {
     React.useEffect(() => {
 
         getSearchedvocabularyList()
-            .then((data) => setSearchVocabularyList(data));
+            .then((data) => {
+                if(data && data.length>0){
+                    setSearchVocabularyList(data)
+                }
+            });
 
         return () => {
         }
@@ -21,8 +25,9 @@ const D_SearchHistoryScreen = (props) => {
 
 
     const _onPlayVocabularySound = async (sound_name) => {
-        // console.warn(sound_name);
         let path = `${url_absolute}${sound_name}`;
+        console.warn(path);
+
         setTimeout(() => {
             var sound = new Sound(path, '', (error) => {
                 /* ... */
@@ -42,7 +47,7 @@ const D_SearchHistoryScreen = (props) => {
     }
 
     const _onNavigateWordDefinition = async (e) => {
-        props.navigation.navigate('WordDefinition', {
+        props.navigation.navigate('VocabularyDefinition', {
             vocabulary: e
         })
     }

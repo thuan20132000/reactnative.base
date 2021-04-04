@@ -199,7 +199,7 @@ export const saveLearntVocabularyByTopic = async (topic, values) => {
 
 export const getSearchedvocabularyList = async () => {
     try {
-        const jsonValue = await AsyncStorage.getItem(`@favorite_vocabulary_list`);
+        const jsonValue = await AsyncStorage.getItem(`@searched_vocabulary_list`);
         return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
         // error reading value
@@ -233,7 +233,7 @@ export const saveSearchedVocabulary = async (vocabulary) => {
 
 
         const jsonValue = JSON.stringify(new_favorite_vocabulary_list);
-        await AsyncStorage.setItem(`@favorite_vocabulary_list`, jsonValue);
+        await AsyncStorage.setItem(`@searched_vocabulary_list`, jsonValue);
 
         return true;
     } catch (e) {

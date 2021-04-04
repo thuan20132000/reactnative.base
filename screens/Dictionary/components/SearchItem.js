@@ -27,6 +27,7 @@ const SearchItem = ({
                     justifyContent: 'space-between', 
                     alignItems: 'center',
                     paddingRight:6,
+                    zIndex:999,
                 }, containerStyle]}
 
         >
