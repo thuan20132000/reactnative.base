@@ -110,7 +110,10 @@ const styles = StyleSheet.create({
         height: 90,
         display: 'flex',
         flexDirection: 'row',
-        marginVertical: 4
+        marginVertical: 2,
+        paddingVertical:6,
+        paddingHorizontal:6,
+        borderRadius:6
 
     },
     row: {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Alert, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import CardTopic from './components/CardTopic'
 import * as flashcardAction from '../../store/actions/flashcardActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +13,7 @@ const F_FlashCardHomeScreen = (props) => {
     const flashcard = useSelector(state => state.flashcard);
     const [topicList, setTopicList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const [localTopicVocabulary, setLocalTopicVocabulary] = useState([]);
 
@@ -37,7 +38,6 @@ const F_FlashCardHomeScreen = (props) => {
         const _onFetchTopicList = async () => {
             setIsLoading(true);
             let fetchRes = await getTopicList();
-            console.warn(fetchRes);
             if (fetchRes.status) {
                 console.log(fetchRes);
                 setTopicList(fetchRes.data);
@@ -98,28 +98,48 @@ const F_FlashCardHomeScreen = (props) => {
     }
 
 
-    return (
-        <>
-
-
-            <ScrollView>
-                {
-                    topicList.length > 0 &&
-                    topicList.map((e, index) =>
-                        <CardTopic key={index.toString()}
-                            onPress={() => _onSelectTopic(e)}
-                            image_path={e.image}
-                            topic_vocabulary_number={e.vocabulary_total}
-                            topic={e}
-                        />
-
-                    )
+    const _onRefresh = () => {
+        setIsRefreshing(true);
+        setTimeout(() => {
+            getTopicList().then((data) => {
+                if (data.status) {
+                    setTopicList(data.data)
                 }
+            })
+            setIsRefreshing(false)
+        }, 1200);
+    }
 
 
 
-            </ScrollView>
-        </>
+    return (
+
+
+        <ScrollView
+            refreshControl={
+                <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={_onRefresh}
+                />
+            }
+
+        >
+            {
+                topicList.length > 0 &&
+                topicList.map((e, index) =>
+                    <CardTopic key={index.toString()}
+                        onPress={() => _onSelectTopic(e)}
+                        image_path={e.image}
+                        topic_vocabulary_number={e.vocabulary_total}
+                        topic={e}
+                    />
+
+                )
+            }
+
+
+
+        </ScrollView>
     )
 }
 

@@ -76,14 +76,24 @@ const D_HomeSearchScreen = (props) => {
 
 
     React.useEffect(() => {
-        getNearestSearchVocabulary()
-            .then((data) => {
-                if (data) {
-                    setNearestVocabulary(data);
-                    console.warn(data);
-                }
-            })
-    }, [])
+
+
+
+
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            getNearestSearchVocabulary()
+                .then((data) => {
+                    if (data) {
+                        setNearestVocabulary(data);
+                    }
+                });
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+
+
+    }, [props.navigation]);
 
 
     return (
@@ -197,7 +207,7 @@ const D_HomeSearchScreen = (props) => {
                                     right: 0,
                                 }}
                             />
-                           
+
                             <Text
                                 style={{
                                     color: 'grey',
@@ -217,17 +227,17 @@ const D_HomeSearchScreen = (props) => {
                             </Text>
                             <View
                                 style={{
-                                    display:'flex',
-                                    flexDirection:'column',
-                                    justifyContent:'center',
-                                    alignItems:'center'
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
                                 }}
                             >
                                 <IconButton
                                     color={CommonColor.btnSubmit}
                                     icon={CommonIcons.volumnHigh}
                                     style={{
-                                        width:60
+                                        width: 60
                                     }}
                                     size={32}
                                     onPress={() => _onPlayVocabularySound(nearestVocabulary.sound_us)}

@@ -226,7 +226,7 @@ export const saveSearchedVocabulary = async (vocabulary) => {
                 new_favorite_vocabulary_list = vocabulary_list.filter(e => e.ID != vocabulary.ID);
             } else {
                 // new_favorite_vocabulary_list.push(vocabulary);
-                new_favorite_vocabulary_list =  [...vocabulary_list,vocabulary]
+                new_favorite_vocabulary_list = [...vocabulary_list, vocabulary]
             }
         }
 
@@ -282,6 +282,63 @@ export const getLearntVocabularyByTopic = async (topic) => {
         return false;
     }
 
+}
+
+
+
+
+
+
+export const getLastActiveDate = async () => {
+    try {
+        let today = new Date();
+
+        const jsonValue = await AsyncStorage.getItem(`@lastaction_datetime`);
+        return jsonValue != null ? JSON.parse(jsonValue) : today;
+    } catch (error) {
+        console.log('error: ', error);
+        return false;
+    }
+}
+
+
+
+export const getActionDays = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem(`@action_days`);
+        return jsonValue != null ? JSON.parse(jsonValue) : 1;
+    } catch (error) {
+        console.log('error: ', error);
+        return false;
+    }
+}
+
+
+
+export const saveDateActions = async () => {
+    try {
+        let today = new Date();
+
+        let lastdate_active = await getLastActiveDate();
+        if (lastdate_active) {
+            let lastdate = new Date(lastdate_active);
+            let daytime = 60 * 60 * 24 * 1000;
+            if ((today - lastdate) > daytime) {
+                const jsonValue = JSON.stringify(0);
+                await AsyncStorage.setItem(`@action_days`, jsonValue);
+            } else {
+                let action_days = await getActionDays();
+                await AsyncStorage.setItem(`action_days`, action_days + 1);
+            }
+
+        }
+        await AsyncStorage.setItem(`lastaction_datetime`, today);
+        return true;
+
+    } catch (error) {
+        console.log('error: ', error);
+        return false;
+    }
 }
 
 

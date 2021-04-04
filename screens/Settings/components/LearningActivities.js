@@ -1,13 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonColor from '../../../utils/CommonColor'
 import CommonIcons from '../../../utils/CommonIcons'
+import { getActionDays } from '../../../utils/helper'
 const LearningActivities = () => {
 
+    const [actionDays, setActionsDays] = useState(0);
 
     useEffect(() => {
-
+        getActionDays()
+            .then((data) => {
+                if (data) {
+                    setActionsDays(data);
+                }
+            });
     }, [])
 
     return (
@@ -17,7 +24,7 @@ const LearningActivities = () => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginVertical:8
+                marginVertical: 8
             }}
         >
             <Text
@@ -60,17 +67,17 @@ const LearningActivities = () => {
                         fontSize: 18
                     }}
                 >
-                    3 ngày
+                    {actionDays} ngày
                 </Text>
             </View>
 
 
             <View
                 style={{
-                    backgroundColor:'white',
-                    padding:4,
-                    borderRadius:12,
-                    marginVertical:6
+                    backgroundColor: 'white',
+                    padding: 4,
+                    borderRadius: 12,
+                    marginVertical: 6
                 }}
             >
                 <Text
@@ -78,8 +85,8 @@ const LearningActivities = () => {
                         textAlign: 'center',
                         fontSize: 14,
                         color: "grey",
-                        color:'coral',
-                        fontWeight:'700'
+                        color: 'coral',
+                        fontWeight: '700'
                     }}
                 >
                     Knows your limits, but never stop trying to exceed them.
@@ -93,7 +100,7 @@ const LearningActivities = () => {
                 >
                     Biết giới hạn của bản thân, nhưng đừng bao giờ ngừng cố gắng để mở rộng nó.
                 </Text>
-                
+
             </View>
         </View>
     )

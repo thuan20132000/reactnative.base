@@ -39,7 +39,7 @@ const F_FlashCardPracticeFinishScreen = (props) => {
 
     const _onBackHome = async () => {
 
-
+        
         let res = await saveLearntVocabularyByTopic(flashcard.topic, flashcard.learnt_vocabulary_list);
 
         if(!res){
