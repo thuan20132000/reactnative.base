@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { getSearchedvocabularyList } from '../../utils/helper'
 import SearchItem from './components/SearchItem';
 import Sound from 'react-native-sound';
@@ -49,7 +49,7 @@ const D_SearchHistoryScreen = (props) => {
 
 
     return (
-        <View>
+        <ScrollView>
             {
                 searchVocabularyList.length > 0
                 && searchVocabularyList.map((e, index) =>
@@ -76,7 +76,7 @@ const D_SearchHistoryScreen = (props) => {
                     />
                 )
             }
-        </View>
+        </ScrollView>
     )
 }
 

@@ -19,7 +19,15 @@ const SearchItem = ({
 }) => {
     return (
         <View
-            style={[{ display: 'flex',borderRadius:6, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }, containerStyle]}
+            style={[
+                { 
+                    display: 'flex',
+                    borderRadius:6, 
+                    flexDirection: 'row', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center',
+                    paddingRight:6,
+                }, containerStyle]}
 
         >
             <TouchableOpacity

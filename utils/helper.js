@@ -227,7 +227,6 @@ export const saveSearchedVocabulary = async (vocabulary) => {
             } else {
                 // new_favorite_vocabulary_list.push(vocabulary);
                 new_favorite_vocabulary_list =  [...vocabulary_list,vocabulary]
-                console.warn('vocaL: ',new_favorite_vocabulary_list);
             }
         }
 
