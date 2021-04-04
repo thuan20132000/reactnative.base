@@ -73,7 +73,7 @@ const S_SettingHomeSceen = (props) => {
 
             />
             <RowItem
-                label={"Đánh giá ứng dụng trên Google Play"}
+                label={"Đánh giá ủng hộ ứng dụng trên Google Play"}
                 leftIconName={CommonIcons.bookMarker}
                 leftIconStyle={{
                     color: 'coral'

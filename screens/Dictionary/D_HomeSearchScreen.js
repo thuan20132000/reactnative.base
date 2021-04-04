@@ -1,20 +1,24 @@
 import React, { useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Searchbar } from 'react-native-paper'
+import { Searchbar, IconButton } from 'react-native-paper'
 import { searchVocabulary } from '../../utils/api_v1';
 import CommonColor from '../../utils/CommonColor';
 import CommonIcons from '../../utils/CommonIcons';
-import RowItem from './components/RowItem';
 import SearchItem from './components/SearchItem';
 import Sound from 'react-native-sound';
 
 import { url_absolute } from '../../config/api_config.json';
-import { saveSearchedVocabulary } from '../../utils/helper';
+import { getNearestSearchVocabulary, saveSearchedVocabulary } from '../../utils/helper';
+import CardDefinition from './components/CardDefinition';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const D_HomeSearchScreen = (props) => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const typingTimeoutRef = useRef(null);
     const [searchData, setSearchData] = useState(null);
+    const _refCardFlip = useRef();
+
+    const [nearestVocabulary, setNearestVocabulary] = useState();
 
     const _onNavigateWordDefinition = async (e) => {
         await saveSearchedVocabulary(e);
@@ -71,10 +75,15 @@ const D_HomeSearchScreen = (props) => {
     }
 
 
-
-    const _onNavigateToSearchHistory = () => {
-        props.navigation.navigate('SearchHistory');
-    }
+    React.useEffect(() => {
+        getNearestSearchVocabulary()
+            .then((data) => {
+                if (data) {
+                    setNearestVocabulary(data);
+                    console.warn(data);
+                }
+            })
+    }, [])
 
 
     return (
@@ -145,54 +154,97 @@ const D_HomeSearchScreen = (props) => {
             {/* Body Control */}
             {
                 (!searchData) &&
-                <View
-                    style={{
-                        marginHorizontal: 8,
-                        display: 'flex',
-                        position: 'relative',
-                        // zIndex: -1,
-                        bottom: 20,
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        padding:12,
-                        minHeight: 240,
-                        backgroundColor: 'white',
-                        shadowColor: "#000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 5,
-                        },
-                        shadowOpacity: 0.36,
-                        shadowRadius: 6.68,
 
-                        elevation: 11,
-                        marginVertical: 12,
-                        borderRadius:8
+                <>
+                    <CardDefinition
+                        containerStyle={{
+                            height: 220,
+                            marginHorizontal: 8,
+                            display: 'flex',
+                            position: 'relative',
+                            // zIndex: -1,
+                            bottom: 120,
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            padding: 12,
+                            minHeight: 240,
+                            backgroundColor: 'white',
+                            shadowColor: CommonColor.btnSubmit,
+                            shadowOffset: {
+                                width: 0,
+                                height: 5,
+                            },
+                            shadowOpacity: 0.36,
+                            shadowRadius: 6.68,
+
+                            elevation: 11,
+                            marginVertical: 12,
+                            borderRadius: 8,
+                        }}
+                    // word_type={nearestVocabulary?.word_type}
+                    // firstDefinition={`- ${nearestVocabulary?.definition} `}
 
 
+                    >
+
+                        <View>
+                            <MaterialCommunityIcon
+                                name={CommonIcons.bell}
+                                color={'gold'}
+                                size={22}
+                                style={{
+                                    position: 'absolute',
+                                    right: 0,
+                                }}
+                            />
+                           
+                            <Text
+                                style={{
+                                    color: 'grey',
+                                    fontStyle: 'italic',
+                                    marginBottom: 6
+                                }}
+                            >
+                                {nearestVocabulary?.definitions[0]?.title || ""}
+                            </Text>
+                            <Text
+                                style={{
+                                    fontSize: 18,
+                                    color: 'coral'
+                                }}
+                            >
+                                {nearestVocabulary?.definitions[0]?.example[0] || ""}
+                            </Text>
+                            <View
+                                style={{
+                                    display:'flex',
+                                    flexDirection:'column',
+                                    justifyContent:'center',
+                                    alignItems:'center'
+                                }}
+                            >
+                                <IconButton
+                                    color={CommonColor.btnSubmit}
+                                    icon={CommonIcons.volumnHigh}
+                                    style={{
+                                        width:60
+                                    }}
+                                    size={32}
+                                    onPress={() => _onPlayVocabularySound(nearestVocabulary.sound_us)}
+
+                                />
+                                <Text style={{ fontSize: 22, fontWeight: '700', color: 'red' }} >{nearestVocabulary?.name}</Text>
+                                <Text style={{ color: 'coral' }} >({nearestVocabulary?.word_type})</Text>
+                                <Text>{nearestVocabulary?.phon_us}</Text>
 
 
-                    }}
-                >
-                    <View>
-                        <Text
-                            style={{
-                                fontSize:16,
-                                fontWeight:'700'
-                            }}
-                        >
-                            Thì hiện tại đơn
-                        </Text>
-                        <Text
-                            style={{
-                                marginHorizontal:12
-                            }}
-                        >
-                           Khẳng định: S + V(s/es) + O
-                        </Text>
-                        <Text>Ex: He walks every day. (Anh ấy đi bộ mỗi ngày.)</Text>
-                    </View>
-                </View>
+                            </View>
+
+                        </View>
+
+                    </CardDefinition>
+                </>
+
             }
 
         </View>

@@ -246,6 +246,32 @@ export const saveSearchedVocabulary = async (vocabulary) => {
 
 
 
+export const saveNearestSearchVocabulary = async (vocabulary) => {
+    try {
+        const jsonValue = JSON.stringify(vocabulary);
+        await AsyncStorage.setItem(`@nearest_search_vocabulary`, jsonValue);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+
+
+export const getNearestSearchVocabulary = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem(`@nearest_search_vocabulary`);
+        return jsonValue != null ? JSON.parse(jsonValue) : false;
+    } catch (e) {
+        // error reading value
+        return false;
+    }
+
+}
+
+
+
+
 export const getLearntVocabularyByTopic = async (topic) => {
 
     try {

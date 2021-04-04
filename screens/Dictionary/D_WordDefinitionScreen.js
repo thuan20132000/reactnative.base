@@ -7,6 +7,7 @@ import CommonIcons from '../../utils/CommonIcons';
 import Sound from 'react-native-sound';
 import { getVocabularyDefinition } from '../../utils/api_v1';
 import {url_absolute} from '../../config/api_config.json';
+import { saveNearestSearchVocabulary } from '../../utils/helper';
 
 const D_WordDefinitionScreen = (props) => {
 
@@ -27,6 +28,7 @@ const D_WordDefinitionScreen = (props) => {
     const _onGetVocabularyDefinitions = async () => {
         setIsLoading(true);
         let vocabularyData = await getVocabularyDefinition(vocabulary.ID);
+        await saveNearestSearchVocabulary(vocabularyData.data);
         setVocabularyData({
             ...vocabularyData,
             name: vocabularyData.data?.name,
