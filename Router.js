@@ -23,6 +23,7 @@ import S_VocabularyRemindScreen from './screens/Settings/S_VocabularyRemindScree
 import S_ContributionScreen from './screens/Settings/S_ContributionScreen';
 import N_NotificationHomeScreen from './screens/Notification/N_NotificationHomeScreen';
 import C_CommunityHomeScreen from './screens/Community/C_CommunityHomeScreen';
+import C_CommunityPostDetailScreen from './screens/Community/C_CommunityPostDetailScreen';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -207,6 +208,10 @@ const CommunityStack = () => {
             <CommunityStackNavigator.Screen
                 name="CommunityHome"
                 component={C_CommunityHomeScreen}
+            />
+              <CommunityStackNavigator.Screen
+                name="CommunityPostDetail"
+                component={C_CommunityPostDetailScreen}
             />
         </CommunityStackNavigator.Navigator>
     )

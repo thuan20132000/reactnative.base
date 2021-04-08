@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { PermissionsAndroid, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { PermissionsAndroid, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
+import { FAB } from 'react-native-paper';
+import PostCard from './components/card/PostCard';
 
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
-const C_CommunityHomeScreen = () => {
+const C_CommunityHomeScreen = (props) => {
 
     const [audioPath, setAudioPath] = useState('');
 
@@ -17,7 +19,7 @@ const C_CommunityHomeScreen = () => {
         // wavFile: 'test.wav' // default 'audio.wav'
     };
 
-    const [audioRecorderPlayerEvent,setAudioRecorderPlayerEvent] = useState();
+    const [audioRecorderPlayerEvent, setAudioRecorderPlayerEvent] = useState();
 
     const path = Platform.select({
         android: 'sdcard/askmeit_dictionary/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
@@ -30,7 +32,7 @@ const C_CommunityHomeScreen = () => {
 
 
     const onStartRecord = async () => {
-
+        console.warn('ds')
 
         try {
             if (Platform.OS === 'android') {
@@ -75,7 +77,7 @@ const C_CommunityHomeScreen = () => {
     const onStopRecord = async () => {
         try {
             let a = await audioRecorderPlayer.stopRecorder();
-            console.warn('remove: ',a);
+            console.warn('remove: ', a);
             audioRecorderPlayer.removeRecordBackListener();
 
         } catch (error) {
@@ -99,17 +101,17 @@ const C_CommunityHomeScreen = () => {
             await audioRecorderPlayer.setVolume(1.0);
             audioRecorderPlayer.addPlayBackListener((e) => {
                 // console.log(e.current_position);
-                console.log(e.duration);
+                console.log('playing...', e.current_position);
 
                 if (e.current_position === e.duration) {
 
                     audioRecorderPlayer.stopPlayer()
-                    .then(()=>{
-                        console.log('stopped play')
-                        audioRecorderPlayer.removePlayBackListener();
-                    })
-                    .catch((err) => console.log('error: ',err))
-                    .finally(() => console.log('finished'))
+                        .then(() => {
+                            console.log('stopped play')
+                            audioRecorderPlayer.removePlayBackListener();
+                        })
+                        .catch((err) => console.log('error: ', err))
+                        .finally(() => console.log('finished'))
                     // audioRecorderPlayer.removePlayBackListener()
                     // return;
                 }
@@ -126,11 +128,14 @@ const C_CommunityHomeScreen = () => {
 
 
 
+    const _onPostDetailPress = (post) => {
+        props.navigation.navigate('CommunityPostDetail');
+    }
 
     return (
-        <View>
-            <Text>Community Home</Text>
-            <TouchableOpacity
+        <>
+            <ScrollView>
+                {/* <TouchableOpacity
                 style={{
                     backgroundColor: 'coral',
                     padding: 12
@@ -173,8 +178,22 @@ const C_CommunityHomeScreen = () => {
                 >
                     <Text>On Stop Play</Text>
                 </TouchableOpacity>
-            </View>
-        </View>
+            </View> */}
+                <PostCard
+                    onPostDetailPress={_onPostDetailPress}
+                />
+                <PostCard />
+                <PostCard />
+
+
+            </ScrollView>
+            <FAB
+                style={styles.fab}
+                small
+                icon="plus"
+                onPress={() => console.log('Pressed')}
+            />
+        </>
     )
 }
 
@@ -186,5 +205,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'coral',
         padding: 6,
         margin: 6
-    }
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 14,
+    },
+
 })
