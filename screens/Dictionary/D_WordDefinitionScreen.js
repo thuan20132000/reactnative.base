@@ -28,7 +28,9 @@ const D_WordDefinitionScreen = (props) => {
     const _onGetVocabularyDefinitions = async () => {
         setIsLoading(true);
         let vocabularyData = await getVocabularyDefinition(vocabulary.ID);
-        await saveNearestSearchVocabulary(vocabularyData.data);
+        if(vocabularyData?.data && vocabularyData?.data?.ID){
+            await saveNearestSearchVocabulary(vocabularyData.data);
+        }
         setVocabularyData({
             ...vocabularyData,
             name: vocabularyData.data?.name,

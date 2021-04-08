@@ -1,9 +1,11 @@
 
 import React from 'react'
 import { View, Text } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import messaging from '@react-native-firebase/messaging';
+import { useSelector } from 'react-redux';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CommonIcons from './utils/CommonIcons';
@@ -19,16 +21,8 @@ import D_SearchHistoryScreen from './screens/Dictionary/D_SearchHistoryScreen';
 import S_SettingHomeSceen from './screens/Settings/S_SettingHomeSceen';
 import S_VocabularyRemindScreen from './screens/Settings/S_VocabularyRemindScreen';
 import S_ContributionScreen from './screens/Settings/S_ContributionScreen';
-
-
-function HomeScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Home!</Text>
-        </View>
-    );
-}
-
+import N_NotificationHomeScreen from './screens/Notification/N_NotificationHomeScreen';
+import C_CommunityHomeScreen from './screens/Community/C_CommunityHomeScreen';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -182,37 +176,48 @@ const SettingStack = () => {
 
 
 
-// 
-const HomeStackNavigator = createStackNavigator();
-const HomeStack = () => {
+
+const NotificationStackNavigator = createStackNavigator();
+const NotificationStack = () => {
     return (
-        <HomeStackNavigator.Navigator
+        <NotificationStackNavigator.Navigator
             screenOptions={{
-                headerShown: false
+                title: "Thông báo"
             }}
         >
-            <HomeStackNavigator.Screen
-                component={HomeScreen}
-                name={"Home"}
-                options={{
-                    headerShown: false
-                }}
+            <NotificationStackNavigator.Screen
+                name={"NotificationHome"}
+                component={N_NotificationHomeScreen}
             />
-            <HomeStackNavigator.Screen
-                component={SettingsScreen}
-                name={"Setting"}
+            <NotificationStackNavigator.Screen
+                name={"VocabularyDefinition"}
+                component={D_WordDefinitionScreen}
             />
-        </HomeStackNavigator.Navigator>
+        </NotificationStackNavigator.Navigator>
     )
 }
 
 
 
 
+const CommunityStackNavigator = createStackNavigator();
+const CommunityStack = () => {
+    return (
+        <CommunityStackNavigator.Navigator>
+            <CommunityStackNavigator.Screen
+                name="CommunityHome"
+                component={C_CommunityHomeScreen}
+            />
+        </CommunityStackNavigator.Navigator>
+    )
+}
 
 // 
 const TabBottomNavigator = createBottomTabNavigator();
-const TabBottom = () => {
+const TabBottom = (props) => {
+
+
+
     return (
         <TabBottomNavigator.Navigator
             screenOptions={({ route }) => ({
@@ -242,13 +247,28 @@ const TabBottom = () => {
             })}
 
         >
-
+            <TabBottomNavigator.Screen
+                name="Community"
+                component={CommunityStack}
+                options={{
+                    title:"Cộng đồng"
+                }}
+            />
             <TabBottomNavigator.Screen
                 name="FlashCard"
                 component={FlashCardStack}
                 options={{
                     title: "Học Từ Vựng"
                 }}
+            />
+            <TabBottomNavigator.Screen
+                name="Notification"
+                component={NotificationStack}
+                options={{
+                    title: "Thông báo",
+                    // tabBarBadge: notificationNumber
+                }}
+
             />
             <TabBottomNavigator.Screen
                 name="TabDictionary"

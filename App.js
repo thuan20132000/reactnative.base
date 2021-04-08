@@ -33,11 +33,13 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import ReduxThunk from 'redux-thunk';
 
 import flashcard_list_reducer from './store/reducer/flashCardReducer';
+import notification_reducer from './store/reducer/notificationReducer'
 
-
+import messaging from '@react-native-firebase/messaging'
 
 const rootReducer = combineReducers({
-  flashcard:flashcard_list_reducer
+  flashcard: flashcard_list_reducer,
+  notification: notification_reducer,
 });
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
@@ -51,6 +53,10 @@ const App = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
+
+
+
 
   return (
     <StoreProvider

@@ -84,7 +84,9 @@ const D_HomeSearchScreen = (props) => {
             getNearestSearchVocabulary()
                 .then((data) => {
                     if (data) {
-                        setNearestVocabulary(data);
+                        if(data.ID){
+                            setNearestVocabulary(data);
+                        }
                     }
                 });
         });

@@ -5,6 +5,9 @@ import RowItem from '../Settings/components/RowItem'
 import LearningActivities from './components/LearningActivities'
 
 const S_SettingHomeSceen = (props) => {
+
+   
+
     return (
         <View>
 
