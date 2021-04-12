@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     _onCheckItemExistInArray,
     _onCheckNumberEven,
+    _onGetRandomInt,
     _onPlayFlashCardSound,
     _onPlaySoundLocal,
     _onRandomIndexValue,
@@ -25,7 +26,7 @@ import * as flashcardActions from '../../store/actions/flashcardActions';
 const F_FLashCardPracticeScreen = (props) => {
 
     const flashcard = useSelector(state => state.flashcard);
-    const selectedVocabulary = flashcard.practice_vocabulary_list[0];
+ 
 
     const dispatch = useDispatch();
     const _refCardFlip = useRef();
@@ -34,6 +35,8 @@ const F_FLashCardPracticeScreen = (props) => {
     const [anwserChoices, setAwnserChoices] = useState([]);
     const [isAnwsered, setIsAwnsered] = useState(false);
     const [recordTime, setRecordTime] = useState(0);
+
+    const [correctVocabulary, setCorrectVocabulary] = useState(null);
 
 
     const _onSelectWord = (word) => {
@@ -64,10 +67,15 @@ const F_FLashCardPracticeScreen = (props) => {
 
 
 
-
-
     useEffect(() => {
 
+        let selectedVocabulary;
+        if (flashcard.practice_vocabulary_list.length > 2) {
+            selectedVocabulary = flashcard.practice_vocabulary_list[_onGetRandomInt(3)];
+        } else {
+            selectedVocabulary = flashcard.practice_vocabulary_list[0];
+
+        }
 
         let topicVocabulary = flashcard.topic_vocabulary_list;
         setPracticeVocabulary(selectedVocabulary);
@@ -143,7 +151,7 @@ const F_FLashCardPracticeScreen = (props) => {
             }
 
 
-            dispatch(flashcardActions.addLearntVocabulary(selectedVocabulary));
+            dispatch(flashcardActions.addLearntVocabulary(practiceVocabulary));
 
 
 
@@ -338,7 +346,7 @@ const F_FLashCardPracticeScreen = (props) => {
                         icon={CommonIcons.checkboxCircleMark}
                         mode="outlined"
                         onPress={_onCheckWord}
-                        disabled={selectedWord?false:true}
+                        disabled={selectedWord ? false : true}
                         color={'red'}
                     >
                         Check

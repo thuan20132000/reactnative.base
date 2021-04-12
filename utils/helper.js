@@ -107,6 +107,17 @@ export const _onRandomIndexValue = (number = 3, except = []) => {
 
 
 
+
+export const _onGetRandomInt = (max) => {
+
+    let random_number = Math.floor(Math.random() * max);
+
+    return random_number;
+
+
+}
+
+
 export const _onCheckItemExistInArray = (item, array = []) => {
 
     let isExists = false;

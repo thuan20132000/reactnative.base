@@ -225,7 +225,7 @@ const D_HomeSearchScreen = (props) => {
                                     color: 'coral'
                                 }}
                             >
-                                {nearestVocabulary?.definitions[0]?.example[0] || ""}
+                                {nearestVocabulary?.definitions[0]?.example && nearestVocabulary?.definitions[0]?.example[0] || ""}
                             </Text>
                             <View
                                 style={{

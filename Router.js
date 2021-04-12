@@ -24,6 +24,9 @@ import S_ContributionScreen from './screens/Settings/S_ContributionScreen';
 import N_NotificationHomeScreen from './screens/Notification/N_NotificationHomeScreen';
 import C_CommunityHomeScreen from './screens/Community/C_CommunityHomeScreen';
 import C_CommunityPostDetailScreen from './screens/Community/C_CommunityPostDetailScreen';
+import C_CommunityRecordPractiseScreen from './screens/Community/C_CommunityRecordPractiseScreen';
+import F_FlashCardFieldScreen from './screens/FlashCard/F_FlashCardFieldScreen';
+import F_FlashCardTopicScreen from './screens/FlashCard/F_FlashCardTopicScreen';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -93,10 +96,25 @@ const FlashCardStack = () => {
             }}
         >
             <FlashCardStackNavigator.Screen
+                name={'FlashCardField'}
+                component={F_FlashCardFieldScreen}
+                options={{
+                    title:""
+                }}
+            />
+            <FlashCardStackNavigator.Screen
                 name={"FlashCardHome"}
                 component={F_FlashCardHomeScreen}
                 options={{
                     title: "Chọn chủ đề"
+                }}
+
+            />
+            <FlashCardStackNavigator.Screen
+                name={"FlashCardTopic"}
+                component={F_FlashCardTopicScreen}
+                options={{
+                    title:"Chọn Chủ Đề"
                 }}
 
             />
@@ -209,9 +227,13 @@ const CommunityStack = () => {
                 name="CommunityHome"
                 component={C_CommunityHomeScreen}
             />
-              <CommunityStackNavigator.Screen
+            <CommunityStackNavigator.Screen
                 name="CommunityPostDetail"
                 component={C_CommunityPostDetailScreen}
+            />
+            <CommunityStackNavigator.Screen
+                name="CommunityRecordPractise"
+                component={C_CommunityRecordPractiseScreen}
             />
         </CommunityStackNavigator.Navigator>
     )
@@ -225,6 +247,7 @@ const TabBottom = (props) => {
 
     return (
         <TabBottomNavigator.Navigator
+
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
@@ -242,6 +265,10 @@ const TabBottom = (props) => {
                     else if (route.name === 'Notification') {
                         iconName = CommonIcons.bell
                     }
+                    else if (route.name === 'TabDictionary') {
+                        iconName = CommonIcons.bookMarker
+
+                    }
                     else {
                         iconName = CommonIcons.newsPaper
                     }
@@ -249,14 +276,18 @@ const TabBottom = (props) => {
                     // You can return any component that you like here!
                     return <MaterialCommunityIcon name={iconName} size={size} color={color} />;
                 },
-            })}
+            })
+
+            }
+
 
         >
             <TabBottomNavigator.Screen
                 name="Community"
                 component={CommunityStack}
                 options={{
-                    title:"Cộng đồng"
+                    title: "Cộng đồng",
+
                 }}
             />
             <TabBottomNavigator.Screen
@@ -279,40 +310,8 @@ const TabBottom = (props) => {
                 name="TabDictionary"
                 component={DictionaryStack}
                 options={{
-                    tabBarLabel: "",
-                    tabBarIcon: () => (
-                        <View
-                            style={{
-                                backgroundColor: 'white',
-                                padding: 12,
-                                borderRadius: 12,
-                                shadowColor: "#000",
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 6,
-                                },
-                                shadowOpacity: 0.37,
-                                shadowRadius: 7.49,
+                    title: "Từ điển",
 
-                                elevation: 12,
-                                width: 70,
-                                height: 70,
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: 40,
-
-                            }}
-                        >
-                            <MaterialCommunityIcon
-                                name={CommonIcons.search}
-                                color={'coral'}
-                                size={42}
-
-                            />
-                        </View>
-                    )
                 }}
 
             />

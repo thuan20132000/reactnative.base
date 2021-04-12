@@ -11,9 +11,9 @@ import CardVocabulary from './components/CardVocabulary'
 import CardMeaning from './components/CardMeaning'
 import { useDispatch, useSelector } from 'react-redux'
 import * as flashcardAction from '../../store/actions/flashcardActions'
-import { _onPlayFlashCardSound, _onPlaySound } from '../../utils/helper'
+import { _onGetRandomInt, _onPlayFlashCardSound, _onPlaySound } from '../../utils/helper'
 import Sound from 'react-native-sound'
-import {url_absolute} from '../../config/api_config.json'
+import { url_absolute } from '../../config/api_config.json'
 const F_FlashCardChoiceScreen = (props) => {
 
     const _refCardFlip = useRef();
@@ -102,7 +102,7 @@ const F_FlashCardChoiceScreen = (props) => {
         props.navigation.replace('FlashCardChoice');
         return;
 
-  
+
     }
 
 
@@ -160,7 +160,7 @@ const F_FlashCardChoiceScreen = (props) => {
                         height: 140
                     }}
                     meaning={vocabulary?.meaning}
-                
+
                     children={
                         <IconButton
                             icon={CommonIcons.rotateCircle}
@@ -171,9 +171,9 @@ const F_FlashCardChoiceScreen = (props) => {
                                 bottom: 10,
                                 right: 10
                             }}
-                            
+
                             onPress={() => _refCardFlip.current.flip()}
-                            
+
                         />
                     }
                 />

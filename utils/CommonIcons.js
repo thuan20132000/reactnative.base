@@ -49,6 +49,14 @@ export default {
     volumnHigh:'volume-high',
     rotateCircle:'rotate-3d-variant',
     recordCircle:'record-circle',
-    shareVariant:'share-variant'
+    shareVariant:'share-variant',
+    dotsVertical:'dots-vertical',
+    commentProcessingOutline:'comment-processing-outline',
+    microphonePlus:'microphone-plus',
+    playCircleOutline:'play-circle-outline',
+    pauseCircleOutline:'pause-circle-outline',
+
+
+
 
 }

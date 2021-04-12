@@ -3,9 +3,14 @@ import { Dimensions, Image, ImageBackground, StyleSheet, Text, TouchableOpacity,
 import CommonImages from '../../../../utils/CommonImages'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../../../utils/CommonIcons'
+import { IconButton } from 'react-native-paper'
 
 const PostCard = ({
-    onPostDetailPress
+    onPostDetailPress,
+    onLikePress,
+    onCommentPress,
+    onSharePress,
+    onEditPress
 }) => {
     return (
         <View
@@ -51,11 +56,14 @@ const PostCard = ({
                         Thuan truong
                     </Text>
                 </View>
-                <MaterialCommunityIcon
-                    name={CommonIcons.shareVariant}
+                <IconButton
+                    icon={CommonIcons.dotsVertical}
                     color={'coral'}
-                    size={18}
+                    size={24}
+                    style={{ marginHorizontal: 6 }}
+                    onPress={onEditPress}
                 />
+
             </View>
             {/* body */}
             <TouchableOpacity
@@ -70,15 +78,15 @@ const PostCard = ({
                     }}
                     style={{
                         // justifyContent: "center",
-                        maxWidth:deviceWidth,
-                        height:deviceHeight/4,
-                        maxHeight:220,
-                    
+                        maxWidth: deviceWidth,
+                        height: deviceHeight / 4,
+                        maxHeight: 220,
+
                     }}
                     resizeMode={'contain'}
-                    
-                
-                    
+
+
+
                 />
             </TouchableOpacity>
             {/* footer */}
@@ -92,30 +100,32 @@ const PostCard = ({
                         styles.row
                     ]}
                 >
-                    <MaterialCommunityIcon
-                        name={CommonIcons.heartOutline}
+                    <IconButton
+                        icon={CommonIcons.heartOutline}
                         color={'coral'}
-                        size={28}
+                        size={24}
                         style={{ marginHorizontal: 6 }}
+                        onPress={onLikePress}
                     />
-                    <MaterialCommunityIcon
-                        name={CommonIcons.messages}
+                    <IconButton
+                        icon={CommonIcons.commentProcessingOutline}
                         color={'coral'}
-                        size={28}
+                        size={24}
                         style={{ marginHorizontal: 6 }}
+                        onPress={onCommentPress}
+                    />
+                    <IconButton
+                        icon={CommonIcons.shareVariant}
+                        color={'coral'}
+                        size={24}
+                        style={{ marginHorizontal: 6 }}
+                        onPress={onSharePress}
+                    />
 
-                    />
-                    <MaterialCommunityIcon
-                        name={CommonIcons.send}
-                        color={'coral'}
-                        size={28}
-                        style={{ marginHorizontal: 6 }}
-
-                    />
                 </View>
                 <View>
                     <Text
-                        style={{fontSize:12,color:'black',fontWeight:'700',fontStyle:'italic',marginVertical:4}}
+                        style={{ fontSize: 12, color: 'black', fontWeight: '700', fontStyle: 'italic', marginVertical: 4 }}
                     >
                         5 người đã luyện tập
                     </Text>
@@ -135,8 +145,8 @@ const PostCard = ({
                 <View>
                     <Text
                         style={{
-                            color:'gray',
-                            marginVertical:4
+                            color: 'gray',
+                            marginVertical: 4
                         }}
                     >
                         Xem tất cả 6 bình luận
@@ -146,17 +156,17 @@ const PostCard = ({
             {/* comments */}
             <View>
                 <View
-                    style={[styles.row,{alignItems:'center'}]}
+                    style={[styles.row, { alignItems: 'center' }]}
                 >
                     <MaterialCommunityIcon
                         name={CommonIcons.face_verygood}
                         size={16}
                         color={'coral'}
                         style={{
-                            marginHorizontal:8
+                            marginHorizontal: 8
                         }}
                     />
-                    <Text style={{color:'black',fontStyle:'italic'}}>Luyện tập cùng tôi.</Text>
+                    <Text style={{ color: 'black', fontStyle: 'italic' }}>Luyện tập cùng tôi.</Text>
                 </View>
             </View>
         </View>
@@ -185,14 +195,14 @@ const styles = StyleSheet.create({
         shadowRadius: 6.27,
 
         elevation: 6,
-        marginVertical:1,
-        paddingVertical:8
+        marginVertical: 1,
+        paddingVertical: 8
     },
-    footerContainer:{
-        marginHorizontal:12,
-        marginVertical:6
+    footerContainer: {
+        marginHorizontal: 12,
+        marginVertical: 6
     },
-    body:{
-        paddingHorizontal:8
+    body: {
+        paddingHorizontal: 8
     }
 })
