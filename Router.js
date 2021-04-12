@@ -282,14 +282,14 @@ const TabBottom = (props) => {
 
 
         >
-            <TabBottomNavigator.Screen
+            {/* <TabBottomNavigator.Screen
                 name="Community"
                 component={CommunityStack}
                 options={{
                     title: "Cộng đồng",
 
                 }}
-            />
+            /> */}
             <TabBottomNavigator.Screen
                 name="FlashCard"
                 component={FlashCardStack}
@@ -297,7 +297,7 @@ const TabBottom = (props) => {
                     title: "Học Từ Vựng"
                 }}
             />
-            <TabBottomNavigator.Screen
+            {/* <TabBottomNavigator.Screen
                 name="Notification"
                 component={NotificationStack}
                 options={{
@@ -305,7 +305,7 @@ const TabBottom = (props) => {
                     // tabBarBadge: notificationNumber
                 }}
 
-            />
+            /> */}
             <TabBottomNavigator.Screen
                 name="TabDictionary"
                 component={DictionaryStack}

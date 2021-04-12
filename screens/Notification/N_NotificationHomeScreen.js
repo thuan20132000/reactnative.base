@@ -17,29 +17,29 @@ const N_NotificationHomeScreen = (props) => {
 
     }, [notificationNumber])
 
-    React.useEffect(() => {
-        messaging().onNotificationOpenedApp(remoteMessage => {
-            props.navigation.navigate('Notification');
-        });
+    // React.useEffect(() => {
+    //     messaging().onNotificationOpenedApp(remoteMessage => {
+    //         props.navigation.navigate('Notification');
+    //     });
 
 
-        const unsubscribe = messaging().onMessage(async remoteMessage => {
-            // console.warn('A new FCM message arrived!', JSON.stringify(remoteMessage));
-            let newMessage = {
-                title: remoteMessage.notification?.title,
-                body: remoteMessage.notification?.body
-            }
-            setNotificationList(prev => [newMessage, ...prev]);
-            // dispatch(notificationActions.increaseNotification());
-            setNotificationNumber(notificationNumber + 1);
+    //     const unsubscribe = messaging().onMessage(async remoteMessage => {
+    //         // console.warn('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    //         let newMessage = {
+    //             title: remoteMessage.notification?.title,
+    //             body: remoteMessage.notification?.body
+    //         }
+    //         setNotificationList(prev => [newMessage, ...prev]);
+    //         // dispatch(notificationActions.increaseNotification());
+    //         setNotificationNumber(notificationNumber + 1);
 
 
 
-        });
+    //     });
 
-        return unsubscribe;
+    //     return unsubscribe;
 
-    }, []);
+    // }, []);
 
 
 

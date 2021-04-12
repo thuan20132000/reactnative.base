@@ -11,6 +11,7 @@ import { url_absolute } from '../../config/api_config.json';
 import { getNearestSearchVocabulary, saveSearchedVocabulary } from '../../utils/helper';
 import CardDefinition from './components/CardDefinition';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import messaging from '@react-native-firebase/messaging';
 
 const D_HomeSearchScreen = (props) => {
     const [searchQuery, setSearchQuery] = React.useState('');
@@ -84,7 +85,7 @@ const D_HomeSearchScreen = (props) => {
             getNearestSearchVocabulary()
                 .then((data) => {
                     if (data) {
-                        if(data.ID){
+                        if (data.ID) {
                             setNearestVocabulary(data);
                         }
                     }
@@ -96,6 +97,25 @@ const D_HomeSearchScreen = (props) => {
 
 
     }, [props.navigation]);
+
+
+
+    React.useEffect(() => {
+        messaging().onNotificationOpenedApp(remoteMessage => {
+           
+            props.navigation.navigate('VocabularyDefinition', {
+                vocabulary: {
+                    "ID": "7e90a9e3-c776-4e95-a167-2f865b60ad55",
+                    "name": "thinking",
+                    "phon_us": "/ˈθɪŋkɪŋ/",
+                    "phon_uk": "/ˈθɪŋkɪŋ/",
+                    "sound_us": "/media/audio/thinking_adjective__us.mp3",
+                    "sound_uk": "/media/audio/thinking_adjective__uk.mp3",
+                    "word_type": "adjective"
+                },
+            })
+        });
+    }, []);
 
 
     return (

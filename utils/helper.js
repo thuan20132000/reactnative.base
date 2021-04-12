@@ -379,3 +379,32 @@ export const filterDuplicate = async (values = []) => {
 export const removeDuplicateTwoArray = async (arr1 = [], arr2 = []) => {
     return;
 }
+
+
+
+
+export const _onSaveRemindSetting = async (remind_type,value) => {
+    try {
+
+        const jsonValue = JSON.stringify(value);
+        await AsyncStorage.setItem(`@remind_${remind_type}`, jsonValue);
+
+        return true;
+    } catch (e) {
+        // saving error
+        console.warn('error: ', e);
+        return false
+    }
+
+}
+
+
+export const _onGetRemindSetting = async (remind_type) => {
+    try {
+        const jsonValue = await AsyncStorage.getItem(`@remind_${remind_type}`);
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+        // error reading value
+        return false;
+    }
+}

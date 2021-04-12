@@ -6,13 +6,13 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import CommonIcons from '../../utils/CommonIcons';
 import Sound from 'react-native-sound';
 import { getVocabularyDefinition } from '../../utils/api_v1';
-import {url_absolute} from '../../config/api_config.json';
+import { url_absolute } from '../../config/api_config.json';
 import { saveNearestSearchVocabulary } from '../../utils/helper';
 
 const D_WordDefinitionScreen = (props) => {
 
     const { vocabulary } = props.route.params;
-    const [isLoading,setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [vocabularyData, setVocabularyData] = useState({
         name: '',
@@ -28,27 +28,30 @@ const D_WordDefinitionScreen = (props) => {
     const _onGetVocabularyDefinitions = async () => {
         setIsLoading(true);
         let vocabularyData = await getVocabularyDefinition(vocabulary.ID);
-        if(vocabularyData?.data && vocabularyData?.data?.ID){
-            await saveNearestSearchVocabulary(vocabularyData.data);
+        if (vocabularyData.status) {
+
+            if (vocabularyData?.data && vocabularyData?.data?.ID) {
+                await saveNearestSearchVocabulary(vocabularyData.data);
+            }
+            setVocabularyData({
+                ...vocabularyData,
+                name: vocabularyData.data?.name,
+                sound_us: vocabularyData.data?.sound_us,
+                sound_uk: vocabularyData.data?.sound_uk,
+                phon_us: vocabularyData.data?.phon_us,
+                phon_uk: vocabularyData.data?.phon_uk,
+                type: vocabularyData.data?.word_type,
+                definitions: vocabularyData.data?.definitions
+            })
+            setIsLoading(false);
         }
-        setVocabularyData({
-            ...vocabularyData,
-            name: vocabularyData.data?.name,
-            sound_us: vocabularyData.data?.sound_us,
-            sound_uk: vocabularyData.data?.sound_uk,
-            phon_us: vocabularyData.data?.phon_us,
-            phon_uk: vocabularyData.data?.phon_uk,
-            type: vocabularyData.data?.word_type,
-            definitions: vocabularyData.data?.definitions
-        })
-        setIsLoading(false);
     }
 
     useEffect(() => {
         _onGetVocabularyDefinitions();
 
         props.navigation.setOptions({
-            title:vocabulary?.name
+            title: vocabulary?.name
         })
     }, []);
 
@@ -64,15 +67,15 @@ const D_WordDefinitionScreen = (props) => {
                     if (error) {
                         console.log('error: ', error);
                         return;
-    
+
                     }
                     sound.play((success) => console.log('play success'));
                 });
-    
+
                 setTimeout(() => {
                     sound.release();
                 }, 4200);
-    
+
             }, 100);
         } catch (error) {
             console.warn(error);
@@ -81,7 +84,7 @@ const D_WordDefinitionScreen = (props) => {
 
 
 
-    if(isLoading){
+    if (isLoading) {
         return (
             <ActivityIndicator
                 size="large"
@@ -107,9 +110,9 @@ const D_WordDefinitionScreen = (props) => {
                     </View>
 
                     <View style={{ display: 'flex', flexDirection: 'column', }}>
-                        <View style={{ display: 'flex', justifyContent: 'space-around',flexDirection:'row',alignItems:'center' }}>
+                        <View style={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.textPronunciation}><Text style={{ color: '#DF330F', backgroundColor: '#F2C827' }}>us</Text>{vocabularyData?.phon_us}</Text>
-                     
+
                             <IconButton
                                 icon={CommonIcons.volumnHigh}
                                 color={CommonColor.secondary}
@@ -118,7 +121,7 @@ const D_WordDefinitionScreen = (props) => {
 
                             />
                         </View>
-                        <View style={{ display: 'flex', justifyContent: 'space-around',flexDirection:'row',alignItems:'center'}}>
+                        <View style={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.textPronunciation}><Text style={{ color: '#DF330F', backgroundColor: '#1c3561' }}>uk</Text>{vocabularyData?.phon_uk}</Text>
                             <IconButton
                                 icon={CommonIcons.volumnHigh}

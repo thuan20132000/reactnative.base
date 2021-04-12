@@ -71,7 +71,7 @@ const LearningActivities = () => {
                 </Text>
             </View>
 
-
+{/* 
             <View
                 style={{
                     backgroundColor: 'white',
@@ -101,7 +101,7 @@ const LearningActivities = () => {
                     Biết giới hạn của bản thân, nhưng đừng bao giờ ngừng cố gắng để mở rộng nó.
                 </Text>
 
-            </View>
+            </View> */}
         </View>
     )
 }
