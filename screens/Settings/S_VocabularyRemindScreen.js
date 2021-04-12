@@ -34,7 +34,6 @@ const S_VocabularyRemindScreen = () => {
 
         _onGetRemindSetting('daily_vocabulary')
             .then((value) => {
-                console.warn('value2: ', value);
                 if (value) {
                     if (value == 'true' || value == true) {
                         setDailyVocabularyRemind(true);
@@ -55,13 +54,13 @@ const S_VocabularyRemindScreen = () => {
                 .unsubscribeFromTopic('search_vocabulary')
                 .then(() => console.log('unsubcribed to search_vocabulary'));
             _onSaveRemindSetting('search_vocabulary', false)
-                .then((value) => console.warn('save res: ', value));
+                .then((value) => console.log('save res: ', value));
         } else {
             messaging()
                 .subscribeToTopic('search_vocabulary')
                 .then(() => console.log(`Subscribed to search_vocabulary`));
             _onSaveRemindSetting('search_vocabulary', true)
-                .then((value) => console.warn('save res: ', value));
+                .then((value) => console.log('save res: ', value));
 
 
         }
@@ -76,13 +75,13 @@ const S_VocabularyRemindScreen = () => {
                 .unsubscribeFromTopic('daily_vocabulary')
                 .then(() => console.log('unsubcribed to daily_vocabulary'));
             _onSaveRemindSetting('daily_vocabulary', false)
-                .then((value) => console.warn('save res: ', value));
+                .then((value) => console.log('save res: ', value));
         } else {
             messaging()
                 .subscribeToTopic('daily_vocabulary')
                 .then(() => console.log(`Subscribed to daily_vocabulary`));
             _onSaveRemindSetting('daily_vocabulary', true)
-                .then((value) => console.warn('save res: ', value));
+                .then((value) => console.log('save res: ', value));
         }
     }
 
@@ -92,7 +91,7 @@ const S_VocabularyRemindScreen = () => {
                 styles.container
             ]}
         >
-            <RowItem
+            {/* <RowItem
                 label={'Nhắc từ đã tìm kiếm'}
                 leftIconName={CommonIcons.bell}
                 labelStyle={{
@@ -108,7 +107,7 @@ const S_VocabularyRemindScreen = () => {
                     />
                 }
                 rowPressDisable={true}
-            />
+            /> */}
             <RowItem
                 label={'Nhận thông báo từ hàng ngày'}
                 leftIconName={CommonIcons.bell}

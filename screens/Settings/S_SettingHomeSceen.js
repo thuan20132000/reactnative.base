@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import CommonIcons from '../../utils/CommonIcons'
 import RowItem from '../Settings/components/RowItem'
 import LearningActivities from './components/LearningActivities'
@@ -9,11 +9,37 @@ const S_SettingHomeSceen = (props) => {
    
 
     return (
-        <View>
+        <View
+            style={{
+                backgroundColor:'white',
+                display:'flex',
+                flex:1
+            }}
+        >
 
 
-            <View>
+            {/* <View>
                 <LearningActivities />
+            </View> */}
+
+            <View
+                style={{
+                    display:'flex',
+                    flexDirection:'row',
+                    justifyContent:'center',
+
+                }}
+            >
+                <Image
+                    source={
+                        require('../../utils/photos/logo2.png')
+                    }
+                    resizeMode={'contain'}
+                    style={{
+                        width:220,
+                        height:220
+                    }}
+                />
             </View>
             <RowItem
                 label={"Nhắc nhở"}
@@ -58,7 +84,7 @@ const S_SettingHomeSceen = (props) => {
 
                 }}
             /> */}
-            <RowItem
+            {/* <RowItem
                 label={"Đóng góp cải thiện"}
                 leftIconName={CommonIcons.face_good}
                 leftIconStyle={{
@@ -74,7 +100,7 @@ const S_SettingHomeSceen = (props) => {
                 }}
                 onItemPress={() => props.navigation.navigate('Contribution')}
 
-            />
+            /> */}
             <RowItem
                 label={"Đánh giá ủng hộ ứng dụng trên Google Play"}
                 leftIconName={CommonIcons.bookMarker}
