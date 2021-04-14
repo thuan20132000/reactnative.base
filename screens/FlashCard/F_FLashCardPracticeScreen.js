@@ -69,8 +69,9 @@ const F_FLashCardPracticeScreen = (props) => {
 
     useEffect(() => {
 
+
         let selectedVocabulary;
-        if (flashcard.practice_vocabulary_list.length > 2) {
+        if (flashcard.practice_vocabulary_list.length > 4) {
             selectedVocabulary = flashcard.practice_vocabulary_list[_onGetRandomInt(3)];
         } else {
             selectedVocabulary = flashcard.practice_vocabulary_list[0];
@@ -199,7 +200,7 @@ const F_FLashCardPracticeScreen = (props) => {
             {/* Word meaning */}
             <View>
                 <ProgressBar
-                    progress={(5 - flashcard.practice_vocabulary_list.length) / 5}
+                    progress={(10 - flashcard.practice_vocabulary_list.length) / 10}
                     color={'red'}
                     style={{
                         height: 8

@@ -182,11 +182,11 @@ export const _onSwapRandomArrayElement = (array = []) => {
 
 
 
-export const saveLearntVocabularyByTopic = async (topic, values) => {
+export const saveLearntVocabularyByTopic = async (topic_slug, values) => {
 
     try {
 
-        let vocabulary_list = await getLearntVocabularyByTopic(topic);
+        let vocabulary_list = await getLearntVocabularyByTopic(topic_slug);
         let new_learnt_vocabulary_list = [];
         if (vocabulary_list == null) {
             vocabulary_list = [];
@@ -196,7 +196,7 @@ export const saveLearntVocabularyByTopic = async (topic, values) => {
         }
 
         const jsonValue = JSON.stringify(new_learnt_vocabulary_list);
-        await AsyncStorage.setItem(`@learnt_${topic}_vocabulary`, jsonValue);
+        await AsyncStorage.setItem(`@learnt_${topic_slug}_vocabulary`, jsonValue);
 
         return true;
     } catch (e) {
@@ -283,16 +283,35 @@ export const getNearestSearchVocabulary = async () => {
 
 
 
-export const getLearntVocabularyByTopic = async (topic) => {
+export const getLearntVocabularyByTopic = async (topic_slug) => {
 
     try {
-        const jsonValue = await AsyncStorage.getItem(`@learnt_${topic}_vocabulary`);
+        const jsonValue = await AsyncStorage.getItem(`@learnt_${topic_slug}_vocabulary`);
         return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
         // error reading value
         return false;
     }
 
+}
+
+
+
+
+export const resetLearntVocabularyByTopic = async (topic_slug) => {
+    try {
+
+
+ 
+        const jsonValue = JSON.stringify([]);
+        await AsyncStorage.setItem(`@learnt_${topic_slug}_vocabulary`, jsonValue);
+
+        return true;
+    } catch (e) {
+        // saving error
+        console.warn('error: ', e);
+        return false
+    }
 }
 
 

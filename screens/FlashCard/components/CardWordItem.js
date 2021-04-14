@@ -15,7 +15,7 @@ const CardWordItem = ({
             style={[
                 styles.container,
                 isActive && {
-                    backgroundColor:'cornsilk'
+                    backgroundColor:'#00bfff'
                 },
                 isHighlight && {
                     borderWidth:1,
@@ -36,7 +36,7 @@ const CardWordItem = ({
                 style={[
                     styles.textStyle,
                     isActive && {
-                        color:'red'
+                        color:'white'
                     }
                 ]}
             >

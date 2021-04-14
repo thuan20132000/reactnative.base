@@ -32,11 +32,7 @@ const CardTopic = ({
             }
         });
 
-        getTopicVocabulary(topic?.id)
-            .then((data) => {
-
-            })
-
+      
     }, [flashcard.learnt_vocabulary_list]);
 
 
@@ -80,8 +76,9 @@ const CardTopic = ({
                 </Text>
                 <Text
                     style={{
-                        color: CommonColor.primary,
+                        color:'red',
                         fontSize: 16,
+                        fontWeight:'700',
                     }}
                 >
                     {learntVocabularyList.length}/{topic_vocabulary_number}

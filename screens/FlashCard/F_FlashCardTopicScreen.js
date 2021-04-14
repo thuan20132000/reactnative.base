@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Alert, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import CardTopic from './components/CardTopic'
 import * as flashcardAction from '../../store/actions/flashcardActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -113,17 +113,29 @@ const F_FlashCardTopicScreen = (props) => {
 
 
 
+    if(isLoading){
+        return (
+            <View
+                style={{
+                    display:'flex',
+                    flex:1,
+                    justifyContent:'center'
+                }}
+            >
+                <ActivityIndicator
+                    animating={true}
+                    color={'coral'}
+                    size={'large'}
+                />
+            </View>
+        )
+    }
+
     return (
 
 
         <ScrollView
-            refreshControl={
-                <RefreshControl
-                    refreshing={isRefreshing}
-                    onRefresh={_onRefresh}
-                />
-            }
-
+          
         >
             {
                 topicList.length > 0 &&

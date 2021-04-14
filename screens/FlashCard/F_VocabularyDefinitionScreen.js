@@ -44,7 +44,6 @@ const F_VocabularyDefinitionScreen = (props) => {
     useEffect(() => {
         // _onGetVocabularyDefinitions();
         setVocabularyData(vocabulary);
-        console.warn(vocabulary);
 
     }, []);
 

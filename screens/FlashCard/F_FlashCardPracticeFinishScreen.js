@@ -39,9 +39,9 @@ const F_FlashCardPracticeFinishScreen = (props) => {
 
     const _onBackHome = async () => {
 
+        //flashcard.topic ==> topic is a slug name already
+        let res = await saveLearntVocabularyByTopic(flashcard?.topic, flashcard.learnt_vocabulary_list);
         
-        let res = await saveLearntVocabularyByTopic(flashcard.topic, flashcard.learnt_vocabulary_list);
-
         if(!res){
             console.warn('error: ',res);
             return;

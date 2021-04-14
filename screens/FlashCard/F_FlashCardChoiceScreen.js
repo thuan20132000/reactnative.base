@@ -77,7 +77,7 @@ const F_FlashCardChoiceScreen = (props) => {
         }, 100);
 
         dispatch(flashcardAction.addVocabulary(vocabulary));
-        if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 4) {
+        if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 9) {
             props.navigation.replace('FlashCardPractice');
         } else {
             props.navigation.replace('FlashCardChoice');
