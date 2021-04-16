@@ -12,6 +12,9 @@ const S_VocabularyRemindScreen = () => {
 
     const [learntVocabularyRemind, setLearnVocabularyRemind] = useState(false);
     const [dailyVocabularyRemind, setDailyVocabularyRemind] = useState(false);
+    const [practiceRemind, setPracticeRemind] = useState(false);
+
+
     React.useEffect(() => {
         messaging().getToken()
             .then((data) => console.log(data))
@@ -39,6 +42,17 @@ const S_VocabularyRemindScreen = () => {
                         setDailyVocabularyRemind(true);
                     } else {
                         setDailyVocabularyRemind(false)
+                    }
+                }
+            });
+
+        _onGetRemindSetting('practice')
+            .then((value) => {
+                if (value) {
+                    if (value == 'true' || value == true) {
+                        setPracticeRemind(true);
+                    } else {
+                        setPracticeRemind(false)
                     }
                 }
             });
@@ -85,6 +99,24 @@ const S_VocabularyRemindScreen = () => {
         }
     }
 
+
+    const _onChangeRemindPractice = async () => {
+        setPracticeRemind(!practiceRemind);
+        if (practiceRemind) {
+            messaging()
+                .unsubscribeFromTopic('practice')
+                .then(() => console.log('unsubcribed to practice'));
+            _onSaveRemindSetting('practice', false)
+                .then((value) => console.log('save res: ', value));
+        } else {
+            messaging()
+                .subscribeToTopic('practice')
+                .then(() => console.log(`Subscribed to practice`));
+            _onSaveRemindSetting('practice', true)
+                .then((value) => console.log('save res: ', value));
+        }
+    }
+
     return (
         <View
             style={[
@@ -121,6 +153,23 @@ const S_VocabularyRemindScreen = () => {
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={_onChangeRemindDailyVocabulary}
                         value={dailyVocabularyRemind}
+                    />
+                }
+                rowPressDisable={true}
+            />
+            <RowItem
+                label={'Nhận thông báo luyện tập'}
+                leftIconName={CommonIcons.bell}
+                labelStyle={{
+                    fontSize: 16
+                }}
+                children={
+                    <Switch
+                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={_onChangeRemindPractice}
+                        value={practiceRemind}
                     />
                 }
                 rowPressDisable={true}

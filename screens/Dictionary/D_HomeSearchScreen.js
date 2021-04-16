@@ -12,6 +12,7 @@ import { getNearestSearchVocabulary, saveSearchedVocabulary } from '../../utils/
 import CardDefinition from './components/CardDefinition';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import messaging from '@react-native-firebase/messaging';
+import { useNavigation } from '@react-navigation/native';
 
 const D_HomeSearchScreen = (props) => {
     const [searchQuery, setSearchQuery] = React.useState('');
@@ -102,21 +103,79 @@ const D_HomeSearchScreen = (props) => {
 
     React.useEffect(() => {
         messaging().onNotificationOpenedApp(remoteMessage => {
-           
-            props.navigation.navigate('VocabularyDefinition', {
-                vocabulary: {
-                    "ID": "7e90a9e3-c776-4e95-a167-2f865b60ad55",
-                    "name": "thinking",
-                    "phon_us": "/ˈθɪŋkɪŋ/",
-                    "phon_uk": "/ˈθɪŋkɪŋ/",
-                    "sound_us": "/media/audio/thinking_adjective__us.mp3",
-                    "sound_uk": "/media/audio/thinking_adjective__uk.mp3",
-                    "word_type": "adjective"
-                },
-            })
+
+            console.log('id: ', remoteMessage.data?.ID);
+            if (remoteMessage.data?.ID) {
+                props.navigation.navigate('VocabularyDefinition', {
+                    vocabulary: {
+                        "ID": remoteMessage.data?.ID,
+                        "name": "thinking",
+                        "phon_us": "/ˈθɪŋkɪŋ/",
+                        "phon_uk": "/ˈθɪŋkɪŋ/",
+                        "sound_us": "/media/audio/thinking_adjective__us.mp3",
+                        "sound_uk": "/media/audio/thinking_adjective__uk.mp3",
+                        "word_type": "adjective"
+                    },
+                })
+            }
+
         });
     }, []);
 
+
+
+    const navigation = useNavigation();
+
+    React.useEffect(() => {
+        messaging().onNotificationOpenedApp(remoteMessage => {
+
+            console.log('message data: ', remoteMessage);
+
+            if (remoteMessage.from == '/topics/daily_vocabulary') {
+
+                if (remoteMessage.data?.ID) {
+                    navigation.navigate('VocabularyDefinition', {
+                        vocabulary: {
+                            "ID": remoteMessage.data?.ID,
+                            "name": "thinking",
+                            "phon_us": "/ˈθɪŋkɪŋ/",
+                            "phon_uk": "/ˈθɪŋkɪŋ/",
+                            "sound_us": "/media/audio/thinking_adjective__us.mp3",
+                            "sound_uk": "/media/audio/thinking_adjective__uk.mp3",
+                            "word_type": "adjective"
+                        },
+                    })
+                }
+                return;
+            }
+
+            if (remoteMessage.from == '/topics/practice') {
+                navigation.navigate('FlashCardField');
+                return;
+            }
+
+        });
+
+        // messaging().onMessage(async remoteMessage => {
+        //     console.log('Message handled in the background!', remoteMessage);
+        //     if (remoteMessage.data?.ID) {
+        //         navigation.navigate('VocabularyDefinition', {
+        //             vocabulary: {
+        //                 "ID": remoteMessage.data?.ID,
+        //                 "name": "thinking",
+        //                 "phon_us": "/ˈθɪŋkɪŋ/",
+        //                 "phon_uk": "/ˈθɪŋkɪŋ/",
+        //                 "sound_us": "/media/audio/thinking_adjective__us.mp3",
+        //                 "sound_uk": "/media/audio/thinking_adjective__uk.mp3",
+        //                 "word_type": "adjective"
+        //             },
+        //         })
+        //     }
+        // });
+
+
+
+    }, []);
 
     return (
         <View

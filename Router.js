@@ -27,10 +27,12 @@ import C_CommunityPostDetailScreen from './screens/Community/C_CommunityPostDeta
 import C_CommunityRecordPractiseScreen from './screens/Community/C_CommunityRecordPractiseScreen';
 import F_FlashCardFieldScreen from './screens/FlashCard/F_FlashCardFieldScreen';
 import F_FlashCardTopicScreen from './screens/FlashCard/F_FlashCardTopicScreen';
+import ReadingListScreen from './screens/ReadingPracticeStack/ReadingListScreen';
+import ReadingPracticeScreen from './screens/ReadingPracticeStack/ReadingPracticeScreen';
 
 
 const DictionaryStackNavigator = createStackNavigator();
-const DictionaryStack = () => {
+const DictionaryStack = (props) => {
 
     const config = {
         animation: 'spring',
@@ -44,6 +46,7 @@ const DictionaryStack = () => {
 
         },
     };
+
 
     return (
         <DictionaryStackNavigator.Navigator
@@ -194,6 +197,22 @@ const SettingStack = () => {
 
 
 
+const ReadingPracticeStackNavigator = createStackNavigator();
+const ReadingPracticeStack = () => {
+    return (
+        <ReadingPracticeStackNavigator.Navigator>
+            <ReadingPracticeStackNavigator.Screen
+                name={"ReadingList"}
+                component={ReadingListScreen}
+            />
+            <ReadingPracticeStackNavigator.Screen
+                name={"ReadingPractice"}
+                component={ReadingPracticeScreen}
+            />
+        </ReadingPracticeStackNavigator.Navigator>
+    )
+}
+
 
 
 const NotificationStackNavigator = createStackNavigator();
@@ -241,9 +260,9 @@ const CommunityStack = () => {
 
 // 
 const TabBottomNavigator = createBottomTabNavigator();
-const TabBottom = (props) => {
-
-
+const TabBottom = () => {
+    // const navigation = useNavigation();
+    // console.warn('propsL: ',);
 
     return (
         <TabBottomNavigator.Navigator
@@ -297,6 +316,13 @@ const TabBottom = (props) => {
                     title: "Học Từ Vựng"
                 }}
             />
+             <TabBottomNavigator.Screen
+                name="ReadingPracticeStack"
+                component={ReadingPracticeStack}
+                options={{
+                    title: "Luyện Đọc"
+                }}
+            />
             {/* <TabBottomNavigator.Screen
                 name="Notification"
                 component={NotificationStack}
@@ -328,12 +354,15 @@ const TabBottom = (props) => {
 
 
 
-export default function Router() {
-
+export default function Router(props) {
+    
+  
 
     return (
         <NavigationContainer>
-            <TabBottom />
+            <TabBottom 
+                
+            />
         </NavigationContainer>
     )
 }

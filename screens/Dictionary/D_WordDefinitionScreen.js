@@ -14,6 +14,7 @@ const D_WordDefinitionScreen = (props) => {
     const { vocabulary } = props.route.params;
     const [isLoading, setIsLoading] = useState(false);
 
+
     const [vocabularyData, setVocabularyData] = useState({
         name: '',
         sound_us: '',
@@ -28,6 +29,7 @@ const D_WordDefinitionScreen = (props) => {
     const _onGetVocabularyDefinitions = async () => {
         setIsLoading(true);
         let vocabularyData = await getVocabularyDefinition(vocabulary.ID);
+      
         if (vocabularyData.status) {
 
             if (vocabularyData?.data && vocabularyData?.data?.ID) {
@@ -48,11 +50,13 @@ const D_WordDefinitionScreen = (props) => {
     }
 
     useEffect(() => {
-        _onGetVocabularyDefinitions();
 
         props.navigation.setOptions({
             title: vocabulary?.name
-        })
+        });
+        if (vocabulary.ID) {
+            _onGetVocabularyDefinitions();
+        }
     }, []);
 
 
@@ -100,7 +104,7 @@ const D_WordDefinitionScreen = (props) => {
                 <View style={styles.header}>
 
                     <View style={{ display: 'flex', flexDirection: 'row' }}>
-                        <Text style={{ color: 'white', fontSize: 26, fontFamily: 'Roboto', fontWeight: '600' }}>{vocabularyData?.name}</Text>
+                        <Text selectable={true} selectionColor={'orange'} style={{ color: 'white', fontSize: 26, fontFamily: 'Roboto', fontWeight: '600' }}>{vocabularyData?.name}</Text>
                         <Chip style={{ backgroundColor: '#0DA6E4', marginHorizontal: 10, justifyContent: 'center' }}
                             onPress={() => console.log('Pressed')}
                         >

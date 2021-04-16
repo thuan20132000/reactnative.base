@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CardDefinition from './components/CardDefinition'
 import CardFlip from 'react-native-card-flip';
-import { Button, IconButton, ProgressBar } from 'react-native-paper';
+import { Button, IconButton, ProgressBar, Modal, Portal, Provider } from 'react-native-paper';
 import CommonIcons from '../../utils/CommonIcons';
 import CommonColor from '../../utils/CommonColor';
 import CardWordItem from './components/CardWordItem';
@@ -26,7 +26,7 @@ import * as flashcardActions from '../../store/actions/flashcardActions';
 const F_FLashCardPracticeScreen = (props) => {
 
     const flashcard = useSelector(state => state.flashcard);
- 
+
 
     const dispatch = useDispatch();
     const _refCardFlip = useRef();
@@ -35,6 +35,8 @@ const F_FLashCardPracticeScreen = (props) => {
     const [anwserChoices, setAwnserChoices] = useState([]);
     const [isAnwsered, setIsAwnsered] = useState(false);
     const [recordTime, setRecordTime] = useState(0);
+    const [isCorrectSelect, setIsCorrectSelect] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     const [correctVocabulary, setCorrectVocabulary] = useState(null);
 
@@ -142,30 +144,33 @@ const F_FLashCardPracticeScreen = (props) => {
                     }, 100);
                 }, 100);
 
-
+                setIsCorrectSelect(false);
+                setIsVisible(true);
 
 
                 _refCardFlip.current.flip();
                 dispatch(flashcardActions.refreshPracticeVocabulary())
 
-                return;
+            } else {
+                dispatch(flashcardActions.addLearntVocabulary(practiceVocabulary));
+
+                setIsCorrectSelect(true);
+                setIsVisible(true);
+
+                let sound = new Sound('button_correct.mp3', Sound.MAIN_BUNDLE, (error) => {
+                    if (error) {
+                        console.log('error: ', error);
+                        return false
+                    }
+                    // play when loaded
+                    sound.play();
+                    return true;
+                });
+                _refCardFlip.current.flip();
             }
 
 
-            dispatch(flashcardActions.addLearntVocabulary(practiceVocabulary));
 
-
-
-            let sound = new Sound('button_correct.mp3', Sound.MAIN_BUNDLE, (error) => {
-                if (error) {
-                    console.log('error: ', error);
-                    return false
-                }
-                // play when loaded
-                sound.play();
-                return true;
-            });
-            _refCardFlip.current.flip();
 
 
 
@@ -193,36 +198,128 @@ const F_FLashCardPracticeScreen = (props) => {
     }
 
 
+
     return (
-        <View>
+        <Provider>
 
-
-            {/* Word meaning */}
             <View>
-                <ProgressBar
-                    progress={(10 - flashcard.practice_vocabulary_list.length) / 10}
-                    color={'red'}
+
+                <Portal>
+                    <Modal
+                        visible={isVisible}
+                        contentContainerStyle={{
+                            backgroundColor: 'white',
+                            padding: 22,
+                            width: 160,
+                            height: 160,
+                            alignSelf: 'center',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 6,
+                            bottom:120
+                        }}
+                        onDismiss={()=>setIsVisible(false)}
+                    >
+                        <View>
+                            {
+                                isCorrectSelect ?
+                                    <MaterialCommunityIcon
+                                        name={CommonIcons.checkProgress}
+                                        color={'green'}
+                                        size={52}
+                                        onPress={()=>setIsVisible(false)}
+                                    /> :
+                                    <MaterialCommunityIcon
+                                        name={CommonIcons.closeProgress}
+                                        color={'red'}
+                                        size={52}
+                                        onPress={()=>setIsVisible(false)}
+
+                                    />
+
+                            }
+
+                        </View>
+                    </Modal>
+                </Portal>
+
+                {/* Word meaning */}
+                <View>
+                    <ProgressBar
+                        progress={(10 - flashcard.practice_vocabulary_list.length) / 10}
+                        color={'red'}
+                        style={{
+                            height: 8
+                        }}
+                    />
+                </View>
+                <CardFlip
+                    ref={_refCardFlip}
                     style={{
-                        height: 8
-                    }}
-                />
-            </View>
-            <CardFlip
-                ref={_refCardFlip}
-                style={{
-                    height: 220
-                }}
-            >
-                <CardDefinition
-                    containerStyle={{
                         height: 220
                     }}
-                    meaning={practiceVocabulary?.meaning}
-                    word_type={practiceVocabulary?.word_type}
-                    firstDefinition={practiceVocabulary?.definition}
+                >
+                    <CardDefinition
+                        containerStyle={{
+                            height: 220
+                        }}
+                        meaning={practiceVocabulary?.meaning}
+                        word_type={practiceVocabulary?.word_type}
+                        firstDefinition={practiceVocabulary?.definition}
 
-                    children={
-                        isAnwsered &&
+                        children={
+                            isAnwsered &&
+                            <IconButton
+                                icon={CommonIcons.rotateCircle}
+                                color={CommonColor.primary}
+                                size={18}
+                                style={{
+                                    position: 'absolute',
+                                    bottom: 10,
+                                    right: 10
+                                }}
+                                onPress={() => _refCardFlip.current.flip()}
+
+                            />
+                        }
+
+                    />
+
+                    <CardDefinition
+                        containerStyle={{
+                            height: 220
+                        }}
+                    // word_type={practiceVocabulary?.word_type}
+                    // firstDefinition={`- ${practiceVocabulary?.definition} `}
+
+
+                    >
+
+                        <View>
+                            <Text style={{ fontSize: 22, fontWeight: '700', color: 'red' }} >{practiceVocabulary?.name} <Text style={{ color: 'coral' }} >({practiceVocabulary?.word_type})</Text></Text>
+                            <Text>{practiceVocabulary?.phon_us}</Text>
+                            <Text
+                                style={{
+                                    color: 'grey',
+                                    fontStyle: 'italic',
+                                    marginBottom: 6
+                                }}
+                            >
+                                {practiceVocabulary?.definition}
+                            </Text>
+                            <Text
+                                style={{
+                                    fontSize: 18,
+                                    color: 'coral'
+                                }}
+                            >
+                                {practiceVocabulary?.example}
+                            </Text>
+
+
+                        </View>
                         <IconButton
                             icon={CommonIcons.rotateCircle}
                             color={CommonColor.primary}
@@ -235,138 +332,91 @@ const F_FLashCardPracticeScreen = (props) => {
                             onPress={() => _refCardFlip.current.flip()}
 
                         />
-                    }
-
-                />
-
-                <CardDefinition
-                    containerStyle={{
-                        height: 220
-                    }}
-                // word_type={practiceVocabulary?.word_type}
-                // firstDefinition={`- ${practiceVocabulary?.definition} `}
+                    </CardDefinition>
 
 
-                >
+                </CardFlip>
 
-                    <View>
-                        <Text style={{ fontSize: 22, fontWeight: '700', color: 'red' }} >{practiceVocabulary?.name} <Text style={{ color: 'coral' }} >({practiceVocabulary?.word_type})</Text></Text>
-                        <Text>{practiceVocabulary?.phon_us}</Text>
-                        <Text
-                            style={{
-                                color: 'grey',
-                                fontStyle: 'italic',
-                                marginBottom: 6
-                            }}
-                        >
-                            {practiceVocabulary?.definition}
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 18,
-                                color: 'coral'
-                            }}
-                        >
-                            {practiceVocabulary?.example}
-                        </Text>
-
-
-                    </View>
-                    <IconButton
-                        icon={CommonIcons.rotateCircle}
-                        color={CommonColor.primary}
-                        size={18}
-                        style={{
-                            position: 'absolute',
-                            bottom: 10,
-                            right: 10
-                        }}
-                        onPress={() => _refCardFlip.current.flip()}
-
-                    />
-                </CardDefinition>
-
-
-            </CardFlip>
-
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    flexWrap: 'wrap'
-                }}
-            >
-                {
-                    Array(recordTime).fill({}).map((e, index) =>
-                        <MaterialCommunityIcon
-                            name={CommonIcons.close}
-                            color={'red'}
-                            size={18}
-                        />
-                    )
-                }
-            </View>
-
-            {/* Anwser Choices */}
-            <View
-                style={[
-                    styles.choiceBox
-                ]}
-            >
-                {
-                    anwserChoices?.map((e, index) =>
-                        <CardWordItem
-                            key={index.toString()}
-                            name={e.name}
-                            onItemPress={() => _onSelectWord(e)}
-                            isActive={selectedWord && selectedWord.ID == e.ID ? true : false}
-                            isDisable={isAnwsered && practiceVocabulary?.ID != e.ID ? true : false}
-                            isHighlight={isAnwsered && practiceVocabulary?.ID == e.ID ? true : false}
-
-                        />
-
-                    )
-                }
-            </View>
-
-
-            <View
-                style={[
-                    {
+                <View
+                    style={{
                         display: 'flex',
-                        justifyContent: 'space-around',
                         flexDirection: 'row',
-
+                        justifyContent: 'space-around',
+                        flexWrap: 'wrap'
+                    }}
+                >
+                    {
+                        Array(recordTime).fill({}).map((e, index) =>
+                            <MaterialCommunityIcon
+                                name={CommonIcons.close}
+                                color={'red'}
+                                size={18}
+                            />
+                        )
                     }
-                ]}
-            >
-                {
-                    !isAnwsered &&
-                    <Button
-                        icon={CommonIcons.checkboxCircleMark}
-                        mode="outlined"
-                        onPress={_onCheckWord}
-                        disabled={selectedWord ? false : true}
-                        color={'red'}
-                    >
-                        Check
-                    </Button>
-                }
+                </View>
 
-                {
-                    isAnwsered &&
-                    <Button
-                        icon={CommonIcons.arrowRightChevron}
-                        mode="contained"
-                        onPress={_onNextCard}
-                        color={CommonColor.primary}
-                    >
-                        Next
+                {/* Anwser Choices */}
+                <View
+                    style={[
+                        styles.choiceBox
+                    ]}
+                >
+                    {
+                        anwserChoices?.map((e, index) =>
+                            <CardWordItem
+                                key={index.toString()}
+                                name={e.name}
+                                onItemPress={() => _onSelectWord(e)}
+                                isActive={selectedWord && selectedWord.ID == e.ID ? true : false}
+                                isDisable={isAnwsered && practiceVocabulary?.ID != e.ID ? true : false}
+                                isHighlight={isAnwsered && practiceVocabulary?.ID == e.ID ? true : false}
+
+                            />
+
+                        )
+                    }
+                </View>
+
+
+                <View
+                    style={[
+                        {
+                            display: 'flex',
+                            justifyContent: 'space-around',
+                            flexDirection: 'row',
+
+                        }
+                    ]}
+                >
+                    {
+                        !isAnwsered &&
+                        <Button
+                            icon={CommonIcons.checkboxCircleMark}
+                            mode="outlined"
+                            onPress={_onCheckWord}
+                            disabled={selectedWord ? false : true}
+                            color={'red'}
+                        >
+                            Check
                     </Button>
-                }
+                    }
+
+                    {
+                        isAnwsered &&
+                        <Button
+                            icon={CommonIcons.arrowRightChevron}
+                            mode="contained"
+                            onPress={_onNextCard}
+                            color={CommonColor.primary}
+                        >
+                            Next
+                    </Button>
+                    }
+                </View>
             </View>
-        </View>
+        </Provider>
+
     )
 }
 

@@ -55,6 +55,9 @@ export default {
     microphonePlus:'microphone-plus',
     playCircleOutline:'play-circle-outline',
     pauseCircleOutline:'pause-circle-outline',
+    checkProgress:'progress-check',
+    closeProgress:'progress-close',
+
 
 
 
