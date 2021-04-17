@@ -302,7 +302,7 @@ export const resetLearntVocabularyByTopic = async (topic_slug) => {
     try {
 
 
- 
+
         const jsonValue = JSON.stringify([]);
         await AsyncStorage.setItem(`@learnt_${topic_slug}_vocabulary`, jsonValue);
 
@@ -402,7 +402,7 @@ export const removeDuplicateTwoArray = async (arr1 = [], arr2 = []) => {
 
 
 
-export const _onSaveRemindSetting = async (remind_type,value) => {
+export const _onSaveRemindSetting = async (remind_type, value) => {
     try {
 
         const jsonValue = JSON.stringify(value);
@@ -427,3 +427,11 @@ export const _onGetRemindSetting = async (remind_type) => {
         return false;
     }
 }
+
+
+export const millisToMinutesAndSeconds = (millis) => {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
+

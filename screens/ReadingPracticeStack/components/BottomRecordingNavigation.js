@@ -8,6 +8,7 @@ const BottomRecordingNavigation = ({
     onStopRecordPress,
     onPauseRecordPress,
     isRecording = false,
+    recordingTime,
     children,
 }) => {
     return (
@@ -58,7 +59,10 @@ const BottomRecordingNavigation = ({
                         />
 
                 }
-                <Text>32:30</Text>
+                {
+                    recordingTime &&
+                        <Text>{recordingTime}</Text>
+                }
             </View>
             {children}
             

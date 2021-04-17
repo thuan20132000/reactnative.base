@@ -1,18 +1,28 @@
 import React, { useState } from 'react'
-import { ScrollView, StyleSheet, Text, View,PermissionsAndroid } from 'react-native'
-import { Card, Title, Paragraph,ProgressBar, IconButton } from 'react-native-paper';
+import { ScrollView, StyleSheet, Text, View, PermissionsAndroid } from 'react-native'
+import { Card, Title, Paragraph, ProgressBar, IconButton } from 'react-native-paper';
 import BottomRecordingNavigation from './components/BottomRecordingNavigation';
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
 import CommonIcons from '../../utils/CommonIcons';
 
 import Sound from 'react-native-sound';
+import { millisToMinutesAndSeconds } from '../../utils/helper';
 
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const ReadingPracticeScreen = (props) => {
 
-    const [isRecording,setIsRecording] = useState(false);
+    const _refRecordingTime = React.useRef();
+    const [isRecording, setIsRecording] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [recordingTime, setRecordingTime] = useState('00:00');
+    const [practiceAudio,setPracticeAudio] = useState({
+        "name":"reading_test.wav",
+        "length":recordingTime
+
+    })
+
     React.useEffect(() => {
         props.navigation.dangerouslyGetParent().setOptions({
             tabBarVisible: false
@@ -27,6 +37,7 @@ const ReadingPracticeScreen = (props) => {
     }, []);
 
 
+
     const path = Platform.select({
         android: 'sdcard/askmeit_dictionary/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
     });
@@ -34,26 +45,35 @@ const ReadingPracticeScreen = (props) => {
         AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
         AudioSourceAndroid: AudioSourceAndroidType.MIC,
     };
+
+
     const _onStartRecord = async () => {
-        setTimeout(() => {
-            var sound = new Sound('ding-sound-effect.mp3', Sound.MAIN_BUNDLE, (error) => {
-                /* ... */
-                if (error) {
-                    console.log('error: ', error);
-                    sound.release()
+        // setTimeout(() => {
+        //     var sound = new Sound('ding-sound-effect.mp3', Sound.MAIN_BUNDLE, (error) => {
+        //         /* ... */
+        //         if (error) {
+        //             console.log('error: ', error);
+        //             sound.release()
 
-                }
-            });
-            setTimeout(() => {
-                sound.play((success) => {
-                    /* ... */
-                    sound.release()
+        //         }
+        //     });
+        //     setTimeout(() => {
+        //         sound.play((success) => {
+        //             /* ... */
+        //             sound.release()
 
-                })
-            }, 100);
-        }, 100);
+        //         })
+        //     }, 100);
+        // }, 100);
+
+        // interval = setInterval(() => {
+        //     setRecordingTime(recordingTime + 1);
+        //     // _refRecordingTime.current += 1;
+        // }, 1000);
 
 
+        await audioRecorderPlayer.stopPlayer();
+        audioRecorderPlayer.removePlayBackListener();
         try {
 
             if (Platform.OS === 'android') {
@@ -72,8 +92,22 @@ const ReadingPracticeScreen = (props) => {
                         console.log('You can use the record');
                         let audio_uri = await audioRecorderPlayer.startRecorder(path, audioSet);
                         setIsRecording(true);
+                        var time = 0;
+                        _refRecordingTime.current = setInterval(() => {
+                            // setRecordingTime(recordingTime + 1);
+                            time = time + 1;
+                            console.log('==> record: ', time);
+                            let x = millisToMinutesAndSeconds(time * 1000);
+                            setRecordingTime(x);
+                        }, 1000);
+
+
                         audioRecorderPlayer.addRecordBackListener(e => {
-                            console.log('Recording . . . ', e.current_position);
+                            // console.log('Recording . . . ', e.current_position);
+                            let x = millisToMinutesAndSeconds(e.current_position);
+                            console.log('time: ', x);
+                            // console.log('rcL ', recordingTime)
+                            // _refRecordingTime.current = x;
                             return;
                         });
 
@@ -98,12 +132,14 @@ const ReadingPracticeScreen = (props) => {
 
 
     const _onStopRecord = async () => {
+        clearInterval(_refRecordingTime.current);
+
         try {
             let a = await audioRecorderPlayer.stopRecorder();
-            console.warn('remove: ', a);
             setIsRecording(false);
-
             audioRecorderPlayer.removeRecordBackListener();
+            // console.log('recording time: ', _refRecordingTime);
+
 
         } catch (error) {
 
@@ -123,7 +159,8 @@ const ReadingPracticeScreen = (props) => {
                 android: 'sdcard/askmeit_dictionary/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
             });
 
-            await audioRecorderPlayer.startPlayer(path);
+            let e = await audioRecorderPlayer.startPlayer(path);
+            
 
             await audioRecorderPlayer.setVolume(1.0);
             audioRecorderPlayer.addPlayBackListener((e) => {
@@ -154,6 +191,19 @@ const ReadingPracticeScreen = (props) => {
     }
 
 
+    React.useEffect(() => {
+
+
+        return () => {
+            clearInterval(_refRecordingTime.current);
+            audioRecorderPlayer.stopPlayer();
+            audioRecorderPlayer.removePlayBackListener();
+            audioRecorderPlayer.stopRecorder();
+            audioRecorderPlayer.removeRecordBackListener();
+
+        }
+    }, []);
+
     return (
         <View
             style={{
@@ -172,10 +222,12 @@ const ReadingPracticeScreen = (props) => {
                                 fontSize: 16,
                                 lineHeight: 24,
                                 fontStyle: 'normal',
-                                fontWeight: 'normal'
+                                fontWeight: 'normal',
+                                textAlign: 'justify'
                             }}
                             suppressHighlighting={true}
                             selectable={true}
+                            textBreakStrategy={'balanced'}
                         >
                             There are different types of lotteries, such as Powerball, Mega Millions, and Lotto. Powerball and Mega Millions are known for their large payouts. There are also instant lottery tickets that are scratch-off cards. The winnings tend to be less money, but they are extremely popular.
 
@@ -190,35 +242,50 @@ const ReadingPracticeScreen = (props) => {
                 </Card>
             </ScrollView>
             <BottomRecordingNavigation
-                onStartRecordPress={()=>{
-                    _onStartRecord().then(()=>{
-                        
+                onStartRecordPress={() => {
+                    _onStartRecord().then(() => {
+
                     })
                 }}
                 onStopRecordPress={_onStopRecord}
                 isRecording={isRecording}
+                recordingTime={recordingTime}
             >
                 <View
                     style={{
-                        display:'flex',
-                        flexDirection:'row',
-                        justifyContent:'center',
-                        alignItems:'center'
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center'
                     }}
                 >
-                    <ProgressBar 
-                        progress={0.5} 
-                        color={'red'} 
-                        style={{
-                            width:220
-                        }}
-                    />
-                    <IconButton
-                        icon={CommonIcons.playCircleOutline}
-                        color={'red'}
-                        size={22}
-                        onPress={_onStartPlay}
-                    />
+                    {
+                        isRecording
+                        &&
+                        <ProgressBar
+                            progress={0.5}
+                            color={'red'}
+                            style={{
+                                width: 220
+                            }}
+                            indeterminate={true}
+                        />
+                    }
+
+                    {/* Playing Button */}
+                    {
+                        !isRecording &&
+                        <IconButton
+                            icon={CommonIcons.playCircleOutline}
+                            color={'red'}
+                            size={43}
+                            onPress={_onStartPlay}
+                            style={{
+                                position:'absolute',
+                                right:10
+                            }}
+                        />
+                    }
                 </View>
 
             </BottomRecordingNavigation>
