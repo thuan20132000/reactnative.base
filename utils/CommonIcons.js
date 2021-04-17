@@ -57,6 +57,12 @@ export default {
     pauseCircleOutline:'pause-circle-outline',
     checkProgress:'progress-check',
     closeProgress:'progress-close',
+    fontSizeDecrease:'format-font-size-decrease',
+    fontSizeIncrease:'format-font-size-increase',
+    playlistMinus:'playlist-minus',
+    playlistPlus:'playlist-plus',
+
+
 
 
 

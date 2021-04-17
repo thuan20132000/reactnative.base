@@ -32,33 +32,7 @@ const BottomRecordingNavigation = ({
                     }
                 }
             >
-                {
-                    isRecording ?
-                        <IconButton
-                            icon={CommonIcons.pauseCircleOutline}
-                            color={'red'}
-                            size={34}
-                            style={{
-                                borderWidth: 1,
-                                borderColor: 'coral',
-
-                            }}
-                            onPress={onStopRecordPress}
-                        />
-                        :
-                        <IconButton
-                            icon={CommonIcons.recordCircle}
-                            color={'red'}
-                            size={34}
-                            style={{
-                                borderWidth: 1,
-                                borderColor: 'coral',
-
-                            }}
-                            onPress={onStartRecordPress}
-                        />
-
-                }
+               
                 {
                     recordingTime &&
                         <Text>{recordingTime}</Text>
@@ -75,7 +49,7 @@ export default BottomRecordingNavigation
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        height: 120,
+        minHeight: 160,
         backgroundColor: 'white',
         shadowColor: "#000",
         shadowOffset: {
