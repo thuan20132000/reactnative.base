@@ -61,10 +61,7 @@ export default {
     fontSizeIncrease:'format-font-size-increase',
     playlistMinus:'playlist-minus',
     playlistPlus:'playlist-plus',
-
-
-
-
+    saveFile:'content-save',
 
 
 

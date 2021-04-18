@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing, Platform } from 'react-native'
 import { Card, Title, Paragraph, ProgressBar, IconButton, FAB, Provider, Portal, Button } from 'react-native-paper';
 import BottomRecordingNavigation from './components/BottomRecordingNavigation';
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
@@ -10,6 +10,7 @@ import { millisToMinutesAndSeconds } from '../../utils/helper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import ButtonSubmit from '../../components/Button/ButtonSubmit';
 import ButtonText from '../../components/Button/BottonText';
+import Highlighter from 'react-native-highlight-words';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -25,17 +26,12 @@ const ReadingPracticeScreen = (props) => {
     const [isRecording, setIsRecording] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [recordingTime, setRecordingTime] = useState('00:00');
-    const [practiceAudio, setPracticeAudio] = useState({
-        "name": "reading_test.wav",
-        "length": recordingTime
-
-    });
+    const [practiceAudio, setPracticeAudio] = useState();
 
     const [readStyle, setReadStyle] = useState({
         fontSize: 24,
-        speed: 8
+        speed: 70
     });
-    const [readSpeed, setReadSpeed] = useState(19)
 
     React.useEffect(() => {
         props.navigation.dangerouslyGetParent().setOptions({
@@ -49,7 +45,6 @@ const ReadingPracticeScreen = (props) => {
         }
 
     }, []);
-
 
 
     const path = Platform.select({
@@ -74,7 +69,7 @@ const ReadingPracticeScreen = (props) => {
         if (contentHeight) {
             Animated.timing(scrollAnimation.current, {
                 toValue: contentHeight,
-                duration: (contentHeight * readSpeed),
+                duration: (contentHeight * readStyle.speed),
                 useNativeDriver: true,
                 easing: Easing.linear,
             }).start()
@@ -104,8 +99,8 @@ const ReadingPracticeScreen = (props) => {
             _onRunTextScroll();
 
         }, 3000);
-
         audioRecorderPlayer.removePlayBackListener();
+
         try {
 
             if (Platform.OS === 'android') {
@@ -125,21 +120,25 @@ const ReadingPracticeScreen = (props) => {
                         let audio_uri = await audioRecorderPlayer.startRecorder(path, audioSet);
                         setIsRecording(true);
                         var time = 0;
-                        _refRecordingTime.current = setInterval(() => {
-                            // setRecordingTime(recordingTime + 1);
-                            time = time + 1;
-                            console.log('==> record: ', time);
-                            let x = millisToMinutesAndSeconds(time * 1000);
-                            setRecordingTime(x);
-                        }, 1000);
-
+                        // _refRecordingTime.current = setInterval(() => {
+                        //     // setRecordingTime(recordingTime + 1);
+                        //     time = time + 1;
+                        //     console.log('==> record: ', time);
+                        //     let x = millisToMinutesAndSeconds(time * 1000);
+                        //     setRecordingTime(x);
+                        // }, 1000);
 
                         audioRecorderPlayer.addRecordBackListener(e => {
-                            // console.log('Recording . . . ', e.current_position);
-                            let x = millisToMinutesAndSeconds(e.current_position);
-                            console.log('time: ', x);
-                            // console.log('rcL ', recordingTime)
+                            console.log('Recording . . . ', e.current_position);
+                            // let x = millisToMinutesAndSeconds(e.current_position);
+                            // console.log('time: ', x);
+                            // // console.log('rcL ', recordingTime)
+                            // setRecordingTime(x);
                             // _refRecordingTime.current = x;
+                            let x = audioRecorderPlayer.mmssss(Math.floor(e.current_position));
+                            console.log('xx: ', x)
+                            setRecordingTime(x);
+
                             return;
                         });
 
@@ -174,8 +173,8 @@ const ReadingPracticeScreen = (props) => {
             scrollAnimation.current.removeAllListeners();
 
             setPracticeAudio({
-                name:"sdcard/askmeit_dictionary/hello3.wav",
-                length:3200
+                name: "sdcard/askmeit_dictionary/hello3.wav",
+                length: 3200
             })
 
 
@@ -229,6 +228,7 @@ const ReadingPracticeScreen = (props) => {
         }
     }
 
+    const readingText = "Claire was applying to private schools. Most private schools required letters of recommendation. Claire did not know who to ask. She felt like her teachers did not know her that well. Claire asked her teachers anyways. Some of them said yes, and some of them said no. One week later, Ms. Hershey gave Claire a letter of recommendation in an envelope. Claire wasn't supposed to open it, but she really wanted to know what Ms. Hershey wrote. Claire carefully tore it open and read the letter. She was disappointed. Ms. Hershey didn't write anything interesting about Claire. Ms. Hershey just wrote that Claire was a smart, nice girl. Claire couldn't get into her top schools with that letter. Claire asked her swim coach to write her a letter of recommendation. Her swim coach knew her well. The problem was that the swim coach wasn't the best writer. He did not go to college. Claire asked him to write a letter anyways. Of course, I'll write you a letter. I'll even send it to you, he said. One week later, Claire got an email from her swim coach. She was nervous to read what he wrote. Claire was impressed with the letter. Her swim coach was really funny, yet intelligent in the letter! ";
 
 
 
@@ -274,36 +274,35 @@ const ReadingPracticeScreen = (props) => {
 
                 onScrollBeginDrag={() => scrollAnimation.current.stopAnimation()}
 
+
             >
-                <Card>
 
-                    <View
+                <View
+                    style={{
+                        backgroundColor: 'white',
+                        paddingHorizontal: 12
+                    }}
+                >
+                    <Text
                         style={{
-                            paddingHorizontal: 12
+                            fontSize: readStyle.fontSize,
+                            lineHeight: 52,
+                            textAlign: 'justify',
                         }}
+                        // suppressHighlighting={true}
+                        // selectable={true}
+                        allowFontScaling={true}
+
                     >
-                        <Text
-                            style={{
-                                fontSize: readStyle.fontSize,
-                                lineHeight: 62,
-                                fontStyle: 'normal',
-                                fontWeight: 'normal',
-                                textAlign: 'justify',
-                            }}
-                            suppressHighlighting={true}
-                            selectable={true}
-                        >
-                            There are different types of lotteries, such as Powerball, Mega Millions, and Lotto. Powerball and Mega Millions are known for their large payouts. There are also instant lottery tickets that are scratch-off cards. The winnings tend to be less money, but they are extremely popular.
-                            Kenneth went to the movie theater. He likes to watch action movies. The more action, the better. He waited for his friends. They had planned to meet at 5 p.m. He waited outside. Twenty minutes passed. His friends were not there. He called one of them. It went straight to voicemail. He wondered where his friends were.
-
-                            He was getting upset. He called his other friends. They did not answer. He went back to the theater. He bought a ticket. He went to the concession stand. He bought popcorn and soda. He went inside the viewing room. He found a comfy seat. He sat down. He watched the movie all by himself.
-                            By the time children reach the age of three, parents will often enroll them into preschool. Some schools offer classes for children who are as young as two, but three is usually the youngest age children begin their education. After preschool comes kindergarten to 6th grade in the public school system. The 6th grade is the last year of elementary school. Once a child has completed elementary school, he or she will be enrolled into high school, which is from Grade 9 through 12. When students reach the 12th grade, they have completed their required education. Beyond the 12th grade, furthering your education is optional.
-
-
+                        <Highlighter
+                            highlightStyle={{ backgroundColor: 'yellow' }}
+                            searchWords={['recommendation', 'theater', 'action', 'lottery']}
+                            textToHighlight={readingText}
+                        />
 
                     </Text>
-                    </View>
-                </Card>
+
+                </View>
             </Animated.ScrollView>
             <BottomRecordingNavigation
                 onStartRecordPress={() => {
@@ -384,9 +383,9 @@ const ReadingPracticeScreen = (props) => {
                         (!isRecording && practiceAudio) &&
                         <View
                             style={{
-                                display:'flex',
-                                flexDirection:'row',
-                                alignItems:'center'
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center'
                             }}
                         >
                             <IconButton
@@ -409,9 +408,9 @@ const ReadingPracticeScreen = (props) => {
                                 indeterminate={true}
                             />
                             <IconButton
-                                icon={CommonIcons.shareVariant}
+                                icon={CommonIcons.saveFile}
                             />
-                             <IconButton
+                            <IconButton
                                 icon={CommonIcons.removeTrash}
                                 onPress={_onRemoveRecordingAudio}
                             />
@@ -479,30 +478,30 @@ const ReadingPracticeScreen = (props) => {
 
                             }}
                         >
-                            <Button onPress={() => setReadSpeed(19)}
+                            <Button onPress={() => setReadStyle({ ...readStyle, speed: 70 })}
                                 style={[
                                     styles.buttonSpeed,
-                                    readSpeed == 19 && {
+                                    readStyle.speed == 70 && {
                                         backgroundColor: 'grey'
                                     }
                                 ]}
                             >
                                 x1
                         </Button>
-                            <Button onPress={() => setReadSpeed(16)}
+                            <Button onPress={() => setReadStyle({ ...readStyle, speed: 50 })}
                                 style={[
                                     styles.buttonSpeed,
-                                    readSpeed == 16 && {
+                                    readStyle.speed == 50 && {
                                         backgroundColor: 'grey'
                                     }
                                 ]}
                             >
                                 x2
                         </Button>
-                            <Button onPress={() => setReadSpeed(13)}
+                            <Button onPress={() => setReadStyle({ ...readStyle, speed: 20 })}
                                 style={[
                                     styles.buttonSpeed,
-                                    readSpeed == 13 && {
+                                    readStyle.speed == 30 && {
                                         backgroundColor: 'grey'
                                     }
                                 ]}
