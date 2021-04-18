@@ -22,6 +22,8 @@ target 'reactnative_base' do
 
   pod 'RNAudioRecorderPlayer', :path => '../node_modules/react-native-audio-recorder-player'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'reactnative_baseTests' do
     inherit! :complete
     # Pods for testing

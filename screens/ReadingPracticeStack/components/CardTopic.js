@@ -15,7 +15,9 @@ const CardTopic = ({
     onPress,
     image_path,
     topic_vocabulary_number,
-    topic
+    topic,
+    onVocabularyPress,
+    onPracticePress
 }) => {
 
     const flashcard = useSelector(state => state.flashcard);
@@ -65,9 +67,14 @@ const CardTopic = ({
             </Card.Content>
             <Card.Actions>
                 <Button
-                    onPress={onPress}
+                    onPress={onVocabularyPress}
                 >
-                    READ MORE
+                    Học từ vựng
+                </Button>
+                <Button
+                    onPress={onPracticePress}
+                >
+                    Luyện đọc
                 </Button>
             </Card.Actions>
         </Card>

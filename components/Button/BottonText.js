@@ -19,7 +19,8 @@ const ButtonText = ({
        >
            <Text
             style={[
-                styles.text
+                styles.text,
+                labelStyle,
             ]}
            >
                {label}
@@ -34,12 +35,22 @@ const styles = StyleSheet.create({
     container:{
         borderRadius:6,
         width:120,
-        marginVertical:4
+        marginVertical:4,
+        marginHorizontal:4,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+
+        elevation: 10,
+        padding:6
     },
     text:{
         color:'white',
-        fontWeight:'700',
         textAlign:'center',
-        fontSize:22
+        fontSize:14
     }
 })

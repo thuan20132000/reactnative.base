@@ -29,6 +29,8 @@ import F_FlashCardFieldScreen from './screens/FlashCard/F_FlashCardFieldScreen';
 import F_FlashCardTopicScreen from './screens/FlashCard/F_FlashCardTopicScreen';
 import ReadingListScreen from './screens/ReadingPracticeStack/ReadingListScreen';
 import ReadingPracticeScreen from './screens/ReadingPracticeStack/ReadingPracticeScreen';
+import ReadingVocabularyScreen from './screens/ReadingPracticeStack/ReadingVocabularyScreen';
+import ReadingVocabularyPracticeScreen from './screens/ReadingPracticeStack/ReadingVocabularyPracticeScreen';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -102,7 +104,7 @@ const FlashCardStack = () => {
                 name={'FlashCardField'}
                 component={F_FlashCardFieldScreen}
                 options={{
-                    title:""
+                    title: ""
                 }}
             />
             <FlashCardStackNavigator.Screen
@@ -117,7 +119,7 @@ const FlashCardStack = () => {
                 name={"FlashCardTopic"}
                 component={F_FlashCardTopicScreen}
                 options={{
-                    title:"Chọn Chủ Đề"
+                    title: "Chọn Chủ Đề"
                 }}
 
             />
@@ -208,6 +210,14 @@ const ReadingPracticeStack = () => {
             <ReadingPracticeStackNavigator.Screen
                 name={"ReadingPractice"}
                 component={ReadingPracticeScreen}
+            />
+            <ReadingPracticeStackNavigator.Screen
+                name={"ReadingVocabulary"}
+                component={ReadingVocabularyScreen}
+            />
+                <ReadingPracticeStackNavigator.Screen
+                name={"ReadingVocabularyPractice"}
+                component={ReadingVocabularyPracticeScreen}
             />
         </ReadingPracticeStackNavigator.Navigator>
     )
@@ -316,7 +326,7 @@ const TabBottom = () => {
                     title: "Học Từ Vựng"
                 }}
             />
-             <TabBottomNavigator.Screen
+            <TabBottomNavigator.Screen
                 name="ReadingPracticeStack"
                 component={ReadingPracticeStack}
                 options={{
@@ -355,13 +365,13 @@ const TabBottom = () => {
 
 
 export default function Router(props) {
-    
-  
+
+
 
     return (
         <NavigationContainer>
-            <TabBottom 
-                
+            <TabBottom
+
             />
         </NavigationContainer>
     )
