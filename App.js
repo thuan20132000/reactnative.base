@@ -37,11 +37,12 @@ import notification_reducer from './store/reducer/notificationReducer';
 import reading_list_reducer from './store/reducer/readingReducer';
 
 import messaging from '@react-native-firebase/messaging'
+import { Provider } from 'react-native-paper';
 
 const rootReducer = combineReducers({
   flashcard: flashcard_list_reducer,
   notification: notification_reducer,
-  reading:reading_list_reducer
+  reading: reading_list_reducer
 });
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
@@ -64,7 +65,9 @@ const App = () => {
     <StoreProvider
       store={store}
     >
-      <Router />
+      <Provider>
+        <Router />
+      </Provider>
 
     </StoreProvider>
   );

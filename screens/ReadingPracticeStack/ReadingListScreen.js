@@ -1,17 +1,18 @@
 import React from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
 import CardTopic from './components/CardTopic'
 import * as readingActions from '../../store/actions/readingActions';
 import { useDispatch } from 'react-redux';
+import { getReadingPostList, getReadingTopicsList } from '../../utils/api_v1';
+import { Button, Menu, Divider, Provider } from 'react-native-paper';
+import ButtonText from '../../components/Button/BottonText';
 
 const ReadingListScreen = (props) => {
 
     const dispatch = useDispatch();
 
 
-    const _onNavigateToDetail = () => {
-        props.navigation.navigate('ReadingPractice');
-    }
+
 
     let data = [
         {
@@ -119,7 +120,7 @@ const ReadingListScreen = (props) => {
                 }
             ]
         },
-      
+
 
     ]
 
@@ -266,31 +267,133 @@ const ReadingListScreen = (props) => {
         }
     ]
 
-    const _onNavigateToReadingVocabulary = () => {
 
 
-        dispatch(readingActions.setReadingVocabularyList(data,sample_data))
 
-        props.navigation.navigate('ReadingVocabularyPractice');
+    const [readingPost, setReadingPost] = React.useState([]);
+    const [readingTopic,setReadingTopic] = React.useState([]);
+
+    React.useEffect(() => {
+
+
+
+
+        getReadingPostList()
+            .then((res) => {
+                if (res.status && res.data.length > 0) {
+                    setReadingPost(res.data)
+                    console.log(res.data)
+                }
+            })
+            .catch((err) => {
+                console.warn('error: ', err);
+            })
+            .finally(() => {
+                console.warn('finally');
+            });
+
+        getReadingTopicsList()
+            .then((res) => {
+                if (res.status && res.data.length > 0) {
+                    setReadingTopic(res.data)
+                    console.log('topicL ',res.data)
+                }
+            })
+            .catch((err) => {
+                console.warn('error: ',err);
+            })
+            .finally(() => {
+                console.warn('finally');
+            })
+        
+    }, []);
+
+    const _onNavigateToReadingVocabulary = (post) => {
+
+
+        // dispatch(readingActions.setReadingVocabularyList(data, sample_data))
+
+        props.navigation.navigate('ReadingVocabulary', {
+            readingpost: post
+        });
 
     }
 
+
+
+    const _onNavigateToPractice = (post) => {
+        props.navigation.navigate('ReadingPractice', {
+            readingpost: post
+        });
+    }
+
+
+
+    const [visible, setVisible] = React.useState(false);
+
+    const openMenu = () => setVisible(true);
+
+    const closeMenu = () => setVisible(false);
+
+
+    React.useLayoutEffect(() => {
+        props.navigation.setOptions({
+            title: "",
+
+            // <View
+            //     style={{
+
+            //         flexDirection: 'row',
+            //         justifyContent: 'center',
+            //     }}>
+            //     <Menu
+            //         visible={visible}
+            //         onDismiss={closeMenu}
+            //         anchor={<Button onPress={openMenu}>Show menu</Button>}>
+            //         <Menu.Item onPress={() => { }} title="Item 1" />
+            //         <Menu.Item onPress={() => { }} title="Item 2" />
+            //         <Divider />
+            //         <Menu.Item onPress={() => { }} title="Item 3" />
+            //     </Menu>
+            // </View>
+
+
+        })
+
+    }, []);
+
+
+
     return (
-        <ScrollView>
-            <Text></Text>
-
-            {
-                Array(10).fill({}).map((e, index) =>
+        <>
+         
+            <ScrollView
+                horizontal={true}
+              
+            >
+                {
+                    (readingTopic && readingTopic.length > 0 ) &&
+                    readingTopic.map((topic,index) => 
+                        <ButtonText
+                            label={topic.name}
+                        />
+                    )
+                }
+            </ScrollView>
+            <FlatList
+                data={readingPost}
+                renderItem={({item}) =>
                     <CardTopic
-                        key={index.toString()}
-                        onPracticePress={() => _onNavigateToDetail()}
-                        onVocabularyPress={() => _onNavigateToReadingVocabulary()}
-
+                        onPracticePress={() => _onNavigateToPractice(item)}
+                        onVocabularyPress={() => _onNavigateToReadingVocabulary(item)}
+                        title={item.title}
+                        summary={item.content}
                     />
-                )
-            }
-
-        </ScrollView>
+                }
+                keyExtractor={item => item.id.toString()}
+               
+            />
+        </>
     )
 }
 

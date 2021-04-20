@@ -206,18 +206,30 @@ const ReadingPracticeStack = () => {
             <ReadingPracticeStackNavigator.Screen
                 name={"ReadingList"}
                 component={ReadingListScreen}
+                options={{
+                    title: "Luyện đọc"
+                }}
             />
             <ReadingPracticeStackNavigator.Screen
                 name={"ReadingPractice"}
                 component={ReadingPracticeScreen}
+                options={{
+                    title: "Luyện đọc"
+                }}
             />
             <ReadingPracticeStackNavigator.Screen
                 name={"ReadingVocabulary"}
                 component={ReadingVocabularyScreen}
+                options={{
+                    title: "Luyện đọc"
+                }}
             />
-                <ReadingPracticeStackNavigator.Screen
+            <ReadingPracticeStackNavigator.Screen
                 name={"ReadingVocabularyPractice"}
                 component={ReadingVocabularyPracticeScreen}
+                options={{
+                    title: "Luyện đọc"
+                }}
             />
         </ReadingPracticeStackNavigator.Navigator>
     )

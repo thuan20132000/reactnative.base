@@ -1,5 +1,5 @@
 
-import { api_v1_url, api_flashcard_v1 } from '../config/api_config.json';
+import { api_v1_url, api_flashcard_v1, api_reading_v1 } from '../config/api_config.json';
 
 export const searchVocabulary = async (vocabulary) => {
 
@@ -202,6 +202,85 @@ export const getFieldsList = async () => {
 export const getFieldTopic = async (field_id) => {
     try {
         let url = `${api_flashcard_v1}/field/${field_id}`;
+        let fetchData = await fetch(url);
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: "fetch failed",
+                data: [],
+            }
+        }
+
+        let dataRes = await fetchData.json();
+
+        if (!dataRes.status) {
+            return {
+                status: false,
+                message: "fetch failed ",
+                data: [],
+            }
+        }
+
+        return {
+            status: true,
+            message: "fetch success",
+            data: dataRes.data
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: [],
+        }
+    }
+}
+
+
+
+
+export const getReadingTopicsList = async () => {
+    try {
+        let url = `${api_reading_v1}/readingtopics`;
+        let fetchData = await fetch(url);
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: "fetch failed",
+                data: [],
+            }
+        }
+
+        let dataRes = await fetchData.json();
+
+        if (!dataRes.status) {
+            return {
+                status: false,
+                message: "fetch failed ",
+                data: [],
+            }
+        }
+
+        return {
+            status: true,
+            message: "fetch success",
+            data: dataRes.data
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: [],
+        }
+    }
+}
+
+export const getReadingPostList = async () => {
+    try {
+        let url = `${api_reading_v1}/readingposts`;
         let fetchData = await fetch(url);
 
         if (!fetchData.ok) {

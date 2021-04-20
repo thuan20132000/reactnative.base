@@ -13,11 +13,14 @@ import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 
 const CardTopic = ({
     onPress,
-    image_path,
     topic_vocabulary_number,
     topic,
     onVocabularyPress,
-    onPracticePress
+    onPracticePress,
+    summary,
+    title,
+    image_path,
+
 }) => {
 
     const flashcard = useSelector(state => state.flashcard);
@@ -46,23 +49,25 @@ const CardTopic = ({
                 display: 'flex',
                 alignItems: 'center',
                 marginVertical: 6,
-                marginHorizontal:6
+                marginHorizontal: 6,
+                justifyContent: 'center'
             }}
         >
 
-            <Card.Cover
+            <Image
                 source={{ uri: 'https://picsum.photos/700' }}
                 style={{
                     width: 320,
-                    height: 120
+                    height: 120,
+                    alignSelf:'center'
                 }}
             />
             <Card.Content>
-                <Title>Card title</Title>
+                <Title>{title}</Title>
                 <Paragraph
                     numberOfLines={3}
                 >
-                    In the United States, 43 states, Washington D.C., Puerto Rico, and the U.S. Virgin Islands, all have their own lottery. A lottery is used for states to raise money. Licensed stores sell numbered tickets, or people can pay to choose their own numbers. When you let a machine pick your numbers, it is usually called a Quick Pick. Many people play lucky numbers, numbers associated with birthdates or other important numbers to them. The money earned from selling lottery tickets goes to pay for schools, roads, bridges, and other public services. Once a week or more, a drawing is held where the numbers are randomly picked. If your ticket has those numbers, you could win a cash prize.
+                    {summary}
                 </Paragraph>
             </Card.Content>
             <Card.Actions>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing, Platform, TextInput } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing, Platform, TextInput, ActivityIndicator } from 'react-native'
 import { Card, Title, Paragraph, ProgressBar, IconButton, Provider, Portal, Button, Modal } from 'react-native-paper';
 import BottomRecordingNavigation from './components/BottomRecordingNavigation';
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
@@ -33,12 +33,25 @@ const ReadingPracticeScreen = (props) => {
     const [recordingTime, setRecordingTime] = useState('00:00');
     const [practiceAudio, setPracticeAudio] = useState();
 
+
+
+    const {readingpost} = props.route?.params;
+
+    const [readingPost,setReadingPost] = useState();
+
+
     const [readStyle, setReadStyle] = useState({
         fontSize: 24,
         speed: 70
     });
 
     React.useEffect(() => {
+
+
+        if(readingpost){
+            setReadingPost(readingpost);
+        }
+
         props.navigation.dangerouslyGetParent().setOptions({
             tabBarVisible: false
         });
@@ -305,6 +318,25 @@ const ReadingPracticeScreen = (props) => {
     }
 
 
+    if(!readingPost){
+        return (
+            <View
+                style={{
+                    display:'flex',
+                    flex:1,
+                    justifyContent:'center',
+                    alignItems:'center'
+                }}
+            >
+                <ActivityIndicator
+                    size={'large'}
+                    color={'coral'}
+                />
+            </View>
+        )
+    }
+
+
 
 
     return (
@@ -397,8 +429,8 @@ const ReadingPracticeScreen = (props) => {
                         >
                             <Highlighter
                                 highlightStyle={{ backgroundColor: 'yellow' }}
-                                searchWords={['recommendation', 'theater', 'action', 'lottery']}
-                                textToHighlight={readingText}
+                                searchWords={['everywhere', 'unattractive', 'action', 'lottery']}
+                                textToHighlight={readingPost.content}
                             />
 
                         </Text>
