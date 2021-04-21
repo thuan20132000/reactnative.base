@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Searchbar, IconButton } from 'react-native-paper'
 import { searchVocabulary } from '../../utils/api_v1';
 import CommonColor from '../../utils/CommonColor';
@@ -101,35 +101,24 @@ const D_HomeSearchScreen = (props) => {
 
 
 
-    React.useEffect(() => {
-        messaging().onNotificationOpenedApp(remoteMessage => {
-
-            console.log('id: ', remoteMessage.data?.ID);
-            if (remoteMessage.data?.ID) {
-                props.navigation.navigate('VocabularyDefinition', {
-                    vocabulary: {
-                        "ID": remoteMessage.data?.ID,
-                        "name": "thinking",
-                        "phon_us": "/ˈθɪŋkɪŋ/",
-                        "phon_uk": "/ˈθɪŋkɪŋ/",
-                        "sound_us": "/media/audio/thinking_adjective__us.mp3",
-                        "sound_uk": "/media/audio/thinking_adjective__uk.mp3",
-                        "word_type": "adjective"
-                    },
-                })
-            }
-
-        });
-    }, []);
-
 
 
     const navigation = useNavigation();
 
     React.useEffect(() => {
+
+        messaging().setBackgroundMessageHandler(async remoteMessage => {
+            console.log('Message handled in the background!', remoteMessage);
+        });
+
         messaging().onNotificationOpenedApp(remoteMessage => {
 
             console.log('message data: ', remoteMessage);
+
+            if (remoteMessage.from == '/topics/reading_practice') {
+                navigation.navigate('ReadingList');
+                return;
+            }
 
             if (remoteMessage.from == '/topics/daily_vocabulary') {
 
@@ -154,7 +143,12 @@ const D_HomeSearchScreen = (props) => {
                 return;
             }
 
+
+
         });
+
+
+
 
         // messaging().onMessage(async remoteMessage => {
         //     console.log('Message handled in the background!', remoteMessage);
@@ -193,18 +187,13 @@ const D_HomeSearchScreen = (props) => {
                 }}
             >
 
-                <Searchbar
-                    placeholder="Search"
-                    onChangeText={_onInputSearchText}
-                    value={searchQuery}
-                    style={{
-                        marginHorizontal: 8,
-                        marginVertical: 18
-                    }}
-                />
+
 
                 <ScrollView
                     keyboardShouldPersistTaps={'handled'}
+                    style={{
+                        marginTop:10
+                    }}
                 >
 
                     {
@@ -241,7 +230,6 @@ const D_HomeSearchScreen = (props) => {
             </View>
 
 
-
             {/* Body Control */}
             {
                 (!searchData) &&
@@ -249,14 +237,13 @@ const D_HomeSearchScreen = (props) => {
                 <>
                     <CardDefinition
                         containerStyle={{
-                            height: 220,
                             marginHorizontal: 8,
                             display: 'flex',
                             position: 'relative',
                             // zIndex: -1,
                             bottom: 120,
                             flexDirection: 'row',
-                            justifyContent: 'flex-start',
+                            justifyContent: 'center',
                             padding: 12,
                             minHeight: 240,
                             backgroundColor: 'white',
@@ -271,6 +258,8 @@ const D_HomeSearchScreen = (props) => {
                             elevation: 11,
                             marginVertical: 12,
                             borderRadius: 8,
+                            width:deviceWidth-50,
+                            alignSelf:'center',
                         }}
                     // word_type={nearestVocabulary?.word_type}
                     // firstDefinition={`- ${nearestVocabulary?.definition} `}
@@ -278,7 +267,14 @@ const D_HomeSearchScreen = (props) => {
 
                     >
 
-                        <View>
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
                             <MaterialCommunityIcon
                                 name={CommonIcons.bell}
                                 color={'gold'}
@@ -324,7 +320,7 @@ const D_HomeSearchScreen = (props) => {
                                     onPress={() => _onPlayVocabularySound(nearestVocabulary.sound_us)}
 
                                 />
-                                <Text style={{ fontSize: 22, fontWeight: '700', color: 'red' }} >{nearestVocabulary?.name}</Text>
+                                <Text selectable={true} suppressHighlighting={true} style={{ fontSize: 22, fontWeight: '700', color: 'red' }} >{nearestVocabulary?.name}</Text>
                                 <Text style={{ color: 'coral' }} >({nearestVocabulary?.word_type})</Text>
                                 <Text>{nearestVocabulary?.phon_us}</Text>
 
@@ -338,10 +334,43 @@ const D_HomeSearchScreen = (props) => {
 
             }
 
+            <View>
+                <Searchbar
+                    placeholder="Search"
+                    placeholderTextColor={'white'}
+                
+                    onChangeText={_onInputSearchText}
+                    value={searchQuery}
+                    style={{
+                        marginHorizontal: 8,
+                        marginVertical: 18,
+                        shadowColor: "#536983",
+                        shadowOffset: {
+                            width: 0,
+                            height: 5,
+                        },
+                        shadowOpacity: 0.34,
+                        shadowRadius: 6.27,
+                
+                        elevation: 10,
+                        backgroundColor:'#435E7D',
+                        
+                    }}
+                    iconColor={'white'}
+                    textAlignVertical={'center'}
+                    selectionColor={'white'}
+                    inputStyle={{
+                        color:'white'
+                    }}
+                    
+                    
+
+                />
+            </View>
         </View>
     )
 }
-
+const deviceWidth = Dimensions.get('screen').width;
 export default D_HomeSearchScreen
 
 const styles = StyleSheet.create({

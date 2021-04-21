@@ -11,7 +11,7 @@ import * as flashcardAction from '../../../store/actions/flashcardActions';
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 
 
-const CardTopic = ({
+const CardReading = ({
     onPress,
     topic_vocabulary_number,
     topic,
@@ -39,7 +39,7 @@ const CardTopic = ({
         });
 
 
-    }, [flashcard.learnt_vocabulary_list]);
+    }, []);
 
 
 
@@ -76,7 +76,7 @@ const CardTopic = ({
                 <Button
                     onPress={onVocabularyPress}
                 >
-                    Luyện nghe
+                    Nghe
                 </Button>
                 <Button
                     onPress={onPracticePress}
@@ -88,7 +88,7 @@ const CardTopic = ({
     )
 }
 
-export default CardTopic
+export default CardReading
 
 const styles = StyleSheet.create({
     container: {

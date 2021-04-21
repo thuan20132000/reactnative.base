@@ -13,6 +13,7 @@ const S_VocabularyRemindScreen = () => {
     const [learntVocabularyRemind, setLearnVocabularyRemind] = useState(false);
     const [dailyVocabularyRemind, setDailyVocabularyRemind] = useState(false);
     const [practiceRemind, setPracticeRemind] = useState(false);
+    const [readingRemind, setReadingRemind] = useState(false);
 
 
     React.useEffect(() => {
@@ -53,6 +54,17 @@ const S_VocabularyRemindScreen = () => {
                         setPracticeRemind(true);
                     } else {
                         setPracticeRemind(false)
+                    }
+                }
+            });
+
+        _onGetRemindSetting('reading_practice')
+            .then((value) => {
+                if (value) {
+                    if (value == 'true' || value == true) {
+                        setReadingRemind(true);
+                    } else {
+                        setReadingRemind(false)
                     }
                 }
             });
@@ -117,6 +129,25 @@ const S_VocabularyRemindScreen = () => {
         }
     }
 
+
+
+    const _onChangeRemindReadingPractice = async () => {
+        setReadingRemind(!readingRemind);
+        if (readingRemind) {
+            messaging()
+                .unsubscribeFromTopic('reading_practice')
+                .then(() => console.log('unsubcribed to reading_practice'));
+            _onSaveRemindSetting('reading_practice', false)
+                .then((value) => console.log('save res: ', value));
+        } else {
+            messaging()
+                .subscribeToTopic('reading_practice')
+                .then(() => console.log(`Subscribed to reading_practice`));
+            _onSaveRemindSetting('reading_practice', true)
+                .then((value) => console.log('save res: ', value));
+        }
+    }
+
     return (
         <View
             style={[
@@ -158,7 +189,7 @@ const S_VocabularyRemindScreen = () => {
                 rowPressDisable={true}
             />
             <RowItem
-                label={'Nhận thông báo luyện tập'}
+                label={'Nhận thông báo từ vựng'}
                 leftIconName={CommonIcons.bell}
                 labelStyle={{
                     fontSize: 16
@@ -170,6 +201,23 @@ const S_VocabularyRemindScreen = () => {
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={_onChangeRemindPractice}
                         value={practiceRemind}
+                    />
+                }
+                rowPressDisable={true}
+            />
+            <RowItem
+                label={'Nhận thông báo luyện đọc'}
+                leftIconName={CommonIcons.bell}
+                labelStyle={{
+                    fontSize: 16
+                }}
+                children={
+                    <Switch
+                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={_onChangeRemindReadingPractice}
+                        value={readingRemind}
                     />
                 }
                 rowPressDisable={true}

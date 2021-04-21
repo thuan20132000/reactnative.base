@@ -14,6 +14,7 @@ import * as flashcardAction from '../../store/actions/flashcardActions'
 import { _onGetRandomInt, _onPlayFlashCardSound, _onPlaySound } from '../../utils/helper'
 import Sound from 'react-native-sound'
 import { url_absolute } from '../../config/api_config.json'
+import ButtonText from '../../components/Button/BottonText'
 const F_FlashCardChoiceScreen = (props) => {
 
     const _refCardFlip = useRef();
@@ -275,7 +276,30 @@ const F_FlashCardChoiceScreen = (props) => {
                     marginVertical: 22
                 }]}
             >
-                <TouchableOpacity
+
+                <ButtonText
+                    onItemPress={_onSkipVocabulary}
+                    label={"Bỏ qua"}
+                    labelStyle={{
+                        fontWeight:'700',
+                        fontSize:16
+                    }}
+                    containerStyle={{
+                        padding:12
+                    }}
+                />
+                  <ButtonText
+                    onItemPress={_onSelectVocabulary}
+                    label={"Chọn"}
+                    labelStyle={{
+                        fontWeight:'700',
+                        fontSize:16
+                    }}
+                    containerStyle={{
+                        padding:12
+                    }}
+                />
+                {/* <TouchableOpacity
                     style={[
                         styles.buttonSelect
                     ]}
@@ -311,7 +335,7 @@ const F_FlashCardChoiceScreen = (props) => {
                     >
                         LEARN
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </ScrollView>
     )

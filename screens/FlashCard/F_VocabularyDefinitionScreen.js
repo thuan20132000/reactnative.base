@@ -71,7 +71,7 @@ const F_VocabularyDefinitionScreen = (props) => {
             }, 100);
 
         } catch (error) {
-            console.warn(error);
+            console.log(error);
         }
     }
 

@@ -23,6 +23,7 @@ import { url_absolute } from '../../config/api_config.json';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import ModalLoading from '../../components/Modal/ModalLoading';
 import * as flashcardActions from '../../store/actions/readingActions';
+import ButtonText from '../../components/Button/BottonText';
 const ReadingVocabularyPracticeScreen = (props) => {
 
     const flashcard = useSelector(state => state.reading);
@@ -189,8 +190,8 @@ const ReadingVocabularyPracticeScreen = (props) => {
 
     const _onNextCard = () => {
         if (flashcard.practice_vocabulary_list.length <= 0) {
-            props.navigation.replace('ReadingVocabularyPracticeFinish',{
-                learnt_vocabulary_list:flashcard.learnt_vocabulary_list
+            props.navigation.replace('ReadingVocabularyPracticeFinish', {
+                learnt_vocabulary_list: flashcard.learnt_vocabulary_list
             })
 
         } else {
@@ -394,27 +395,37 @@ const ReadingVocabularyPracticeScreen = (props) => {
                 >
                     {
                         !isAnwsered &&
-                        <Button
+                        <ButtonText
                             icon={CommonIcons.checkboxCircleMark}
-                            mode="outlined"
-                            onPress={_onCheckWord}
+                            onItemPress={_onCheckWord}
                             disabled={selectedWord ? false : true}
-                            color={'red'}
-                        >
-                            Check
-                    </Button>
+
+                            label={`Kiểm tra`}
+                            labelStyle={{
+                                fontSize: 16,
+                                fontWeight: '700'
+                            }}
+                            containerStyle={{
+                                padding: 12
+                            }}
+
+                        />
                     }
 
                     {
                         isAnwsered &&
-                        <Button
+                        <ButtonText
                             icon={CommonIcons.arrowRightChevron}
-                            mode="contained"
-                            onPress={_onNextCard}
-                            color={CommonColor.primary}
-                        >
-                            Next
-                    </Button>
+                            onItemPress={_onNextCard}
+                            label={`Tiếp tục`}
+                            labelStyle={{
+                                fontSize: 16,
+                                fontWeight: '700'
+                            }}
+                            containerStyle={{
+                                padding: 12
+                            }}
+                        />
                     }
                 </View>
             </View>

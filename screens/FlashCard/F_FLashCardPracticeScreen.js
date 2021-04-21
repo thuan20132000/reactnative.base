@@ -23,6 +23,7 @@ import { url_absolute } from '../../config/api_config.json';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import ModalLoading from '../../components/Modal/ModalLoading';
 import * as flashcardActions from '../../store/actions/flashcardActions';
+import ButtonText from '../../components/Button/BottonText';
 const F_FLashCardPracticeScreen = (props) => {
 
     const flashcard = useSelector(state => state.flashcard);
@@ -249,7 +250,7 @@ const F_FLashCardPracticeScreen = (props) => {
                 <View>
                     <ProgressBar
                         progress={(10 - flashcard.practice_vocabulary_list.length) / 10}
-                        color={'red'}
+                        color={'green'}
                         style={{
                             height: 8
                         }}
@@ -391,27 +392,38 @@ const F_FLashCardPracticeScreen = (props) => {
                 >
                     {
                         !isAnwsered &&
-                        <Button
+                        <ButtonText
                             icon={CommonIcons.checkboxCircleMark}
-                            mode="outlined"
-                            onPress={_onCheckWord}
+                            onItemPress={_onCheckWord}
                             disabled={selectedWord ? false : true}
-                            color={'red'}
-                        >
-                            Check
-                    </Button>
+                     
+                            label={`Kiểm tra`}
+                            labelStyle={{
+                                fontSize:16,
+                                fontWeight:'700'
+                            }}
+                            containerStyle={{
+                                padding:12
+                            }}
+                           
+                        />
+                        
                     }
 
                     {
                         isAnwsered &&
-                        <Button
+                        <ButtonText
                             icon={CommonIcons.arrowRightChevron}
-                            mode="contained"
-                            onPress={_onNextCard}
-                            color={CommonColor.primary}
-                        >
-                            Next
-                    </Button>
+                            onItemPress={_onNextCard}
+                            label={`Tiếp tục`}
+                            labelStyle={{
+                                fontSize:16,
+                                fontWeight:'700'
+                            }}
+                            containerStyle={{
+                                padding:12
+                            }}
+                        />
                     }
                 </View>
             </View>

@@ -1,11 +1,9 @@
 import React from 'react'
 import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
-import CardTopic from './components/CardTopic'
-import * as readingActions from '../../store/actions/readingActions';
 import { useDispatch } from 'react-redux';
 import { getReadingPostList, getReadingTopicsList } from '../../utils/api_v1';
-import { Button, Menu, Divider, Provider } from 'react-native-paper';
 import ButtonText from '../../components/Button/BottonText';
+import CardReading from './components/CardReading';
 
 const ReadingListScreen = (props) => {
 
@@ -16,6 +14,7 @@ const ReadingListScreen = (props) => {
     const [readingTopic, setReadingTopic] = React.useState([]);
     const [nextPageLink, setNextPageLink] = React.useState();
     const [isLoadMore, setIsLoadMore] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -99,7 +98,7 @@ const ReadingListScreen = (props) => {
 
         if (fetchRes.data?.length > 0) {
             // console
-            setReadingPost(prev => [...prev, ...fetchRes.data]);
+            setReadingPost([...readingPost, ...fetchRes.data]);
         }
 
         if (fetchRes.next) {
@@ -118,10 +117,12 @@ const ReadingListScreen = (props) => {
     const _onRefreshItemList = async () => {
         getReadingPostList()
             .then((res) => {
-                console.warn(res);
-                if (res.status && res.data.length > 0) {
+                setReadingPost([]);
+                return res;
+            })
+            .then((res) => {
+                if (res.status && res.data?.length > 0) {
                     setReadingPost(res.data);
-                    console.warn(res.next);
                     if (res.next) {
                         setNextPageLink(res.next);
                     }
@@ -139,6 +140,7 @@ const ReadingListScreen = (props) => {
 
 
     const _onGetTopicVocabularyPress = async (topic) => {
+        setIsLoading(true);
         getReadingPostList(topic.id)
             .then((res) => {
                 if (res.status && res.data.length > 0) {
@@ -151,9 +153,10 @@ const ReadingListScreen = (props) => {
             .catch((err) => {
             })
             .finally(() => {
-                console.warn('finally')
+                console.log('finally');
+                setIsLoading(false);
             })
-        
+
     }
 
 
@@ -175,6 +178,9 @@ const ReadingListScreen = (props) => {
                             <ButtonText key={topic.id?.toString()}
                                 label={topic.name}
                                 onItemPress={() => _onGetTopicVocabularyPress(topic)}
+                                labelStyle={{
+                                    fontWeight: '700'
+                                }}
 
                             />
                         )
@@ -185,38 +191,64 @@ const ReadingListScreen = (props) => {
 
 
             {/* List */}
-            <FlatList
-                data={readingPost}
-                renderItem={({ item }) =>
-                    <CardTopic
-                        onPracticePress={() => _onNavigateToPractice(item)}
-                        onVocabularyPress={() => _onNavigateToReadingVocabulary(item)}
-                        title={item.title}
-                        summary={item.summary}
+
+            {
+                isLoading &&
+                <View
+                    style={{
+                        display: 'flex',
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+
+                    <ActivityIndicator
+                        animating={true}
+                        size={'large'}
+                        color={'coral'}
                     />
-                }
-                keyExtractor={item => item.id.toString()}
 
-                ListFooterComponent={
-                    <View>
-                        <ActivityIndicator
-                            size={'large'}
-                            color={'coral'}
-                            animating={isLoadMore}
+                </View>
+            }
+
+            {
+                !isLoading &&
+                <FlatList
+                    data={readingPost}
+                    renderItem={({ item }) =>
+                        <CardReading
+                            onPracticePress={() => _onNavigateToPractice(item)}
+                            onVocabularyPress={() => _onNavigateToReadingVocabulary(item)}
+                            title={item.title}
+                            summary={item.summary}
                         />
-                    </View>
-                }
+                    }
+                    keyExtractor={item => `${item.id.toString()}`}
 
-                onEndReachedThreshold={0.2}
-                onEndReached={_onLoadMoreItem}
+                    ListFooterComponent={
+                        <View>
+                            <ActivityIndicator
+                                size={'large'}
+                                color={'coral'}
+                                animating={isLoadMore}
+                            />
+                        </View>
+                    }
+
+                    onEndReachedThreshold={0.2}
+                    onEndReached={_onLoadMoreItem}
 
 
-                onRefresh={_onRefreshItemList}
+                    onRefresh={_onRefreshItemList}
 
-                refreshing={isRefreshing}
+                    refreshing={isRefreshing}
 
 
-            />
+                />
+
+            }
+
         </>
     )
 }

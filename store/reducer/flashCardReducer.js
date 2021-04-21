@@ -43,7 +43,6 @@ export default (state = initialState, action) => {
             var vocabulary = action.vocabulary;
             var new_learnt_vocabulary_list = [...state.learnt_vocabulary_list,vocabulary];
 
-            console.warn('nn: ',state.practice_vocabulary_list);
             var temp_practice_vocabulary_list = state.practice_vocabulary_list;
 
             var new_practice_vocabulary_list = temp_practice_vocabulary_list.filter(e => e.ID != vocabulary.ID);
@@ -69,7 +68,6 @@ export default (state = initialState, action) => {
         case REFRESH_PRACTICE_VOCABULARY:
             var new_practice_vocabulary_list = state.practice_vocabulary_list.sort((a,b) => b.name - a.name).reverse()
 
-            console.warn('nn: ',new_practice_vocabulary_list);
             return {
                 ...state,
                 practice_vocabulary_list:new_practice_vocabulary_list

@@ -58,13 +58,16 @@ const ReadingVocabularyScreen = (props) => {
 
                 let leave_time = e.duration - e.current_position;
                 let xx = millisToMinutesAndSeconds(leave_time);
+                setDuration(xx);
                 // setCurrentProgress(1/Number(leave_time));
                 let progress = e.current_position / e.duration;
                 // console.log()
                 // console.log('progress: ', progress);
-                setCurrentProgress(progress);
+                if(progress){
+                    setCurrentProgress(progress);
 
-                setDuration(xx);
+                }
+
                 // console.log('playing...', xx);
 
 
@@ -105,7 +108,6 @@ const ReadingVocabularyScreen = (props) => {
 
 
     React.useEffect(() => {
-
         setIsLoading(true);
 
         getReadingPostDetail(readingpost.id)
@@ -149,6 +151,10 @@ const ReadingVocabularyScreen = (props) => {
 
     const _onNavigateToVocabularyPractice = async () => {
 
+        audioRecorderPlayer.stopPlayer();
+        audioRecorderPlayer.removePlayBackListener();
+        audioRecorderPlayer.stopRecorder();
+        audioRecorderPlayer.removeRecordBackListener();
         if(readingPost.reading_post_vocabulary?.length <=0){
             return;
         }
@@ -181,6 +187,11 @@ const ReadingVocabularyScreen = (props) => {
     }
 
     const _onNavigateToReadingPractice = () => {
+        audioRecorderPlayer.stopPlayer();
+        audioRecorderPlayer.removePlayBackListener();
+        audioRecorderPlayer.stopRecorder();
+        audioRecorderPlayer.removeRecordBackListener();
+
         props.navigation.navigate('ReadingPractice', {
             readingpost: readingpost
         });
@@ -286,7 +297,7 @@ const ReadingVocabularyScreen = (props) => {
 
                     <Text
                         style={{
-                            fontSize: 16,
+                            fontSize: 18,
                             lineHeight: 52,
                             textAlign: 'justify',
                         }}
