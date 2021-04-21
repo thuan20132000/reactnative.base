@@ -13,6 +13,7 @@ import CardDefinition from './components/CardDefinition';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
+import { InterstitialAd, RewardedAd, BannerAd, TestIds, BannerAdSize } from '@react-native-firebase/admob';
 
 const D_HomeSearchScreen = (props) => {
     const [searchQuery, setSearchQuery] = React.useState('');
@@ -188,11 +189,11 @@ const D_HomeSearchScreen = (props) => {
             >
 
 
-
+                <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.FULL_BANNER} />
                 <ScrollView
                     keyboardShouldPersistTaps={'handled'}
                     style={{
-                        marginTop:10
+                        marginTop: 10
                     }}
                 >
 
@@ -258,8 +259,8 @@ const D_HomeSearchScreen = (props) => {
                             elevation: 11,
                             marginVertical: 12,
                             borderRadius: 8,
-                            width:deviceWidth-50,
-                            alignSelf:'center',
+                            width: deviceWidth - 50,
+                            alignSelf: 'center',
                         }}
                     // word_type={nearestVocabulary?.word_type}
                     // firstDefinition={`- ${nearestVocabulary?.definition} `}
@@ -338,7 +339,7 @@ const D_HomeSearchScreen = (props) => {
                 <Searchbar
                     placeholder="Search"
                     placeholderTextColor={'white'}
-                
+
                     onChangeText={_onInputSearchText}
                     value={searchQuery}
                     style={{
@@ -351,19 +352,19 @@ const D_HomeSearchScreen = (props) => {
                         },
                         shadowOpacity: 0.34,
                         shadowRadius: 6.27,
-                
+
                         elevation: 10,
-                        backgroundColor:'#435E7D',
-                        
+                        backgroundColor: '#435E7D',
+
                     }}
                     iconColor={'white'}
                     textAlignVertical={'center'}
                     selectionColor={'white'}
                     inputStyle={{
-                        color:'white'
+                        color: 'white'
                     }}
-                    
-                    
+
+
 
                 />
             </View>
