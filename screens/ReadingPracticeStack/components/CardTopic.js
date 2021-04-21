@@ -63,7 +63,9 @@ const CardTopic = ({
                 }}
             />
             <Card.Content>
-                <Title>{title}</Title>
+                <Title 
+                    numberOfLines={2}
+                > {title}</Title>
                 <Paragraph
                     numberOfLines={3}
                 >

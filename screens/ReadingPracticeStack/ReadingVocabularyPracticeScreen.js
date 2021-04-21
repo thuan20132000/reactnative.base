@@ -27,7 +27,6 @@ const ReadingVocabularyPracticeScreen = (props) => {
 
     const flashcard = useSelector(state => state.reading);
 
-    console.warn('reading: ',flashcard);
 
 
     const dispatch = useDispatch();
@@ -190,8 +189,9 @@ const ReadingVocabularyPracticeScreen = (props) => {
 
     const _onNextCard = () => {
         if (flashcard.practice_vocabulary_list.length <= 0) {
-            return;
-            // props.navigation.replace('FlashCardPracticeFinish')
+            props.navigation.replace('ReadingVocabularyPracticeFinish',{
+                learnt_vocabulary_list:flashcard.learnt_vocabulary_list
+            })
 
         } else {
 

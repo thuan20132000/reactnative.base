@@ -278,9 +278,54 @@ export const getReadingTopicsList = async () => {
     }
 }
 
-export const getReadingPostList = async () => {
+export const getReadingPostList = async (topic_id = null) => {
     try {
         let url = `${api_reading_v1}/readingposts`;
+        if (topic_id) {
+            url = `${api_reading_v1}/readingposts?topic=${topic_id}`;
+        }
+        let fetchData = await fetch(url);
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: "fetch failed",
+                data: [],
+            }
+        }
+
+        let dataRes = await fetchData.json();
+
+        if (!dataRes.status) {
+            return {
+                status: false,
+                message: "fetch failed ",
+                data: [],
+            }
+        }
+
+        return {
+            status: true,
+            message: "fetch success",
+            data: dataRes.data,
+            next: dataRes.next
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: [],
+        }
+    }
+}
+
+
+
+
+export const getReadingPostDetail = async (readingpost_id) => {
+    try {
+        let url = `${api_reading_v1}/readingpost/${readingpost_id}`;
         let fetchData = await fetch(url);
 
         if (!fetchData.ok) {

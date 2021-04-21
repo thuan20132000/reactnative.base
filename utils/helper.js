@@ -114,7 +114,13 @@ export const _onGetRandomInt = (max) => {
 
     return random_number;
 
+}
 
+
+export const _onGetRamdonBetweenInt= (min = 6,max=12) => {
+    let random_number = Math.floor(Math.random() * max) + min;
+
+    return random_number;
 }
 
 
@@ -435,3 +441,11 @@ export const millisToMinutesAndSeconds = (millis) => {
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
+
+
+
+export const _onConvertTextToSlug = (text) => {
+   
+    let slug = text.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+    return slug;
+}

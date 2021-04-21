@@ -31,6 +31,7 @@ import ReadingListScreen from './screens/ReadingPracticeStack/ReadingListScreen'
 import ReadingPracticeScreen from './screens/ReadingPracticeStack/ReadingPracticeScreen';
 import ReadingVocabularyScreen from './screens/ReadingPracticeStack/ReadingVocabularyScreen';
 import ReadingVocabularyPracticeScreen from './screens/ReadingPracticeStack/ReadingVocabularyPracticeScreen';
+import ReadingVocabularyPracticeFinishScreen from './screens/ReadingPracticeStack/ReadingVocabularyPracticeFinishScreen';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -227,6 +228,13 @@ const ReadingPracticeStack = () => {
             <ReadingPracticeStackNavigator.Screen
                 name={"ReadingVocabularyPractice"}
                 component={ReadingVocabularyPracticeScreen}
+                options={{
+                    title: "Luyện đọc"
+                }}
+            />
+            <ReadingPracticeStackNavigator.Screen
+                name={"ReadingVocabularyPracticeFinish"}
+                component={ReadingVocabularyPracticeFinishScreen}
                 options={{
                     title: "Luyện đọc"
                 }}

@@ -6,12 +6,14 @@ import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, A
 import CommonIcons from '../../utils/CommonIcons';
 
 import Sound from 'react-native-sound';
-import { millisToMinutesAndSeconds } from '../../utils/helper';
+import { millisToMinutesAndSeconds, _onConvertTextToSlug } from '../../utils/helper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import ButtonSubmit from '../../components/Button/ButtonSubmit';
 import ButtonText from '../../components/Button/BottonText';
 import Highlighter from 'react-native-highlight-words';
 import CommonColor from '../../utils/CommonColor';
+import { getReadingPostDetail } from '../../utils/api_v1';
+import AudioPlay from '../../components/Card/AudioPlay';
 var RNFS = require('react-native-fs');
 
 
@@ -32,13 +34,15 @@ const ReadingPracticeScreen = (props) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [recordingTime, setRecordingTime] = useState('00:00');
     const [practiceAudio, setPracticeAudio] = useState();
+    const [duration, setDuration] = React.useState();
+    const [currentProgress, setCurrentProgress] = React.useState(0);
+    const [practiceAudioName, setPracticeAudioName] = React.useState('');
 
+    const { readingpost } = props.route?.params;
 
-
-    const {readingpost} = props.route?.params;
-
-    const [readingPost,setReadingPost] = useState();
-
+    const [readingPost, setReadingPost] = useState();
+    const [highlightVocabulary, setHighlightVocabulary] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const [readStyle, setReadStyle] = useState({
         fontSize: 24,
@@ -48,9 +52,30 @@ const ReadingPracticeScreen = (props) => {
     React.useEffect(() => {
 
 
-        if(readingpost){
+        if (readingpost) {
             setReadingPost(readingpost);
         }
+
+
+        getReadingPostDetail(readingpost.id)
+            .then((res) => {
+                if (res.status) {
+                    setReadingPost(res.data);
+                    return res.data;
+                }
+            })
+            .then((res) => {
+                if (res.reading_post_vocabulary?.length > 0) {
+
+                    let nameList = res.reading_post_vocabulary.map((e) => e.name);
+                    setHighlightVocabulary(nameList);
+                }
+                // console.warn('res2 : ', res.reading_post_vocabulary)
+            })
+            .catch((err) => {
+                console.log('error: ', err)
+            })
+            .finally(() => console.log('finnally'))
 
         props.navigation.dangerouslyGetParent().setOptions({
             tabBarVisible: false
@@ -95,23 +120,9 @@ const ReadingPracticeScreen = (props) => {
         }
     }
 
-    const _onIncreaseSpeed = () => {
-        if (readStyle.speed >= 4) {
-            return;
-        }
-        setReadStyle({ ...readStyle, speed: readStyle.speed + 1 });
-    }
-
-    const _onDecreaseSpeed = () => {
-        if (readStyle.speed <= 1) {
-            return;
-        }
-        setReadStyle({ ...readStyle, speed: readStyle.speed - 1 })
-    }
 
 
-
-    const practice_audio_path = dirMusic+"/reading_practice.wav";
+    const practice_audio_path = dirMusic + "/reading_practice.wav";
     const _onStartRecord = async () => {
 
         await audioRecorderPlayer.stopPlayer();
@@ -194,10 +205,7 @@ const ReadingPracticeScreen = (props) => {
             // console.log('recording time: ', _refRecordingTime);
             scrollAnimation.current.removeAllListeners();
 
-            setPracticeAudio({
-                name: "sdcard/askmeit_dictionary/hello3.wav",
-                length: 3200
-            })
+            setPracticeAudio(practice_audio_path);
 
 
         } catch (error) {
@@ -223,13 +231,18 @@ const ReadingPracticeScreen = (props) => {
             await audioRecorderPlayer.setVolume(1.0);
             audioRecorderPlayer.addPlayBackListener((e) => {
                 // console.log(e.current_position);
-                console.log('playing...', e.current_position);
+                // console.log('playing...', e.current_position);
+                let leave_time = e.duration - e.current_position;
+                let xx = millisToMinutesAndSeconds(leave_time);
+                setDuration(xx);
+                let progress = e.current_position / e.duration;
+                setCurrentProgress(progress);
 
                 if (e.current_position === e.duration) {
 
                     audioRecorderPlayer.stopPlayer()
                         .then(() => {
-                            console.log('stopped play')
+                            // console.log('stopped play')
                             audioRecorderPlayer.removePlayBackListener();
                         })
                         .catch((err) => console.log('error: ', err))
@@ -249,6 +262,13 @@ const ReadingPracticeScreen = (props) => {
             throw error
         }
     }
+
+    const _onPausePlay = async () => {
+        setIsPlaying(false)
+        await audioRecorderPlayer.pausePlayer();
+    }
+
+
 
     const readingText = "Claire was applying to private schools. Most private schools required letters of recommendation. Claire did not know who to ask. She felt like her teachers did not know her that well. Claire asked her teachers anyways. Some of them said yes, and some of them said no. One week later, Ms. Hershey gave Claire a letter of recommendation in an envelope. Claire wasn't supposed to open it, but she really wanted to know what Ms. Hershey wrote. Claire carefully tore it open and read the letter. She was disappointed. Ms. Hershey didn't write anything interesting about Claire. Ms. Hershey just wrote that Claire was a smart, nice girl. Claire couldn't get into her top schools with that letter. Claire asked her swim coach to write her a letter of recommendation. Her swim coach knew her well. The problem was that the swim coach wasn't the best writer. He did not go to college. Claire asked him to write a letter anyways. Of course, I'll write you a letter. I'll even send it to you, he said. One week later, Claire got an email from her swim coach. She was nervous to read what he wrote. Claire was impressed with the letter. Her swim coach was really funny, yet intelligent in the letter! ";
 
@@ -275,12 +295,16 @@ const ReadingPracticeScreen = (props) => {
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 console.log("You can use the sdcard");
 
-                RNFS.moveFile(practice_audio_path,dirMusic+"/moved_practice.wav")
+                let audio_slug_name = _onConvertTextToSlug(practiceAudioName);
+
+                RNFS.copyFile(practice_audio_path, dirMusic + `/${audio_slug_name}.wav`)
                     .then((success) => {
                         console.log('Save File successfully!');
+                        setSaveAudioVisible(false);
+
                     })
                     .catch((err) => {
-                        console.log(err.message);
+                        console.log('error: ', err.message);
                     });
 
                 return;
@@ -300,6 +324,9 @@ const ReadingPracticeScreen = (props) => {
     React.useEffect(() => {
 
 
+
+
+
         return () => {
             clearInterval(_refRecordingTime.current);
             audioRecorderPlayer.stopPlayer();
@@ -314,18 +341,20 @@ const ReadingPracticeScreen = (props) => {
 
 
     const _onRemoveRecordingAudio = () => {
+        audioRecorderPlayer.stopPlayer();
+        audioRecorderPlayer.removePlayBackListener();
         setPracticeAudio(null);
     }
 
 
-    if(!readingPost){
+    if (!readingPost) {
         return (
             <View
                 style={{
-                    display:'flex',
-                    flex:1,
-                    justifyContent:'center',
-                    alignItems:'center'
+                    display: 'flex',
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
                 }}
             >
                 <ActivityIndicator
@@ -370,6 +399,8 @@ const ReadingPracticeScreen = (props) => {
                                 width: 220
                             }}
                             placeholder={`Name...`}
+                            onChangeText={(text) => setPracticeAudioName(text)}
+                            value={practiceAudioName}
                         />
                         <View
                             style={{
@@ -427,11 +458,15 @@ const ReadingPracticeScreen = (props) => {
                             allowFontScaling={true}
 
                         >
-                            <Highlighter
-                                highlightStyle={{ backgroundColor: 'yellow' }}
-                                searchWords={['everywhere', 'unattractive', 'action', 'lottery']}
-                                textToHighlight={readingPost.content}
-                            />
+                            {
+                                (readingPost?.content && readingPost.content || '') &&
+                                <Highlighter
+                                    highlightStyle={{ backgroundColor: 'yellow' }}
+                                    searchWords={highlightVocabulary}
+                                    textToHighlight={readingPost?.content}
+                                />
+
+                            }
 
                         </Text>
 
@@ -517,37 +552,32 @@ const ReadingPracticeScreen = (props) => {
                             <View
                                 style={{
                                     display: 'flex',
-                                    flexDirection: 'row',
+                                    flexDirection: 'column',
                                     alignItems: 'center'
                                 }}
                             >
-                                <IconButton
-                                    icon={CommonIcons.playCircleOutline}
-                                    color={'red'}
-                                    size={43}
-                                    onPress={_onStartPlay}
-                                    style={{
-                                        // position: 'absolute',
-                                        // left: 10,
-                                        // bottom: 10
-                                    }}
+
+                                <AudioPlay
+                                    onPlay={_onStartPlay}
+                                    onPause={_onPausePlay}
+                                    isPlaying={isPlaying}
+                                    currentProgress={currentProgress}
+                                    durationTime={duration}
                                 />
-                                <ProgressBar
-                                    progress={0.5}
-                                    color={'red'}
-                                    style={{
-                                        width: 220
-                                    }}
-                                    indeterminate={true}
-                                />
-                                <IconButton
-                                    icon={CommonIcons.saveFile}
-                                    onPress={() => setSaveAudioVisible(true)}
-                                />
-                                <IconButton
-                                    icon={CommonIcons.removeTrash}
-                                    onPress={_onRemoveRecordingAudio}
-                                />
+                                <View
+                                    style={{ display: 'flex', flexDirection: 'row' }}
+                                >
+
+                                    <IconButton
+                                        icon={CommonIcons.saveFile}
+                                        onPress={() => setSaveAudioVisible(true)}
+                                    />
+                                    <IconButton
+                                        icon={CommonIcons.removeTrash}
+                                        onPress={_onRemoveRecordingAudio}
+                                    />
+
+                                </View>
                             </View>
                         }
                     </View>
