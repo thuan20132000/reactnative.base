@@ -38,7 +38,6 @@ const ReadingListScreen = (props) => {
             .then((res) => {
                 if (res.status && res.data.length > 0) {
                     setReadingTopic(res.data)
-                    console.log('topicL ', res.data)
                 }
             })
             .catch((err) => {
@@ -115,6 +114,7 @@ const ReadingListScreen = (props) => {
 
     const [isRefreshing, setIsRefreshing] = React.useState(false);
     const _onRefreshItemList = async () => {
+        setIsRefreshing(true)
         getReadingPostList()
             .then((res) => {
                 setReadingPost([]);
@@ -133,6 +133,7 @@ const ReadingListScreen = (props) => {
             })
             .finally(() => {
                 console.log('finally');
+                setIsRefreshing(false)
             });
 
 
@@ -222,6 +223,7 @@ const ReadingListScreen = (props) => {
                             onVocabularyPress={() => _onNavigateToReadingVocabulary(item)}
                             title={item.title}
                             summary={item.summary}
+                            image_url={item.image}
                         />
                     }
                     keyExtractor={item => `${item.id.toString()}`}

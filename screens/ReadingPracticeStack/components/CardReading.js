@@ -19,27 +19,11 @@ const CardReading = ({
     onPracticePress,
     summary,
     title,
-    image_path,
+    image_url,
 
 }) => {
 
-    const flashcard = useSelector(state => state.flashcard);
-    const [learntVocabularyList, setLearntVocabularyList] = React.useState([]);
-    const [leaveVocabularyList, setLeaveVocabularyList] = React.useState(0);
 
-
-    React.useEffect(() => {
-        let topic_name = topic?.slug?.toLowerCase();
-        getLearntVocabularyByTopic(topic_name).then(value => {
-            if (value) {
-                // setLearntVocabulary(value.length);
-                // filterDuplicate(value).then(value => console.warn('filterd: ',value.length));
-                setLearntVocabularyList(value);
-            }
-        });
-
-
-    }, []);
 
 
 
@@ -55,7 +39,10 @@ const CardReading = ({
         >
 
             <Image
-                source={{ uri: 'https://picsum.photos/700' }}
+             
+                source={
+                    image_url?{uri:`${url_absolute}/${image_url}`}:{uri:'https://picsum.photos/700'}
+                }
                 style={{
                     width: 320,
                     height: 120,
