@@ -1,0 +1,527 @@
+[
+    {
+        "ID": "5ff2d253-ecc0-46fa-af9b-2f27fd4bde93",
+        "name": "square",
+        "word_type": "adjective",
+        "phon_us": "/skwer/",
+        "phon_uk": "/skweə(r)/",
+        "sound_us": "/media/audio/square%2Badjective%2Bus.mp3",
+        "sound_uk": "/media/audio/square%2Badjective%2Buk.mp3",
+        "meaning": null,
+        "definition": "having four straight equal sides and four angles of 90°",
+        "example": "a square room",
+        "status": "published",
+        "created_at": "2021-04-13T23:05:33.040330+07:00",
+        "updated_at": "2021-04-13T23:05:33.040353+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "358f97f9-ac3d-4150-bfeb-f6a783546a13",
+        "name": "zoo",
+        "word_type": "noun",
+        "phon_us": "/zuː/",
+        "phon_uk": "/zuː/",
+        "sound_us": "/media/audio/zoo%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/zoo%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "a place where many kinds of wild animals are kept for the public to see and where they are studied, bred (= kept in order to produce young) and protected",
+        "example": "These lions were born in the zoo.",
+        "status": "published",
+        "created_at": "2021-04-13T23:04:00.010700+07:00",
+        "updated_at": "2021-04-13T23:04:00.010723+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "25dbb154-9b58-48bb-b47a-53c926282d6f",
+        "name": "underground",
+        "word_type": "adjective",
+        "phon_us": "/ˌʌndərˈɡraʊnd/",
+        "phon_uk": "/ˌʌndəˈɡraʊnd/",
+        "sound_us": "/media/audio/underground%2Badjective%2Bus.mp3",
+        "sound_uk": "/media/audio/underground%2Badjective%2Buk.mp3",
+        "meaning": null,
+        "definition": "under the surface of the ground",
+        "example": "an underground bunker/tunnel",
+        "status": "published",
+        "created_at": "2021-04-13T23:03:52.858066+07:00",
+        "updated_at": "2021-04-13T23:03:52.858088+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "face5d3e-8306-4d46-a6bf-08ba5cf91ad3",
+        "name": "road",
+        "word_type": "noun",
+        "phon_us": "/rəʊd/",
+        "phon_uk": "/rəʊd/",
+        "sound_us": "/media/audio/road%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/road%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "a hard surface built for vehicles to travel on",
+        "example": "a main/major/minor road",
+        "status": "published",
+        "created_at": "2021-04-13T23:03:42.527863+07:00",
+        "updated_at": "2021-04-13T23:03:42.527884+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "54b8e561-35f3-4e18-a5c8-9879b1e1c23c",
+        "name": "town",
+        "word_type": "noun",
+        "phon_us": "/taʊn/",
+        "phon_uk": "/taʊn/",
+        "sound_us": "/media/audio/town%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/town%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "a place with many houses, shops, etc. where people live and work. It is larger than a village but smaller than a city.",
+        "example": "The nearest town is ten miles away.",
+        "status": "published",
+        "created_at": "2021-04-13T23:03:25.683940+07:00",
+        "updated_at": "2021-04-13T23:03:25.683961+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "369965cc-3883-46f3-a590-d710e76def25",
+        "name": "street",
+        "word_type": "noun",
+        "phon_us": "/striːt/",
+        "phon_uk": "/striːt/",
+        "sound_us": "/media/audio/street%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/street%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "a public road in a city or town that has houses and buildings on one side or both sides",
+        "example": "I was just walking along the street when it happened.",
+        "status": "published",
+        "created_at": "2021-04-13T23:03:20.859317+07:00",
+        "updated_at": "2021-04-13T23:03:20.859338+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "d4c7e8a8-406d-49f4-be49-35c4737ea272",
+        "name": "station",
+        "word_type": "noun",
+        "phon_us": "/ˈsteɪʃn/",
+        "phon_uk": "/ˈsteɪʃn/",
+        "sound_us": "/media/audio/station%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/station%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "a place where trains stop so that passengers can get on and off; the buildings connected with this",
+        "example": "the main station",
+        "status": "published",
+        "created_at": "2021-04-13T23:03:14.110747+07:00",
+        "updated_at": "2021-04-13T23:03:14.110770+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "d6e8d151-d4a7-435b-8687-4a2e32957f80",
+        "name": "roundabout",
+        "word_type": "noun",
+        "phon_us": "/ˈraʊndəbaʊt/",
+        "phon_uk": "/ˈraʊndəbaʊt/",
+        "sound_us": "/media/audio/roundabout%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/roundabout%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "a place where two or more roads meet, forming a circle that all traffic must go around in the same direction",
+        "example": "At the roundabout, take the second exit.",
+        "status": "published",
+        "created_at": "2021-04-13T23:03:01.934651+07:00",
+        "updated_at": "2021-04-13T23:03:01.934678+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "436b716a-cb1e-4ed2-a617-c9d1a1f81195",
+        "name": "playground",
+        "word_type": "noun",
+        "phon_us": "/ˈpleɪɡraʊnd/",
+        "phon_uk": "/ˈpleɪɡraʊnd/",
+        "sound_us": "/media/audio/playground%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/playground%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "an outdoor area where children can play, especially at a school or in a park",
+        "example": "a school playground",
+        "status": "published",
+        "created_at": "2021-04-13T23:02:47.499174+07:00",
+        "updated_at": "2021-04-13T23:02:47.499196+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "0f554708-74d3-49cc-a8b9-33b087abe144",
+        "name": "motorway",
+        "word_type": "noun",
+        "phon_us": "/ˈməʊtərweɪ/",
+        "phon_uk": "/ˈməʊtəweɪ/",
+        "sound_us": "/media/audio/motorway%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/motorway%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "(in the UK) a wide road, with at least two lanes in each direction, where traffic can travel fast for long distances between large towns. You can only enter and leave motorways at special junctions.",
+        "example": "busy/congested motorways",
+        "status": "published",
+        "created_at": "2021-04-13T23:02:16.896814+07:00",
+        "updated_at": "2021-04-13T23:02:16.896836+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "70219c3f-5bc3-4b9d-b397-4670b4ffe1db",
+        "name": "park",
+        "word_type": "noun",
+        "phon_us": "/pɑːrk/",
+        "phon_uk": "/pɑːk/",
+        "sound_us": "/media/audio/park%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/park%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "an area of public land in a town or a city where people go to walk, play and relax",
+        "example": "Hyde Park",
+        "status": "published",
+        "created_at": "2021-04-13T23:02:11.290436+07:00",
+        "updated_at": "2021-04-13T23:02:11.290458+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "91967840-f4db-42e7-8b7a-a399d66c21db",
+        "name": "corner",
+        "word_type": "noun",
+        "phon_us": "/ˈkɔːrnər/",
+        "phon_uk": "/ˈkɔːnə(r)/",
+        "sound_us": "/media/audio/corner%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/corner%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "a part of something where two or more sides, lines or edges join",
+        "example": "the four corners of a square",
+        "status": "published",
+        "created_at": "2021-04-13T23:01:50.079012+07:00",
+        "updated_at": "2021-04-13T23:01:50.079035+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "c8c6c925-0210-4f78-81ca-f3ac38936329",
+        "name": "market",
+        "word_type": "noun",
+        "phon_us": "/ˈmɑːrkɪt/",
+        "phon_uk": "/ˈmɑːkɪt/",
+        "sound_us": "/media/audio/market%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/market%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "an occasion when people buy and sell goods; the open area or building where they meet to do this",
+        "example": "a fruit/flower/fish market ",
+        "status": "published",
+        "created_at": "2021-04-13T23:01:42.183998+07:00",
+        "updated_at": "2021-04-13T23:01:42.184020+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "ccd55099-4a39-42c0-a7fd-1422656531f4",
+        "name": "bus-stop",
+        "word_type": "noun",
+        "phon_us": "/ˈbʌs stɑːp/",
+        "phon_uk": "/ˈbʌs stɒp/",
+        "sound_us": "/media/audio/bus-stop%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/bus-stop%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "a place at the side of a road that is marked with a sign, where buses stop",
+        "example": "I was waiting at the bus stop.",
+        "status": "published",
+        "created_at": "2021-04-13T23:01:34.225627+07:00",
+        "updated_at": "2021-04-13T23:01:34.225650+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "dc103f0c-3796-4ee9-990c-0c95eb9f0f0e",
+        "name": "airport",
+        "word_type": "noun",
+        "phon_us": "/ˈerpɔːrt/",
+        "phon_uk": "/ˈeəpɔːt/",
+        "sound_us": "/media/audio/airport%2Bnoun%2Bus.mp3",
+        "sound_uk": "/media/audio/airport%2Bnoun%2Buk.mp3",
+        "meaning": null,
+        "definition": "a place where planes land and take off and that has buildings for passengers to wait in",
+        "example": "Gatwick Airport",
+        "status": "published",
+        "created_at": "2021-04-13T23:01:32.829830+07:00",
+        "updated_at": "2021-04-13T23:01:32.829853+07:00",
+        "topics": [
+            {
+                "id": 27,
+                "name": "Places: Town and City",
+                "slug": "places-town-and-city",
+                "image": "/media/upload/flashcard/little-children-using-technology-devices_29937-4119_0m2qVip.jpeg",
+                "status": "published",
+                "created_at": "2021-04-13T22:58:43.663736+07:00",
+                "updated_at": "2021-04-13T22:58:43.663756+07:00",
+                "field": {
+                    "id": 4,
+                    "name": "1000 TỪ VỰNG THƯỜNG DÙNG",
+                    "slug": "1000-t-vng-thng-dung",
+                    "image": "/media/upload/flashcard/download_2.jpeg",
+                    "status": "published",
+                    "created_at": "2021-04-11T20:54:24.410958+07:00",
+                    "updated_at": "2021-04-11T20:54:24.410978+07:00"
+                }
+            }
+        ]
+    }
+]

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "544613826712",
+    "project_id": "askme-it-dictionary",
+    "storage_bucket": "askme-it-dictionary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544613826712:android:c4985603381151b28510ed",
+        "android_client_info": {
+          "package_name": "com.reactnative_base"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "544613826712-tm7ejdb0la96jg42mkdbhhg9pigonbsu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwH45BBKR7CmVWu4-uoW7g4d6_QAqQZjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "544613826712-tm7ejdb0la96jg42mkdbhhg9pigonbsu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

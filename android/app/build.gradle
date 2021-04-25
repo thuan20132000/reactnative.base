@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services' // <- Add this line
 
 import com.android.build.OutputFile
 
@@ -184,6 +185,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-audio-recorder-player')
+    
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
@@ -192,6 +195,9 @@ dependencies {
 
     // For animated GIF support
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
+
+    // For react native file
+    implementation project(':react-native-fs')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

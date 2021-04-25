@@ -18,6 +18,12 @@ target 'reactnative_base' do
 
   pod 'react-native-voice', :path => '../node_modules/@react-native-voice/voice'
 
+  pod 'RNAudioRecord', :path => '../node_modules/react-native-audio-record'
+
+  pod 'RNAudioRecorderPlayer', :path => '../node_modules/react-native-audio-recorder-player'
+
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'reactnative_baseTests' do
     inherit! :complete
     # Pods for testing

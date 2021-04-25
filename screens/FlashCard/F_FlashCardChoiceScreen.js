@@ -11,9 +11,10 @@ import CardVocabulary from './components/CardVocabulary'
 import CardMeaning from './components/CardMeaning'
 import { useDispatch, useSelector } from 'react-redux'
 import * as flashcardAction from '../../store/actions/flashcardActions'
-import { _onPlayFlashCardSound, _onPlaySound } from '../../utils/helper'
+import { _onGetRandomInt, _onPlayFlashCardSound, _onPlaySound } from '../../utils/helper'
 import Sound from 'react-native-sound'
-
+import { url_absolute } from '../../config/api_config.json'
+import ButtonText from '../../components/Button/BottonText'
 const F_FlashCardChoiceScreen = (props) => {
 
     const _refCardFlip = useRef();
@@ -33,8 +34,7 @@ const F_FlashCardChoiceScreen = (props) => {
         // setTimeout(() => {
 
         // }, 1200);
-        let path = `http://54.251.133.13${vocabulary.sound_us}`;
-        console.warn(path);
+        let path = `${url_absolute}${vocabulary.sound_us}`;
 
         setTimeout(() => {
             var sound = new Sound(path, '', (error) => {
@@ -58,10 +58,6 @@ const F_FlashCardChoiceScreen = (props) => {
     }
 
     const _onSelectVocabulary = async () => {
-        // console.warn(temp_vocabulary);
-        // const random = Math.floor(Math.random() * flashcard.vocabulary_list.length);
-        // console.warn(temp_vocabulary[random]);
-        // console.warn('practice: ', flashcard.practice_vocabulary_list.length);
         setTimeout(() => {
             var sound = new Sound('button_correct.mp3', Sound.MAIN_BUNDLE, (error) => {
                 /* ... */
@@ -81,9 +77,8 @@ const F_FlashCardChoiceScreen = (props) => {
 
         }, 100);
 
-
         dispatch(flashcardAction.addVocabulary(vocabulary));
-        if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 4) {
+        if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 9) {
             props.navigation.replace('FlashCardPractice');
         } else {
             props.navigation.replace('FlashCardChoice');
@@ -102,19 +97,13 @@ const F_FlashCardChoiceScreen = (props) => {
         }
 
         if (flashcard.vocabulary_stack.length == 1 && flashcard.practice_vocabulary_list.length <= 0) {
-            console.warn('empty');
             props.navigation.goBack();
             return;
         }
         props.navigation.replace('FlashCardChoice');
         return;
 
-        // if (flashcard.vocabulary_stack.length < 1) {
-        //     props.navigation.goBack();
-        // }
-        // else {
 
-        // }
     }
 
 
@@ -172,7 +161,7 @@ const F_FlashCardChoiceScreen = (props) => {
                         height: 140
                     }}
                     meaning={vocabulary?.meaning}
-                
+
                     children={
                         <IconButton
                             icon={CommonIcons.rotateCircle}
@@ -183,9 +172,9 @@ const F_FlashCardChoiceScreen = (props) => {
                                 bottom: 10,
                                 right: 10
                             }}
-                            
+
                             onPress={() => _refCardFlip.current.flip()}
-                            
+
                         />
                     }
                 />
@@ -287,7 +276,30 @@ const F_FlashCardChoiceScreen = (props) => {
                     marginVertical: 22
                 }]}
             >
-                <TouchableOpacity
+
+                <ButtonText
+                    onItemPress={_onSkipVocabulary}
+                    label={"Bỏ qua"}
+                    labelStyle={{
+                        fontWeight:'700',
+                        fontSize:16
+                    }}
+                    containerStyle={{
+                        padding:12
+                    }}
+                />
+                  <ButtonText
+                    onItemPress={_onSelectVocabulary}
+                    label={"Chọn"}
+                    labelStyle={{
+                        fontWeight:'700',
+                        fontSize:16
+                    }}
+                    containerStyle={{
+                        padding:12
+                    }}
+                />
+                {/* <TouchableOpacity
                     style={[
                         styles.buttonSelect
                     ]}
@@ -323,7 +335,7 @@ const F_FlashCardChoiceScreen = (props) => {
                     >
                         LEARN
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </ScrollView>
     )

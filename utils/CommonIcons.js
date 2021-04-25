@@ -49,5 +49,20 @@ export default {
     volumnHigh:'volume-high',
     rotateCircle:'rotate-3d-variant',
     recordCircle:'record-circle',
+    shareVariant:'share-variant',
+    dotsVertical:'dots-vertical',
+    commentProcessingOutline:'comment-processing-outline',
+    microphonePlus:'microphone-plus',
+    playCircleOutline:'play-circle-outline',
+    pauseCircleOutline:'pause-circle-outline',
+    checkProgress:'progress-check',
+    closeProgress:'progress-close',
+    fontSizeDecrease:'format-font-size-decrease',
+    fontSizeIncrease:'format-font-size-increase',
+    playlistMinus:'playlist-minus',
+    playlistPlus:'playlist-plus',
+    saveFile:'content-save',
+
+
 
 }

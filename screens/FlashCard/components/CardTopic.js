@@ -3,12 +3,40 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CommonColor from '../../../utils/CommonColor'
 
 import CommonImages from '../../../utils/CommonImages'
-import {url_absolute} from '../../../config/api_config.json'
+import { url_absolute } from '../../../config/api_config.json'
+import { filterDuplicate, getLearntVocabularyByTopic } from '../../../utils/helper'
+import { useSelector } from 'react-redux';
+import { getTopicVocabulary } from '../../../utils/api_v1'
+import * as flashcardAction from '../../../store/actions/flashcardActions';
+
+
 const CardTopic = ({
     onPress,
-    title,
-    image_path
+    image_path,
+    topic_vocabulary_number,
+    topic
 }) => {
+
+    const flashcard = useSelector(state => state.flashcard);
+    const [learntVocabularyList, setLearntVocabularyList] = React.useState([]);
+    const [leaveVocabularyList,setLeaveVocabularyList] = React.useState(0);
+    
+
+    React.useEffect(() => {
+        let topic_name = topic?.slug?.toLowerCase();
+        getLearntVocabularyByTopic(topic_name).then(value => {
+            if (value) {
+                // setLearntVocabulary(value.length);
+                // filterDuplicate(value).then(value => console.warn('filterd: ',value.length));
+                setLearntVocabularyList(value);
+            }
+        });
+
+      
+    }, [flashcard.learnt_vocabulary_list]);
+
+
+
     return (
         <TouchableOpacity
             style={[
@@ -17,9 +45,9 @@ const CardTopic = ({
             onPress={onPress}
         >
             <Image
-             
+
                 source={{
-                    uri: image_path?`${url_absolute}/${image_path}` : CommonImages.avatar
+                    uri: image_path ? `${url_absolute}/${image_path}` : CommonImages.avatar
                 }}
 
                 style={{
@@ -44,15 +72,16 @@ const CardTopic = ({
                         color: 'dodgerblue'
                     }}
                 >
-                    {title}
+                    {topic?.name}
                 </Text>
                 <Text
                     style={{
-                        color: CommonColor.primary,
+                        color:'red',
                         fontSize: 16,
+                        fontWeight:'700',
                     }}
                 >
-                    0/75
+                    {learntVocabularyList.length}/{topic_vocabulary_number}
                 </Text>
 
             </View>
@@ -78,7 +107,10 @@ const styles = StyleSheet.create({
         height: 90,
         display: 'flex',
         flexDirection: 'row',
-        marginVertical: 4
+        marginVertical: 2,
+        paddingVertical:6,
+        paddingHorizontal:6,
+        borderRadius:6
 
     },
     row: {
