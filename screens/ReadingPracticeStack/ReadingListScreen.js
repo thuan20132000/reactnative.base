@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { getReadingPostList, getReadingTopicsList } from '../../utils/api_v1';
 import ButtonText from '../../components/Button/BottonText';
 import CardReading from './components/CardReading';
+import CardBox from './components/CardBox';
 
 const ReadingListScreen = (props) => {
 
@@ -18,6 +19,8 @@ const ReadingListScreen = (props) => {
 
     React.useEffect(() => {
 
+
+        setIsLoading(true);
         getReadingPostList()
             .then((res) => {
                 if (res.status && res.data.length > 0) {
@@ -32,7 +35,10 @@ const ReadingListScreen = (props) => {
             })
             .finally(() => {
                 console.log('finally');
+                setIsLoading(false);
             });
+
+
 
         getReadingTopicsList()
             .then((res) => {
@@ -176,12 +182,14 @@ const ReadingListScreen = (props) => {
                     {
                         (readingTopic && readingTopic.length > 0) &&
                         readingTopic.map((topic, index) =>
-                            <ButtonText key={topic.id?.toString()}
+                            <CardBox key={topic.id?.toString()}
                                 label={topic.name}
                                 onItemPress={() => _onGetTopicVocabularyPress(topic)}
                                 labelStyle={{
-                                    fontWeight: '700'
+                                    fontWeight: '700',
+                                    color: 'black'
                                 }}
+                                image_path={topic.image}
 
                             />
                         )
@@ -215,39 +223,55 @@ const ReadingListScreen = (props) => {
 
             {
                 !isLoading &&
-                <FlatList
-                    data={readingPost}
-                    renderItem={({ item }) =>
-                        <CardReading
-                            onPracticePress={() => _onNavigateToPractice(item)}
-                            onVocabularyPress={() => _onNavigateToReadingVocabulary(item)}
-                            title={item.title}
-                            summary={item.summary}
-                            image_url={item.image}
-                        />
-                    }
-                    keyExtractor={item => `${item.id.toString()}`}
+                <View
+                    style={{
+                        backgroundColor: 'white',
+                        paddingTop: 12,
+                        borderTopRightRadius: 22,
+                        borderTopLeftRadius: 22
+                    }}
+                >
 
-                    ListFooterComponent={
-                        <View>
-                            <ActivityIndicator
-                                size={'large'}
-                                color={'coral'}
-                                animating={isLoadMore}
+                    <FlatList
+                        data={readingPost}
+                        renderItem={({ item }) =>
+                            <CardReading
+                                onPracticePress={() => _onNavigateToPractice(item)}
+                                onVocabularyPress={() => _onNavigateToReadingVocabulary(item)}
+                                title={item.title}
+                                summary={item.summary}
+                                image_path={item.image}
                             />
-                        </View>
-                    }
+                        }
+                        keyExtractor={item => `${item.id.toString()}`}
 
-                    onEndReachedThreshold={0.2}
-                    onEndReached={_onLoadMoreItem}
-
-
-                    onRefresh={_onRefreshItemList}
-
-                    refreshing={isRefreshing}
+                        ListFooterComponent={
 
 
-                />
+                            <View>
+                                <ActivityIndicator
+                                    size={'large'}
+                                    color={'coral'}
+                                    animating={isLoadMore}
+                                />
+                            </View>
+
+                        }
+
+                        onEndReachedThreshold={0.2}
+                        onEndReached={_onLoadMoreItem}
+
+
+                        onRefresh={_onRefreshItemList}
+
+                        refreshing={isRefreshing}
+                        style={{
+                            marginBottom:70
+                        }}
+
+
+                    />
+                </View>
 
             }
 

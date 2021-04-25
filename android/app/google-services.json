@@ -1,38 +1,39 @@
 {
   "project_info": {
-    "project_number": "544613826712",
-    "project_id": "askme-it-dictionary",
-    "storage_bucket": "askme-it-dictionary.appspot.com"
+    "project_number": "896930057524",
+    "project_id": "luyen-noi-tieng-anh",
+    "storage_bucket": "luyen-noi-tieng-anh.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:544613826712:android:c4985603381151b28510ed",
+        "mobilesdk_app_id": "1:896930057524:android:d836f7f80b04fab4c52961",
         "android_client_info": {
           "package_name": "com.reactnative_base"
         }
       },
       "oauth_client": [
         {
-          "client_id": "544613826712-tm7ejdb0la96jg42mkdbhhg9pigonbsu.apps.googleusercontent.com",
+          "client_id": "896930057524-4sbdcvonn8lrtsd197mthsns05363geu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCwH45BBKR7CmVWu4-uoW7g4d6_QAqQZjw"
+          "current_key": "AIzaSyC00xjWies-tQ7ZkaHtN4lbh2Sa8s__Dfg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "544613826712-tm7ejdb0la96jg42mkdbhhg9pigonbsu.apps.googleusercontent.com",
+              "client_id": "896930057524-4sbdcvonn8lrtsd197mthsns05363geu.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-7783640686150605~6780496114"
     }
   ],
   "configuration_version": "1"

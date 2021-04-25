@@ -20,43 +20,44 @@ const S_VocabularyRemindScreen = () => {
         messaging().getToken()
             .then((data) => console.log(data))
             .catch(err => console.log('error: ', err))
-            .finally(() => console.log('success'));
+            .finally(() => console.log('get token success'));
 
 
-        _onGetRemindSetting('search_vocabulary')
-            .then((value) => {
-                if (value) {
 
-                    if (value == 'true' || value == true) {
-                        setLearnVocabularyRemind(true);
-                    } else {
-                        setLearnVocabularyRemind(false)
-                    }
-                }
-            });
+        // _onGetRemindSetting('search_vocabulary')
+        //     .then((value) => {
+        //         if (value) {
+
+        //             if (value == 'true' || value == true) {
+        //                 setLearnVocabularyRemind(true);
+        //             } else {
+        //                 setLearnVocabularyRemind(false)
+        //             }
+        //         }
+        //     });
 
 
-        _onGetRemindSetting('daily_vocabulary')
-            .then((value) => {
-                if (value) {
-                    if (value == 'true' || value == true) {
-                        setDailyVocabularyRemind(true);
-                    } else {
-                        setDailyVocabularyRemind(false)
-                    }
-                }
-            });
+        // _onGetRemindSetting('daily_vocabulary')
+        //     .then((value) => {
+        //         if (value) {
+        //             if (value == 'true' || value == true) {
+        //                 setDailyVocabularyRemind(true);
+        //             } else {
+        //                 setDailyVocabularyRemind(false)
+        //             }
+        //         }
+        //     });
 
-        _onGetRemindSetting('practice')
-            .then((value) => {
-                if (value) {
-                    if (value == 'true' || value == true) {
-                        setPracticeRemind(true);
-                    } else {
-                        setPracticeRemind(false)
-                    }
-                }
-            });
+        // _onGetRemindSetting('practice')
+        //     .then((value) => {
+        //         if (value) {
+        //             if (value == 'true' || value == true) {
+        //                 setPracticeRemind(true);
+        //             } else {
+        //                 setPracticeRemind(false)
+        //             }
+        //         }
+        //     });
 
         _onGetRemindSetting('reading_practice')
             .then((value) => {
@@ -99,13 +100,19 @@ const S_VocabularyRemindScreen = () => {
         if (dailyVocabularyRemind) {
             messaging()
                 .unsubscribeFromTopic('daily_vocabulary')
-                .then(() => console.log('unsubcribed to daily_vocabulary'));
+                .then(() => console.log('unsubcribed to daily_vocabulary'))
+                .catch((err) => {
+                    console.log('unsuybcribe failed')
+                })
             _onSaveRemindSetting('daily_vocabulary', false)
                 .then((value) => console.log('save res: ', value));
         } else {
             messaging()
                 .subscribeToTopic('daily_vocabulary')
-                .then(() => console.log(`Subscribed to daily_vocabulary`));
+                .then(() => console.log(`Subscribed to daily_vocabulary`))
+                .catch((err) => {
+                    console.log('unsuybcribe failed')
+                })
             _onSaveRemindSetting('daily_vocabulary', true)
                 .then((value) => console.log('save res: ', value));
         }
@@ -132,16 +139,20 @@ const S_VocabularyRemindScreen = () => {
 
 
     const _onChangeRemindReadingPractice = async () => {
+
+
         setReadingRemind(!readingRemind);
         if (readingRemind) {
             messaging()
                 .unsubscribeFromTopic('reading_practice')
+                .catch((err) => console.log('messagin error: ',err))
                 .then(() => console.log('unsubcribed to reading_practice'));
             _onSaveRemindSetting('reading_practice', false)
                 .then((value) => console.log('save res: ', value));
         } else {
             messaging()
                 .subscribeToTopic('reading_practice')
+                .catch((err) => console.log('error: ',err))
                 .then(() => console.log(`Subscribed to reading_practice`));
             _onSaveRemindSetting('reading_practice', true)
                 .then((value) => console.log('save res: ', value));

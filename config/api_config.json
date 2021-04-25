@@ -1,7 +1,9 @@
 {
-    "api_v1_url":"http://54.251.133.13/dictionary/api/v1",
-    "file_url":"http://54.251.133.13/media/audio",
-    "api_flashcard_v1":"http://54.251.133.13/flashcard/api/v1",
-    "url_absolute":"http://54.251.133.13",
-    "api_reading_v1":"http://54.251.133.13/reading/api/v1"
+    "api_v1_url":"https://askme-it.com/dictionary/api/v1",
+    "file_url":"https://askme-it.com/media/audio",
+    "api_flashcard_v1":"https://askme-it.com/flashcard/api/v1",
+    "url_absolute":"https://askme-it.com",
+    "api_reading_v1":"https://askme-it.com/reading/api/v1",
+    "admob_android_app_id": "ca-app-pub-2567734507673341~3104835362"
+
 }

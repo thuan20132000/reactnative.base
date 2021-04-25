@@ -107,6 +107,17 @@ const D_HomeSearchScreen = (props) => {
     const navigation = useNavigation();
 
     React.useEffect(() => {
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+            Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+        });
+
+        return unsubscribe;
+    }, []);
+
+    React.useEffect(() => {
+
+
+
 
         messaging().setBackgroundMessageHandler(async remoteMessage => {
             console.log('Message handled in the background!', remoteMessage);
@@ -149,27 +160,6 @@ const D_HomeSearchScreen = (props) => {
         });
 
 
-
-
-        // messaging().onMessage(async remoteMessage => {
-        //     console.log('Message handled in the background!', remoteMessage);
-        //     if (remoteMessage.data?.ID) {
-        //         navigation.navigate('VocabularyDefinition', {
-        //             vocabulary: {
-        //                 "ID": remoteMessage.data?.ID,
-        //                 "name": "thinking",
-        //                 "phon_us": "/ˈθɪŋkɪŋ/",
-        //                 "phon_uk": "/ˈθɪŋkɪŋ/",
-        //                 "sound_us": "/media/audio/thinking_adjective__us.mp3",
-        //                 "sound_uk": "/media/audio/thinking_adjective__uk.mp3",
-        //                 "word_type": "adjective"
-        //             },
-        //         })
-        //     }
-        // });
-
-
-
     }, []);
 
     return (
@@ -189,7 +179,7 @@ const D_HomeSearchScreen = (props) => {
             >
 
 
-                <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.FULL_BANNER} />
+                <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.SMART_BANNER} />
                 <ScrollView
                     keyboardShouldPersistTaps={'handled'}
                     style={{

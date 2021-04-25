@@ -304,10 +304,10 @@ const TabBottom = () => {
                     if (route.name === 'HomeStack') {
                         iconName = CommonIcons.homeCircle
 
-                    } else if (route.name === 'Settings') {
-                        iconName = CommonIcons.bookMarker
-                    } else if (route.name === 'Messages') {
-                        iconName = CommonIcons.messages
+                    } else if (route.name === 'FlashCard') {
+                        iconName = CommonIcons.checkboxMarked
+                    } else if (route.name === 'ReadingPracticeStack') {
+                        iconName = CommonIcons.bookOpen
                     } else if (route.name === 'Accounts') {
                         iconName = CommonIcons.account
                     }
@@ -319,7 +319,7 @@ const TabBottom = () => {
 
                     }
                     else {
-                        iconName = CommonIcons.newsPaper
+                        iconName = CommonIcons.phoneSetting
                     }
 
                     // You can return any component that you like here!

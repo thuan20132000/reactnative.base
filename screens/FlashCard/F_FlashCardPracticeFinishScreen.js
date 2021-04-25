@@ -6,12 +6,25 @@ import Sound from 'react-native-sound';
 import CommonColor from '../../utils/CommonColor';
 import { getLearntVocabularyByTopic, saveLearntVocabularyByTopic } from '../../utils/helper';
 
+import { InterstitialAd,RewardedAd,RewardedAdEventType, AdEventType, TestIds } from '@react-native-firebase/admob';
+
+
+import {admob_android_app_id} from '../../config/api_config.json'
+
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : admob_android_app_id;
+
+const rewarded = RewardedAd.createForAdRequest(adUnitId, {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing'],
+  });
+
 
 const F_FlashCardPracticeFinishScreen = (props) => {
 
 
 
     const flashcard = useSelector(state => state.flashcard);
+    const [advLoaded, setAdvLoaded] = React.useState(false);
 
 
     React.useEffect(() => {
@@ -33,8 +46,39 @@ const F_FlashCardPracticeFinishScreen = (props) => {
             }, 100);
         }, 100);
 
+
+        const eventListener = rewarded.onAdEvent((type, error, reward) => {
+            if (type === RewardedAdEventType.LOADED) {
+                setAdvLoaded(true);
+            }
+            if (type === RewardedAdEventType.EARNED_REWARD) {
+                console.log('User earned reward of ', reward);
+              }
+        });
+
+        // Start loading the interstitial straight away
+        rewarded.load();
+
+
+        props.navigation.setOptions({
+            headerBackTitleVisible:false,
+            headerShown:false
+        })
+
+        // Unsubscribe from events on unmount
+        return () => {
+            eventListener();
+        };
+
     }, []);
 
+
+    const [advClicked, setAdvClicked] = React.useState(false);
+
+    const _onLoadAdv = () => {
+        rewarded.show();
+        setAdvClicked(true);
+    }
 
 
     const _onBackHome = async () => {
@@ -92,7 +136,7 @@ const F_FlashCardPracticeFinishScreen = (props) => {
                     paddingHorizontal: 22,
                     borderRadius: 6
                 }}
-                onPress={_onBackHome}
+                onPress={advClicked ? _onBackHome : _onLoadAdv}
             >
                 <Text
                     style={{

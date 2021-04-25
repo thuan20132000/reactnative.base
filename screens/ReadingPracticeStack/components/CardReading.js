@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CommonColor from '../../../utils/CommonColor'
 
 import CommonImages from '../../../utils/CommonImages'
@@ -19,13 +19,14 @@ const CardReading = ({
     onPracticePress,
     summary,
     title,
-    image_url,
+    image_path,
 
 }) => {
 
 
 
 
+    const image_url = image_path?`${url_absolute}${image_path}`:'https://picsum.photos/700';
 
     return (
         <Card
@@ -34,17 +35,18 @@ const CardReading = ({
                 alignItems: 'center',
                 marginVertical: 6,
                 marginHorizontal: 6,
-                justifyContent: 'center'
+                justifyContent: 'center',
+                overflow:'hidden'
             }}
         >
 
             <Image
              
-                source={
-                    image_url?{uri:`${url_absolute}/${image_url}`}:{uri:'https://picsum.photos/700'}
-                }
+                source={{
+                    uri:image_url
+                }}
                 style={{
-                    width: 320,
+                    width: deviceWidth,
                     height: 120,
                     alignSelf:'center'
                 }}
@@ -74,6 +76,7 @@ const CardReading = ({
         </Card>
     )
 }
+const deviceWidth = Dimensions.get('screen').width;
 
 export default CardReading
 

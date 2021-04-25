@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View,Linking,Share } from 'react-native'
 import CommonIcons from '../../utils/CommonIcons'
 import RowItem from '../Settings/components/RowItem'
 import LearningActivities from './components/LearningActivities'
@@ -7,6 +7,28 @@ import LearningActivities from './components/LearningActivities'
 const S_SettingHomeSceen = (props) => {
 
    
+    const _onOpenSharing = async () => {
+        try {
+            const result = await Share.share({
+              message:
+                'https://play.google.com/apps/test/com.reactnative_base/2',
+            });
+            if (result.action === Share.sharedAction) {
+              if (result.activityType) {
+                // shared with activity type of result.activityType
+              } else {
+                // shared
+              }
+            } else if (result.action === Share.dismissedAction) {
+              // dismissed
+            }
+          } catch (error) {
+            alert(error.message);
+          }
+
+    }
+
+
 
     return (
         <View
@@ -32,7 +54,7 @@ const S_SettingHomeSceen = (props) => {
             >
                 <Image
                     source={
-                        require('../../utils/photos/logo2.png')
+                        require('../../utils/photos/logo3.png')
                     }
                     resizeMode={'contain'}
                     style={{
@@ -130,6 +152,7 @@ const S_SettingHomeSceen = (props) => {
                     fontSize: 16
 
                 }}
+                onItemPress={_onOpenSharing}
             />
             <View
                 style={[
