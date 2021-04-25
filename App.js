@@ -74,6 +74,7 @@ const App = () => {
       })
       .then(() => {
         // Request config successfully set!
+        console.log('admod config successfully')
       });
   }, []);
 

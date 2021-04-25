@@ -24,40 +24,40 @@ const S_VocabularyRemindScreen = () => {
 
 
 
-        // _onGetRemindSetting('search_vocabulary')
-        //     .then((value) => {
-        //         if (value) {
+        _onGetRemindSetting('search_vocabulary')
+            .then((value) => {
+                if (value) {
 
-        //             if (value == 'true' || value == true) {
-        //                 setLearnVocabularyRemind(true);
-        //             } else {
-        //                 setLearnVocabularyRemind(false)
-        //             }
-        //         }
-        //     });
+                    if (value == 'true' || value == true) {
+                        setLearnVocabularyRemind(true);
+                    } else {
+                        setLearnVocabularyRemind(false)
+                    }
+                }
+            });
 
 
-        // _onGetRemindSetting('daily_vocabulary')
-        //     .then((value) => {
-        //         if (value) {
-        //             if (value == 'true' || value == true) {
-        //                 setDailyVocabularyRemind(true);
-        //             } else {
-        //                 setDailyVocabularyRemind(false)
-        //             }
-        //         }
-        //     });
+        _onGetRemindSetting('daily_vocabulary')
+            .then((value) => {
+                if (value) {
+                    if (value == 'true' || value == true) {
+                        setDailyVocabularyRemind(true);
+                    } else {
+                        setDailyVocabularyRemind(false)
+                    }
+                }
+            });
 
-        // _onGetRemindSetting('practice')
-        //     .then((value) => {
-        //         if (value) {
-        //             if (value == 'true' || value == true) {
-        //                 setPracticeRemind(true);
-        //             } else {
-        //                 setPracticeRemind(false)
-        //             }
-        //         }
-        //     });
+        _onGetRemindSetting('practice')
+            .then((value) => {
+                if (value) {
+                    if (value == 'true' || value == true) {
+                        setPracticeRemind(true);
+                    } else {
+                        setPracticeRemind(false)
+                    }
+                }
+            });
 
         _onGetRemindSetting('reading_practice')
             .then((value) => {

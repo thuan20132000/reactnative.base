@@ -91,7 +91,7 @@ const ReadingPracticeScreen = (props) => {
 
 
     const path = Platform.select({
-        android: 'sdcard/askmeit_dictionary/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
+        android: 'sdcard/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
     });
 
     const audioSet = {

@@ -15,6 +15,10 @@ import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
 import { InterstitialAd, RewardedAd, BannerAd, TestIds, BannerAdSize } from '@react-native-firebase/admob';
 
+
+const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+
+
 const D_HomeSearchScreen = (props) => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const typingTimeoutRef = useRef(null);
@@ -29,8 +33,6 @@ const D_HomeSearchScreen = (props) => {
             vocabulary: e
         })
     }
-
-
 
     const _onSearchVocabulary = async (text) => {
         let searchData = await searchVocabulary(text);
@@ -106,13 +108,13 @@ const D_HomeSearchScreen = (props) => {
 
     const navigation = useNavigation();
 
-    React.useEffect(() => {
-        const unsubscribe = messaging().onMessage(async remoteMessage => {
-            Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-        });
+    // React.useEffect(() => {
+    //     const unsubscribe = messaging().onMessage(async remoteMessage => {
+    //         Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    //     });
 
-        return unsubscribe;
-    }, []);
+    //     return unsubscribe;
+    // }, []);
 
     React.useEffect(() => {
 
@@ -178,8 +180,13 @@ const D_HomeSearchScreen = (props) => {
                 }}
             >
 
-
-                <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.SMART_BANNER} />
+                <BannerAd
+                    unitId={adUnitId}
+                    size={BannerAdSize.FULL_BANNER}
+                    requestOptions={{
+                        requestNonPersonalizedAdsOnly: true,
+                    }}
+                />
                 <ScrollView
                     keyboardShouldPersistTaps={'handled'}
                     style={{
