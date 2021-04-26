@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-apply plugin: 'com.google.gms.google-services' // <- Add this line
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
@@ -185,6 +185,10 @@ android {
 }
 
 dependencies {
+
+    // For animated GIF support
+    implementation 'com.facebook.fresco:animated-gif:2.0.0'
+    
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

@@ -15,8 +15,8 @@ const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : admob_android_app_id;
 
 const rewarded = RewardedAd.createForAdRequest(adUnitId, {
     requestNonPersonalizedAdsOnly: true,
-    keywords: ['fashion', 'clothing'],
-  });
+    keywords:['education','ielts','toeic','english','tiếng anh','học tiếng anh']
+});
 
 
 const F_FlashCardPracticeFinishScreen = (props) => {

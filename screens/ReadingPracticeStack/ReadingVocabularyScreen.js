@@ -108,6 +108,11 @@ const ReadingVocabularyScreen = (props) => {
 
 
     React.useEffect(() => {
+        audioRecorderPlayer.stopPlayer();
+        audioRecorderPlayer.removePlayBackListener();
+        audioRecorderPlayer.stopRecorder();
+        audioRecorderPlayer.removeRecordBackListener();
+
         setIsLoading(true);
 
         getReadingPostDetail(readingpost.id)

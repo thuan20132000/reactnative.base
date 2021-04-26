@@ -4,8 +4,9 @@ import { getFieldsList, getFieldTopic } from '../../utils/api_v1'
 import CommonImages from '../../utils/CommonImages'
 import CardField from './components/CardField'
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import { adbmod_android_app_id } from '../../config/api_config.json';
 
-const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+const adUnitId = __DEV__ ? TestIds.BANNER : adbmod_android_app_id;
 
 const F_FlashCardFieldScreen = (props) => {
 
@@ -43,13 +44,23 @@ const F_FlashCardFieldScreen = (props) => {
 
     return (
         <>
-            <BannerAd
-                unitId={adUnitId}
-                size={BannerAdSize.FULL_BANNER}
-                requestOptions={{
-                    requestNonPersonalizedAdsOnly: true,
+            <View
+                style={{
+                    display:'flex',
+                    alignSelf:'center',
+                    paddingVertical:8
                 }}
-            />
+            >
+                <BannerAd
+                    unitId={adUnitId}
+                    size={BannerAdSize.MEDIUM_RECTANGLE}
+                    requestOptions={{
+                        requestNonPersonalizedAdsOnly: true,
+                        keywords:['education','ielts','toeic','english','tiếng anh','học tiếng anh']
+                    }}
+                    
+                />
+            </View>
             <ScrollView
 
             >
@@ -60,7 +71,7 @@ const F_FlashCardFieldScreen = (props) => {
                         flexWrap: 'wrap',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        marginVertical:60
+                        marginVertical: 20
                     }}
                 >
                     {

@@ -14,6 +14,11 @@ import Highlighter from 'react-native-highlight-words';
 import CommonColor from '../../utils/CommonColor';
 import { getReadingPostDetail } from '../../utils/api_v1';
 import AudioPlay from '../../components/Card/AudioPlay';
+
+import { InterstitialAd, RewardedAd, BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
+import {adbmod_android_app_id} from '../../config/api_config.json';
+const adUnitId = __DEV__ ? TestIds.BANNER : adbmod_android_app_id;
+
 var RNFS = require('react-native-fs');
 
 
@@ -152,24 +157,11 @@ const ReadingPracticeScreen = (props) => {
                         // let audio_path = dirMusic+"/reading_practice.wav"
                         let audio_uri = await audioRecorderPlayer.startRecorder(practice_audio_path, audioSet);
                         setIsRecording(true);
-                        var time = 0;
-                        // _refRecordingTime.current = setInterval(() => {
-                        //     // setRecordingTime(recordingTime + 1);
-                        //     time = time + 1;
-                        //     console.log('==> record: ', time);
-                        //     let x = millisToMinutesAndSeconds(time * 1000);
-                        //     setRecordingTime(x);
-                        // }, 1000);
-
+              
                         audioRecorderPlayer.addRecordBackListener(e => {
-                            console.log('Recording . . . ', e.current_position);
-                            // let x = millisToMinutesAndSeconds(e.current_position);
-                            // console.log('time: ', x);
-                            // // console.log('rcL ', recordingTime)
-                            // setRecordingTime(x);
-                            // _refRecordingTime.current = x;
+                            // console.log('Recording . . . ', e.current_position);
+
                             let x = audioRecorderPlayer.mmssss(Math.floor(e.current_position));
-                            console.log('xx: ', x)
                             setRecordingTime(x);
 
                             return;
@@ -199,7 +191,7 @@ const ReadingPracticeScreen = (props) => {
         clearInterval(_refRecordingTime.current);
 
         try {
-            let a = await audioRecorderPlayer.stopRecorder();
+            await audioRecorderPlayer.stopRecorder();
             setIsRecording(false);
             audioRecorderPlayer.removeRecordBackListener();
             // console.log('recording time: ', _refRecordingTime);
@@ -471,7 +463,23 @@ const ReadingPracticeScreen = (props) => {
                         </Text>
 
                     </View>
+                    
                 </Animated.ScrollView>
+                <View
+                    style={{
+                        display:'flex',
+                        alignSelf:'center'
+                    }}
+                >
+                    <BannerAd
+                        unitId={adUnitId}
+                        size={BannerAdSize.BANNER}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                    />
+
+                </View>
                 <BottomRecordingNavigation
                     onStartRecordPress={() => {
                         _onStartRecord().then(() => {
@@ -679,6 +687,8 @@ const ReadingPracticeScreen = (props) => {
                     }
 
                 </BottomRecordingNavigation>
+
+           
 
             </View>
         </Provider>

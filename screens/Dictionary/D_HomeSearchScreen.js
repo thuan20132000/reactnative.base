@@ -13,10 +13,13 @@ import CardDefinition from './components/CardDefinition';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
-import { InterstitialAd, RewardedAd, BannerAd, TestIds, BannerAdSize } from '@react-native-firebase/admob';
+import {  BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
+
+import {adbmod_android_app_id} from '../../config/api_config.json';
+
+const adUnitId = __DEV__ ? TestIds.BANNER : adbmod_android_app_id;
 
 
-const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
 
 const D_HomeSearchScreen = (props) => {
@@ -25,7 +28,11 @@ const D_HomeSearchScreen = (props) => {
     const [searchData, setSearchData] = useState(null);
     const _refCardFlip = useRef();
 
+    // console.warn(interstitial.show())
     const [nearestVocabulary, setNearestVocabulary] = useState();
+
+
+
 
     const _onNavigateWordDefinition = async (e) => {
         await saveSearchedVocabulary(e);
@@ -164,6 +171,14 @@ const D_HomeSearchScreen = (props) => {
 
     }, []);
 
+
+
+
+    // if (!loaded) {
+    //     return null;
+    // }
+
+
     return (
         <View
             style={[styles.container]}
@@ -180,13 +195,18 @@ const D_HomeSearchScreen = (props) => {
                 }}
             >
 
+
+
                 <BannerAd
                     unitId={adUnitId}
                     size={BannerAdSize.FULL_BANNER}
                     requestOptions={{
                         requestNonPersonalizedAdsOnly: true,
+                        keywords:['education','ielts','toeic','english','tiếng anh','học tiếng anh']
+
                     }}
                 />
+
                 <ScrollView
                     keyboardShouldPersistTaps={'handled'}
                     style={{
@@ -230,7 +250,7 @@ const D_HomeSearchScreen = (props) => {
 
             {/* Body Control */}
             {
-                (!searchData) &&
+                (!searchData && nearestVocabulary) &&
 
                 <>
                     <CardDefinition

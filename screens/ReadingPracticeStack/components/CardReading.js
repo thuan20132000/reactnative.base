@@ -64,6 +64,10 @@ const CardReading = ({
             <Card.Actions>
                 <Button
                     onPress={onVocabularyPress}
+                    style={{
+                        padding:8,
+                        minWidth:120
+                    }}
                 >
                     Nghe
                 </Button>

@@ -7,13 +7,14 @@ import CommonIcons from '../../utils/CommonIcons';
 import * as readingActions from '../../store/actions/readingActions';
 import { InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
 
+import {adbmod_android_app_id} from '../../config/api_config.json';
 
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : adbmod_android_app_id;
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
     requestNonPersonalizedAdsOnly: true,
-    keywords: ['fashion', 'clothing'],
+    keywords:['education','ielts','toeic','english','tiếng anh','học tiếng anh']
 });
 
 const ReadingVocabularyPracticeFinishScreen = (props) => {

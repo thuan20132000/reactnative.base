@@ -49,7 +49,6 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 
 
-
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -77,6 +76,13 @@ const App = () => {
         console.log('admod config successfully')
       });
   }, []);
+
+
+
+
+
+    // Unsubscribe from events on unmount
+
 
 
   return (
