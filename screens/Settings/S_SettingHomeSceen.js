@@ -154,6 +154,38 @@ const S_SettingHomeSceen = (props) => {
                 }}
                 onItemPress={_onOpenSharing}
             />
+             <RowItem
+                label={"Privacy Policy"}
+                leftIconName={CommonIcons.checkProgress}
+                leftIconStyle={{
+                    color: 'coral'
+                }}
+                containerStyle={[styles.itemContainer]}
+
+                leftIconSize={26}
+                labelStyle={{
+                    marginLeft: 16,
+                    fontSize: 16
+
+                }}
+                onItemPress={() => props.navigation.navigate('PrivacyPolicy')}
+            />
+            <RowItem
+                label={"Terms and Conditions"}
+                leftIconName={CommonIcons.checkProgress}
+                leftIconStyle={{
+                    color: 'coral'
+                }}
+                containerStyle={[styles.itemContainer]}
+
+                leftIconSize={26}
+                labelStyle={{
+                    marginLeft: 16,
+                    fontSize: 16
+
+                }}
+                onItemPress={() => props.navigation.navigate('TermConditions')}
+            />
             <View
                 style={[
                     {

@@ -1,39 +1,38 @@
 {
   "project_info": {
-    "project_number": "896930057524",
-    "project_id": "luyen-noi-tieng-anh",
-    "storage_bucket": "luyen-noi-tieng-anh.appspot.com"
+    "project_number": "647715357805",
+    "project_id": "english-practice-c069c",
+    "storage_bucket": "english-practice-c069c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:896930057524:android:d836f7f80b04fab4c52961",
+        "mobilesdk_app_id": "1:647715357805:android:fe28ca98fbe257cdfaeb64",
         "android_client_info": {
-          "package_name": "com.reactnative_base"
+          "package_name": "com.english_practice_askmeit"
         }
       },
       "oauth_client": [
         {
-          "client_id": "896930057524-4sbdcvonn8lrtsd197mthsns05363geu.apps.googleusercontent.com",
+          "client_id": "647715357805-brk38ekm94rngb5kdqicdsucgcj79rat.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC00xjWies-tQ7ZkaHtN4lbh2Sa8s__Dfg"
+          "current_key": "AIzaSyAogk6nH42NpDH6E-s5owc7jtLjK9jzmxI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "896930057524-4sbdcvonn8lrtsd197mthsns05363geu.apps.googleusercontent.com",
+              "client_id": "647715357805-brk38ekm94rngb5kdqicdsucgcj79rat.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
         }
-      },
-      "admob_app_id": "ca-app-pub-7783640686150605~6780496114"
+      }
     }
   ],
   "configuration_version": "1"

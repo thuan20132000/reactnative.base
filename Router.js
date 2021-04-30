@@ -32,6 +32,8 @@ import ReadingPracticeScreen from './screens/ReadingPracticeStack/ReadingPractic
 import ReadingVocabularyScreen from './screens/ReadingPracticeStack/ReadingVocabularyScreen';
 import ReadingVocabularyPracticeScreen from './screens/ReadingPracticeStack/ReadingVocabularyPracticeScreen';
 import ReadingVocabularyPracticeFinishScreen from './screens/ReadingPracticeStack/ReadingVocabularyPracticeFinishScreen';
+import S_PrivacyPolicyScreen from './screens/Settings/S_PrivacyPolicyScreen';
+import S_TermAndConditionsScreen from './screens/Settings/S_TermAndConditionsScreen';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -193,6 +195,14 @@ const SettingStack = () => {
             <SettingStackNavigator.Screen
                 name={"VocabularyDefinition"}
                 component={D_WordDefinitionScreen}
+            />
+            <SettingStackNavigator.Screen
+                name={"PrivacyPolicy"}
+                component={S_PrivacyPolicyScreen}
+            />
+             <SettingStackNavigator.Screen
+                name={"TermConditions"}
+                component={S_TermAndConditionsScreen}
             />
         </SettingStackNavigator.Navigator>
     )

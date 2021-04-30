@@ -1,4 +1,4 @@
-package com.reactnative_base;
+package com.english_practice_askmeit;
 
 import android.app.Application;
 import android.content.Context;
