@@ -4,20 +4,20 @@ import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux';
 import Sound from 'react-native-sound';
 import CommonColor from '../../utils/CommonColor';
-import { getLearntVocabularyByTopic, saveLearntVocabularyByTopic } from '../../utils/helper';
+import {  saveLearntVocabularyByTopic } from '../../utils/helper';
 
-import { InterstitialAd,RewardedAd,RewardedAdEventType, AdEventType, TestIds } from '@react-native-firebase/admob';
+import {InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
 
 
 import {admob_android_app_id} from '../../config/api_config.json'
 
 const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : admob_android_app_id;
 
-const rewarded = RewardedAd.createForAdRequest(adUnitId, {
-    requestNonPersonalizedAdsOnly: true,
-    keywords:['education','ielts','toeic','english','tiếng anh','học tiếng anh']
-});
 
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing'],
+  });
 
 const F_FlashCardPracticeFinishScreen = (props) => {
 
@@ -47,18 +47,17 @@ const F_FlashCardPracticeFinishScreen = (props) => {
         }, 100);
 
 
-        const eventListener = rewarded.onAdEvent((type, error, reward) => {
-            if (type === RewardedAdEventType.LOADED) {
-                setAdvLoaded(true);
+
+        const eventListener = interstitial.onAdEvent(type => {
+            if (type === AdEventType.LOADED) {
+              setAdvLoaded(true);
             }
-            if (type === RewardedAdEventType.EARNED_REWARD) {
-                console.log('User earned reward of ', reward);
-              }
-        });
-
-        // Start loading the interstitial straight away
-        rewarded.load();
-
+          });
+      
+          // Start loading the interstitial straight away
+          interstitial.load();
+      
+      
 
         props.navigation.setOptions({
             headerBackTitleVisible:false,
@@ -76,7 +75,7 @@ const F_FlashCardPracticeFinishScreen = (props) => {
     const [advClicked, setAdvClicked] = React.useState(false);
 
     const _onLoadAdv = () => {
-        rewarded.show();
+        interstitial.show();
         setAdvClicked(true);
     }
 
