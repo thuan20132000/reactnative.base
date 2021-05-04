@@ -1,41 +1,55 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View,Linking,Share } from 'react-native'
+import { Image, StyleSheet, Text, View, Linking, Share } from 'react-native'
 import CommonIcons from '../../utils/CommonIcons'
 import RowItem from '../Settings/components/RowItem'
 import LearningActivities from './components/LearningActivities'
 
 const S_SettingHomeSceen = (props) => {
 
-   
+
     const _onOpenSharing = async () => {
         try {
             const result = await Share.share({
-              message:
-                'https://play.google.com/apps/test/com.reactnative_base/2',
+                message:
+                    'https://play.google.com/store/apps/details?id=com.english_practice_askmeit',
             });
             if (result.action === Share.sharedAction) {
-              if (result.activityType) {
-                // shared with activity type of result.activityType
-              } else {
-                // shared
-              }
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
             } else if (result.action === Share.dismissedAction) {
-              // dismissed
+                // dismissed
             }
-          } catch (error) {
+        } catch (error) {
             alert(error.message);
-          }
+        }
 
     }
 
+
+    const _onOpenAppReview = async () => {
+        let url = "https://play.google.com/store/apps/details?id=com.english_practice_askmeit";
+        const supported = await Linking.canOpenURL(url);
+
+        if (supported) {
+            // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+            // by some browser in the mobile
+            await Linking.openURL(url);
+        } else {
+            Alert.alert(`Don't know how to open this URL: ${url}`);
+        }
+
+    }
 
 
     return (
         <View
             style={{
-                backgroundColor:'white',
-                display:'flex',
-                flex:1
+                backgroundColor: 'white',
+                display: 'flex',
+                flex: 1
             }}
         >
 
@@ -46,9 +60,9 @@ const S_SettingHomeSceen = (props) => {
 
             <View
                 style={{
-                    display:'flex',
-                    flexDirection:'row',
-                    justifyContent:'center',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
 
                 }}
             >
@@ -58,8 +72,8 @@ const S_SettingHomeSceen = (props) => {
                     }
                     resizeMode={'contain'}
                     style={{
-                        width:220,
-                        height:220
+                        width: 220,
+                        height: 220
                     }}
                 />
             </View>
@@ -135,8 +149,9 @@ const S_SettingHomeSceen = (props) => {
                 labelStyle={{
                     marginLeft: 16,
                     fontSize: 16
-
                 }}
+                onItemPress={_onOpenAppReview}
+
             />
             <RowItem
                 label={"Chia sẻ ứng dụng với bạn bè"}
@@ -154,7 +169,7 @@ const S_SettingHomeSceen = (props) => {
                 }}
                 onItemPress={_onOpenSharing}
             />
-             <RowItem
+            <RowItem
                 label={"Privacy Policy"}
                 leftIconName={CommonIcons.checkProgress}
                 leftIconStyle={{

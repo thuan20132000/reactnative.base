@@ -314,7 +314,7 @@ const ReadingVocabularyScreen = (props) => {
                         {
                             (readingPost?.content  && readingPost.content || '') &&
                             <Highlighter
-                                highlightStyle={{ backgroundColor: 'yellow' }}
+                                highlightStyle={{ color: 'red', fontWeight: '700' }}
                                 searchWords={highlightVocabulary || []}
                                 textToHighlight={readingPost?.content || ''}
                             />

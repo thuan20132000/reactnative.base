@@ -135,8 +135,8 @@ android {
         applicationId "com.english_practice_askmeit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.3"
+        versionCode 15
+        versionName "1.5"
     }
     splits {
         abi {

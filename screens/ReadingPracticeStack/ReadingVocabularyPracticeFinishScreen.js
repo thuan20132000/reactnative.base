@@ -7,25 +7,43 @@ import CommonIcons from '../../utils/CommonIcons';
 import * as readingActions from '../../store/actions/readingActions';
 import { InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
 
-import {adbmod_android_app_id} from '../../config/api_config.json';
+import { adbmod_android_app_id } from '../../config/api_config.json';
 
 
 const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : adbmod_android_app_id;
 
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+const interstitial = InterstitialAd.createForAdRequest('ca-app-pub-7783640686150605/2202116538', {
     requestNonPersonalizedAdsOnly: true,
-    keywords:['education','ielts','toeic','english','tiếng anh','học tiếng anh']
+    keywords: ['education', 'ielts', 'toeic', 'english', 'tiếng anh', 'học tiếng anh']
 });
 
 const ReadingVocabularyPracticeFinishScreen = (props) => {
     const dispatch = useDispatch();
     const [advLoaded, setAdvLoaded] = useState(false);
     const [advClicked, setAdvClicked] = useState(false);
+    const { learnt_vocabulary_list } = props.route?.params;
 
     React.useEffect(() => {
+        dispatch(readingActions.resetLearnVocabularyList());
+
         const eventListener = interstitial.onAdEvent(type => {
+            // if (type === AdEventType.LOADED) {
+            //     setAdvLoaded(true);
+            // }
             if (type === AdEventType.LOADED) {
+                console.log('InterstitialAd adLoaded');
                 setAdvLoaded(true);
+            } else if (type === AdEventType.ERROR) {
+                console.log('InterstitialAd => Error');
+            } else if (type === AdEventType.OPENED) {
+                console.log('InterstitialAd => adOpened');
+            } else if (type === AdEventType.CLICKED) {
+                console.log('InterstitialAd => adClicked');
+            } else if (type === AdEventType.LEFT_APPLICATION) {
+                console.log('InterstitialAd => adLeft_App');
+            } else if (type === AdEventType.CLOSED) {
+                console.log('InterstitialAd => adClosed');
+                interstitial.load();
             }
         });
 
@@ -39,13 +57,6 @@ const ReadingVocabularyPracticeFinishScreen = (props) => {
     }, []);
 
     // No advert ready to show yet
-    const { learnt_vocabulary_list } = props.route?.params;
-
-
-    React.useEffect(() => {
-        dispatch(readingActions.resetLearnVocabularyList());
-    }, []);
-
 
 
     const _onNextPress = () => {
@@ -57,8 +68,14 @@ const ReadingVocabularyPracticeFinishScreen = (props) => {
     }
 
     const _onLoadAdv = () => {
-        interstitial.show();
-        setAdvClicked(true);
+        try {
+            if (interstitial.loaded) {
+                interstitial.show();
+                setAdvClicked(true);
+            }
+        } catch (error) {
+            console.log("ERROR: ", error);
+        }
     }
     // No advert ready to show yet
 

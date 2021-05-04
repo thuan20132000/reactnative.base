@@ -13,7 +13,6 @@ const F_FlashCardFieldScreen = (props) => {
     const [fieldList, setFieldList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-
     React.useEffect(() => {
         setIsLoading(true);
         getFieldsList()
@@ -46,20 +45,24 @@ const F_FlashCardFieldScreen = (props) => {
         <>
             <View
                 style={{
-                    display:'flex',
-                    alignSelf:'center',
-                    paddingVertical:8
+                    display: 'flex',
+                    alignSelf: 'center',
+                    paddingVertical: 8
                 }}
             >
-                <BannerAd
-                    unitId={adUnitId}
-                    size={BannerAdSize.MEDIUM_RECTANGLE}
-                    requestOptions={{
-                        requestNonPersonalizedAdsOnly: true,
-                        keywords:['education','ielts','toeic','english','tiếng anh','học tiếng anh']
-                    }}
-                    
-                />
+                {
+                    adbmod_android_app_id &&
+                    <BannerAd
+                        unitId={'ca-app-pub-7783640686150605/2939455462'}
+                        size={BannerAdSize.MEDIUM_RECTANGLE}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                            keywords: ['education', 'ielts']
+                        }}
+
+                    />
+
+                }
             </View>
             <ScrollView
 

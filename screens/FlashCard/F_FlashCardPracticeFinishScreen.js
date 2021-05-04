@@ -4,17 +4,17 @@ import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux';
 import Sound from 'react-native-sound';
 import CommonColor from '../../utils/CommonColor';
-import {  saveLearntVocabularyByTopic } from '../../utils/helper';
+import { getLearntVocabularyByTopic, saveLearntVocabularyByTopic } from '../../utils/helper';
 
 import {InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
 
 
-import {admob_android_app_id} from '../../config/api_config.json'
+import {adbmod_android_app_id} from '../../config/api_config.json'
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : admob_android_app_id;
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : adbmod_android_app_id;
 
 
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+const interstitial = InterstitialAd.createForAdRequest('ca-app-pub-7783640686150605/2202116538', {
     requestNonPersonalizedAdsOnly: true,
     keywords: ['fashion', 'clothing'],
   });
@@ -47,6 +47,14 @@ const F_FlashCardPracticeFinishScreen = (props) => {
         }, 100);
 
 
+        // const eventListener = rewarded.onAdEvent((type, error, reward) => {
+        //     if (type === RewardedAdEventType.LOADED) {
+        //         setAdvLoaded(true);
+        //     }
+        //     if (type === RewardedAdEventType.EARNED_REWARD) {
+        //         console.log('User earned reward of ', reward);
+        //       }
+        // });
 
         const eventListener = interstitial.onAdEvent(type => {
             if (type === AdEventType.LOADED) {
@@ -55,7 +63,8 @@ const F_FlashCardPracticeFinishScreen = (props) => {
           });
       
           // Start loading the interstitial straight away
-          interstitial.load();
+        interstitial.load();
+      
       
       
 
@@ -75,6 +84,7 @@ const F_FlashCardPracticeFinishScreen = (props) => {
     const [advClicked, setAdvClicked] = React.useState(false);
 
     const _onLoadAdv = () => {
+      
         interstitial.show();
         setAdvClicked(true);
     }
