@@ -6,12 +6,25 @@ import Sound from 'react-native-sound';
 import CommonColor from '../../utils/CommonColor';
 import { getLearntVocabularyByTopic, saveLearntVocabularyByTopic } from '../../utils/helper';
 
+import {InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
+
+
+import {adbmod_android_app_id} from '../../config/api_config.json'
+
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : adbmod_android_app_id;
+
+
+const interstitial = InterstitialAd.createForAdRequest('ca-app-pub-7783640686150605/2202116538', {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing'],
+  });
 
 const F_FlashCardPracticeFinishScreen = (props) => {
 
 
 
     const flashcard = useSelector(state => state.flashcard);
+    const [advLoaded, setAdvLoaded] = React.useState(false);
 
 
     React.useEffect(() => {
@@ -33,8 +46,48 @@ const F_FlashCardPracticeFinishScreen = (props) => {
             }, 100);
         }, 100);
 
+
+        // const eventListener = rewarded.onAdEvent((type, error, reward) => {
+        //     if (type === RewardedAdEventType.LOADED) {
+        //         setAdvLoaded(true);
+        //     }
+        //     if (type === RewardedAdEventType.EARNED_REWARD) {
+        //         console.log('User earned reward of ', reward);
+        //       }
+        // });
+
+        const eventListener = interstitial.onAdEvent(type => {
+            if (type === AdEventType.LOADED) {
+              setAdvLoaded(true);
+            }
+          });
+      
+          // Start loading the interstitial straight away
+        interstitial.load();
+      
+      
+      
+
+        props.navigation.setOptions({
+            headerBackTitleVisible:false,
+            headerShown:false
+        })
+
+        // Unsubscribe from events on unmount
+        return () => {
+            eventListener();
+        };
+
     }, []);
 
+
+    const [advClicked, setAdvClicked] = React.useState(false);
+
+    const _onLoadAdv = () => {
+      
+        interstitial.show();
+        setAdvClicked(true);
+    }
 
 
     const _onBackHome = async () => {
@@ -92,7 +145,7 @@ const F_FlashCardPracticeFinishScreen = (props) => {
                     paddingHorizontal: 22,
                     borderRadius: 6
                 }}
-                onPress={_onBackHome}
+                onPress={advClicked ? _onBackHome : _onLoadAdv}
             >
                 <Text
                     style={{

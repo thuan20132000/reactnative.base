@@ -23,7 +23,7 @@ const AudioPlay = ({
                     isPlaying ?
                         <IconButton
                             icon={CommonIcons.pauseCircleOutline}
-                            size={22}
+                            size={32}
                             color={'red'}
                             style={{
                                 marginHorizontal: 12
@@ -32,7 +32,7 @@ const AudioPlay = ({
                         /> :
                         <IconButton
                             icon={CommonIcons.playCircleOutline}
-                            size={22}
+                            size={32}
                             color={'red'}
                             style={{
                                 marginHorizontal: 12

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing, Platform, TextInput, ActivityIndicator } from 'react-native'
+import { ScrollView, Linking, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing, Platform, TextInput, ActivityIndicator, Alert } from 'react-native'
 import { Card, Title, Paragraph, ProgressBar, IconButton, Provider, Portal, Button, Modal } from 'react-native-paper';
 import BottomRecordingNavigation from './components/BottomRecordingNavigation';
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
@@ -14,6 +14,11 @@ import Highlighter from 'react-native-highlight-words';
 import CommonColor from '../../utils/CommonColor';
 import { getReadingPostDetail } from '../../utils/api_v1';
 import AudioPlay from '../../components/Card/AudioPlay';
+
+import { InterstitialAd, RewardedAd, BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
+import { adbmod_android_app_id } from '../../config/api_config.json';
+const adUnitId = __DEV__ ? TestIds.BANNER : adbmod_android_app_id;
+
 var RNFS = require('react-native-fs');
 
 
@@ -81,6 +86,45 @@ const ReadingPracticeScreen = (props) => {
             tabBarVisible: false
         });
 
+
+        PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+                title: "Cool WRITE_EXTERNAL_STORAGE Permission",
+                message:
+                    "Cool Photo App needs access to your sdcard " +
+                    "so you can take awesome audio.",
+                buttonNeutral: "Ask Me Later",
+                buttonNegative: "Cancel",
+                buttonPositive: "OK"
+            }
+        ).then((res) => {
+            if (res != PermissionsAndroid.RESULTS.GRANTED) {
+                console.warn('not granted');
+                Alert.alert(
+                    "Thông báo",
+                    "Vui lòng cấp quyền truy cập bộ nhớ cho ứng dụng",
+                    [
+                        {
+                            text: "Cancel",
+                            onPress: () => props.navigation.goBack(),
+                            style: "cancel"
+                        },
+                        {
+                            text: "OK", onPress: () => {
+                                Linking.openSettings().then((res) => {
+                                    console.warn('sa: ', res);
+                                })
+                            }
+                        }
+                    ]
+                );
+
+                // props.navigation.goBack();
+            }
+        })
+
+
         return () => {
             props.navigation.dangerouslyGetParent().setOptions({
                 tabBarVisible: true
@@ -91,7 +135,7 @@ const ReadingPracticeScreen = (props) => {
 
 
     const path = Platform.select({
-        android: 'sdcard/askmeit_dictionary/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
+        android: 'sdcard/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
     });
 
     const audioSet = {
@@ -125,71 +169,53 @@ const ReadingPracticeScreen = (props) => {
     const practice_audio_path = dirMusic + "/reading_practice.wav";
     const _onStartRecord = async () => {
 
-        await audioRecorderPlayer.stopPlayer();
 
-        setTimeout(() => {
-            _onRunTextScroll();
-
-        }, 3000);
-        audioRecorderPlayer.removePlayBackListener();
 
         try {
+            await audioRecorderPlayer.stopPlayer();
+            audioRecorderPlayer.removePlayBackListener();
 
-            if (Platform.OS === 'android') {
-                try {
-                    const granted = await PermissionsAndroid.request(
-                        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-                        {
-                            title: 'Permissions for write access',
-                            message: 'Give permission to your storage to write a file',
-                            buttonPositive: 'ok',
-                        },
-                    );
+            setTimeout(() => {
+                _onRunTextScroll();
+
+            }, 3000);
+
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+                {
+                    title: 'Permissions for write access',
+                    message: 'Give permission to your storage to write a file',
+                    buttonPositive: 'ok',
+                },
+            );
 
 
-                    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                        console.log('You can use the record');
-                        // let audio_path = dirMusic+"/reading_practice.wav"
-                        let audio_uri = await audioRecorderPlayer.startRecorder(practice_audio_path, audioSet);
-                        setIsRecording(true);
-                        var time = 0;
-                        // _refRecordingTime.current = setInterval(() => {
-                        //     // setRecordingTime(recordingTime + 1);
-                        //     time = time + 1;
-                        //     console.log('==> record: ', time);
-                        //     let x = millisToMinutesAndSeconds(time * 1000);
-                        //     setRecordingTime(x);
-                        // }, 1000);
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('You can use the record');
+                // let audio_path = dirMusic+"/reading_practice.wav"
+                let audio_uri = await audioRecorderPlayer.startRecorder(practice_audio_path, audioSet);
+                setIsRecording(true);
 
-                        audioRecorderPlayer.addRecordBackListener(e => {
-                            console.log('Recording . . . ', e.current_position);
-                            // let x = millisToMinutesAndSeconds(e.current_position);
-                            // console.log('time: ', x);
-                            // // console.log('rcL ', recordingTime)
-                            // setRecordingTime(x);
-                            // _refRecordingTime.current = x;
-                            let x = audioRecorderPlayer.mmssss(Math.floor(e.current_position));
-                            console.log('xx: ', x)
-                            setRecordingTime(x);
+                audioRecorderPlayer.addRecordBackListener(e => {
+                    // console.log('Recording . . . ', e.current_position);
 
-                            return;
-                        });
+                    let x = audioRecorderPlayer.mmssss(Math.floor(e.current_position));
+                    setRecordingTime(x);
 
-                        // console.log(`uri: ${audio_uri}`);
-                        // setAudioPath(audio_uri);
-
-                    } else {
-                        console.log('permission denied');
-                        return;
-                    }
-                } catch (err) {
-                    console.warn(err);
                     return;
-                }
+                });
+
+                // console.log(`uri: ${audio_uri}`);
+                // setAudioPath(audio_uri);
+
+            } else {
+                console.log('permission denied');
+                return;
             }
 
+
         } catch (error) {
-            console.warn('error: ', error);
+            console.log('error: ', error);
         }
     }
 
@@ -199,7 +225,7 @@ const ReadingPracticeScreen = (props) => {
         clearInterval(_refRecordingTime.current);
 
         try {
-            let a = await audioRecorderPlayer.stopRecorder();
+            await audioRecorderPlayer.stopRecorder();
             setIsRecording(false);
             audioRecorderPlayer.removeRecordBackListener();
             // console.log('recording time: ', _refRecordingTime);
@@ -210,7 +236,7 @@ const ReadingPracticeScreen = (props) => {
 
         } catch (error) {
 
-            console.warn('error', error);
+            console.log('error', error);
         }
     };
 
@@ -220,9 +246,9 @@ const ReadingPracticeScreen = (props) => {
     const _onStartPlay = async () => {
         try {
 
-            const path = Platform.select({
-                android: 'sdcard/askmeit_dictionary/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
-            });
+            // const path = Platform.select({
+            //     android: 'sdcard/askmeit_dictionary/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
+            // });
 
             setIsPlaying(true);
             let e = await audioRecorderPlayer.startPlayer(practice_audio_path);
@@ -461,7 +487,7 @@ const ReadingPracticeScreen = (props) => {
                             {
                                 (readingPost?.content && readingPost.content || '') &&
                                 <Highlighter
-                                    highlightStyle={{ backgroundColor: 'yellow' }}
+                                    highlightStyle={{ color: 'red', fontWeight: '700' }}
                                     searchWords={highlightVocabulary}
                                     textToHighlight={readingPost?.content}
                                 />
@@ -471,7 +497,23 @@ const ReadingPracticeScreen = (props) => {
                         </Text>
 
                     </View>
+
                 </Animated.ScrollView>
+                <View
+                    style={{
+                        display: 'flex',
+                        alignSelf: 'center'
+                    }}
+                >
+                    <BannerAd
+                        unitId={'ca-app-pub-7783640686150605/2939455462'}
+                        size={BannerAdSize.BANNER}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                    />
+
+                </View>
                 <BottomRecordingNavigation
                     onStartRecordPress={() => {
                         _onStartRecord().then(() => {
@@ -679,6 +721,8 @@ const ReadingPracticeScreen = (props) => {
                     }
 
                 </BottomRecordingNavigation>
+
+
 
             </View>
         </Provider>

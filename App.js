@@ -36,7 +36,6 @@ import flashcard_list_reducer from './store/reducer/flashCardReducer';
 import notification_reducer from './store/reducer/notificationReducer';
 import reading_list_reducer from './store/reducer/readingReducer';
 
-import messaging from '@react-native-firebase/messaging'
 import { Provider } from 'react-native-paper';
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 
@@ -46,7 +45,6 @@ const rootReducer = combineReducers({
   reading: reading_list_reducer
 });
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
-
 
 
 
@@ -75,8 +73,16 @@ const App = () => {
       })
       .then(() => {
         // Request config successfully set!
+        console.log('admod config successfully')
       });
   }, []);
+
+
+
+
+
+    // Unsubscribe from events on unmount
+
 
 
   return (

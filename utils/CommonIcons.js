@@ -62,7 +62,9 @@ export default {
     playlistMinus:'playlist-minus',
     playlistPlus:'playlist-plus',
     saveFile:'content-save',
-
+    checkboxMarked:'checkbox-marked',
+    phoneSetting:"cellphone-settings",
+    bookOpen:'book-open',
 
 
 }

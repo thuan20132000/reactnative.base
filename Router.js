@@ -32,6 +32,9 @@ import ReadingPracticeScreen from './screens/ReadingPracticeStack/ReadingPractic
 import ReadingVocabularyScreen from './screens/ReadingPracticeStack/ReadingVocabularyScreen';
 import ReadingVocabularyPracticeScreen from './screens/ReadingPracticeStack/ReadingVocabularyPracticeScreen';
 import ReadingVocabularyPracticeFinishScreen from './screens/ReadingPracticeStack/ReadingVocabularyPracticeFinishScreen';
+import S_PrivacyPolicyScreen from './screens/Settings/S_PrivacyPolicyScreen';
+import S_TermAndConditionsScreen from './screens/Settings/S_TermAndConditionsScreen';
+import A_Signin from './screens/Authentication/A_Signin';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -194,6 +197,14 @@ const SettingStack = () => {
                 name={"VocabularyDefinition"}
                 component={D_WordDefinitionScreen}
             />
+            <SettingStackNavigator.Screen
+                name={"PrivacyPolicy"}
+                component={S_PrivacyPolicyScreen}
+            />
+            <SettingStackNavigator.Screen
+                name={"TermConditions"}
+                component={S_TermAndConditionsScreen}
+            />
         </SettingStackNavigator.Navigator>
     )
 }
@@ -270,20 +281,38 @@ const NotificationStack = () => {
 
 const CommunityStackNavigator = createStackNavigator();
 const CommunityStack = () => {
+
+    const [isAuthenticated, setIsAuthenticated] = React.useState(true);
+
     return (
         <CommunityStackNavigator.Navigator>
-            <CommunityStackNavigator.Screen
-                name="CommunityHome"
-                component={C_CommunityHomeScreen}
-            />
-            <CommunityStackNavigator.Screen
-                name="CommunityPostDetail"
-                component={C_CommunityPostDetailScreen}
-            />
-            <CommunityStackNavigator.Screen
-                name="CommunityRecordPractise"
-                component={C_CommunityRecordPractiseScreen}
-            />
+
+            {
+                isAuthenticated ?
+                    <>
+                        <CommunityStackNavigator.Screen
+                            name="CommunityHome"
+                            component={C_CommunityHomeScreen}
+                        />
+                        <CommunityStackNavigator.Screen
+                            name="CommunityPostDetail"
+                            component={C_CommunityPostDetailScreen}
+                        />
+                        <CommunityStackNavigator.Screen
+                            name="CommunityRecordPractise"
+                            component={C_CommunityRecordPractiseScreen}
+                        />
+                    </>
+                    :
+                    <>
+                        <CommunityStackNavigator.Screen
+                            name="Signin"
+                            component={A_Signin}
+                        />
+                    </>
+            }
+
+
         </CommunityStackNavigator.Navigator>
     )
 }
@@ -304,10 +333,10 @@ const TabBottom = () => {
                     if (route.name === 'HomeStack') {
                         iconName = CommonIcons.homeCircle
 
-                    } else if (route.name === 'Settings') {
-                        iconName = CommonIcons.bookMarker
-                    } else if (route.name === 'Messages') {
-                        iconName = CommonIcons.messages
+                    } else if (route.name === 'FlashCard') {
+                        iconName = CommonIcons.checkboxMarked
+                    } else if (route.name === 'ReadingPracticeStack') {
+                        iconName = CommonIcons.bookOpen
                     } else if (route.name === 'Accounts') {
                         iconName = CommonIcons.account
                     }
@@ -319,7 +348,7 @@ const TabBottom = () => {
 
                     }
                     else {
-                        iconName = CommonIcons.newsPaper
+                        iconName = CommonIcons.phoneSetting
                     }
 
                     // You can return any component that you like here!
@@ -331,14 +360,7 @@ const TabBottom = () => {
 
 
         >
-            {/* <TabBottomNavigator.Screen
-                name="Community"
-                component={CommunityStack}
-                options={{
-                    title: "Cộng đồng",
 
-                }}
-            /> */}
             <TabBottomNavigator.Screen
                 name="FlashCard"
                 component={FlashCardStack}
@@ -362,6 +384,14 @@ const TabBottom = () => {
                 }}
 
             /> */}
+            <TabBottomNavigator.Screen
+                name="Community"
+                component={CommunityStack}
+                options={{
+                    title: "Cộng đồng",
+
+                }}
+            />
             <TabBottomNavigator.Screen
                 name="TabDictionary"
                 component={DictionaryStack}

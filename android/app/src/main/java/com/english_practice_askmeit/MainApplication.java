@@ -1,14 +1,9 @@
-package com.reactnative_base;
-import com.dooboolab.RNAudioRecorderPlayerPackage; // <- add the  import
-import com.rnfs.RNFSPackage;  // <--- import
+package com.english_practice_askmeit;
+
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.rnfs.RNFSPackage;
-import com.zmxv.RNSound.RNSoundPackage;
-// import com.zmxv.RNSound.RNSoundPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -31,8 +26,6 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          packages.add(new RNAudioRecorderPlayerPackage());
-          packages.add(new RNFSPackage());
           return packages;
         }
 
@@ -40,17 +33,12 @@ public class MainApplication extends Application implements ReactApplication {
         protected String getJSMainModuleName() {
           return "index";
         }
-
       };
 
   @Override
   public ReactNativeHost getReactNativeHost() {
     return mReactNativeHost;
   }
-
-  
-
-
 
   @Override
   public void onCreate() {
@@ -89,7 +77,4 @@ public class MainApplication extends Application implements ReactApplication {
       }
     }
   }
-
-
 }
-

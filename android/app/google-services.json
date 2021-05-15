@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "544613826712",
-    "project_id": "askme-it-dictionary",
-    "storage_bucket": "askme-it-dictionary.appspot.com"
+    "project_number": "647715357805",
+    "project_id": "english-practice-c069c",
+    "storage_bucket": "english-practice-c069c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:544613826712:android:c4985603381151b28510ed",
+        "mobilesdk_app_id": "1:647715357805:android:fe28ca98fbe257cdfaeb64",
         "android_client_info": {
-          "package_name": "com.reactnative_base"
+          "package_name": "com.english_practice_askmeit"
         }
       },
       "oauth_client": [
         {
-          "client_id": "544613826712-tm7ejdb0la96jg42mkdbhhg9pigonbsu.apps.googleusercontent.com",
+          "client_id": "647715357805-brk38ekm94rngb5kdqicdsucgcj79rat.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCwH45BBKR7CmVWu4-uoW7g4d6_QAqQZjw"
+          "current_key": "AIzaSyAogk6nH42NpDH6E-s5owc7jtLjK9jzmxI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "544613826712-tm7ejdb0la96jg42mkdbhhg9pigonbsu.apps.googleusercontent.com",
+              "client_id": "647715357805-brk38ekm94rngb5kdqicdsucgcj79rat.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

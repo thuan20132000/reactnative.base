@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { IconButton } from 'react-native-paper'
+import { Badge, IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonColor from '../../utils/CommonColor'
 import CommonIcons from '../../utils/CommonIcons'
@@ -77,6 +77,7 @@ const F_FlashCardChoiceScreen = (props) => {
 
         }, 100);
 
+
         dispatch(flashcardAction.addVocabulary(vocabulary));
         if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 9) {
             props.navigation.replace('FlashCardPractice');
@@ -113,6 +114,26 @@ const F_FlashCardChoiceScreen = (props) => {
             setVocabulary(flashcard.vocabulary_stack[0]);
         }
 
+
+        props.navigation.setOptions({
+            headerRight: () => (
+                <View
+                    style={{
+                        padding:12
+                    }}
+                >
+                    <Text
+                        style={{
+                            fontSize:22,
+                            fontWeight:'700',
+                            color:'red'
+                        }}
+                    >
+                        {flashcard.practice_vocabulary_list.length}/10
+                    </Text>
+                </View>
+            )
+        })
 
     }, []);
 
@@ -281,22 +302,22 @@ const F_FlashCardChoiceScreen = (props) => {
                     onItemPress={_onSkipVocabulary}
                     label={"Bỏ qua"}
                     labelStyle={{
-                        fontWeight:'700',
-                        fontSize:16
+                        fontWeight: '700',
+                        fontSize: 16
                     }}
                     containerStyle={{
-                        padding:12
+                        padding: 12
                     }}
                 />
-                  <ButtonText
+                <ButtonText
                     onItemPress={_onSelectVocabulary}
                     label={"Chọn"}
                     labelStyle={{
-                        fontWeight:'700',
-                        fontSize:16
+                        fontWeight: '700',
+                        fontSize: 16
                     }}
                     containerStyle={{
-                        padding:12
+                        padding: 12
                     }}
                 />
                 {/* <TouchableOpacity

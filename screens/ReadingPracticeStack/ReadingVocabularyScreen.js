@@ -108,6 +108,11 @@ const ReadingVocabularyScreen = (props) => {
 
 
     React.useEffect(() => {
+        audioRecorderPlayer.stopPlayer();
+        audioRecorderPlayer.removePlayBackListener();
+        audioRecorderPlayer.stopRecorder();
+        audioRecorderPlayer.removeRecordBackListener();
+
         setIsLoading(true);
 
         getReadingPostDetail(readingpost.id)
@@ -309,7 +314,7 @@ const ReadingVocabularyScreen = (props) => {
                         {
                             (readingPost?.content  && readingPost.content || '') &&
                             <Highlighter
-                                highlightStyle={{ backgroundColor: 'yellow' }}
+                                highlightStyle={{ color: 'red', fontWeight: '700' }}
                                 searchWords={highlightVocabulary || []}
                                 textToHighlight={readingPost?.content || ''}
                             />
