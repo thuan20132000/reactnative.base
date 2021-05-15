@@ -34,6 +34,7 @@ import ReadingVocabularyPracticeScreen from './screens/ReadingPracticeStack/Read
 import ReadingVocabularyPracticeFinishScreen from './screens/ReadingPracticeStack/ReadingVocabularyPracticeFinishScreen';
 import S_PrivacyPolicyScreen from './screens/Settings/S_PrivacyPolicyScreen';
 import S_TermAndConditionsScreen from './screens/Settings/S_TermAndConditionsScreen';
+import A_Signin from './screens/Authentication/A_Signin';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -200,7 +201,7 @@ const SettingStack = () => {
                 name={"PrivacyPolicy"}
                 component={S_PrivacyPolicyScreen}
             />
-             <SettingStackNavigator.Screen
+            <SettingStackNavigator.Screen
                 name={"TermConditions"}
                 component={S_TermAndConditionsScreen}
             />
@@ -280,20 +281,38 @@ const NotificationStack = () => {
 
 const CommunityStackNavigator = createStackNavigator();
 const CommunityStack = () => {
+
+    const [isAuthenticated, setIsAuthenticated] = React.useState(true);
+
     return (
         <CommunityStackNavigator.Navigator>
-            <CommunityStackNavigator.Screen
-                name="CommunityHome"
-                component={C_CommunityHomeScreen}
-            />
-            <CommunityStackNavigator.Screen
-                name="CommunityPostDetail"
-                component={C_CommunityPostDetailScreen}
-            />
-            <CommunityStackNavigator.Screen
-                name="CommunityRecordPractise"
-                component={C_CommunityRecordPractiseScreen}
-            />
+
+            {
+                isAuthenticated ?
+                    <>
+                        <CommunityStackNavigator.Screen
+                            name="CommunityHome"
+                            component={C_CommunityHomeScreen}
+                        />
+                        <CommunityStackNavigator.Screen
+                            name="CommunityPostDetail"
+                            component={C_CommunityPostDetailScreen}
+                        />
+                        <CommunityStackNavigator.Screen
+                            name="CommunityRecordPractise"
+                            component={C_CommunityRecordPractiseScreen}
+                        />
+                    </>
+                    :
+                    <>
+                        <CommunityStackNavigator.Screen
+                            name="Signin"
+                            component={A_Signin}
+                        />
+                    </>
+            }
+
+
         </CommunityStackNavigator.Navigator>
     )
 }
@@ -341,14 +360,7 @@ const TabBottom = () => {
 
 
         >
-            {/* <TabBottomNavigator.Screen
-                name="Community"
-                component={CommunityStack}
-                options={{
-                    title: "Cộng đồng",
 
-                }}
-            /> */}
             <TabBottomNavigator.Screen
                 name="FlashCard"
                 component={FlashCardStack}
@@ -372,6 +384,14 @@ const TabBottom = () => {
                 }}
 
             /> */}
+            <TabBottomNavigator.Screen
+                name="Community"
+                component={CommunityStack}
+                options={{
+                    title: "Cộng đồng",
+
+                }}
+            />
             <TabBottomNavigator.Screen
                 name="TabDictionary"
                 component={DictionaryStack}

@@ -30,6 +30,7 @@
     "react-native-highlight-words": "^1.0.1",
     "react-native-paper": "^4.7.2",
     "react-native-permissions": "^3.0.1",
+    "react-native-raw-bottom-sheet": "^2.2.0",
     "react-native-reanimated": "^2.0.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^2.18.1",

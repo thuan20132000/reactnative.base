@@ -43,7 +43,7 @@ const PostCard = ({
                         }}
                         style={{
                             width: 40,
-                            height: 40,
+                            height: 30,
                             borderRadius: 20
                         }}
                     />
@@ -72,7 +72,7 @@ const PostCard = ({
                 ]}
                 onPress={onPostDetailPress}
             >
-                <ImageBackground
+                {/* <ImageBackground
                     source={{
                         uri: CommonImages.background
                     }}
@@ -80,14 +80,19 @@ const PostCard = ({
                         // justifyContent: "center",
                         maxWidth: deviceWidth,
                         height: deviceHeight / 4,
-                        maxHeight: 220,
+                        maxHeight: 160,
 
                     }}
                     resizeMode={'contain'}
 
 
 
-                />
+                /> */}
+                <Text
+                    numberOfLines={5}
+                >
+                    Review Requesting modifications to your EBS volumes to identify and address any potential issues before you expand your volume. For example, volumes attached to current generation instances before November 3, 2016 require that you either stop and restart the instance or that you detach and reattach the volume to initialize the Amazon EBS Elastic Volumes feature. This is a one-time requirement.
+                    </Text>
             </TouchableOpacity>
             {/* footer */}
             <View
@@ -95,7 +100,7 @@ const PostCard = ({
                     styles.footerContainer
                 ]}
             >
-                <View
+                {/* <View
                     style={[
                         styles.row
                     ]}
@@ -122,7 +127,7 @@ const PostCard = ({
                         onPress={onSharePress}
                     />
 
-                </View>
+                </View> */}
                 <View>
                     <Text
                         style={{ fontSize: 12, color: 'black', fontWeight: '700', fontStyle: 'italic', marginVertical: 4 }}
@@ -136,13 +141,9 @@ const PostCard = ({
                     >
                         Thuantruong
                     </Text>
-                    <Text
-                        numberOfLines={3}
-                    >
-                        Review Requesting modifications to your EBS volumes to identify and address any potential issues before you expand your volume. For example, volumes attached to current generation instances before November 3, 2016 require that you either stop and restart the instance or that you detach and reattach the volume to initialize the Amazon EBS Elastic Volumes feature. This is a one-time requirement.
-                    </Text>
+
                 </View>
-                <View>
+                {/* <View>
                     <Text
                         style={{
                             color: 'gray',
@@ -151,7 +152,7 @@ const PostCard = ({
                     >
                         Xem tất cả 6 bình luận
                     </Text>
-                </View>
+                </View> */}
             </View>
             {/* comments */}
             <View>
