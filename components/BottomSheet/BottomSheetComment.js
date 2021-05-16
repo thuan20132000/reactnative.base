@@ -9,7 +9,8 @@ const BottomSheetComment = ({
     height=400, 
     children,
     dragFromTopOnly=true,
-    containerStyle
+    containerStyle,
+    openDuration=350
 
 }) => {
 
@@ -17,7 +18,7 @@ const BottomSheetComment = ({
         <RBSheet
             ref={refRBSheet}
             height={height}
-            openDuration={350}
+            openDuration={openDuration}
             dragFromTopOnly={dragFromTopOnly}
 
             customStyles={{

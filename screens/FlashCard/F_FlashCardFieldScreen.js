@@ -53,7 +53,7 @@ const F_FlashCardFieldScreen = (props) => {
                 {
                     adbmod_android_app_id &&
                     <BannerAd
-                        unitId={'ca-app-pub-7783640686150605/2939455462'}
+                        unitId={adUnitId}
                         size={BannerAdSize.MEDIUM_RECTANGLE}
                         requestOptions={{
                             requestNonPersonalizedAdsOnly: true,

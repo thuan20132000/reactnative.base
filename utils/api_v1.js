@@ -1,5 +1,5 @@
 
-import { api_v1_url, api_flashcard_v1, api_reading_v1 } from '../config/api_config.json';
+import { api_v1_url, api_flashcard_v1, api_reading_v1, api_community_v1 } from '../config/api_config.json';
 
 export const searchVocabulary = async (vocabulary) => {
 
@@ -357,6 +357,232 @@ export const getReadingPostDetail = async (readingpost_id) => {
             status: false,
             message: "fetch failed " + error,
             data: [],
+        }
+    }
+}
+
+
+export const sigin = async (phonenumner, password) => {
+    try {
+        let url = `${api_community_v1}/signin`;
+
+        let formdata = new FormData();
+        formdata.append('phonenumber', phonenumner);
+        formdata.append('password', password);
+        let fetchData = await fetch(url, {
+            method: 'POST',
+            body: formdata
+        });
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: fetchData,
+                data: [],
+            }
+        }
+
+        let dataRes = await fetchData.json();
+        if (!dataRes.status) {
+            return {
+                status: false,
+                message: dataRes,
+                data: [],
+            }
+        }
+
+        return {
+            status: true,
+            message: "fetch success",
+            data: dataRes
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: [],
+        }
+    }
+}
+
+
+export const getCommunityPosts = async (token) => {
+    try {
+        let url = `${api_community_v1}/posts`;
+        let fetchData = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: fetchData,
+                data: [],
+            }
+        }
+
+        let dataRes = await fetchData.json();
+
+        if (!dataRes.status) {
+            return {
+                status: false,
+                message: "fetch failed ",
+                data: [],
+            }
+        }
+
+        return {
+            status: true,
+            message: "fetch success",
+            data: dataRes
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: [],
+        }
+    }
+}
+
+export const getPostDetail = async (post_id, token) => {
+    try {
+        let url = `${api_community_v1}/post/${post_id}`;
+        let fetchData = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: fetchData,
+                data: null,
+            }
+        }
+
+        let dataRes = await fetchData.json();
+
+        if (!dataRes.status) {
+            return {
+                status: false,
+                message: "fetch failed ",
+                data: null,
+            }
+        }
+
+        return {
+            status: true,
+            message: "fetch success",
+            data: dataRes
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: null,
+        }
+    }
+}
+
+
+
+export const getPostComments = async (post_id, token) => {
+    try {
+        let url = `${api_community_v1}/post/${post_id}/comments?limit=16`;
+        let fetchData = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: fetchData,
+                data: null,
+            }
+        }
+
+        let dataRes = await fetchData.json();
+
+        if (!dataRes.status) {
+            return {
+                status: false,
+                message: "fetch failed ",
+                data: null,
+            }
+        }
+
+        return {
+            status: true,
+            message: "fetch success",
+            data: dataRes
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: null,
+        }
+    }
+}
+
+
+export const createPostComment = async (author_id,text,type='text',audio='',post_id,token) => {
+    try {
+        let formdata = new FormData();
+        formdata.append('author_id',author_id);
+        formdata.append('text',text);
+        formdata.append('type',type);
+        formdata.append('audio',audio);
+
+        let url = `${api_community_v1}/post/${post_id}/comment`;
+        let fetchData = await fetch(url, {
+            method:'POST',
+            body:formdata,
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+           
+        });
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: fetchData,
+                data: null,
+            }
+        }
+
+        let dataRes = await fetchData.json();
+
+        if (!dataRes.status) {
+            return {
+                status: false,
+                message:dataRes,
+                data: null,
+            }
+        }
+
+        return {
+            status: true,
+            message: "fetch success",
+            data: dataRes
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: null,
         }
     }
 }

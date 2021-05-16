@@ -10,7 +10,10 @@ const PostCard = ({
     onLikePress,
     onCommentPress,
     onSharePress,
-    onEditPress
+    onEditPress,
+    author,
+    content,
+    practiceNumber=0
 }) => {
     return (
         <View
@@ -53,7 +56,7 @@ const PostCard = ({
                             fontWeight: '700'
                         }}
                     >
-                        Thuan truong
+                        {author}
                     </Text>
                 </View>
                 <IconButton
@@ -72,27 +75,12 @@ const PostCard = ({
                 ]}
                 onPress={onPostDetailPress}
             >
-                {/* <ImageBackground
-                    source={{
-                        uri: CommonImages.background
-                    }}
-                    style={{
-                        // justifyContent: "center",
-                        maxWidth: deviceWidth,
-                        height: deviceHeight / 4,
-                        maxHeight: 160,
 
-                    }}
-                    resizeMode={'contain'}
-
-
-
-                /> */}
                 <Text
                     numberOfLines={5}
                 >
-                    Review Requesting modifications to your EBS volumes to identify and address any potential issues before you expand your volume. For example, volumes attached to current generation instances before November 3, 2016 require that you either stop and restart the instance or that you detach and reattach the volume to initialize the Amazon EBS Elastic Volumes feature. This is a one-time requirement.
-                    </Text>
+                    {content}
+                </Text>
             </TouchableOpacity>
             {/* footer */}
             <View
@@ -132,17 +120,10 @@ const PostCard = ({
                     <Text
                         style={{ fontSize: 12, color: 'black', fontWeight: '700', fontStyle: 'italic', marginVertical: 4 }}
                     >
-                        5 người đã luyện tập
+                        {practiceNumber} người đã luyện tập
                     </Text>
                 </View>
-                <View>
-                    <Text
-                        style={{ fontWeight: '700' }}
-                    >
-                        Thuantruong
-                    </Text>
-
-                </View>
+               
                 {/* <View>
                     <Text
                         style={{

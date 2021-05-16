@@ -282,7 +282,16 @@ const NotificationStack = () => {
 const CommunityStackNavigator = createStackNavigator();
 const CommunityStack = () => {
 
-    const [isAuthenticated, setIsAuthenticated] = React.useState(true);
+    const {userInformation} = useSelector(state => state.authentication);
+    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+
+    React.useEffect(() => {
+        if(userInformation.access){
+            setIsAuthenticated(true);
+        }else{
+            setIsAuthenticated(false);
+        }
+    },[userInformation.access])
 
     return (
         <CommunityStackNavigator.Navigator>

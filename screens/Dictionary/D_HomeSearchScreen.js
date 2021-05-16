@@ -198,7 +198,7 @@ const D_HomeSearchScreen = (props) => {
 
 
                 <BannerAd
-                    unitId={'ca-app-pub-7783640686150605/2939455462'}
+                    unitId={adUnitId}
                     size={BannerAdSize.FULL_BANNER}
                     requestOptions={{
                         requestNonPersonalizedAdsOnly: true,
