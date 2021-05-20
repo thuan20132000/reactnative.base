@@ -586,3 +586,51 @@ export const createPostComment = async (author_id,text,type='text',audio='',post
         }
     }
 }
+
+
+
+export const handleFavorite = async (post_id,author_id,token) => {
+    try {
+
+
+        let url = `${api_community_v1}/post/${post_id}/favorite/${author_id}`;
+        let fetchData = await fetch(url, {
+            method:'POST',
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+           
+        });
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: fetchData,
+                data: null,
+            }
+        }
+
+        let dataRes = await fetchData.json();
+
+        if (!dataRes.status) {
+            return {
+                status: false,
+                message:dataRes,
+                data: null,
+            }
+        }
+
+        return {
+            status: true,
+            message: "fetch success",
+            data: dataRes
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: null,
+        }
+    }
+}

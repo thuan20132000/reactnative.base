@@ -35,6 +35,7 @@ import ReadingVocabularyPracticeFinishScreen from './screens/ReadingPracticeStac
 import S_PrivacyPolicyScreen from './screens/Settings/S_PrivacyPolicyScreen';
 import S_TermAndConditionsScreen from './screens/Settings/S_TermAndConditionsScreen';
 import A_Signin from './screens/Authentication/A_Signin';
+import C_VideoRecordScreen from './screens/Community/C_VideoRecordScreen';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -282,16 +283,16 @@ const NotificationStack = () => {
 const CommunityStackNavigator = createStackNavigator();
 const CommunityStack = () => {
 
-    const {userInformation} = useSelector(state => state.authentication);
+    const { userInformation } = useSelector(state => state.authentication);
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
     React.useEffect(() => {
-        if(userInformation.access){
+        if (userInformation.access) {
             setIsAuthenticated(true);
-        }else{
+        } else {
             setIsAuthenticated(false);
         }
-    },[userInformation.access])
+    }, [userInformation.access])
 
     return (
         <CommunityStackNavigator.Navigator>
@@ -314,6 +315,10 @@ const CommunityStack = () => {
                     </>
                     :
                     <>
+                        <CommunityStackNavigator.Screen
+                            name="VideoRecord"
+                            component={C_VideoRecordScreen}
+                        />
                         <CommunityStackNavigator.Screen
                             name="Signin"
                             component={A_Signin}

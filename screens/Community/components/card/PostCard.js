@@ -13,7 +13,10 @@ const PostCard = ({
     onEditPress,
     author,
     content,
-    practiceNumber=0
+    practiceNumber = 0,
+    favoriteNumber=0,
+    favorite_active=false
+
 }) => {
     return (
         <View
@@ -88,34 +91,35 @@ const PostCard = ({
                     styles.footerContainer
                 ]}
             >
-                {/* <View
+                <View
                     style={[
-                        styles.row
+                        styles.row,
+                        {
+                            alignItems: 'center'
+                        }
                     ]}
                 >
-                    <IconButton
-                        icon={CommonIcons.heartOutline}
-                        color={'coral'}
-                        size={24}
-                        style={{ marginHorizontal: 6 }}
-                        onPress={onLikePress}
-                    />
-                    <IconButton
-                        icon={CommonIcons.commentProcessingOutline}
-                        color={'coral'}
-                        size={24}
-                        style={{ marginHorizontal: 6 }}
-                        onPress={onCommentPress}
-                    />
-                    <IconButton
-                        icon={CommonIcons.shareVariant}
-                        color={'coral'}
-                        size={24}
-                        style={{ marginHorizontal: 6 }}
-                        onPress={onSharePress}
-                    />
 
-                </View> */}
+                    <View
+                        style={[
+                            styles.row,
+                            {
+                                alignItems: 'center'
+                            }
+                        ]}
+                    >
+                        <IconButton
+                            icon={favorite_active? CommonIcons.heart :CommonIcons.heartOutline}
+                            color={'coral'}
+                            size={24}
+                            style={{ marginHorizontal: 6 }}
+                            onPress={onLikePress}
+
+                        />
+                        <Text style={{ fontWeight: '700' }}>{favoriteNumber}</Text>
+                    </View>
+
+                </View>
                 <View>
                     <Text
                         style={{ fontSize: 12, color: 'black', fontWeight: '700', fontStyle: 'italic', marginVertical: 4 }}
@@ -123,7 +127,7 @@ const PostCard = ({
                         {practiceNumber} người đã luyện tập
                     </Text>
                 </View>
-               
+
                 {/* <View>
                     <Text
                         style={{

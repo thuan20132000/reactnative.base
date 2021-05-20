@@ -14,7 +14,7 @@ import HeaderBack from '../../components/Header/HeaderBack';
 import CommentInput from '../../components/Comments/CommentInput';
 import CommentItem from '../../components/Comments/CommentItem';
 import { Header } from '@react-navigation/stack';
-import { createPostComment, getPostComments, getPostDetail } from '../../utils/api_v1';
+import { createPostComment, getPostComments, getPostDetail, handleFavorite } from '../../utils/api_v1';
 import { useSelector } from 'react-redux';
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
 import { local_absolute } from '../../config/api_config.json';
@@ -48,10 +48,7 @@ const C_CommunityPostDetailScreen = (props) => {
         props.navigation.dangerouslyGetParent().setOptions({
             tabBarVisible: false,
         });
-        setCommentList(Array(10).fill({
-            id: Math.floor(Math.random() * 100),
-            content: `comment: ${Math.floor(Math.random() * 100)}`
-        }));
+
 
         getPostDetail(post.id, userInformation.access)
             .then((res) => {
@@ -77,7 +74,20 @@ const C_CommunityPostDetailScreen = (props) => {
         }
     }, []);
 
+    const _onHandleFavoritePress = async () => {
+        handleFavorite(communityPost.id, userInformation?.user?.id, userInformation.access)
+            .then((res) => {
+                let is_favorited = res.data?.post_favorite;
+                setCommunityPost({
+                    ...communityPost,
+                    is_favorited_by_user:is_favorited
+                })
 
+            })
+            .catch((error) => {
+                console.warn('error: ', error);
+            })
+    }
 
     const _onRecordPractisePress = async () => {
         props.navigation.navigate('CommunityRecordPractise');
@@ -221,11 +231,6 @@ const C_CommunityPostDetailScreen = (props) => {
                 }}
             >
 
-                {/* <Image
-                    style={{ height: deviceHeight / 2, width: deviceWidth }}
-                    source={{ uri: "https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" }}
-                    resizeMode={'stretch'}
-                /> */}
                 <View
                     style={{
                         height: '90%'
@@ -302,14 +307,14 @@ const C_CommunityPostDetailScreen = (props) => {
                             ]}
                         >
                             <IconButton
-                                icon={CommonIcons.heartOutline}
+                                icon={communityPost?.is_favorited_by_user ? CommonIcons.heart : CommonIcons.heartOutline}
                                 color={'coral'}
                                 size={24}
                                 style={{ marginHorizontal: 6 }}
-                                onPress={() => console.warn('ds')}
+                                onPress={_onHandleFavoritePress}
 
                             />
-                            <Text style={{ fontWeight: '700' }}>12</Text>
+                            <Text style={{ fontWeight: '700' }}>{communityPost?.post_favorite_number}</Text>
                         </View>
 
                         <View
@@ -328,7 +333,7 @@ const C_CommunityPostDetailScreen = (props) => {
                                 onPress={_onOpenComments}
 
                             />
-                            <Text style={{ fontWeight: '700' }}>7</Text>
+                            <Text style={{ fontWeight: '700' }}>{communityPost?.post_comments_number}</Text>
                         </View>
                     </View>
                     <View
