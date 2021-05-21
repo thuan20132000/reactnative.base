@@ -16,11 +16,17 @@ const VideoRecordBar = ({
 
 
     return (
-        <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+        <View
+            style={{
+                flex: 0,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                alignItems: 'center'
+            }}>
 
 
             {
-                videoUrl &&
+                // videoUrl &&
                 <TouchableOpacity
                     style={{}}
                     onPress={_handleOpenPlayVideo}
@@ -42,21 +48,20 @@ const VideoRecordBar = ({
             {
                 isRecordingVideo ?
 
-                    <TouchableOpacity
-                        style={styles.capture}
+                    <IconButton
+                        icon={'record-circle'}
+                        color={'red'}
+                        size={28}
                         onPress={_handleStopVideo}
-                    >
-                        <Text style={{ fontSize: 14 }}> STOP </Text>
-                    </TouchableOpacity>
+                    />
 
                     :
-
-                    <TouchableOpacity
-                        style={styles.capture}
+                    <IconButton
+                        icon={'record-circle-outline'}
+                        color={'red'}
+                        size={28}
                         onPress={_handleRecordVideo}
-                    >
-                        <Text style={{ fontSize: 14 }}> RECORD </Text>
-                    </TouchableOpacity>
+                    />
 
             }
             <IconButton
@@ -68,6 +73,7 @@ const VideoRecordBar = ({
 
         </View>
 
+
     )
 }
 
@@ -78,7 +84,7 @@ VideoRecordBar.propTypes = {
     _handleRecordVideo: PropTypes.func.isRequired,
     isRecordingVideo: PropTypes.bool.isRequired,
     _handleStopVideo: PropTypes.func.isRequired,
-    _handleSwithCameraType:PropTypes.func.isRequired,
+    _handleSwithCameraType: PropTypes.func.isRequired,
 }
 
 export default VideoRecordBar

@@ -323,7 +323,7 @@ const ReadingPracticeScreen = (props) => {
 
                 let audio_slug_name = _onConvertTextToSlug(practiceAudioName);
 
-                RNFS.copyFile(practice_audio_path, dirMusic + `/${audio_slug_name}.wav`)
+                RNFS.downloadFile(practice_audio_path, dirMusic + `/${audio_slug_name}.wav`)
                     .then((success) => {
                         console.log('Save File successfully!');
                         setSaveAudioVisible(false);

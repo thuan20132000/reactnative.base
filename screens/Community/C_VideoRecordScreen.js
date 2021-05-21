@@ -6,6 +6,8 @@ import ModalPreview from '../../components/Modal/ModalPreview';
 import Video from 'react-native-video';
 import { IconButton } from 'react-native-paper';
 import VideoRecordBar from './components/comments/VideoRecordBar';
+import VideoPreviewBar from './components/comments/VideoPreviewBar';
+var RNFS = require('react-native-fs');
 
 
 const C_VideoRecordScreen = (props) => {
@@ -17,7 +19,7 @@ const C_VideoRecordScreen = (props) => {
     const [isShowVideo, setIsShowVideo] = React.useState(false);
     const [isOpenVideo, setIsOpenVideo] = React.useState(false);
     const path = Platform.select({
-        android: 'sdcard/askmeit_dictionary/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
+        android: 'sdcard/askmeit_dictionary/hello3.mp4', // should give extra dir name in android. Won't grant permission to the first level of dir.
     });
     const [videoData, setVideoData] = React.useState({
         url: null,
@@ -34,6 +36,9 @@ const C_VideoRecordScreen = (props) => {
     })
 
     let timeInteval;
+
+    const dirMusic = `${RNFS.PicturesDirectoryPath}`;
+
     const handleRecordVideo = async (camera) => {
         try {
             setVideoUrl(null);
@@ -52,9 +57,11 @@ const C_VideoRecordScreen = (props) => {
                 })
             }, 1000);
             let data = await _refCamera.current.recordAsync(cameraConfig);
-            setVideoUrl(data.uri);
             clearInterval(timeInteval);
-            console.warn('ressss: ', data);
+
+            setVideoUrl(data.uri);
+
+
 
         } catch (error) {
             console.warn('error: ', error);
@@ -84,6 +91,8 @@ const C_VideoRecordScreen = (props) => {
     const _handleCloseModal = () => {
 
     }
+
+
     const _handleSwithCameraType = () => {
         if (cameraConfig.type === 'front') {
             setCameraConfig({ ...cameraConfig, type: 'back' })
@@ -93,9 +102,41 @@ const C_VideoRecordScreen = (props) => {
     }
 
     const _handleOpenPlayVideo = () => {
-        setIsOpenVideo(true)
+        if (videoUrl) {
+            setIsOpenVideo(true)
+        }
     }
 
+
+    const _handleSaveVideoToLibrary = () => {
+
+        let options = {
+            toFile: `${dirMusic}/video24.mp4`
+        }
+
+        RNFS.copyFile(videoUrl, options.toFile)
+            .then((success) => {
+                console.log('Save File successfully! ', options);
+                // setSaveAudioVisible(false);
+            })
+            .catch((err) => {
+                console.log('error: ', err.message);
+            });
+    }
+
+    const _handleRemoveVideo = () => {
+        RNFS.unlink(videoUrl)
+            .then(() => {
+                console.log('FILE DELETED');
+                setIsOpenVideo(false);
+                setVideoUrl(null);
+            })
+            // `unlink` will throw an error, if the item to unlink does not exist
+            .catch((err) => {
+                console.log(err.message);
+            });
+
+    }
 
     React.useEffect(() => {
         props.navigation.dangerouslyGetParent().setOptions({
@@ -159,17 +200,25 @@ const C_VideoRecordScreen = (props) => {
 
             }
 
+            {
+                isOpenVideo ?
+                    <VideoPreviewBar
+                        _handleOpenCamera={() => setIsOpenVideo(false)}
+                        _handleSave={_handleSaveVideoToLibrary}
+                        _handleRemoveVideo={_handleRemoveVideo}
+                    />
+                    :
+                    <VideoRecordBar
+                        videoUrl={videoUrl}
+                        _handleOpenPlayVideo={_handleOpenPlayVideo}
+                        _handleRecordVideo={handleRecordVideo}
+                        isRecordingVideo={isRecordingVideo}
+                        _handleStopVideo={handleStopVideo}
+                        _handleSwithCameraType={_handleSwithCameraType}
 
+                    />
+            }
 
-            <VideoRecordBar
-                videoUrl={videoUrl}
-                _handleOpenPlayVideo={_handleOpenPlayVideo}
-                _handleRecordVideo={handleRecordVideo}
-                isRecordingVideo={isRecordingVideo}
-                _handleStopVideo={handleStopVideo}
-                _handleSwithCameraType={_handleSwithCameraType}
-                
-            />
 
         </View>
     )
