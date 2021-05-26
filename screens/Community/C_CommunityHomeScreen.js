@@ -4,6 +4,7 @@ import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, A
 import { FAB } from 'react-native-paper';
 import { getCommunityPosts, handleFavorite } from '../../utils/api_v1';
 import PostCard from './components/card/PostCard';
+import Video from 'react-native-video';
 
 import { useSelector } from 'react-redux';
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -119,6 +120,7 @@ const C_CommunityHomeScreen = (props) => {
                         onLikePress={() => _onHandleFavoritePress(item)}
                         favoriteNumber={item?.post_favorite_number}
                         favorite_active={item?.is_favorited_by_user}
+                        image_url = {item?.image_url}
                     />
                 }
                 refreshControl={

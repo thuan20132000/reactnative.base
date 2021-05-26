@@ -8,8 +8,8 @@ import { useDispatch } from 'react-redux';
 const A_Signin = () => {
     const dispatch = useDispatch();
     const [userAuth, setUserAuth] = useState({
-        phonenumber: '',
-        password: ''
+        phonenumber: '1234567',
+        password: 'Thuan123'
     });
     const [loginError, setLoginError] = useState();
 
@@ -27,13 +27,16 @@ const A_Signin = () => {
         setIsLoading(true);
         sigin(userAuth.phonenumber, userAuth.password)
             .then((res) => {
+                console.warn(res);
+
                 if (res.status) {
+                    console.warn(res);
                     dispatch(authenticationActions.signin(res.data));
                     setLoginError('');
                 } else {
                     if (res.message) {
 
-                        setLoginError(res.message);
+                        setLoginError({message:res.message});
 
 
                     }

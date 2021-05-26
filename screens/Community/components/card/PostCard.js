@@ -4,6 +4,7 @@ import CommonImages from '../../../../utils/CommonImages'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../../../utils/CommonIcons'
 import { IconButton } from 'react-native-paper'
+import Video from 'react-native-video';
 
 const PostCard = ({
     onPostDetailPress,
@@ -14,8 +15,10 @@ const PostCard = ({
     author,
     content,
     practiceNumber = 0,
-    favoriteNumber=0,
-    favorite_active=false
+    favoriteNumber = 0,
+    favorite_active = false,
+    _refVideo = React.useRef(),
+    image_url 
 
 }) => {
     return (
@@ -72,19 +75,35 @@ const PostCard = ({
 
             </View>
             {/* body */}
-            <TouchableOpacity
-                style={[
-                    styles.body
-                ]}
-                onPress={onPostDetailPress}
-            >
 
-                <Text
-                    numberOfLines={5}
+
+            <ImageBackground
+                source={{
+                    uri: image_url ||  CommonImages.avatar
+                }}
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    height: 160,                
+                }}
+                resizeMethod={'resize'}
+                resizeMode={'contain'}
+            >
+                <View
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
                 >
-                    {content}
-                </Text>
-            </TouchableOpacity>
+                    <MaterialCommunityIcon
+                        name={CommonIcons.playCircleOutline}
+                        size={46}
+                        color={'blue'}
+                        onPress={onPostDetailPress}
+                    />
+                </View>
+            </ImageBackground>
             {/* footer */}
             <View
                 style={[
@@ -109,7 +128,7 @@ const PostCard = ({
                         ]}
                     >
                         <IconButton
-                            icon={favorite_active? CommonIcons.heart :CommonIcons.heartOutline}
+                            icon={favorite_active ? CommonIcons.heart : CommonIcons.heartOutline}
                             color={'coral'}
                             size={24}
                             style={{ marginHorizontal: 6 }}
@@ -140,19 +159,19 @@ const PostCard = ({
                 </View> */}
             </View>
             {/* comments */}
-            <View>
+            <View
+                style={[styles.footerContainer]}
+            >
                 <View
-                    style={[styles.row, { alignItems: 'center' }]}
+                    style={[styles.row, { alignItems: 'center',padding:8}]}
                 >
-                    <MaterialCommunityIcon
-                        name={CommonIcons.face_verygood}
-                        size={16}
-                        color={'coral'}
-                        style={{
-                            marginHorizontal: 8
-                        }}
-                    />
-                    <Text style={{ color: 'black', fontStyle: 'italic' }}>Luyện tập cùng tôi.</Text>
+                   
+                    <Text 
+                        style={{ color: 'black', fontStyle: 'italic',marginHorizontal:8 }}
+                        numberOfLines={5}
+                    >
+                    Hôm nay mình muốn chia sẻ với các bạn những tips nhỏ và chi tiết hơn trong quá trình ôn tập Listening (hy vọng bài viết sẽ có ích cho các bạn
+                    </Text>
                 </View>
             </View>
         </View>
@@ -189,6 +208,14 @@ const styles = StyleSheet.create({
         marginVertical: 6
     },
     body: {
-        paddingHorizontal: 8
-    }
+        paddingHorizontal: 8,
+        position: 'relative',
+    },
+    preview: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+    },
 })

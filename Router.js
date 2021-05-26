@@ -315,10 +315,10 @@ const CommunityStack = () => {
                     </>
                     :
                     <>
-                        <CommunityStackNavigator.Screen
+                        {/* <CommunityStackNavigator.Screen
                             name="VideoRecord"
                             component={C_VideoRecordScreen}
-                        />
+                        /> */}
                         <CommunityStackNavigator.Screen
                             name="Signin"
                             component={A_Signin}

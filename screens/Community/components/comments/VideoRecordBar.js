@@ -10,6 +10,7 @@ const VideoRecordBar = ({
     _handleStopVideo,
     isRecordingVideo,
     _handleRecordVideo,
+    recordTime
 
 }) => {
 
@@ -47,21 +48,30 @@ const VideoRecordBar = ({
 
             {
                 isRecordingVideo ?
-
-                    <IconButton
-                        icon={'record-circle'}
-                        color={'red'}
-                        size={28}
-                        onPress={_handleStopVideo}
-                    />
+                    <View
+                        style={[styles.recordButtonGroup]}
+                    >
+                        <IconButton
+                            icon={'record-circle'}
+                            color={'red'}
+                            size={28}
+                            onPress={_handleStopVideo}
+                        />
+                         <Text>{recordTime || "00:00"}</Text>
+                    </View>
 
                     :
-                    <IconButton
-                        icon={'record-circle-outline'}
-                        color={'red'}
-                        size={28}
-                        onPress={_handleRecordVideo}
-                    />
+                    <View
+                        style={[styles.recordButtonGroup]}
+                    >
+                        <IconButton
+                            icon={'record-circle-outline'}
+                            color={'red'}
+                            size={28}
+                            onPress={_handleRecordVideo}
+                        />
+                        <Text>{recordTime || "00:00"}</Text>
+                    </View>
 
             }
             <IconButton
@@ -91,4 +101,11 @@ export default VideoRecordBar
 
 
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    recordButtonGroup:{
+        display:'flex',
+        flexDirection:'column',
+        alignItems:'center',
+        paddingVertical:6,
+    }
+})

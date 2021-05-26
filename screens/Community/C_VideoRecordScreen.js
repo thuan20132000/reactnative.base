@@ -7,6 +7,7 @@ import Video from 'react-native-video';
 import { IconButton } from 'react-native-paper';
 import VideoRecordBar from './components/comments/VideoRecordBar';
 import VideoPreviewBar from './components/comments/VideoPreviewBar';
+import { secondsToMinutes } from '../../utils/helper';
 var RNFS = require('react-native-fs');
 
 
@@ -48,16 +49,21 @@ const C_VideoRecordScreen = (props) => {
             // let res = await _refCamera.current.resumePreview();
             // console.warn('res: ', res);
             let x = 0;
+            let duration = '';
             timeInteval = setInterval(() => {
                 x = x + 1;
-                console.log(x);
+                duration = secondsToMinutes(x);
+
                 setVideoData({
                     ...videoData,
-                    duration: x
+                    duration: duration
                 })
             }, 1000);
+
             let data = await _refCamera.current.recordAsync(cameraConfig);
+
             clearInterval(timeInteval);
+            setVideoData({ ...videoData, duration: '' })
 
             setVideoUrl(data.uri);
 
@@ -181,7 +187,7 @@ const C_VideoRecordScreen = (props) => {
                         captureAudio={true}
                         defaultTouchToFocus
                         type={cameraConfig.type}
-                    // flashMode={RNCamera.Constants.FlashMode.on}
+                        flashMode={RNCamera.Constants.FlashMode.on}
                     // androidCameraPermissionOptions={{
                     //     title: 'Permission to use camera',
                     //     message: 'We need your permission to use your camera',
@@ -215,6 +221,7 @@ const C_VideoRecordScreen = (props) => {
                         isRecordingVideo={isRecordingVideo}
                         _handleStopVideo={handleStopVideo}
                         _handleSwithCameraType={_handleSwithCameraType}
+                        recordTime={videoData.duration}
 
                     />
             }

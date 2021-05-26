@@ -19,8 +19,13 @@ import { useSelector } from 'react-redux';
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
 import { local_absolute } from '../../config/api_config.json';
 import { millisToMinutesAndSeconds, getDaysBetweenTwoDates } from '../../utils/helper';
+import VideoPlayer from './components/comments/VideoPlayer';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
+
+
+
+
 
 const C_CommunityPostDetailScreen = (props) => {
 
@@ -33,7 +38,7 @@ const C_CommunityPostDetailScreen = (props) => {
         speed: 70
     });
     const [communityPost, setCommunityPost] = useState();
-    const [postAudio, setPostAudio] = useState();
+    const [postVideo, setPostVideo] = useState();
     const [commentList, setCommentList] = useState([]);
     const [isLoadingComment, setIsLoadingComment] = useState(false);
     const [nextCommentLink, setNextCommentLink] = useState('');
@@ -53,7 +58,8 @@ const C_CommunityPostDetailScreen = (props) => {
         getPostDetail(post.id, userInformation.access)
             .then((res) => {
                 setCommunityPost(res.data?.data?.post);
-                setPostAudio(res.data?.data?.audio);
+                setPostVideo(res.data?.data?.video);
+                console.warn(res.data?.data?.video);
             })
             .catch((error) => {
 
@@ -173,11 +179,11 @@ const C_CommunityPostDetailScreen = (props) => {
             //     android: 'sdcard/askmeit_dictionary/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
             // });
 
-            if (!postAudio.audio) {
+            if (!postVideo.video) {
                 return;
             }
 
-            let audioPath = `${local_absolute}${postAudio.audio}`;
+            let audioPath = `${local_absolute}${postVideo.video}`;
             setIsPlaying(true);
             let e = await audioRecorderPlayer.startPlayer(audioPath);
 
@@ -242,7 +248,7 @@ const C_CommunityPostDetailScreen = (props) => {
                             paddingHorizontal: 12
                         }}
                     >
-                        <Text
+                        {/* <Text
                             style={{
                                 fontSize: readStyle.fontSize,
                                 lineHeight: 52,
@@ -257,7 +263,10 @@ const C_CommunityPostDetailScreen = (props) => {
                                 communityPost?.content
                             }
 
-                        </Text>
+                        </Text> */}
+                        <VideoPlayer
+                           video_url = {postVideo?.video_url}
+                        />
 
                     </ScrollView>
                     <View
