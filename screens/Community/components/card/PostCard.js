@@ -16,6 +16,7 @@ const PostCard = ({
     content,
     practiceNumber = 0,
     favoriteNumber = 0,
+    commentNumner = 0,
     favorite_active = false,
     _refVideo = React.useRef(),
     image_url 
@@ -136,16 +137,36 @@ const PostCard = ({
 
                         />
                         <Text style={{ fontWeight: '700' }}>{favoriteNumber}</Text>
+                        
+                    </View>
+                    <View
+                        style={[
+                            styles.row,
+                            {
+                                alignItems: 'center'
+                            }
+                        ]}
+                    >
+                        <IconButton
+                            icon={CommonIcons.commentProcessingOutline}
+                            color={'coral'}
+                            size={24}
+                            style={{ marginHorizontal: 6 }}
+                           
+
+                        />
+                        <Text style={{ fontWeight: '700' }}>{commentNumner}</Text>
+                        
                     </View>
 
                 </View>
-                <View>
+                {/* <View>
                     <Text
                         style={{ fontSize: 12, color: 'black', fontWeight: '700', fontStyle: 'italic', marginVertical: 4 }}
                     >
                         {practiceNumber} người đã luyện tập
                     </Text>
-                </View>
+                </View> */}
 
                 {/* <View>
                     <Text
@@ -170,7 +191,7 @@ const PostCard = ({
                         style={{ color: 'black', fontStyle: 'italic',marginHorizontal:8 }}
                         numberOfLines={5}
                     >
-                    Hôm nay mình muốn chia sẻ với các bạn những tips nhỏ và chi tiết hơn trong quá trình ôn tập Listening (hy vọng bài viết sẽ có ích cho các bạn
+                        {content}
                     </Text>
                 </View>
             </View>
@@ -201,7 +222,8 @@ const styles = StyleSheet.create({
 
         elevation: 6,
         marginVertical: 1,
-        paddingVertical: 8
+        paddingVertical: 8,
+        minHeight:220
     },
     footerContainer: {
         marginHorizontal: 12,

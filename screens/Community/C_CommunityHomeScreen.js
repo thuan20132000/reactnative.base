@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { ActivityIndicator, FlatList, PermissionsAndroid, Platform, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
-import { FAB } from 'react-native-paper';
+import { FAB, IconButton } from 'react-native-paper';
 import { getCommunityPosts, handleFavorite } from '../../utils/api_v1';
 import PostCard from './components/card/PostCard';
 import Video from 'react-native-video';
 
 import { useSelector } from 'react-redux';
+import CommonColor from '../../utils/CommonColor';
+import CommonIcons from '../../utils/CommonIcons';
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const C_CommunityHomeScreen = (props) => {
@@ -36,7 +38,19 @@ const C_CommunityHomeScreen = (props) => {
             })
             .catch((error) => {
                 console.warn('error: ', error)
-            })
+            });
+
+
+        props.navigation.setOptions({
+            headerRight: () => (
+                <IconButton
+                    icon={CommonIcons.account}
+                    color={CommonColor.primary}
+                    size={26}
+                    onPress={()=>props.navigation.navigate('CommunityProfile')}
+                />
+            )
+        })
 
     }, []);
 
@@ -107,6 +121,12 @@ const C_CommunityHomeScreen = (props) => {
     }
 
 
+
+    const _onOpenUpload = () => {
+        props.navigation.navigate('CommunityVideoRecord');
+    }
+
+
     return (
         <>
             <FlatList
@@ -115,12 +135,13 @@ const C_CommunityHomeScreen = (props) => {
                     <PostCard
                         onPostDetailPress={() => _onPostDetailPress(item)}
                         author={item.author?.username}
-                        content={item.content}
+                        content={item?.content}
                         practiceNumber={item?.practice_number}
                         onLikePress={() => _onHandleFavoritePress(item)}
                         favoriteNumber={item?.post_favorite_number}
                         favorite_active={item?.is_favorited_by_user}
-                        image_url = {item?.image_url}
+                        image_url={item?.image_url}
+                        commentNumner={item?.post_comments_number}
                     />
                 }
                 refreshControl={
@@ -146,7 +167,7 @@ const C_CommunityHomeScreen = (props) => {
                 style={styles.fab}
                 small
                 icon="plus"
-                onPress={() => console.log('Pressed')}
+                onPress={_onOpenUpload}
             />
         </>
     )

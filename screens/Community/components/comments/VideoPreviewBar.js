@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import { IconButton } from 'react-native-paper';
 import * as PropTypes from 'prop-types';
 import CommonIcons from '../../../../utils/CommonIcons'
+import CommonColor from '../../../../utils/CommonColor';
 
 
 const VideoPreviewBar = ({
@@ -10,6 +11,7 @@ const VideoPreviewBar = ({
     _handleOpenCamera,
     _handleSave,
     _handleRemoveVideo,
+    _handleNext
 
 
 }) => {
@@ -25,21 +27,27 @@ const VideoPreviewBar = ({
 
             <IconButton
                 icon={CommonIcons.removeTrash}
-                color={'red'}
+                color={CommonColor.primary}
                 size={28}
                 onPress={_handleRemoveVideo}
             />
             <IconButton
                 icon={CommonIcons.cameraplus}
-                color={'red'}
+                color={CommonColor.primary}
                 size={28}
                 onPress={_handleOpenCamera}
             />
             <IconButton
                 icon={CommonIcons.saveFile}
-                color={'red'}
+                color={CommonColor.primary}
                 size={28}
                 onPress={_handleSave}
+            />
+            <IconButton
+                icon={CommonIcons.arrowRight}
+                color={CommonColor.primary}
+                size={28}
+                onPress={_handleNext}
             />
 
 

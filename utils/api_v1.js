@@ -634,3 +634,59 @@ export const handleFavorite = async (post_id,author_id,token) => {
         }
     }
 }
+
+
+
+export const uploadPost = async (title,content,file,token) => {
+    try {
+        let formdata = new FormData();
+        formdata.append('title', title);
+        formdata.append('content', content);
+        formdata.append('video', {
+            name: 'testvideo.mp4',
+            uri: file,
+            type: 'video/mp4'
+        })
+
+        let url = `${api_community_v1}/post`;
+        let fetchData = await fetch(url, {
+            method:'POST',
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            body:formdata
+           
+        });
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: fetchData,
+                data: null,
+            }
+        }
+
+        let dataRes = await fetchData.json();
+
+        if (!dataRes.status) {
+            return {
+                status: false,
+                message:dataRes,
+                data: null,
+            }
+        }
+
+        return {
+            status: true,
+            message: "fetch success",
+            data: dataRes
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: null,
+        }
+    }
+}

@@ -68,6 +68,20 @@ const C_CommunityPostDetailScreen = (props) => {
 
             })
 
+        setIsLoadingComment(true)
+        getPostComments(post.id, userInformation.access)
+            .then((res) => {
+                if (res.status) {
+                    setCommentList(res.data.data);
+                    setNextCommentLink(res.data?.next);
+                }
+            })
+            .catch((error) => {
+                console.log('error: ', error)
+            })
+            .finally(() => {
+                setIsLoadingComment(false);
+            })
 
         return () => {
             audioRecorderPlayer.stopPlayer();
@@ -86,7 +100,7 @@ const C_CommunityPostDetailScreen = (props) => {
                 let is_favorited = res.data?.post_favorite;
                 setCommunityPost({
                     ...communityPost,
-                    is_favorited_by_user:is_favorited
+                    is_favorited_by_user: is_favorited
                 })
 
             })
@@ -95,27 +109,6 @@ const C_CommunityPostDetailScreen = (props) => {
             })
     }
 
-    const _onRecordPractisePress = async () => {
-        props.navigation.navigate('CommunityRecordPractise');
-    }
-
-    const _onOpenComments = async () => {
-        _refBottomSheet.current.open();
-        setIsLoadingComment(true)
-        getPostComments(communityPost.id, userInformation.access)
-            .then((res) => {
-                if (res.status) {
-                    setCommentList(res.data.data);
-                    setNextCommentLink(res.data?.next);
-                }
-            })
-            .catch((error) => {
-                console.log('error: ', error)
-            })
-            .finally(() => {
-                setIsLoadingComment(false);
-            })
-    }
 
     const _onLoadMoreComments = async () => {
 
@@ -154,7 +147,7 @@ const C_CommunityPostDetailScreen = (props) => {
                     setCommentList(prev => {
                         return [{
                             id: Math.floor(Math.random * 100),
-                            text: `Comment: ${text}`,
+                            text: `${text}`,
                             created_at: new Date()
                         }, ...prev]
                     });
@@ -239,184 +232,48 @@ const C_CommunityPostDetailScreen = (props) => {
 
                 <View
                     style={{
-                        height: '90%'
+                        height: '40%'
                     }}
                 >
-                    <ScrollView
-                        style={{
-                            backgroundColor: 'white',
-                            paddingHorizontal: 12
+
+                    <VideoPlayer
+                        video_url={postVideo?.video_url}
+                        containerStyle={{
+                            height: '100%'
                         }}
-                    >
-                        {/* <Text
-                            style={{
-                                fontSize: readStyle.fontSize,
-                                lineHeight: 52,
-                                textAlign: 'justify',
-                            }}
-                            // suppressHighlighting={true}
-                            // selectable={true}
-                            allowFontScaling={true}
+                    />
 
-                        >
-                            {
-                                communityPost?.content
-                            }
+                    {/* </ScrollView> */}
 
-                        </Text> */}
-                        <VideoPlayer
-                           video_url = {postVideo?.video_url}
-                        />
 
-                    </ScrollView>
-                    <View
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center'
-                        }}
-                    >
-
-                        <AudioPlay
-                            onPlay={_onStartPlay}
-                            onPause={_onPausePlay}
-                            isPlaying={isPlaying}
-                            currentProgress={currentProgress}
-                            durationTime={duration}
-                        />
-
-                    </View>
                 </View>
 
 
-                <View
-                    style={[
-                        styles.row,
-                        {
-                            justifyContent: 'space-between',
-                            paddingHorizontal: 22
-                        }
-                    ]}
-                >
-                    <View
-                        style={[
-                            styles.row,
-                            {
-                                alignItems: 'center'
-                            }
-                        ]}
-                    >
-
-                        <View
-                            style={[
-                                styles.row,
-                                {
-                                    alignItems: 'center'
-                                }
-                            ]}
-                        >
-                            <IconButton
-                                icon={communityPost?.is_favorited_by_user ? CommonIcons.heart : CommonIcons.heartOutline}
-                                color={'coral'}
-                                size={24}
-                                style={{ marginHorizontal: 6 }}
-                                onPress={_onHandleFavoritePress}
-
-                            />
-                            <Text style={{ fontWeight: '700' }}>{communityPost?.post_favorite_number}</Text>
-                        </View>
-
-                        <View
-                            style={[
-                                styles.row,
-                                {
-                                    alignItems: 'center'
-                                }
-                            ]}
-                        >
-                            <IconButton
-                                icon={CommonIcons.commentProcessingOutline}
-                                color={'coral'}
-                                size={24}
-                                style={{ marginHorizontal: 6 }}
-                                onPress={_onOpenComments}
-
-                            />
-                            <Text style={{ fontWeight: '700' }}>{communityPost?.post_comments_number}</Text>
-                        </View>
-                    </View>
-                    <View
-                        style={[
-                            styles.row,
-                            {
-                                alignItems: 'center'
-                            }
-                        ]}
-                    >
-                        <IconButton
-                            icon={CommonIcons.microphonePlus}
+                <FlatList
+                    data={commentList}
+                    renderItem={({ item }) =>
+                        <CommentItem
+                            commentText={item.text}
+                            commentDate={`${getDaysBetweenTwoDates(item.created_at)}`}
+                        />
+                    }
+                    keyExtractor={(item, idnex) => idnex.toString()}
+                    inverted={true}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={_onLoadMoreComments}
+                    ListFooterComponent={
+                        <ActivityIndicator
                             color={'coral'}
-                            size={24}
-                            style={{ marginHorizontal: 6 }}
-                            onPress={_onRecordPractisePress}
-
+                            animating={isLoadingComment}
                         />
-                        <Text style={{ fontWeight: '700' }}>Tập luyện</Text>
-                    </View>
-                </View>
+                    }
 
-            </View>
-
-            <BottomSheetComment
-                refRBSheet={_refBottomSheet}
-                height={deviceHeight}
-                openDuration={420}
-
-            >
-                <HeaderBack
-                    backTitle={'Trở về'}
-                    onBackPress={() => _refBottomSheet.current.close()}
                 />
-                <KeyboardAvoidingView
-                    style={{
-                        flex: 1,
-                    }}
-                    behavior={'padding'}
-                    keyboardVerticalOffset={'0'}
 
-
-                >
-
-                    <FlatList
-                        data={commentList}
-                        renderItem={({ item }) =>
-                            <CommentItem
-                                commentText={item.text}
-                                commentDate={`${getDaysBetweenTwoDates(item.created_at)}`}
-                            />
-                        }
-                        keyExtractor={(item, idnex) => idnex.toString()}
-                        inverted={true}
-                        onEndReachedThreshold={0.1}
-                        onEndReached={_onLoadMoreComments}
-                        ListFooterComponent={
-                            <ActivityIndicator
-                                color={'coral'}
-                                animating={isLoadingComment}
-                            />
-                        }
-
-                    />
-
-                    <CommentInput
-                        onSendPress={_onSendComment}
-                    />
-
-                </KeyboardAvoidingView>
-
-
-
-            </BottomSheetComment>
+                <CommentInput
+                    onSendPress={_onSendComment}
+                />
+            </View>
         </>
     )
 }

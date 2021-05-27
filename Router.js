@@ -36,6 +36,8 @@ import S_PrivacyPolicyScreen from './screens/Settings/S_PrivacyPolicyScreen';
 import S_TermAndConditionsScreen from './screens/Settings/S_TermAndConditionsScreen';
 import A_Signin from './screens/Authentication/A_Signin';
 import C_VideoRecordScreen from './screens/Community/C_VideoRecordScreen';
+import C_CommunityUploadScreen from './screens/Community/C_CommunityUploadScreen';
+import C_CommunityProfileScreen from './screens/Community/C_CommunityProfileScreen';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -311,6 +313,18 @@ const CommunityStack = () => {
                         <CommunityStackNavigator.Screen
                             name="CommunityRecordPractise"
                             component={C_CommunityRecordPractiseScreen}
+                        />
+                        <CommunityStackNavigator.Screen
+                            name="CommunityVideoRecord"
+                            component={C_VideoRecordScreen}
+                        />
+                        <CommunityStackNavigator.Screen
+                            name="CommunityUpload"
+                            component={C_CommunityUploadScreen}
+                        />
+                        <CommunityStackNavigator.Screen
+                            name="CommunityProfile"
+                            component={C_CommunityProfileScreen}
                         />
                     </>
                     :

@@ -30,10 +30,10 @@ const C_VideoRecordScreen = (props) => {
 
     const [cameraConfig, setCameraConfig] = React.useState({
         type: 'front',
-        quality: RNCamera.Constants.VideoQuality['1080p'],
+        quality: RNCamera.Constants.VideoQuality['480p'],
         mirrorVideo: true,
         uri: path,
-        maxDuration: 180
+        maxDuration: 120
     })
 
     let timeInteval;
@@ -144,10 +144,23 @@ const C_VideoRecordScreen = (props) => {
 
     }
 
+    const _onOpenUpload = () => {
+        setIsOpenVideo(false)
+
+        props.navigation.navigate('CommunityUpload',{
+            file_url:videoUrl
+        })
+    }
+
     React.useEffect(() => {
         props.navigation.dangerouslyGetParent().setOptions({
             tabBarVisible: false
-        })
+        });
+
+        return () => {
+            setIsOpenVideo(false)
+        }
+        
     }, [])
 
 
@@ -212,6 +225,7 @@ const C_VideoRecordScreen = (props) => {
                         _handleOpenCamera={() => setIsOpenVideo(false)}
                         _handleSave={_handleSaveVideoToLibrary}
                         _handleRemoveVideo={_handleRemoveVideo}
+                        _handleNext={_onOpenUpload}
                     />
                     :
                     <VideoRecordBar
@@ -222,6 +236,7 @@ const C_VideoRecordScreen = (props) => {
                         _handleStopVideo={handleStopVideo}
                         _handleSwithCameraType={_handleSwithCameraType}
                         recordTime={videoData.duration}
+                        
 
                     />
             }

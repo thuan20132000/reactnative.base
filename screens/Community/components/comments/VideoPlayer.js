@@ -4,7 +4,8 @@ import Video from 'react-native-video';
 import { local_absolute } from '../../../../config/api_config.json';
 
 const VideoPlayer = ({
-    video_url
+    video_url,
+    containerStyle
 }) => {
 
     const _refVideo = React.useRef();
@@ -23,13 +24,10 @@ const VideoPlayer = ({
                 rate={1.0}
                 volume={3.0}
                 isMuted={false}
-                resizeMode="cover"
+                resizeMode="contain"
                 style={[
                     styles.preview,
-                    {
-                        height: 220,
-                        backgroundColor: 'coral'
-                    }
+                   containerStyle
                 ]}
 
                 controls={true}
@@ -49,6 +47,6 @@ export default VideoPlayer
 
 const styles = StyleSheet.create({
     preview: {
-        height: 320
+        height: 420,
     }
 })
