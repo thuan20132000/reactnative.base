@@ -3,12 +3,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CommonColor from '../../../utils/CommonColor'
 
 import CommonImages from '../../../utils/CommonImages'
-import { url_absolute } from '../../../config/api_config.json'
 import { filterDuplicate, getLearntVocabularyByTopic } from '../../../utils/helper'
 import { useSelector } from 'react-redux';
-import { getTopicVocabulary } from '../../../utils/api_v1'
-import * as flashcardAction from '../../../store/actions/flashcardActions';
 import { config } from '../../../app/constants'
+import { IconButton } from 'react-native-paper'
 
 
 const CardTopic = ({
@@ -20,8 +18,8 @@ const CardTopic = ({
 
     const flashcard = useSelector(state => state.flashcard);
     const [learntVocabularyList, setLearntVocabularyList] = React.useState([]);
-    const [leaveVocabularyList,setLeaveVocabularyList] = React.useState(0);
-    
+    const [leaveVocabularyList, setLeaveVocabularyList] = React.useState(0);
+
 
     React.useEffect(() => {
         let topic_name = topic?.slug?.toLowerCase();
@@ -33,7 +31,7 @@ const CardTopic = ({
             }
         });
 
-      
+
     }, [flashcard.learnt_vocabulary_list]);
 
 
@@ -41,9 +39,12 @@ const CardTopic = ({
     return (
         <TouchableOpacity
             style={[
-                styles.container
+                styles.container,
             ]}
+            
             onPress={onPress}
+            
+            
         >
             <Image
 
@@ -77,9 +78,9 @@ const CardTopic = ({
                 </Text>
                 <Text
                     style={{
-                        color:'red',
+                        color: 'red',
                         fontSize: 16,
-                        fontWeight:'700',
+                        fontWeight: '700',
                     }}
                 >
                     {learntVocabularyList.length}/{topic_vocabulary_number}
@@ -109,9 +110,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         marginVertical: 2,
-        paddingVertical:6,
-        paddingHorizontal:6,
-        borderRadius:6
+        paddingVertical: 6,
+        paddingHorizontal: 6,
+        borderRadius: 6
 
     },
     row: {

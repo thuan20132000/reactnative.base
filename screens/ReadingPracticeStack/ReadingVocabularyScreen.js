@@ -42,7 +42,6 @@ const ReadingVocabularyScreen = (props) => {
     const [currentProgress, setCurrentProgress] = React.useState(0);
     const _onStartPlay = async () => {
         if (!readingPost.reading_audio) {
-
             return;
         }
 

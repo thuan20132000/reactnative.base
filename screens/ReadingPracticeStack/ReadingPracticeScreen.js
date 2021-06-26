@@ -703,16 +703,7 @@ const ReadingPracticeScreen = (props) => {
                                 >
                                     x2
                                 </Button>
-                                <Button onPress={() => setReadStyle({ ...readStyle, speed: 20 })}
-                                    style={[
-                                        styles.buttonSpeed,
-                                        readStyle.speed == 30 && {
-                                            backgroundColor: 'grey'
-                                        }
-                                    ]}
-                                >
-                                    x3
-                                </Button>
+                               
 
                             </View>
                         </View>
