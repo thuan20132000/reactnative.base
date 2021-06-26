@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View,Image } from 'react-native'
 import CommonImages from '../../../utils/CommonImages'
 import CommonColor from '../../../utils/CommonColor'
 import { url_absolute } from '../../../config/api_config.json'
+import { config } from '../../../app/constants'
 
 const CardBox = ({
     label,
@@ -13,7 +14,7 @@ const CardBox = ({
     image_path
 }) => {
 
-    const image_url = image_path?`${url_absolute}${image_path}`:CommonImages.avatar
+    const image_url = image_path?`${config.api_url}${image_path}`:CommonImages.avatar
     return (
         <TouchableOpacity
             style={[

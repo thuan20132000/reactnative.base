@@ -17,6 +17,7 @@ import AudioPlay from '../../components/Card/AudioPlay';
 
 import { InterstitialAd, RewardedAd, BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
 import { adbmod_android_app_id } from '../../config/api_config.json';
+import ReadingAPI from '../../app/API/ReadingAPI';
 const adUnitId = __DEV__ ? TestIds.BANNER : adbmod_android_app_id;
 
 var RNFS = require('react-native-fs');
@@ -57,30 +58,28 @@ const ReadingPracticeScreen = (props) => {
     React.useEffect(() => {
 
 
-        if (readingpost) {
-            setReadingPost(readingpost);
-        }
+        // if (readingpost) {
+        //     setReadingPost(readingpost);
+        // }
 
-
-        getReadingPostDetail(readingpost.id)
+        ReadingAPI.getReadingPostDetail(readingpost.id)
             .then((res) => {
-                if (res.status) {
+                console.log(res)
+                if (res.status_code === 200) {
                     setReadingPost(res.data);
-                    return res.data;
+                    if (res.reading_post_vocabulary?.length > 0) {
+                        let nameList = res.reading_post_vocabulary.map((e) => e.name);
+                        setHighlightVocabulary(nameList);
+                    }
                 }
-            })
-            .then((res) => {
-                if (res.reading_post_vocabulary?.length > 0) {
-
-                    let nameList = res.reading_post_vocabulary.map((e) => e.name);
-                    setHighlightVocabulary(nameList);
-                }
-                // console.warn('res2 : ', res.reading_post_vocabulary)
             })
             .catch((err) => {
                 console.log('error: ', err)
             })
             .finally(() => console.log('finnally'))
+
+
+
 
         props.navigation.dangerouslyGetParent().setOptions({
             tabBarVisible: false
@@ -693,7 +692,7 @@ const ReadingPracticeScreen = (props) => {
                                     ]}
                                 >
                                     x1
-                        </Button>
+                                </Button>
                                 <Button onPress={() => setReadStyle({ ...readStyle, speed: 50 })}
                                     style={[
                                         styles.buttonSpeed,
@@ -703,7 +702,7 @@ const ReadingPracticeScreen = (props) => {
                                     ]}
                                 >
                                     x2
-                        </Button>
+                                </Button>
                                 <Button onPress={() => setReadStyle({ ...readStyle, speed: 20 })}
                                     style={[
                                         styles.buttonSpeed,
@@ -713,7 +712,7 @@ const ReadingPracticeScreen = (props) => {
                                     ]}
                                 >
                                     x3
-                        </Button>
+                                </Button>
 
                             </View>
                         </View>

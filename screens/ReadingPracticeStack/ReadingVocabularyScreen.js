@@ -14,6 +14,8 @@ import { getReadingPostDetail, getTopicVocabulary } from '../../utils/api_v1';
 import { url_absolute } from '../../config/api_config.json';
 import sample_data from '../../data/sample_data.json';
 import CommonColor from '../../utils/CommonColor';
+import QuizAPI from '../../app/API/QuizAPI';
+import { config } from '../../app/constants';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -39,17 +41,16 @@ const ReadingVocabularyScreen = (props) => {
     const [duration, setDuration] = React.useState();
     const [currentProgress, setCurrentProgress] = React.useState(0);
     const _onStartPlay = async () => {
-        if(!readingPost.reading_audio){
-              
+        if (!readingPost.reading_audio) {
+
             return;
         }
 
         setIsPlaying(true);
         try {
 
-           
-            let reading_audio_path = `${url_absolute}/${readingPost.reading_audio}`
 
+            let reading_audio_path = `${config.api_url}${readingPost.reading_audio}`
             let e = await audioRecorderPlayer.startPlayer(reading_audio_path);
 
             await audioRecorderPlayer.setVolume(1.0);
@@ -63,7 +64,7 @@ const ReadingVocabularyScreen = (props) => {
                 let progress = e.current_position / e.duration;
                 // console.log()
                 // console.log('progress: ', progress);
-                if(progress){
+                if (progress) {
                     setCurrentProgress(progress);
 
                 }
@@ -160,19 +161,20 @@ const ReadingVocabularyScreen = (props) => {
         audioRecorderPlayer.removePlayBackListener();
         audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
-        if(readingPost.reading_post_vocabulary?.length <=0){
+        if (readingPost.reading_post_vocabulary?.length <= 0) {
             return;
         }
 
         setIsLoading(true);
         let random_topic_id = _onGetRamdonBetweenInt(17, 30);
-        getTopicVocabulary(random_topic_id)
+     
+        QuizAPI.getTopicVocabulary(random_topic_id)
             .then((res) => {
-                if (res.data?.length > 0) {
+                if (res.status_code === 200 && res.data?.length > 0) {
                     dispatch(readingActions.setReadingVocabularyList(readingPost.reading_post_vocabulary, res.data))
-                } else {
+                } 
+                else {
                     dispatch(readingActions.setReadingVocabularyList(readingPost.reading_post_vocabulary, sample_data))
-
                 }
             })
             .then(() => {
@@ -182,8 +184,6 @@ const ReadingVocabularyScreen = (props) => {
             })
             .catch((err) => {
                 console.log('error: ', err);
-                return;
-
             })
             .finally(() => setIsLoading(false));
 
@@ -268,13 +268,13 @@ const ReadingVocabularyScreen = (props) => {
                         marginVertical: 2
                     }}
                 >
-                    <ButtonText
+                    {/* <ButtonText
                         label={`Học từ vựng`}
                         labelStyle={{
                             fontWeight: '700'
                         }}
                         onItemPress={_onNavigateToVocabularyPractice}
-                    />
+                    /> */}
                     <ButtonText
                         label={`Luyện đọc`}
                         labelStyle={{
@@ -312,7 +312,7 @@ const ReadingVocabularyScreen = (props) => {
 
                     >
                         {
-                            (readingPost?.content  && readingPost.content || '') &&
+                            (readingPost?.content && readingPost.content || '') &&
                             <Highlighter
                                 highlightStyle={{ color: 'red', fontWeight: '700' }}
                                 searchWords={highlightVocabulary || []}
