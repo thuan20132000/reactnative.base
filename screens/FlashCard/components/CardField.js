@@ -2,6 +2,7 @@ import React from 'react'
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import CommonImages from '../../../utils/CommonImages'
 import { url_absolute } from '../../../config/api_config.json';
+import config from '../../../app/constants/config';
 const CardField = ({
     label,
     labelStyle,
@@ -12,20 +13,19 @@ const CardField = ({
 
 
 
-    const image_url = image_path ? `${url_absolute}${image_path}` : 'https://picsum.photos/700';
+    const image_url = image_path ? `${config.api_url}${image_path}` : 'https://picsum.photos/700';
 
     return (
         <TouchableOpacity
             style={[
                 styles.container,
                 {
-                    padding: 12,
-                    width: deviceWidth / 2 - 10,
-                    marginHorizontal: 2,
+                    paddingHorizontal: 12,
+                    marginHorizontal: 6,
                     marginVertical: 2,
                     borderRadius: 6,
-                    justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    flexDirection:'row'
                 }
             ]}
             onPress={onItemPress}
@@ -48,8 +48,12 @@ const CardField = ({
             <Text
                 style={[
                     labelStyle,
-                    styles.textStyle
+                    styles.textStyle,
+                    {
+                        marginLeft:2
+                    }
                 ]}
+                numberOfLines={2}
             >
                 {label}
             </Text>
@@ -75,11 +79,11 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
 
         elevation: 5,
-        minHeight: 160,
+        minHeight: 120,
 
     },
     textStyle: {
         fontWeight: '700',
-        fontSize: 18
+        fontSize: 16
     }
 })

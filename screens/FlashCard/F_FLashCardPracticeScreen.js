@@ -88,7 +88,7 @@ const F_FLashCardPracticeScreen = (props) => {
         try {
             let choices = [];
             choices.push(selectedVocabulary);
-            let compareVocabulary = topicVocabulary.filter(e => e.ID != selectedVocabulary.ID);
+            let compareVocabulary = topicVocabulary.filter(e => e.id != selectedVocabulary.id);
 
             compareVocabulary.filter((e, index) => {
 
@@ -125,7 +125,7 @@ const F_FLashCardPracticeScreen = (props) => {
 
             setIsAwnsered(true);
 
-            if (selectedWord.ID != practiceVocabulary.ID) {
+            if (selectedWord.id != practiceVocabulary.id) {
 
                 setTimeout(() => {
                     var sound = new Sound('button_incorrect.mp3', Sound.MAIN_BUNDLE, (error) => {
@@ -249,7 +249,7 @@ const F_FLashCardPracticeScreen = (props) => {
                 {/* Word meaning */}
                 <View>
                     <ProgressBar
-                        progress={(10 - flashcard.practice_vocabulary_list.length) / 10}
+                        progress={(7 - flashcard.practice_vocabulary_list.length) / 7}
                         color={'green'}
                         style={{
                             height: 8
@@ -369,9 +369,9 @@ const F_FLashCardPracticeScreen = (props) => {
                                 key={index.toString()}
                                 name={e.name}
                                 onItemPress={() => _onSelectWord(e)}
-                                isActive={selectedWord && selectedWord.ID == e.ID ? true : false}
-                                isDisable={isAnwsered && practiceVocabulary?.ID != e.ID ? true : false}
-                                isHighlight={isAnwsered && practiceVocabulary?.ID == e.ID ? true : false}
+                                isActive={selectedWord && selectedWord.id == e.id ? true : false}
+                                isDisable={isAnwsered && practiceVocabulary?.id != e.id ? true : false}
+                                isHighlight={isAnwsered && practiceVocabulary?.id == e.id ? true : false}
 
                             />
 

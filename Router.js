@@ -412,7 +412,7 @@ const TabBottom = () => {
                 }}
 
             /> */}
-            <TabBottomNavigator.Screen
+            {/* <TabBottomNavigator.Screen
                 name="Community"
                 component={CommunityStack}
                 options={{
@@ -428,7 +428,7 @@ const TabBottom = () => {
 
                 }}
 
-            />
+            /> */}
             <TabBottomNavigator.Screen
                 name="TabSetting"
                 component={SettingStack}

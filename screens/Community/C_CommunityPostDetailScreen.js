@@ -1,16 +1,6 @@
 import React, { useState } from 'react'
-import { Dimensions, Keyboard, StyleSheet, Text, View, KeyboardAvoidingView, Platform, FlatList, ActivityIndicator } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler';
-import { IconButton } from 'react-native-paper';
-import AudioItem from '../../components/Item/AudioItem';
-import CommonIcons from '../../utils/CommonIcons';
-import CommonImages from '../../utils/CommonImages';
-import Highlighter from 'react-native-highlight-words';
-import readingpost from '../../data/readingpost_data.json';
-import BottomRecordingNavigation from './components/BottomRecordingNavigation';
-import AudioPlay from '../../components/Card/AudioPlay';
-import BottomSheetComment from '../../components/BottomSheet/BottomSheetComment';
-import HeaderBack from '../../components/Header/HeaderBack';
+import { Dimensions, Keyboard, StyleSheet,PermissionsAndroid, Text, View, KeyboardAvoidingView, Platform, FlatList, ActivityIndicator } from 'react-native'
+
 import CommentInput from '../../components/Comments/CommentInput';
 import CommentItem from '../../components/Comments/CommentItem';
 import { Header } from '@react-navigation/stack';
@@ -18,9 +8,10 @@ import { createPostComment, getPostComments, getPostDetail, handleFavorite } fro
 import { useSelector } from 'react-redux';
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
 import { local_absolute } from '../../config/api_config.json';
-import { millisToMinutesAndSeconds, getDaysBetweenTwoDates } from '../../utils/helper';
+import { millisToMinutesAndSeconds, getDaysBetweenTwoDates, _onGetRandomNameByTime } from '../../utils/helper';
 import VideoPlayer from './components/comments/VideoPlayer';
-
+import { Modal, Provider, Portal, ProgressBar } from 'react-native-paper'
+import CommonColor from '../../utils/CommonColor';
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 
@@ -28,7 +19,17 @@ const audioRecorderPlayer = new AudioRecorderPlayer();
 
 
 const C_CommunityPostDetailScreen = (props) => {
+    const path = Platform.select({
+        android: 'sdcard/askmeit_dictionary/hello3.mp3', // should give extra dir name in android. Won't grant permission to the first level of dir.
+    });
 
+
+    const audioSet = {
+        AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+        AudioSourceAndroid: AudioSourceAndroidType.MIC,
+    };
+    const [audioPath,setAudioPath] = useState('');
+    const [isRecording, setIsRecording] = useState(false);
     const { userInformation } = useSelector(state => state.authentication);
     const { post } = props.route.params;
     // const [readingPost, setReadingPost] = useState(readingpost);
@@ -53,13 +54,15 @@ const C_CommunityPostDetailScreen = (props) => {
         props.navigation.dangerouslyGetParent().setOptions({
             tabBarVisible: false,
         });
-
+        props.navigation.setOptions({
+            title: ''
+        })
 
         getPostDetail(post.id, userInformation.access)
             .then((res) => {
                 setCommunityPost(res.data?.data?.post);
                 setPostVideo(res.data?.data?.video);
-                console.warn(res.data?.data?.video);
+                console.warn(res.data.data.video.video_url);
             })
             .catch((error) => {
 
@@ -86,6 +89,7 @@ const C_CommunityPostDetailScreen = (props) => {
         return () => {
             audioRecorderPlayer.stopPlayer();
             audioRecorderPlayer.removePlayBackListener();
+            _onStopRecord();
 
             props.navigation.dangerouslyGetParent().setOptions({
                 tabBarVisible: true,
@@ -93,21 +97,6 @@ const C_CommunityPostDetailScreen = (props) => {
             });
         }
     }, []);
-
-    const _onHandleFavoritePress = async () => {
-        handleFavorite(communityPost.id, userInformation?.user?.id, userInformation.access)
-            .then((res) => {
-                let is_favorited = res.data?.post_favorite;
-                setCommunityPost({
-                    ...communityPost,
-                    is_favorited_by_user: is_favorited
-                })
-
-            })
-            .catch((error) => {
-                console.warn('error: ', error);
-            })
-    }
 
 
     const _onLoadMoreComments = async () => {
@@ -140,8 +129,29 @@ const C_CommunityPostDetailScreen = (props) => {
     }
 
     const _onSendComment = async (text) => {
+       
+        let comment_type = 'text';
+        let file = '';
+        if(isRecording){
+            comment_type = 'audio';
+            // let name = _onGetRandomNameByTime(20,'');
+            // console.warn('name: ',name);
 
-        createPostComment(userInformation?.user?.id, text, 'text', '', post.id, userInformation.access)
+            file = {
+                uri: `file:///${path}`,
+                name: `csacasc.mp3`,
+                type: 'audio/wav',
+            }
+            _onStopRecord();
+            console.warn('f: ',file);
+        }else{
+            if(!text){
+                return;
+            }
+        }
+        let file_audio = {"name": "vdsvds.mp3", "type": "audio/wav", "uri": "file:///sdcard/askmeit_dictionary/hello3.mp3"}
+    
+        createPostComment(userInformation?.user?.id, text,comment_type,file, post.id, userInformation.access)
             .then((res) => {
                 if (res.status) {
                     setCommentList(prev => {
@@ -165,18 +175,18 @@ const C_CommunityPostDetailScreen = (props) => {
     }
 
 
-    const _onStartPlay = async () => {
+    const _onStartPlay = async (audio_path) => {
         try {
 
             // const path = Platform.select({
             //     android: 'sdcard/askmeit_dictionary/hello3.wav', // should give extra dir name in android. Won't grant permission to the first level of dir.
             // });
 
-            if (!postVideo.video) {
+            if (!audio_path) {
                 return;
             }
 
-            let audioPath = `${local_absolute}${postVideo.video}`;
+            let audioPath = `${local_absolute}${audio_path}`;
             setIsPlaying(true);
             let e = await audioRecorderPlayer.startPlayer(audioPath);
 
@@ -216,13 +226,92 @@ const C_CommunityPostDetailScreen = (props) => {
         }
     }
 
+    const _onStartRecord = async () => {
+        setIsRecording(true)
+        try {
+            if (Platform.OS === 'android') {
+                try {
+                    const granted = await PermissionsAndroid.request(
+                        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+                        {
+                            title: 'Permissions for write access',
+                            message: 'Give permission to your storage to write a file',
+                            buttonPositive: 'ok',
+                        },
+                    );
+
+
+                    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                        console.log('You can use the record');
+                        let audio_uri = await audioRecorderPlayer.startRecorder(path, audioSet);
+                        console.log('au: ',audio_uri);
+                        setAudioPath(audio_uri);
+                        audioRecorderPlayer.addRecordBackListener(e => {
+                            console.log('Recording . . . ', e.current_position);
+                            return;
+                        });
+
+                        // console.log(`uri: ${audio_uri}`);
+                        // setAudioPath(audio_uri);
+
+                    } else {
+                        console.log('permission denied');
+                        return;
+                    }
+                } catch (err) {
+                    console.warn(err);
+                    setIsRecording(false)
+
+                    return;
+                }
+            }
+
+        } catch (error) {
+            console.warn('error: ', error);
+        }
+    };
+
+    const _onStopRecord = async () => {
+        try {
+            let a = await audioRecorderPlayer.stopRecorder();
+            audioRecorderPlayer.removeRecordBackListener();
+            setIsRecording(false)
+
+        } catch (error) {
+
+            console.warn('error', error);
+        }
+    };
+
+
     const _onPausePlay = async () => {
         setIsPlaying(false)
         await audioRecorderPlayer.pausePlayer();
     }
+    const _onStopPlay = async () => {
+        setIsPlaying(false);
+        audioRecorderPlayer.stopPlayer();
+    }
+    const [visible, setVisible] = React.useState(false);
 
+
+    const containerStyle = { backgroundColor: 'white', padding: 20, marginHorizzontal: 20 };
     return (
-        <>
+        <Provider>
+            <Portal>
+                <Modal visible={isPlaying} onDismiss={_onStopPlay} contentContainerStyle={{
+                    backgroundColor: 'white',
+                    padding: 20,
+                    marginHorizzontal: 20,
+                    marginHorizontal: 22,
+                    borderRadius: 22
+                }}>
+                    <ProgressBar
+                        indeterminate={true}
+                        color={CommonColor.btnSubmit}
+                    />
+                </Modal>
+            </Portal>
             <View
                 style={{
                     display: 'flex',
@@ -232,14 +321,15 @@ const C_CommunityPostDetailScreen = (props) => {
 
                 <View
                     style={{
-                        height: '40%'
+                        height: '40%',
+                        backgroundColor:'lightgrey'
                     }}
                 >
 
                     <VideoPlayer
-                        video_url={postVideo?.video_url}
+                        video_url={postVideo?.video_url || 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'}
                         containerStyle={{
-                            height: '100%'
+                            height: '100%',
                         }}
                     />
 
@@ -255,6 +345,9 @@ const C_CommunityPostDetailScreen = (props) => {
                         <CommentItem
                             commentText={item.text}
                             commentDate={`${getDaysBetweenTwoDates(item.created_at)}`}
+                            commentType={item.comment_type}
+                            commentAudio={item?.audio}
+                            onPlay={() => _onStartPlay(item.audio)}
                         />
                     }
                     keyExtractor={(item, idnex) => idnex.toString()}
@@ -272,10 +365,12 @@ const C_CommunityPostDetailScreen = (props) => {
 
                 <CommentInput
                     onSendPress={_onSendComment}
+                    onStartRecord={_onStartRecord}
+                    onStopRecord={_onStopRecord}
+                    isRecording={isRecording}
                 />
             </View>
-        </>
-    )
+        </Provider>)
 }
 const deviceWidth = Dimensions.get('screen').width;
 const deviceHeight = Dimensions.get('screen').height;

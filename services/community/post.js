@@ -44,4 +44,35 @@ const getUserPosts = async (token) => {
 }
 
 
-export {getUserPosts}
+
+const deletePost = async (post_id,token) => {
+    try {
+        let url = `${api_community_v1}/post/${post_id}/delete`;
+        let fetchData = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            method:'DELETE'
+        });
+
+        if (!fetchData.ok) {
+            return {
+                status: false,
+                message: fetchData,
+                data: [],
+            }
+        }
+
+        let dataRes = await fetchData.json();
+        return dataRes
+
+    } catch (error) {
+        return {
+            status: false,
+            message: "fetch failed " + error,
+            data: [],
+        }
+    }
+}
+
+export { getUserPosts ,deletePost}

@@ -106,7 +106,16 @@ export const _onRandomIndexValue = (number = 3, except = []) => {
 }
 
 
-
+export const _onGetRandomNameByTime = (len,charSet) => {
+    charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var randomString = '';
+    for (var i = 0; i < len; i++) {
+        var randomPoz = Math.floor(Math.random() * charSet.length);
+        randomString += charSet.substring(randomPoz, randomPoz + 1);
+    }
+    let ts = new Date().getTime().toString();
+    return randomString;
+}
 
 export const _onGetRandomInt = (max) => {
 
@@ -128,7 +137,7 @@ export const _onCheckItemExistInArray = (item, array = []) => {
 
     let isExists = false;
     for (let i = 0; i < array.length; i++) {
-        if (item.ID == array[i].ID) {
+        if (item.id == array[i].id) {
             isExists = true;
             break;
         }
@@ -240,7 +249,7 @@ export const saveSearchedVocabulary = async (vocabulary) => {
             let isExists = _onCheckItemExistInArray(vocabulary, vocabulary_list);
 
             if (isExists) {
-                new_favorite_vocabulary_list = vocabulary_list.filter(e => e.ID != vocabulary.ID);
+                new_favorite_vocabulary_list = vocabulary_list.filter(e => e.id != vocabulary.id);
             } else {
                 // new_favorite_vocabulary_list.push(vocabulary);
                 new_favorite_vocabulary_list = [...vocabulary_list, vocabulary]
@@ -285,6 +294,7 @@ export const getNearestSearchVocabulary = async () => {
     }
 
 }
+
 
 
 
@@ -386,8 +396,8 @@ export const filterDuplicate = async (values = []) => {
         let mapValue = new Map();
 
         for (let item of values) {
-            if (!mapValue.has(item.ID)) {
-                mapValue.set(item.ID, item);
+            if (!mapValue.has(item.id)) {
+                mapValue.set(item.id, item);
                 newValues.push(item);
             }
         }
@@ -446,8 +456,8 @@ export const secondsToMinutes = (seconds) => {
     var minutes = Math.floor(seconds / 60);
     var seconds = Math.floor(seconds % 60);
 
-    minutes = minutes.toString().length == 1 ? `0${minutes}`:minutes;
-    seconds = seconds.toString().length == 1 ? `0${seconds}`:seconds;
+    minutes = minutes.toString().length == 1 ? `0${minutes}` : minutes;
+    seconds = seconds.toString().length == 1 ? `0${seconds}` : seconds;
 
     return `${minutes}:${seconds}`;
 

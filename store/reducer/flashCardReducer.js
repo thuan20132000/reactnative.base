@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
         case ADD_VOCABULARY_TO_LEARN:
             // var current_flashcard_list = state.flashcard_list;
             var vocabulary = action.vocabulary;
-            var new_vocabulary_stack = state.vocabulary_stack.filter(e => e.ID != vocabulary.ID);
+            var new_vocabulary_stack = state.vocabulary_stack.filter(e => e.id != vocabulary.id);
             var new_practice_vocabulary_list = [...state.practice_vocabulary_list, vocabulary];
 
             return {
@@ -45,7 +45,7 @@ export default (state = initialState, action) => {
 
             var temp_practice_vocabulary_list = state.practice_vocabulary_list;
 
-            var new_practice_vocabulary_list = temp_practice_vocabulary_list.filter(e => e.ID != vocabulary.ID);
+            var new_practice_vocabulary_list = temp_practice_vocabulary_list.filter(e => e.id != vocabulary.id);
 
             return {
                 ...state,
@@ -55,7 +55,7 @@ export default (state = initialState, action) => {
 
         case SKIP_VOCABULARY_TO_LEARN:
             var vocabulary = action.vocabulary;
-            var new_vocabulary_stack = state.vocabulary_stack.filter(e => e.ID != vocabulary.ID);
+            var new_vocabulary_stack = state.vocabulary_stack.filter(e => e.id != vocabulary.id);
             var new_skip_vocabulary_list = [...state.skip_vocabulary_list, vocabulary];
 
             return {

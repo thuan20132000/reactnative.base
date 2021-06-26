@@ -8,6 +8,7 @@ import { filterDuplicate, getLearntVocabularyByTopic } from '../../../utils/help
 import { useSelector } from 'react-redux';
 import { getTopicVocabulary } from '../../../utils/api_v1'
 import * as flashcardAction from '../../../store/actions/flashcardActions';
+import { config } from '../../../app/constants'
 
 
 const CardTopic = ({
@@ -47,7 +48,7 @@ const CardTopic = ({
             <Image
 
                 source={{
-                    uri: image_path ? `${url_absolute}/${image_path}` : CommonImages.avatar
+                    uri: image_path ? `${config.api_url}/${image_path}` : CommonImages.avatar
                 }}
 
                 style={{

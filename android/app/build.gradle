@@ -197,6 +197,7 @@ android {
 dependencies {
 
     implementation project(':react-native-camera')
+    compile project(':@react-native-community_cameraroll')
 
     // For animated GIF support
     implementation 'com.facebook.fresco:animated-gif:2.0.0'

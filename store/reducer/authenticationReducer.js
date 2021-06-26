@@ -1,7 +1,8 @@
 import {
     SIGNIN,
     SIGNUP,
-    LOGOUT
+    LOGOUT,
+    UPDATE_USER_PROFILE
 } from '../actions/authenticationActions'
 
 
@@ -18,6 +19,15 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 userInformation: action.data
+            }
+        
+        case UPDATE_USER_PROFILE:
+
+            let newInformation = state.userInformation;
+            newInformation.user = action.data;
+            return {
+                ...state,
+                userInformation:newInformation
             }
 
         default:

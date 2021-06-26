@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import { getFieldsList, getFieldTopic } from '../../utils/api_v1'
 import CommonImages from '../../utils/CommonImages'
 import CardField from './components/CardField'
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import { adbmod_android_app_id } from '../../config/api_config.json';
-
+import FieldModel from '../../app/models/fieldModel'
 const adUnitId = __DEV__ ? TestIds.BANNER : adbmod_android_app_id;
+
+import SQLiteManager from '../../app/DB/SQLiteManage';
+import QuizAPI from '../../app/API/QuizAPI'
 
 const F_FlashCardFieldScreen = (props) => {
 
@@ -14,15 +17,6 @@ const F_FlashCardFieldScreen = (props) => {
     const [isLoading, setIsLoading] = useState(false);
 
     React.useEffect(() => {
-        setIsLoading(true);
-        getFieldsList()
-            .then((data) => {
-                if (data.status) {
-                    setFieldList(data.data)
-                }
-            })
-            .catch(err => console.warn(err))
-            .finally((res) => setIsLoading(false));
 
         props.navigation.setOptions({
             headerShown: false
@@ -31,18 +25,31 @@ const F_FlashCardFieldScreen = (props) => {
     }, []);
 
 
-    const _onNavigateToTopicList = async (field) => {
-        props.navigation.navigate('FlashCardTopic', {
-            field: field
-        });
-        // getFieldTopic(field.id)
-        //     .then((data) => console.warn(data))
+    const _onNavigateToTopicList = async (fieldData) => {
 
+        props.navigation.navigate('FlashCardTopic', {
+            field: fieldData
+        });
 
     }
 
+
+    React.useEffect(() => {
+        QuizAPI.getAllField().then(res => {
+            if (res?.status_code === 200) {
+                let fieldListData = [];
+                res.data?.forEach(element => {
+                    let field = new FieldModel(element);
+                    fieldListData = [...fieldListData, field];
+                });
+                setFieldList(fieldListData)
+            }
+        })
+
+    }, []);
+
     return (
-        <>
+        <SafeAreaView>
             <View
                 style={{
                     display: 'flex',
@@ -54,7 +61,7 @@ const F_FlashCardFieldScreen = (props) => {
                     adbmod_android_app_id &&
                     <BannerAd
                         unitId={adUnitId}
-                        size={BannerAdSize.MEDIUM_RECTANGLE}
+                        size={BannerAdSize.BANNER}
                         requestOptions={{
                             requestNonPersonalizedAdsOnly: true,
                             keywords: ['education', 'ielts']
@@ -67,34 +74,24 @@ const F_FlashCardFieldScreen = (props) => {
             <ScrollView
 
             >
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginVertical: 20
-                    }}
-                >
-                    {
-                        fieldList.length > 0 &&
-                        fieldList.map((e, index) =>
-                            <CardField
-                                key={index.toString()}
-                                label={e?.name}
-                                image_path={e?.image}
-                                onItemPress={() => _onNavigateToTopicList(e)}
-                            />
 
-                        )
-                    }
+                {
+                    fieldList.length > 0 &&
+                    fieldList.map((e, index) =>
+                        <CardField
+                            key={index.toString()}
+                            label={e?.name}
+                            image_path={e?.image}
+                            onItemPress={() => _onNavigateToTopicList(e)}
+                        />
 
-                </View>
+                    )
+                }
+
 
             </ScrollView>
 
-        </>
+        </SafeAreaView>
     )
 }
 

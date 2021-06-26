@@ -30,6 +30,7 @@ const C_CommunityHomeScreen = (props) => {
             .then((res) => {
                 if (res.status) {
                     setPosts(res.data?.data);
+                    console.warn('ss: ',res.data?.data)
 
                     if (res.data?.next) {
                         setNextLink(res.data?.next);
@@ -126,6 +127,12 @@ const C_CommunityHomeScreen = (props) => {
         props.navigation.navigate('CommunityVideoRecord');
     }
 
+
+    React.useEffect(() => {
+        props.navigation.setOptions({
+            title:''
+        })
+    }, []);
 
     return (
         <>

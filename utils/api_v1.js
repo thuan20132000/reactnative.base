@@ -536,7 +536,7 @@ export const getPostComments = async (post_id, token) => {
 }
 
 
-export const createPostComment = async (author_id,text,type='text',audio='',post_id,token) => {
+export const createPostComment = async (author_id,text,type='text',audio,post_id,token) => {
     try {
         let formdata = new FormData();
         formdata.append('author_id',author_id);

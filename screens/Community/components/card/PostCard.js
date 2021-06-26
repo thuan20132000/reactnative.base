@@ -19,7 +19,7 @@ const PostCard = ({
     commentNumner = 0,
     favorite_active = false,
     _refVideo = React.useRef(),
-    image_url 
+    image_url,
 
 }) => {
     return (
@@ -66,13 +66,17 @@ const PostCard = ({
                         {author}
                     </Text>
                 </View>
-                <IconButton
-                    icon={CommonIcons.dotsVertical}
-                    color={'coral'}
-                    size={24}
-                    style={{ marginHorizontal: 6 }}
-                    onPress={onEditPress}
-                />
+                {
+                    onEditPress &&
+                    <IconButton
+                        icon={CommonIcons.close}
+                        color={'coral'}
+                        size={24}
+                        style={{ marginHorizontal: 6 }}
+                        onPress={onEditPress}
+                    />
+
+                }
 
             </View>
             {/* body */}
@@ -80,12 +84,12 @@ const PostCard = ({
 
             <ImageBackground
                 source={{
-                    uri: image_url ||  CommonImages.avatar
+                    uri: image_url || CommonImages.avatar
                 }}
                 style={{
                     flex: 1,
                     justifyContent: "center",
-                    height: 160,                
+                    height: 160,
                 }}
                 resizeMethod={'resize'}
                 resizeMode={'contain'}
@@ -137,7 +141,7 @@ const PostCard = ({
 
                         />
                         <Text style={{ fontWeight: '700' }}>{favoriteNumber}</Text>
-                        
+
                     </View>
                     <View
                         style={[
@@ -152,11 +156,11 @@ const PostCard = ({
                             color={'coral'}
                             size={24}
                             style={{ marginHorizontal: 6 }}
-                           
+
 
                         />
                         <Text style={{ fontWeight: '700' }}>{commentNumner}</Text>
-                        
+
                     </View>
 
                 </View>
@@ -184,11 +188,11 @@ const PostCard = ({
                 style={[styles.footerContainer]}
             >
                 <View
-                    style={[styles.row, { alignItems: 'center',padding:8}]}
+                    style={[styles.row, { alignItems: 'center', padding: 8 }]}
                 >
-                   
-                    <Text 
-                        style={{ color: 'black', fontStyle: 'italic',marginHorizontal:8 }}
+
+                    <Text
+                        style={{ color: 'black', fontStyle: 'italic', marginHorizontal: 8 }}
                         numberOfLines={5}
                     >
                         {content}
@@ -223,7 +227,7 @@ const styles = StyleSheet.create({
         elevation: 6,
         marginVertical: 1,
         paddingVertical: 8,
-        minHeight:220
+        minHeight: 220
     },
     footerContainer: {
         marginHorizontal: 12,
