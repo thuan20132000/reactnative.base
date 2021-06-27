@@ -1,5 +1,5 @@
 {
-    "api_v1_url":"https://askme-it.com/dictionary/api/v1",
+    "api_v1_url":"https://askme-it.com/dictionary/api/v1", 
     "file_url":"https://askme-it.com/media/audio",
     "api_flashcard_v1":"https://askme-it.com/flashcard/api/v1",
     "url_absolute":"https://askme-it.com",

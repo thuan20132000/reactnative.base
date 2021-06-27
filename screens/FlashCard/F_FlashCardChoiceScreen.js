@@ -15,6 +15,7 @@ import { _onGetRandomInt, _onPlayFlashCardSound, _onPlaySound } from '../../util
 import Sound from 'react-native-sound'
 import { url_absolute } from '../../config/api_config.json'
 import ButtonText from '../../components/Button/BottonText'
+import { config } from '../../app/constants'
 const F_FlashCardChoiceScreen = (props) => {
 
     const _refCardFlip = useRef();
@@ -34,7 +35,7 @@ const F_FlashCardChoiceScreen = (props) => {
         // setTimeout(() => {
 
         // }, 1200);
-        let path = `${url_absolute}${vocabulary.sound_us}`;
+        let path = `${vocabulary.sound_us}`;
 
         setTimeout(() => {
             var sound = new Sound(path, '', (error) => {
@@ -110,7 +111,6 @@ const F_FlashCardChoiceScreen = (props) => {
 
 
     useEffect(() => {
-        console.log('vv: ',flashcard.vocabulary_stack);
 
         if (flashcard.topic_vocabulary_list.length > 0) {
             setVocabulary(flashcard.vocabulary_stack[0]);

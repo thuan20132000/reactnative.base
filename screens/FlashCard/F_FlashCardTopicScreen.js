@@ -76,31 +76,25 @@ const F_FlashCardTopicScreen = (props) => {
             // get learnt vocabulary from localstorage
             let learnt_vocabulary_list = await getLearntVocabularyByTopic(topic.slug);
 
-
             if (learnt_vocabulary_list?.length == topic.vocabulary_total) {
                 props.navigation.navigate('FlashCardTopicVocabulary', {
                     topic: topic
                 })
 
             } else {
-                let vocabularyListData = await getTopicVocabulary(topic.id);
-                // console.log('da: ',topic_vocabulary_all_list);
-                let topic_vocabulary_all_list = [];
-                vocabularyListData.data.forEach(e => {
-                    let vocabulary = new VocabularyModel(e);
-                    topic_vocabulary_all_list = [...topic_vocabulary_all_list,vocabulary];
-                });
-
-                // return;
+                let topic_vocabulary_all_list = await QuizAPI.getTopicVocabulary(topic.id);
+                topic_vocabulary_all_list = topic_vocabulary_all_list.data;
+               
                 if (learnt_vocabulary_list == null) {
                     learnt_vocabulary_list = [];
-                }
+                } 
+                console.log(topic_vocabulary_all_list);
                 // get learnt vocabulary ID list
                 let fields_id = getFields(learnt_vocabulary_list, 'id');
-
                 if (topic_vocabulary_all_list && topic_vocabulary_all_list.length > 0) {
                     let leave_vocabulary_list = topic_vocabulary_all_list.filter((e) => !fields_id.includes(e.id));
                     dispatch(flashcardAction.setTopicVocabularyList(topic_vocabulary_all_list, leave_vocabulary_list, topic.slug));
+
                     props.navigation.navigate('FlashCardChoice', {
                         topic: topic
                     })
@@ -109,7 +103,7 @@ const F_FlashCardTopicScreen = (props) => {
             }
 
         } catch (error) {
-            console.log('error: ', error);
+            console.warn('error: ', error);
         }
 
 

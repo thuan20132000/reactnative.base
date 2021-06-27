@@ -16,9 +16,9 @@ import { getReadingPostDetail } from '../../utils/api_v1';
 import AudioPlay from '../../components/Card/AudioPlay';
 
 import { InterstitialAd, RewardedAd, BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
-import { adbmod_android_app_id } from '../../config/api_config.json';
+import config from '../../app/constants/config';
 import ReadingAPI from '../../app/API/ReadingAPI';
-const adUnitId = __DEV__ ? TestIds.BANNER : adbmod_android_app_id;
+const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_app_id;
 
 var RNFS = require('react-native-fs');
 

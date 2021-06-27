@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View,Image } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import CommonImages from '../../../utils/CommonImages'
 import CommonColor from '../../../utils/CommonColor'
 import { url_absolute } from '../../../config/api_config.json'
@@ -14,13 +14,13 @@ const CardBox = ({
     image_path
 }) => {
 
-    const image_url = image_path?`${config.api_url}${image_path}`:CommonImages.avatar
+    const image_url = image_path ?? CommonImages.avatar
     return (
         <TouchableOpacity
             style={[
                 styles.container,
                 {
-                   backgroundColor:'white',
+                    backgroundColor: 'white',
                 },
                 containerStyle
 
@@ -38,11 +38,11 @@ const CardBox = ({
             </Text>
             <Image
                 source={{
-                    uri:image_url
+                    uri: image_url
                 }}
                 style={{
-                    width:70,
-                    height:60
+                    width: 70,
+                    height: 60
                 }}
                 resizeMode={'contain'}
             />

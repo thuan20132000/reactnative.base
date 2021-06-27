@@ -38,6 +38,9 @@ import A_Signin from './screens/Authentication/A_Signin';
 import C_VideoRecordScreen from './screens/Community/C_VideoRecordScreen';
 import C_CommunityUploadScreen from './screens/Community/C_CommunityUploadScreen';
 import C_CommunityProfileScreen from './screens/Community/C_CommunityProfileScreen';
+import GrammarListScreen from './screens/Grammar/GrammarListScreen';
+import GrammarDescriptionScreen from './screens/Grammar/GrammarDescriptionScreen';
+import GrammarExcerciseScreen from './screens/Grammar/GrammarExcerciseScreen';
 
 
 const DictionaryStackNavigator = createStackNavigator();
@@ -345,6 +348,26 @@ const CommunityStack = () => {
     )
 }
 
+const GrammarStackNavigator = createStackNavigator();
+const GrammarStack = ()=> {
+    return (
+        <GrammarStackNavigator.Navigator>
+            <GrammarStackNavigator.Screen
+                name={"GrammarList"}
+                component={GrammarListScreen}
+            />
+            <GrammarStackNavigator.Screen
+                name={"GrammarDescription"}
+                component={GrammarDescriptionScreen}
+            />
+             <GrammarStackNavigator.Screen
+                name={"GrammarExcerciseScreen"}
+                component={GrammarExcerciseScreen}
+            />
+        </GrammarStackNavigator.Navigator>
+    )
+}
+
 // 
 const TabBottomNavigator = createBottomTabNavigator();
 const TabBottom = () => {
@@ -375,6 +398,9 @@ const TabBottom = () => {
                         iconName = CommonIcons.bookMarker
 
                     }
+                    else if (route.name === 'TabGrammar') {
+                        iconName = CommonIcons.bookMarker
+                    }
                     else {
                         iconName = CommonIcons.phoneSetting
                     }
@@ -403,15 +429,15 @@ const TabBottom = () => {
                     title: "Luyện Đọc"
                 }}
             />
-            {/* <TabBottomNavigator.Screen
-                name="Notification"
-                component={NotificationStack}
+            <TabBottomNavigator.Screen
+                name="TabGrammar"
+                component={GrammarStack}
                 options={{
-                    title: "Thông báo",
+                    title: "Ngữ Pháp",
                     // tabBarBadge: notificationNumber
                 }}
 
-            /> */}
+            />
             {/* <TabBottomNavigator.Screen
                 name="Community"
                 component={CommunityStack}

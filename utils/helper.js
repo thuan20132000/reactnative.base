@@ -1,8 +1,8 @@
 
 import { Alert } from 'react-native';
 import Sound from 'react-native-sound';
-import { file_url, url_absolute } from '../config/api_config.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { config } from '../app/constants';
 
 
 
@@ -13,7 +13,7 @@ export const _onPlaySound = async (sound_name) => {
     if (!sound_name) {
         return;
     }
-    let sound_url = `${file_url}/${sound_name}`;
+    let sound_url = `${config.file_url}/${sound_name}`;
     const sound = new Sound(sound_url, null, (error) => {
         if (error) {
             return false
@@ -37,7 +37,7 @@ export const _onPlayFlashCardSound = async (sound_name) => {
         if (!sound_name) {
             return false;
         }
-        let sound_url = `${url_absolute}/${sound_name}`;
+        let sound_url = `${config.api_url}/${sound_name}`;
         const sound = new Sound(sound_url, null, (error) => {
             if (error) {
                 return false

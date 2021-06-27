@@ -41,15 +41,15 @@ const CardTopic = ({
             style={[
                 styles.container,
             ]}
-            
+
             onPress={onPress}
-            
-            
+
+
         >
             <Image
 
                 source={{
-                    uri: image_path ? `${config.api_url}/${image_path}` : CommonImages.avatar
+                    uri: image_path ?? CommonImages.avatar
                 }}
 
                 style={{

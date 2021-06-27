@@ -16,6 +16,7 @@ import sample_data from '../../data/sample_data.json';
 import CommonColor from '../../utils/CommonColor';
 import QuizAPI from '../../app/API/QuizAPI';
 import { config } from '../../app/constants';
+import ReadingAPI from '../../app/API/ReadingAPI';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -49,7 +50,7 @@ const ReadingVocabularyScreen = (props) => {
         try {
 
 
-            let reading_audio_path = `${config.api_url}${readingPost.reading_audio}`
+            let reading_audio_path = `${readingPost.reading_audio}`;
             let e = await audioRecorderPlayer.startPlayer(reading_audio_path);
 
             await audioRecorderPlayer.setVolume(1.0);
@@ -115,20 +116,18 @@ const ReadingVocabularyScreen = (props) => {
 
         setIsLoading(true);
 
-        getReadingPostDetail(readingpost.id)
+        ReadingAPI.getReadingPostDetail(readingpost.id)
             .then((res) => {
-                if (res.status) {
-                    setReadingPost(res.data)
-                    return res.data
-                }
-            })
-            .then((res) => {
-                if (res.reading_post_vocabulary?.length > 0) {
 
-                    let nameList = res.reading_post_vocabulary.map((e) => e.name);
-                    setHighlightVocabulary(nameList);
+                if (res.status_code === 200) {
+                    setReadingPost(res.data);
+                    console.log(res);
+                    if (res.data?.reading_post_vocabulary?.length > 0) {
+
+                        let nameList = res.data?.reading_post_vocabulary.map((e) => e.name);
+                        setHighlightVocabulary(nameList);
+                    }
                 }
-                // console.warn('res2 : ', res.reading_post_vocabulary)
             })
             .catch((err) => {
                 console.log('error: ', err)
@@ -166,12 +165,12 @@ const ReadingVocabularyScreen = (props) => {
 
         setIsLoading(true);
         let random_topic_id = _onGetRamdonBetweenInt(17, 30);
-     
+
         QuizAPI.getTopicVocabulary(random_topic_id)
             .then((res) => {
                 if (res.status_code === 200 && res.data?.length > 0) {
                     dispatch(readingActions.setReadingVocabularyList(readingPost.reading_post_vocabulary, res.data))
-                } 
+                }
                 else {
                     dispatch(readingActions.setReadingVocabularyList(readingPost.reading_post_vocabulary, sample_data))
                 }

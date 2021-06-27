@@ -13,7 +13,7 @@ const CardField = ({
 
 
 
-    const image_url = image_path ? `${config.api_url}${image_path}` : 'https://picsum.photos/700';
+    const image_url = image_path ?? 'https://picsum.photos/700';
 
     return (
         <TouchableOpacity
@@ -25,7 +25,7 @@ const CardField = ({
                     marginVertical: 2,
                     borderRadius: 6,
                     alignItems: 'center',
-                    flexDirection:'row'
+                    flexDirection: 'row'
                 }
             ]}
             onPress={onItemPress}
@@ -50,7 +50,7 @@ const CardField = ({
                     labelStyle,
                     styles.textStyle,
                     {
-                        marginLeft:2
+                        marginLeft: 2
                     }
                 ]}
                 numberOfLines={2}

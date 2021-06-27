@@ -138,10 +138,9 @@ const ReadingListScreen = (props) => {
     const _onRefreshItemList = async () => {
         setReadingPost([]);
         setIsRefreshing(true);
-
-        ReadingAPI.getAllReadingPost()
+   
+            ReadingAPI.getAllReadingPost()
             .then((res) => {
-                console.log('sa  ', res)
                 if (res.status_code === 200 && res.data?.length > 0) {
 
                     let readingList = [];
@@ -165,7 +164,7 @@ const ReadingListScreen = (props) => {
 
 
     const _onGetTopicVocabularyPress = async (topic) => {
-
+      
         ReadingAPI.getAllReadingPost(topic.id)
             .then((res) => {
                 setIsLoading(true);

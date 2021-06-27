@@ -24,6 +24,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import ModalLoading from '../../components/Modal/ModalLoading';
 import * as flashcardActions from '../../store/actions/flashcardActions';
 import ButtonText from '../../components/Button/BottonText';
+import { config } from '../../app/constants';
 const F_FLashCardPracticeScreen = (props) => {
 
     const flashcard = useSelector(state => state.flashcard);
@@ -47,7 +48,8 @@ const F_FLashCardPracticeScreen = (props) => {
         setSelectedWord(word);
 
         setTimeout(() => {
-            let path = `${url_absolute}${word?.sound_us}`;
+            let path = `${word?.sound_us}`;
+            console.warn(path)
             var sound = new Sound(path, '', (error) => {
                 /* ... */
                 if (error) {
@@ -147,6 +149,9 @@ const F_FLashCardPracticeScreen = (props) => {
 
                 setIsCorrectSelect(false);
                 setIsVisible(true);
+                setTimeout(() => {
+                    setIsVisible(false);
+                }, 800);
 
 
                 _refCardFlip.current.flip();
@@ -157,6 +162,10 @@ const F_FLashCardPracticeScreen = (props) => {
 
                 setIsCorrectSelect(true);
                 setIsVisible(true);
+
+                setTimeout(() => {
+                    setIsVisible(false);
+                }, 800);
 
                 let sound = new Sound('button_correct.mp3', Sound.MAIN_BUNDLE, (error) => {
                     if (error) {
