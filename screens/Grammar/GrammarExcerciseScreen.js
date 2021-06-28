@@ -6,6 +6,7 @@ import GrammarExcerciseModel from '../../app/models/grammarExcerciseModel';
 import GrammarModel from '../../app/models/grammarModel';
 import { BOXSHADOW, COLORS, FONTS } from '../../app/constants/themes';
 import GrammarAPI from '../../app/API/GrammarAPI';
+import { setPractisedGrammarResult } from '../../app/StorageManager';
 
 
 const QuizCard = ({ item, index, onAnswerPress, onExplainPress }) => {
@@ -171,9 +172,9 @@ const GrammarExcerciseScreen = (props) => {
     const hideModal = () => setIsShowExplain({ ...isShowExplain, state: false });
     const hideModalReview = () => setIsShowReview(false);
 
-    const _onSelectAnswer = (value, item, index) => {
+    const _onSelectAnswer = (value, item_quiz, index) => {
 
-        let quiz = new GrammarExcerciseModel(item);
+        let quiz = new GrammarExcerciseModel(item_quiz);
 
         let answer = '';
         switch (value) {
@@ -223,6 +224,8 @@ const GrammarExcerciseScreen = (props) => {
         if (excerciseList.length == practisedExcercise.length) {
             setTimeout(() => {
                 setIsShowReview(true);
+                let result = excerciseStatictis.correct_num >= 10 ? "passed":"failed";
+                setPractisedGrammarResult(item?.id,result).then((res) => console.warn('save: ',res))
             }, 1200);
         }
 

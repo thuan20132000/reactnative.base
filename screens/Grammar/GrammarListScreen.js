@@ -5,12 +5,32 @@ import { BOXSHADOW, COLORS, FONTS, SIZES } from '../../app/constants/themes'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CommonIcons from '../../utils/CommonIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { getPractisedGrammarResult, setPractisedGrammarResult } from '../../app/StorageManager';
 
 
 
 const GrammarItem = ({
-    name = 'default name', image_url, onPress, state = 'Chua hoan thanh',onPractisePress
+    item, image_url, onPress, onPractisePress, grammar, navigation
 }) => {
+
+    const [state, setState] = React.useState('');
+
+
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            // The screen is focused
+            // Call any action
+            getPractisedGrammarResult(item?.id).then((res) => {
+                console.warn('render: ', res);
+                setState(res);
+            });
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [])
+
     return (
         <View
             style={{
@@ -47,8 +67,8 @@ const GrammarItem = ({
                     }}
                 />
                 <View>
-                    <Text style={FONTS.h4}>{name}</Text>
-                    <Text style={FONTS.body4}>{state}</Text>
+                    <Text style={FONTS.h4}>{item?.name}</Text>
+                    <Text style={FONTS.body4}>{item?.id} {state}</Text>
                 </View>
 
             </TouchableOpacity>
@@ -91,7 +111,6 @@ const GrammarListScreen = (props) => {
 
         GrammarAPI.getAllGrammar()
             .then((res) => {
-                console.warn('res: ', res);
                 if (res.status_code === 200) {
                     setGrammarList(res.data);
                 }
@@ -99,6 +118,10 @@ const GrammarListScreen = (props) => {
             .catch((err) => {
                 console.warn('err: ', err)
             })
+
+
+
+
 
     }, []);
 
@@ -114,6 +137,7 @@ const GrammarListScreen = (props) => {
         })
     }
 
+
     return (
 
         <SafeAreaView>
@@ -122,9 +146,11 @@ const GrammarListScreen = (props) => {
                 data={grammarList}
                 renderItem={({ item }) =>
                     <GrammarItem
-                        name={item.name}
+                        item={item}
                         onPress={() => _onGrammarDescriptionPress(item)}
                         onPractisePress={() => _onPractisePress(item)}
+                        navigation={props.navigation}
+
                     />
                 }
                 // keyExtractor={item => `post-${item.id.toString()}`}
