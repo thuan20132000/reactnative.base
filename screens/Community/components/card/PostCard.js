@@ -4,13 +4,23 @@ import CommonImages from '../../../../utils/CommonImages'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../../../utils/CommonIcons'
 import { IconButton } from 'react-native-paper'
+import Video from 'react-native-video';
 
 const PostCard = ({
     onPostDetailPress,
     onLikePress,
     onCommentPress,
     onSharePress,
-    onEditPress
+    onEditPress,
+    author,
+    content,
+    practiceNumber = 0,
+    favoriteNumber = 0,
+    commentNumner = 0,
+    favorite_active = false,
+    _refVideo = React.useRef(),
+    image_url,
+
 }) => {
     return (
         <View
@@ -53,96 +63,115 @@ const PostCard = ({
                             fontWeight: '700'
                         }}
                     >
-                        Thuan truong
+                        {author}
                     </Text>
                 </View>
-                <IconButton
-                    icon={CommonIcons.dotsVertical}
-                    color={'coral'}
-                    size={24}
-                    style={{ marginHorizontal: 6 }}
-                    onPress={onEditPress}
-                />
+                {
+                    onEditPress &&
+                    <IconButton
+                        icon={CommonIcons.close}
+                        color={'coral'}
+                        size={24}
+                        style={{ marginHorizontal: 6 }}
+                        onPress={onEditPress}
+                    />
+
+                }
 
             </View>
             {/* body */}
-            <TouchableOpacity
-                style={[
-                    styles.body
-                ]}
-                onPress={onPostDetailPress}
+
+
+            <ImageBackground
+                source={{
+                    uri: image_url || CommonImages.avatar
+                }}
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    height: 160,
+                }}
+                resizeMethod={'resize'}
+                resizeMode={'contain'}
             >
-                {/* <ImageBackground
-                    source={{
-                        uri: CommonImages.background
-                    }}
+                <View
                     style={{
-                        // justifyContent: "center",
-                        maxWidth: deviceWidth,
-                        height: deviceHeight / 4,
-                        maxHeight: 160,
-
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
                     }}
-                    resizeMode={'contain'}
-
-
-
-                /> */}
-                <Text
-                    numberOfLines={5}
                 >
-                    Review Requesting modifications to your EBS volumes to identify and address any potential issues before you expand your volume. For example, volumes attached to current generation instances before November 3, 2016 require that you either stop and restart the instance or that you detach and reattach the volume to initialize the Amazon EBS Elastic Volumes feature. This is a one-time requirement.
-                    </Text>
-            </TouchableOpacity>
+                    <MaterialCommunityIcon
+                        name={CommonIcons.playCircleOutline}
+                        size={46}
+                        color={'blue'}
+                        onPress={onPostDetailPress}
+                    />
+                </View>
+            </ImageBackground>
             {/* footer */}
             <View
                 style={[
                     styles.footerContainer
                 ]}
             >
-                {/* <View
+                <View
                     style={[
-                        styles.row
+                        styles.row,
+                        {
+                            alignItems: 'center'
+                        }
                     ]}
                 >
-                    <IconButton
-                        icon={CommonIcons.heartOutline}
-                        color={'coral'}
-                        size={24}
-                        style={{ marginHorizontal: 6 }}
-                        onPress={onLikePress}
-                    />
-                    <IconButton
-                        icon={CommonIcons.commentProcessingOutline}
-                        color={'coral'}
-                        size={24}
-                        style={{ marginHorizontal: 6 }}
-                        onPress={onCommentPress}
-                    />
-                    <IconButton
-                        icon={CommonIcons.shareVariant}
-                        color={'coral'}
-                        size={24}
-                        style={{ marginHorizontal: 6 }}
-                        onPress={onSharePress}
-                    />
 
-                </View> */}
-                <View>
+                    <View
+                        style={[
+                            styles.row,
+                            {
+                                alignItems: 'center'
+                            }
+                        ]}
+                    >
+                        <IconButton
+                            icon={favorite_active ? CommonIcons.heart : CommonIcons.heartOutline}
+                            color={'coral'}
+                            size={24}
+                            style={{ marginHorizontal: 6 }}
+                            onPress={onLikePress}
+
+                        />
+                        <Text style={{ fontWeight: '700' }}>{favoriteNumber}</Text>
+
+                    </View>
+                    <View
+                        style={[
+                            styles.row,
+                            {
+                                alignItems: 'center'
+                            }
+                        ]}
+                    >
+                        <IconButton
+                            icon={CommonIcons.commentProcessingOutline}
+                            color={'coral'}
+                            size={24}
+                            style={{ marginHorizontal: 6 }}
+
+
+                        />
+                        <Text style={{ fontWeight: '700' }}>{commentNumner}</Text>
+
+                    </View>
+
+                </View>
+                {/* <View>
                     <Text
                         style={{ fontSize: 12, color: 'black', fontWeight: '700', fontStyle: 'italic', marginVertical: 4 }}
                     >
-                        5 người đã luyện tập
+                        {practiceNumber} người đã luyện tập
                     </Text>
-                </View>
-                <View>
-                    <Text
-                        style={{ fontWeight: '700' }}
-                    >
-                        Thuantruong
-                    </Text>
+                </View> */}
 
-                </View>
                 {/* <View>
                     <Text
                         style={{
@@ -155,19 +184,19 @@ const PostCard = ({
                 </View> */}
             </View>
             {/* comments */}
-            <View>
+            <View
+                style={[styles.footerContainer]}
+            >
                 <View
-                    style={[styles.row, { alignItems: 'center' }]}
+                    style={[styles.row, { alignItems: 'center', padding: 8 }]}
                 >
-                    <MaterialCommunityIcon
-                        name={CommonIcons.face_verygood}
-                        size={16}
-                        color={'coral'}
-                        style={{
-                            marginHorizontal: 8
-                        }}
-                    />
-                    <Text style={{ color: 'black', fontStyle: 'italic' }}>Luyện tập cùng tôi.</Text>
+
+                    <Text
+                        style={{ color: 'black', fontStyle: 'italic', marginHorizontal: 8 }}
+                        numberOfLines={5}
+                    >
+                        {content}
+                    </Text>
                 </View>
             </View>
         </View>
@@ -197,13 +226,22 @@ const styles = StyleSheet.create({
 
         elevation: 6,
         marginVertical: 1,
-        paddingVertical: 8
+        paddingVertical: 8,
+        minHeight: 220
     },
     footerContainer: {
         marginHorizontal: 12,
         marginVertical: 6
     },
     body: {
-        paddingHorizontal: 8
-    }
+        paddingHorizontal: 8,
+        position: 'relative',
+    },
+    preview: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+    },
 })

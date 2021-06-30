@@ -15,6 +15,7 @@ import { _onGetRandomInt, _onPlayFlashCardSound, _onPlaySound } from '../../util
 import Sound from 'react-native-sound'
 import { url_absolute } from '../../config/api_config.json'
 import ButtonText from '../../components/Button/BottonText'
+import { config } from '../../app/constants'
 const F_FlashCardChoiceScreen = (props) => {
 
     const _refCardFlip = useRef();
@@ -34,7 +35,7 @@ const F_FlashCardChoiceScreen = (props) => {
         // setTimeout(() => {
 
         // }, 1200);
-        let path = `${url_absolute}${vocabulary.sound_us}`;
+        let path = `${vocabulary.sound_us}`;
 
         setTimeout(() => {
             var sound = new Sound(path, '', (error) => {
@@ -79,7 +80,7 @@ const F_FlashCardChoiceScreen = (props) => {
 
 
         dispatch(flashcardAction.addVocabulary(vocabulary));
-        if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 9) {
+        if (flashcard.vocabulary_stack.length <= 1 || flashcard.practice_vocabulary_list.length >= 6) {
             props.navigation.replace('FlashCardPractice');
         } else {
             props.navigation.replace('FlashCardChoice');
@@ -110,6 +111,7 @@ const F_FlashCardChoiceScreen = (props) => {
 
 
     useEffect(() => {
+
         if (flashcard.topic_vocabulary_list.length > 0) {
             setVocabulary(flashcard.vocabulary_stack[0]);
         }
@@ -129,7 +131,7 @@ const F_FlashCardChoiceScreen = (props) => {
                             color:'red'
                         }}
                     >
-                        {flashcard.practice_vocabulary_list.length}/10
+                        {flashcard.practice_vocabulary_list.length}/7
                     </Text>
                 </View>
             )

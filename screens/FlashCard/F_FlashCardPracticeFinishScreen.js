@@ -9,12 +9,12 @@ import { getLearntVocabularyByTopic, saveLearntVocabularyByTopic } from '../../u
 import {InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
 
 
-import {adbmod_android_app_id} from '../../config/api_config.json'
+import config from '../../app/constants/config';
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : adbmod_android_app_id;
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_android_app_id;
 
 
-const interstitial = InterstitialAd.createForAdRequest('ca-app-pub-7783640686150605/2202116538', {
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
     requestNonPersonalizedAdsOnly: true,
     keywords: ['fashion', 'clothing'],
   });
@@ -84,9 +84,10 @@ const F_FlashCardPracticeFinishScreen = (props) => {
     const [advClicked, setAdvClicked] = React.useState(false);
 
     const _onLoadAdv = () => {
-      
-        interstitial.show();
-        setAdvClicked(true);
+        if(interstitial.loaded){
+            interstitial.show();
+            setAdvClicked(true);
+        }
     }
 
 

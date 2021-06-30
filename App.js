@@ -35,6 +35,7 @@ import ReduxThunk from 'redux-thunk';
 import flashcard_list_reducer from './store/reducer/flashCardReducer';
 import notification_reducer from './store/reducer/notificationReducer';
 import reading_list_reducer from './store/reducer/readingReducer';
+import authentication_reducer from './store/reducer/authenticationReducer';
 
 import { Provider } from 'react-native-paper';
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
@@ -42,7 +43,8 @@ import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 const rootReducer = combineReducers({
   flashcard: flashcard_list_reducer,
   notification: notification_reducer,
-  reading: reading_list_reducer
+  reading: reading_list_reducer,
+  authentication:authentication_reducer
 });
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 

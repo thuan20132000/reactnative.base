@@ -45,7 +45,7 @@ const AudioPlay = ({
                 <ProgressBar
                     indeterminate={false}
                     style={{
-                        width: 220
+                        width: 160
                     }}
                     focusable={true}
                     progress={currentProgress}

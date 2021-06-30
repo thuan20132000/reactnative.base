@@ -5,6 +5,9 @@ import { getReadingPostList, getReadingTopicsList } from '../../utils/api_v1';
 import ButtonText from '../../components/Button/BottonText';
 import CardReading from './components/CardReading';
 import CardBox from './components/CardBox';
+import ReadingAPI from '../../app/API/ReadingAPI';
+import ReadingModel from '../../app/models/readingModel';
+import ReadingTopicModel from '../../app/models/readingTopicModel';
 
 const ReadingListScreen = (props) => {
 
@@ -19,39 +22,52 @@ const ReadingListScreen = (props) => {
 
     React.useEffect(() => {
 
-
-        setIsLoading(true);
-        getReadingPostList()
+        ReadingAPI.getAllReadingPost()
             .then((res) => {
-                if (res.status && res.data.length > 0) {
-                    setReadingPost(res.data);
+                console.log('sa  ', res)
+                setIsLoading(true);
+                if (res.status_code === 200 && res.data?.length > 0) {
+
+                    let readingList = [];
+                    res.data.forEach(element => {
+                        let reading = new ReadingModel(element)
+                        readingList = [...readingList, reading];
+                    });
+                    setReadingPost(readingList);
                     if (res.next) {
                         setNextPageLink(res.next);
                     }
                 }
             })
             .catch((err) => {
-                console.log('error: ', err);
+                console.log('err: ', err)
             })
-            .finally(() => {
-                console.log('finally');
-                setIsLoading(false);
-            });
+            .finally(() => setIsLoading(false))
 
-
-
-        getReadingTopicsList()
+        ReadingAPI.getReadingTopicList()
             .then((res) => {
-                if (res.status && res.data.length > 0) {
-                    setReadingTopic(res.data)
+                if (res.status_code === 200 && res.data?.length > 0) {
+                    let topicList = [];
+                    res.data.forEach(element => {
+                        let topic = new ReadingTopicModel(element)
+                        topicList = [...topicList, topic];
+                    });
+                    setReadingTopic(topicList);
                 }
             })
-            .catch((err) => {
-                console.log('error: ', err);
-            })
-            .finally(() => {
-                console.log('finally');
-            })
+
+        // getReadingTopicsList()
+        //     .then((res) => {
+        //         if (res.status && res.data.length > 0) {
+        //             setReadingTopic(res.data)
+        //         }
+        //     })
+        //     .catch((err) => {
+        //         console.log('error: ', err);
+        //     })
+        //     .finally(() => {
+        //         console.log('finally');
+        //     })
 
     }, []);
 
@@ -120,50 +136,55 @@ const ReadingListScreen = (props) => {
 
     const [isRefreshing, setIsRefreshing] = React.useState(false);
     const _onRefreshItemList = async () => {
-        setIsRefreshing(true)
-        getReadingPostList()
+        setReadingPost([]);
+        setIsRefreshing(true);
+   
+            ReadingAPI.getAllReadingPost()
             .then((res) => {
-                setReadingPost([]);
-                return res;
-            })
-            .then((res) => {
-                if (res.status && res.data?.length > 0) {
-                    setReadingPost(res.data);
+                if (res.status_code === 200 && res.data?.length > 0) {
+
+                    let readingList = [];
+                    res.data.forEach(element => {
+                        let reading = new ReadingModel(element)
+                        readingList = [...readingList, reading];
+                    });
+                    setReadingPost(readingList);
                     if (res.next) {
                         setNextPageLink(res.next);
                     }
                 }
             })
             .catch((err) => {
-                console.log('error: ', err);
+                console.log('err: ', err)
             })
-            .finally(() => {
-                console.log('finally');
-                setIsRefreshing(false)
-            });
+            .finally(() => setIsRefreshing(false))
 
 
     }
 
 
     const _onGetTopicVocabularyPress = async (topic) => {
-        setIsLoading(true);
-        getReadingPostList(topic.id)
+      
+        ReadingAPI.getAllReadingPost(topic.id)
             .then((res) => {
-                if (res.status && res.data.length > 0) {
-                    setReadingPost(res.data);
+                setIsLoading(true);
+                if (res.status_code === 200 && res.data?.length > 0) {
+
+                    let readingList = [];
+                    res.data.forEach(element => {
+                        let reading = new ReadingModel(element)
+                        readingList = [...readingList, reading];
+                    });
+                    setReadingPost(readingList);
                     if (res.next) {
                         setNextPageLink(res.next);
                     }
                 }
             })
             .catch((err) => {
+                console.log('err: ', err)
             })
-            .finally(() => {
-                console.log('finally');
-                setIsLoading(false);
-            })
-
+            .finally(() => setIsLoading(false))
     }
 
 
@@ -182,7 +203,7 @@ const ReadingListScreen = (props) => {
                     {
                         (readingTopic && readingTopic.length > 0) &&
                         readingTopic.map((topic, index) =>
-                            <CardBox key={topic.id?.toString()}
+                            <CardBox key={`topic-${topic.id?.toString()}`}
                                 label={topic.name}
                                 onItemPress={() => _onGetTopicVocabularyPress(topic)}
                                 labelStyle={{
@@ -243,7 +264,7 @@ const ReadingListScreen = (props) => {
                                 image_path={item.image}
                             />
                         }
-                        keyExtractor={item => `${item.id.toString()}`}
+                        keyExtractor={item => `post-${item.id.toString()}`}
 
                         ListFooterComponent={
 
@@ -266,7 +287,7 @@ const ReadingListScreen = (props) => {
 
                         refreshing={isRefreshing}
                         style={{
-                            marginBottom:70
+                            marginBottom: 70
                         }}
 
 

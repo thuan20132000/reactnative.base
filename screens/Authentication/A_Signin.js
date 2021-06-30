@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { Alert, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
 import CommonColors from '../../utils/CommonColor';
 import { ActivityIndicator, Button, HelperText, Snackbar, Title } from 'react-native-paper'
-
+import { sigin } from '../../utils/api_v1';
+import * as authenticationActions from '../../store/actions/authenticationActions';
+import { useDispatch } from 'react-redux';
 const A_Signin = () => {
-
+    const dispatch = useDispatch();
     const [userAuth, setUserAuth] = useState({
-        email: '',
-        password: ''
+        phonenumber: '1234567',
+        password: 'Thuan123'
     });
     const [loginError, setLoginError] = useState();
 
@@ -16,7 +18,37 @@ const A_Signin = () => {
 
 
     const _login = async () => {
+        if (!userAuth.phonenumber || !userAuth.password) {
+            setLoginError({
+                message:"Please Enter full phonenumber and password!"
+            });
+            return;
+        }
+        setIsLoading(true);
+        sigin(userAuth.phonenumber, userAuth.password)
+            .then((res) => {
+                console.warn(res);
 
+                if (res.status) {
+                    console.warn(res);
+                    dispatch(authenticationActions.signin(res.data));
+                    setLoginError('');
+                } else {
+                    if (res.message) {
+
+                        setLoginError({message:res.message});
+
+
+                    }
+
+                }
+            })
+            .catch((error) => {
+                console.log('error: ', error)
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
     }
 
     return (
@@ -24,7 +56,7 @@ const A_Signin = () => {
 
 
             <View style={styles.formLogoWrap}>
-                <Title
+                {/* <Title
                     style={{
                         fontSize: 26,
                         color: CommonColors.primary
@@ -39,15 +71,22 @@ const A_Signin = () => {
                     }}
                 >
                     Xin chào!
-                </Text>
+                </Text> */}
             </View>
 
             <View style={styles.loginForm}>
+                {
+                    loginError?.message &&
+                    <Text style={[styles.error]}>{loginError?.message}</Text>
+
+                }
+               
                 <TextInput
                     style={[styles.inputLogin, {}]}
-                    onChangeText={text => setUserAuth({ ...userAuth, email: text })}
-                    value={userAuth.email}
+                    onChangeText={text => setUserAuth({ ...userAuth, phonenumber: text })}
+                    value={userAuth.phonenumber}
                     placeholder={'Số điện thoại'}
+                    keyboardType={'phone-pad'}
 
                 />
                 <TextInput
@@ -60,6 +99,7 @@ const A_Signin = () => {
                 />
                 <TouchableOpacity style={styles.buttonSubmit}
                     onPress={_login}
+                    disabled={isLoading ? true : false}
                 >
                     {
                         isLoading ? <ActivityIndicator /> :
@@ -68,7 +108,7 @@ const A_Signin = () => {
                     }
                 </TouchableOpacity>
             </View>
-            <View style={styles.socialNetworkLogin}>
+            {/* <View style={styles.socialNetworkLogin}>
                 <Button style={{ marginRight: 16 }}
                     labelStyle={{
                         color: 'white'
@@ -88,7 +128,7 @@ const A_Signin = () => {
                 >
                     Google
                     </Button>
-            </View>
+            </View> */}
             {/* <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
                 <TouchableOpacity
                     onPress={() => console.warn('ds')}
@@ -123,7 +163,6 @@ const styles = StyleSheet.create({
 
     },
     inputLogin: {
-        marginHorizontal: 16,
         marginVertical: 6,
         padding: 6,
         paddingLeft: 18,
@@ -138,7 +177,9 @@ const styles = StyleSheet.create({
     loginForm: {
         display: 'flex',
         flexDirection: 'column',
-        marginTop: 60
+        marginTop: 60,
+        marginHorizontal: 16,
+
     },
     buttonSubmit: {
         backgroundColor: CommonColors.primary,
@@ -153,6 +194,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center'
 
+    },
+    error:{
+        color:'red',
+        textAlign:'center'
     }
 
 })

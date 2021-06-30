@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { getTopicVocabulary } from '../../../utils/api_v1'
 import * as flashcardAction from '../../../store/actions/flashcardActions';
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import { config } from '../../../app/constants'
 
 
 const CardReading = ({
@@ -26,7 +27,7 @@ const CardReading = ({
 
 
 
-    const image_url = image_path?`${url_absolute}${image_path}`:'https://picsum.photos/700';
+    const image_url = image_path ?? 'https://picsum.photos/700';
 
     return (
         <Card
@@ -36,23 +37,23 @@ const CardReading = ({
                 marginVertical: 6,
                 marginHorizontal: 6,
                 justifyContent: 'center',
-                overflow:'hidden'
+                overflow: 'hidden'
             }}
         >
 
             <Image
-             
+
                 source={{
-                    uri:image_url
+                    uri: image_url
                 }}
                 style={{
                     width: deviceWidth,
                     height: 120,
-                    alignSelf:'center'
+                    alignSelf: 'center'
                 }}
             />
             <Card.Content>
-                <Title 
+                <Title
                     numberOfLines={2}
                 > {title}</Title>
                 <Paragraph
@@ -65,8 +66,8 @@ const CardReading = ({
                 <Button
                     onPress={onVocabularyPress}
                     style={{
-                        padding:8,
-                        minWidth:120
+                        padding: 8,
+                        minWidth: 120
                     }}
                 >
                     Nghe

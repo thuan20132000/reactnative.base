@@ -12,6 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		48ED4871A630987E75EF71DB /* libPods-reactnative_base.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E44019CCAB0288C5B9A5584D /* libPods-reactnative_base.a */; };
+		66E930F32660C69B0073DA55 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66E930F22660C69B0073DA55 /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A77F3ACC45A4E865B7CA0EF2 /* libPods-reactnative_base-reactnative_baseTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B29B5B39CAEEB7A1BC3D43FF /* libPods-reactnative_base-reactnative_baseTests.a */; };
 /* End PBXBuildFile section */
@@ -37,6 +38,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = reactnative_base/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = reactnative_base/main.m; sourceTree = "<group>"; };
 		613EF3064CF09474E5D09B89 /* Pods-reactnative_base.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-reactnative_base.debug.xcconfig"; path = "Target Support Files/Pods-reactnative_base/Pods-reactnative_base.debug.xcconfig"; sourceTree = "<group>"; };
+		66E930F22660C69B0073DA55 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		72CF03CD556100AECF2B43B1 /* Pods-reactnative_base-reactnative_baseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-reactnative_base-reactnative_baseTests.debug.xcconfig"; path = "Target Support Files/Pods-reactnative_base-reactnative_baseTests/Pods-reactnative_base-reactnative_baseTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = reactnative_base/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B29B5B39CAEEB7A1BC3D43FF /* libPods-reactnative_base-reactnative_baseTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-reactnative_base-reactnative_baseTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +88,7 @@
 		13B07FAE1A68108700A75B9A /* reactnative_base */ = {
 			isa = PBXGroup;
 			children = (
+				66E930F22660C69B0073DA55 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -145,7 +148,6 @@
 				72CF03CD556100AECF2B43B1 /* Pods-reactnative_base-reactnative_baseTests.debug.xcconfig */,
 				D093DFB99C10A7031AD9C5AE /* Pods-reactnative_base-reactnative_baseTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -245,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				66E930F32660C69B0073DA55 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -499,6 +502,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BZ7677Z77D;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = reactnative_base/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -525,6 +529,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BZ7677Z77D;
 				INFOPLIST_FILE = reactnative_base/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

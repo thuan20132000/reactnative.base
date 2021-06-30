@@ -5,6 +5,10 @@ import * as flashcardAction from '../../store/actions/flashcardActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFieldTopic, getTopicList, getTopicVocabulary } from '../../utils/api_v1';
 import { getLearntVocabularyByTopic, saveLearntVocabularyByTopic, _onPlaySoundLocal } from '../../utils/helper';
+import TopicModel from '../../app/models/topicModel';
+import VocabularyModel from '../../app/models/vocabularyModel';
+import QuizAPI from '../../app/API/QuizAPI';
+
 
 const F_FlashCardTopicScreen = (props) => {
 
@@ -37,15 +41,23 @@ const F_FlashCardTopicScreen = (props) => {
 
 
     useEffect(() => {
-        const _onFetchTopicList = async () => {
-            setIsLoading(true);
-            let fetchRes = await getFieldTopic(field?.id);
-            if (fetchRes.status) {
-                setTopicList(fetchRes.data);
+
+        QuizAPI.getAllTopicByField(field?.id)
+        .then(res => {
+            setIsLoading(true)
+            if(res.status_code === 200 && res.data?.length > 0){
+                let topicListData = [];
+                res.data?.forEach((e) => {
+                    let topic = new TopicModel(e);
+                    topicListData = [...topicListData,topic];
+                });
+                setTopicList(topicListData);
             }
-            setIsLoading(false);
-        }
-        _onFetchTopicList();
+        }).catch((err) => {
+            console.log('err: ',err)
+        })
+        .finally(() => setIsLoading(false))
+
     }, [])
 
     function getFields(input, field) {
@@ -64,24 +76,25 @@ const F_FlashCardTopicScreen = (props) => {
             // get learnt vocabulary from localstorage
             let learnt_vocabulary_list = await getLearntVocabularyByTopic(topic.slug);
 
-
             if (learnt_vocabulary_list?.length == topic.vocabulary_total) {
                 props.navigation.navigate('FlashCardTopicVocabulary', {
                     topic: topic
                 })
 
             } else {
-                let topic_vocabulary_all_list = await getTopicVocabulary(topic.id);
+                let topic_vocabulary_all_list = await QuizAPI.getTopicVocabulary(topic.id);
+                topic_vocabulary_all_list = topic_vocabulary_all_list.data;
+               
                 if (learnt_vocabulary_list == null) {
                     learnt_vocabulary_list = [];
-                }
+                } 
+                console.log(topic_vocabulary_all_list);
                 // get learnt vocabulary ID list
-                let fields_id = getFields(learnt_vocabulary_list, 'ID');
+                let fields_id = getFields(learnt_vocabulary_list, 'id');
+                if (topic_vocabulary_all_list && topic_vocabulary_all_list.length > 0) {
+                    let leave_vocabulary_list = topic_vocabulary_all_list.filter((e) => !fields_id.includes(e.id));
+                    dispatch(flashcardAction.setTopicVocabularyList(topic_vocabulary_all_list, leave_vocabulary_list, topic.slug));
 
-                if (topic_vocabulary_all_list.status && topic_vocabulary_all_list.data?.length > 0) {
-                    let leave_vocabulary_list = topic_vocabulary_all_list.data.filter((e) => !fields_id.includes(e.ID));
-
-                    dispatch(flashcardAction.setTopicVocabularyList(topic_vocabulary_all_list.data, leave_vocabulary_list, topic.slug));
                     props.navigation.navigate('FlashCardChoice', {
                         topic: topic
                     })
@@ -90,7 +103,7 @@ const F_FlashCardTopicScreen = (props) => {
             }
 
         } catch (error) {
-            console.log('error: ', error);
+            console.warn('error: ', error);
         }
 
 

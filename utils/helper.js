@@ -1,8 +1,8 @@
 
 import { Alert } from 'react-native';
 import Sound from 'react-native-sound';
-import { file_url, url_absolute } from '../config/api_config.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { config } from '../app/constants';
 
 
 
@@ -13,7 +13,7 @@ export const _onPlaySound = async (sound_name) => {
     if (!sound_name) {
         return;
     }
-    let sound_url = `${file_url}/${sound_name}`;
+    let sound_url = `${config.file_url}/${sound_name}`;
     const sound = new Sound(sound_url, null, (error) => {
         if (error) {
             return false
@@ -37,7 +37,7 @@ export const _onPlayFlashCardSound = async (sound_name) => {
         if (!sound_name) {
             return false;
         }
-        let sound_url = `${url_absolute}/${sound_name}`;
+        let sound_url = `${config.api_url}/${sound_name}`;
         const sound = new Sound(sound_url, null, (error) => {
             if (error) {
                 return false
@@ -106,7 +106,16 @@ export const _onRandomIndexValue = (number = 3, except = []) => {
 }
 
 
-
+export const _onGetRandomNameByTime = (len,charSet) => {
+    charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var randomString = '';
+    for (var i = 0; i < len; i++) {
+        var randomPoz = Math.floor(Math.random() * charSet.length);
+        randomString += charSet.substring(randomPoz, randomPoz + 1);
+    }
+    let ts = new Date().getTime().toString();
+    return randomString;
+}
 
 export const _onGetRandomInt = (max) => {
 
@@ -117,7 +126,7 @@ export const _onGetRandomInt = (max) => {
 }
 
 
-export const _onGetRamdonBetweenInt= (min = 6,max=12) => {
+export const _onGetRamdonBetweenInt = (min = 6, max = 12) => {
     let random_number = Math.floor(Math.random() * max) + min;
 
     return random_number;
@@ -128,7 +137,7 @@ export const _onCheckItemExistInArray = (item, array = []) => {
 
     let isExists = false;
     for (let i = 0; i < array.length; i++) {
-        if (item.ID == array[i].ID) {
+        if (item.id == array[i].id) {
             isExists = true;
             break;
         }
@@ -240,7 +249,7 @@ export const saveSearchedVocabulary = async (vocabulary) => {
             let isExists = _onCheckItemExistInArray(vocabulary, vocabulary_list);
 
             if (isExists) {
-                new_favorite_vocabulary_list = vocabulary_list.filter(e => e.ID != vocabulary.ID);
+                new_favorite_vocabulary_list = vocabulary_list.filter(e => e.id != vocabulary.id);
             } else {
                 // new_favorite_vocabulary_list.push(vocabulary);
                 new_favorite_vocabulary_list = [...vocabulary_list, vocabulary]
@@ -285,6 +294,7 @@ export const getNearestSearchVocabulary = async () => {
     }
 
 }
+
 
 
 
@@ -386,8 +396,8 @@ export const filterDuplicate = async (values = []) => {
         let mapValue = new Map();
 
         for (let item of values) {
-            if (!mapValue.has(item.ID)) {
-                mapValue.set(item.ID, item);
+            if (!mapValue.has(item.id)) {
+                mapValue.set(item.id, item);
                 newValues.push(item);
             }
         }
@@ -442,10 +452,57 @@ export const millisToMinutesAndSeconds = (millis) => {
 }
 
 
+export const secondsToMinutes = (seconds) => {
+    var minutes = Math.floor(seconds / 60);
+    var seconds = Math.floor(seconds % 60);
+
+    minutes = minutes.toString().length == 1 ? `0${minutes}` : minutes;
+    seconds = seconds.toString().length == 1 ? `0${seconds}` : seconds;
+
+    return `${minutes}:${seconds}`;
+
+}
+
 
 
 export const _onConvertTextToSlug = (text) => {
-   
-    let slug = text.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+
+    let slug = text.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
     return slug;
+}
+
+
+export const getDaysBetweenTwoDates = (created_at) => {
+    var nowDateTimeString = new Date();
+
+    let created_date_timestring = created_at
+
+    if (isNaN(created_at)) {
+        var date1 = new Date(created_at);
+        created_date_timestring = date1.getTime();
+    }
+
+    var difference = nowDateTimeString.getTime() - created_date_timestring;
+    var days = Math.ceil(difference / (1000 * 3600 * 24));
+
+    var diff = (nowDateTimeString.getTime() - created_date_timestring) / 1000;
+    var fm = Math.floor(Math.abs(Math.round(diff / 60)));
+
+    if (fm > 1440) {
+        // console.warn('fm: ',fm);
+        // console.warn(`${days} ngày trước at ${date1.getHours()} - ${date1.getMinutes()} - ${date1.getDate()}`);
+        return `${days} ngày trước `
+
+    } else if (fm >= 60) {
+        let h = Math.floor(fm / 60);
+        // console.warn(`${h} giờ trước at ${date1.getHours()} - ${date1.getMinutes()} - ${date1.getDate()}`);
+        return `${h} giờ trước `
+
+
+    } else {
+        // console.warn(`${fm} phút trước ${date1.getHours()} - ${date1.getMinutes()} - ${date1.getDate()}`)
+        return `${fm} phút trước `
+
+    }
+
 }

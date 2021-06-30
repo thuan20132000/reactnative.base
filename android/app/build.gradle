@@ -137,6 +137,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 16
         versionName "1.6"
+        missingDimensionStrategy 'react-native-camera', 'general' // <--- insert this line
+
     }
     splits {
         abi {
@@ -194,6 +196,9 @@ android {
 
 dependencies {
 
+    implementation project(':react-native-camera')
+    compile project(':@react-native-community_cameraroll')
+
     // For animated GIF support
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
 
@@ -216,6 +221,7 @@ dependencies {
         exclude group:'com.facebook.flipper'
     }
 
+    
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
