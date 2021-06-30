@@ -30,11 +30,11 @@ class SQLiteManager {
                 name: database_name,
                 location: '~/www/db.sqlite3',
             }).then((res) => {
-                console.log('res: ',res)
+                console.log('res: ', res)
             })
-            .catch((err) => {
-                console.log('err: ',err)
-            })
+                .catch((err) => {
+                    console.log('err: ', err)
+                })
         } else {
             this.db = SQLite.openDatabase({
                 name: database_name,
@@ -94,6 +94,27 @@ class SQLiteManager {
 
             })
             .finally(() => this.closeDB())
+    }
+
+    createTable() {
+        if (this.db != null) {
+            console.warn('db: ',this.db);
+            return
+            this.db.transaction((tx) => {
+                tx.executeSql('CREATE TABLE IF NOT EXISTS Product (prodId, prodName, prodDesc, prodImage, prodPrice)');
+            }).then(() => {
+                console.log("Table created successfully");
+            }).catch(error => {
+                console.log(error);
+            });
+
+        }else{
+            console.log('db: ',this.db)
+            // this.openDB(); 
+            // this.db.executeSql('CREATE TABLE IF NOT EXISTS Product (prodId, prodName, prodDesc, prodImage, prodPrice)');
+            // this.db.executeSql('CREATE TABLE IF NOT EXISTS Product (prodId, prodName, prodDesc, prodImage, prodPrice)')
+        
+        }
     }
 
 

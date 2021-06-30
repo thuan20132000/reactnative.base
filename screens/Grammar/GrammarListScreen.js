@@ -7,7 +7,7 @@ import CommonIcons from '../../utils/CommonIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getPractisedGrammarResult, setPractisedGrammarResult } from '../../app/StorageManager';
 
-
+import SQLiteManager from '../../app/DB/SQLiteManage'
 
 const GrammarItem = ({
     item, image_url, onPress, onPractisePress, grammar, navigation
@@ -18,6 +18,10 @@ const GrammarItem = ({
 
 
     React.useEffect(() => {
+
+        const sql = new SQLiteManager();
+        sql.openDB()
+        sql.createTable()
         const unsubscribe = navigation.addListener('focus', () => {
             // The screen is focused
             // Call any action

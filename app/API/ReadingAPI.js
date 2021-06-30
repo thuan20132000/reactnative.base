@@ -10,7 +10,7 @@ class ReadingAPI {
     }
 
     async getAllReadingPost(topic_id=null) {
-        let path = `reading/v1/readingposts/`;
+        let path = `/reading/v1/readingposts/`;
         path = topic_id == null?path:`${path}?topic=${topic_id}`
         return this.axios.get(this.api_url + path, {
             params: {}
@@ -24,7 +24,7 @@ class ReadingAPI {
     }
 
     async getReadingTopicList(topic_id=null) {
-        let path = `reading/v1/readingtopics/`;
+        let path = `/reading/v1/readingtopics/`;
         return this.axios.get(this.api_url + path, {
             params: {}
         })
@@ -37,7 +37,7 @@ class ReadingAPI {
     }
 
     async getReadingPostDetail(reading_id){
-        let path = `reading/v1/readingpost/${reading_id}`;
+        let path = `/reading/v1/readingpost/${reading_id}`;
         return this.axios.get(this.api_url + path, {
             params: {}
         })

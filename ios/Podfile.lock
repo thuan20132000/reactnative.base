@@ -348,28 +348,13 @@ PODS:
     - React-jsi (= 0.64.0)
     - React-perflogger (= 0.64.0)
   - React-jsinspector (0.64.0)
-  - react-native-camera (3.44.1):
-    - React-Core
-    - react-native-camera/RCT (= 3.44.1)
-    - react-native-camera/RN (= 3.44.1)
-  - react-native-camera/RCT (3.44.1):
-    - React-Core
-  - react-native-camera/RN (3.44.1):
-    - React-Core
-  - react-native-cameraroll (4.0.4):
-    - React-Core
-  - react-native-image-picker (4.0.4):
-    - React-Core
   - react-native-progress-bar-android (1.0.4):
     - React
   - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-sqlite-storage (5.0.0):
     - React
-  - react-native-video (5.1.1):
-    - React-Core
-    - react-native-video/Video (= 5.1.1)
-  - react-native-video/Video (5.1.1):
+  - react-native-webview (11.6.4):
     - React-Core
   - React-perflogger (0.64.0)
   - React-RCTActionSheet (0.64.0):
@@ -438,11 +423,11 @@ PODS:
   - RealmJS (10.5.0):
     - GCDWebServer
     - React
-  - RNAudioRecorderPlayer (2.6.2):
+  - RNAudioRecorderPlayer (2.7.0):
     - React
-  - RNCAsyncStorage (1.15.1):
+  - RNCAsyncStorage (1.15.5):
     - React-Core
-  - RNCMaskedView (0.1.10):
+  - RNCMaskedView (0.1.11):
     - React
   - RNFBAdMob (11.5.0):
     - Firebase/AdMob (= 7.11.0)
@@ -452,7 +437,7 @@ PODS:
   - RNFBApp (11.5.0):
     - Firebase/CoreOnly (= 7.11.0)
     - React-Core
-  - RNFBMessaging (11.2.0):
+  - RNFBMessaging (11.5.0):
     - Firebase/Messaging (= 7.11.0)
     - React-Core
     - RNFBApp
@@ -460,9 +445,7 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNPermissions (3.0.4):
-    - React-Core
-  - RNReanimated (2.0.1):
+  - RNReanimated (2.2.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -541,13 +524,10 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-camera (from `../node_modules/react-native-camera`)
-  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
-  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-progress-bar-android (from `../node_modules/@react-native-community/progress-bar-android`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
-  - react-native-video (from `../node_modules/react-native-video`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -569,7 +549,6 @@ DEPENDENCIES:
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSound (from `../node_modules/react-native-sound`)
@@ -637,20 +616,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
-  react-native-camera:
-    :path: "../node_modules/react-native-camera"
-  react-native-cameraroll:
-    :path: "../node_modules/@react-native-community/cameraroll"
-  react-native-image-picker:
-    :path: "../node_modules/react-native-image-picker"
   react-native-progress-bar-android:
     :path: "../node_modules/@react-native-community/progress-bar-android"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-sqlite-storage:
     :path: "../node_modules/react-native-sqlite-storage"
-  react-native-video:
-    :path: "../node_modules/react-native-video"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -693,8 +666,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNPermissions:
-    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -711,7 +682,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: 49cbe4b43e445b06bf29199b6ad2057649e4c8f5
-  FBReactNativeSpec: be3297883b6eb69279f51af6a7f56172cf66f5ee
+  FBReactNativeSpec: b336cdb544b86f01591b4812bfca1dd5a3449e13
   Firebase: c121feb35e4126c0b355e3313fa9b487d47319fd
   FirebaseCore: 907447d8917a4d3eb0cce2829c5a0ad21d90b432
   FirebaseCoreDiagnostics: 68ad972f99206cef818230f3f3179d52ccfb7f8c
@@ -748,13 +719,10 @@ SPEC CHECKSUMS:
   React-jsi: 74341196d9547cbcbcfa4b3bbbf03af56431d5a1
   React-jsiexecutor: 06a9c77b56902ae7ffcdd7a4905f664adc5d237b
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
-  react-native-camera: 7bf59f2728ffb019fa25e60a225d2c57e1a8f0f6
-  react-native-cameraroll: 88f4e62d9ecd0e1f253abe4f685474f2ea14bfa2
-  react-native-image-picker: c07b072faa83f3480b473a15ea3c19cc39b3d6fa
-  react-native-progress-bar-android: be43138ab7da30d51fc038bafa98e9ed594d0c40
-  react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
-  react-native-sqlite-storage: 418ef4afc5e6df6ce3574c4617e5f0b65cffde55
-  react-native-video: 0bb76b6d6b77da3009611586c7dbf817b947f30e
+  react-native-progress-bar-android: ce95a69f11ac580799021633071368d08aaf9ad8
+  react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
+  react-native-sqlite-storage: ce71689c5a73b79390a1ab213555ae80979a5dc7
+  react-native-webview: 4288b81c682bca4dcc9037afb3ee118af2655c03
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af
   React-RCTActionSheet: 3080b6e12e0e1a5b313c8c0050699b5c794a1b11
   React-RCTAnimation: 3f96f21a497ae7dabf4d2f150ee43f906aaf516f
@@ -768,22 +736,21 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: cad74a1eaa53ee6e7a3620231939d8fe2c6afcf0
   ReactCommon: cfe2b7fd20e0dbd2d1185cd7d8f99633fbc5ff05
   RealmJS: 3442dc29909254448c28f500b8b49f976a3b22a8
-  RNAudioRecorderPlayer: 3466c676143ea96d19fa1a6e5563f4d38a58a874
-  RNCAsyncStorage: 08719e311ab90492c2dafd6d6fb7ffb396493638
-  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNAudioRecorderPlayer: 0f0da00d05565d0532f154cd16458fa777afd8c4
+  RNCAsyncStorage: 8324611026e8dc3706f829953aa6e3899f581589
+  RNCMaskedView: f127cd9652acfa31b91dcff613e07ba18b774db6
   RNFBAdMob: a2b5f148468b16d02543707d4627bc9a19016bf3
   RNFBApp: 9c90f9d576861947ba75fe0830567c570bcbcf6d
-  RNFBMessaging: d10e3fdbe7b590c571c01847753d97f0ae1ba7d3
+  RNFBMessaging: c873e6c37f69d22de22cab134413030a9c6330a9
   RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNPermissions: c46788f4cd402287425983e04a4c9bb4356036eb
-  RNReanimated: 7d2b97cf2dd7c8c69956080fe911edc08cf0a8c7
+  RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
+  RNSound: c980916b596cc15c8dcd2f6ecd3b13c4881dbe20
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 44773d382316e256d04e3aff4f38652e1fb5bd8f
+PODFILE CHECKSUM: 032babebe0696216f4fcbd7bd4b08b0fc7564951
 
 COCOAPODS: 1.10.1
