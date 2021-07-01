@@ -9,7 +9,7 @@ class FieldModel {
     created_at: Date;
     updated_at: Date;
 
-    constructor(data) {
+    constructor(data: { id: Number; name: String; slug: String; image: String; status: String; created_at: Date; updated_at: Date; }) {
         if (data === null) {
             return;
         }

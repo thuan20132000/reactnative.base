@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Checkbox, ProgressBar, RadioButton, Modal, Provider, Portal, Badge } from 'react-native-paper';
-import { StyleSheet, Text, View, FlatList, Switch, Image } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, FlatList, Switch, Image ,TouchableOpacity} from 'react-native';
 import GrammarExcerciseModel from '../../app/models/grammarExcerciseModel';
 import GrammarModel from '../../app/models/grammarModel';
 import { BOXSHADOW, COLORS, FONTS } from '../../app/constants/themes';
