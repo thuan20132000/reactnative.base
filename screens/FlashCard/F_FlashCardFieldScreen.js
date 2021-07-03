@@ -9,6 +9,7 @@ import FieldModel from '../../app/models/fieldModel'
 const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_app_id;
 
 import QuizAPI from '../../app/API/QuizAPI'
+import Field from '../../app/DB/Field'
 
 const F_FlashCardFieldScreen = (props) => {
 
@@ -21,6 +22,10 @@ const F_FlashCardFieldScreen = (props) => {
             headerShown: false
         })
 
+        let field = new Field()
+        field.getAllFields(function(success){
+            console.log('success: ',success)
+        })
     }, []);
 
 
