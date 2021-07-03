@@ -6,73 +6,21 @@ import GrammarExcerciseModel from '../../app/models/grammarExcerciseModel';
 import GrammarModel from '../../app/models/grammarModel';
 import { BOXSHADOW, COLORS, FONTS } from '../../app/constants/themes';
 import GrammarAPI from '../../app/API/GrammarAPI';
-import { setPractisedGrammarResult } from '../../app/StorageManager';
+import { setCompleteGrammar, setPractisedGrammarResult } from '../../app/StorageManager';
+import QuizCard from './components/QuizCard';
 
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 
-const QuizCard = ({ item, index, onAnswerPress, onExplainPress }) => {
-    return (
-        <View
-            key={index.toString()}
-            style={{
-                margin: 8,
-                padding: 8,
-                backgroundColor: COLORS.white,
-                ...BOXSHADOW.normal,
+import Sound from 'react-native-sound';
+import { config } from '../../app/constants';
 
-            }}
-        >
-            <View
-                style={{ borderBottomWidth: 0.5, paddingBottom: 10, borderBottomColor: "gray" }}
-            >
-                <Text style={FONTS.body4, { color: 'gray' }}>Câu hỏi {index + 1}:</Text>
-                <Text style={[styles.titleTxt, { marginTop: 30 }]}>{item?.question}</Text>
-            </View>
-            <View>
-                <RadioButton.Group
-                    onValueChange={value => onAnswerPress(value, item, index)}
-                    value={item?.selected}
-
-                >
-                    <RadioButton.Item style={(item?.selected && item?.correct_answer === item.option_a) ? { backgroundColor: 'lightblue' } : { backgroundColor: 'white' }} labelStyle={[{ fontWeight: '700' }, (item?.selected && item?.correct_answer === item.option_a) ? { color: 'blue' } : { color: "black" }]} disabled={item?.selected ? true : false} label={item?.option_a} value="option_a" />
-                    <RadioButton.Item style={(item?.selected && item?.correct_answer === item.option_b) ? { backgroundColor: 'lightblue' } : { backgroundColor: 'white' }} labelStyle={[{ fontWeight: '700' }, (item?.selected && item?.correct_answer === item.option_b) ? { color: 'blue' } : { color: "black" }]} disabled={item?.selected ? true : false} label={item?.option_b} value="option_b" />
-                    <RadioButton.Item style={(item?.selected && item?.correct_answer === item.option_c) ? { backgroundColor: 'lightblue' } : { backgroundColor: 'white' }} labelStyle={[{ fontWeight: '700' }, (item?.selected && item?.correct_answer === item.option_c) ? { color: 'blue' } : { color: "black" }]} disabled={item?.selected ? true : false} label={item?.option_c} value="option_c" />
-                    <RadioButton.Item style={(item?.selected && item?.correct_answer === item.option_d) ? { backgroundColor: 'lightblue' } : { backgroundColor: 'white' }} labelStyle={[{ fontWeight: '700' }, (item?.selected && item?.correct_answer === item.option_d) ? { color: 'blue' } : { color: "black" }]} disabled={item?.selected ? true : false} label={item?.option_d} value="option_d" />
-                </RadioButton.Group>
-            </View>
-            {
-                item?.selected &&
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginVertical: 4
-                    }}
-                >
-                    <Text style={FONTS.body4, { color: 'lightblue' }}> Đáp án đúng: {item?.correct_answer} </Text>
-                    <TouchableOpacity
-                        onPress={() => onExplainPress(item)}
-                        style={{
-                            backgroundColor: COLORS.primary,
-                            paddingHorizontal: 4,
-                            borderRadius: 8
-                        }}
-
-                    >
-                        <Text style={[FONTS.body4, { color: 'white', fontWeight: '700' }]}>Giải thích</Text>
-                    </TouchableOpacity>
-                </View>
-            }
-
-        </View>
-    )
-}
+const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_app_id;
 
 
 
 const GrammarExcerciseScreen = (props) => {
 
-    const {item} = props.route?.params;
+    const { item } = props.route?.params;
 
     const [currentQuiz, setCurrentQuiz] = useState({ index: 0, data: '' });
     const [quizList, setQuizList] = React.useState([]);
@@ -195,18 +143,56 @@ const GrammarExcerciseScreen = (props) => {
         }
 
 
+        let correct_num = excerciseStatictis.correct_num;
+        let incorrect_num = excerciseStatictis.incorrect_num;
         if (answer.toLocaleLowerCase().trim() === quiz.correct_answser.toLocaleLowerCase().trim()) {
+            setTimeout(() => {
+                var sound = new Sound('button_correct.mp3', Sound.MAIN_BUNDLE, (error) => {
+                    /* ... */
+                    if (error) {
+                        console.log('error: ', error);
+                        sound.release()
+
+                    }
+                });
+                setTimeout(() => {
+                    sound.play((success) => {
+                        /* ... */
+                        sound.release();
+
+                    });
+                }, 100);
+            }, 100);
+            correct_num = correct_num + 1
             setExerciseStatictis({
                 ...excerciseStatictis,
-                correct_num: excerciseStatictis.correct_num + 1
+                correct_num: correct_num
             })
         } else {
+            setTimeout(() => {
+                var sound = new Sound('button_incorrect.mp3', Sound.MAIN_BUNDLE, (error) => {
+                    /* ... */
+                    if (error) {
+                        console.log('error: ', error);
+                        sound.release()
+
+                    }
+                });
+                setTimeout(() => {
+                    sound.play((success) => {
+                        /* ... */
+                        sound.release();
+
+                    });
+                }, 100);
+            }, 100);
+            incorrect_num = incorrect_num + 1;
             setExerciseStatictis({
                 ...excerciseStatictis,
-                incorrect_num: excerciseStatictis.incorrect_num + 1
+                incorrect_num: incorrect_num
             })
         }
-       
+
         let tempPractisedList = practisedExcercise;
         tempPractisedList[index].selected = value;
         tempPractisedList[index].answered = answer
@@ -224,28 +210,24 @@ const GrammarExcerciseScreen = (props) => {
         if (excerciseList.length == practisedExcercise.length) {
             setTimeout(() => {
                 setIsShowReview(true);
-                let result = excerciseStatictis.correct_num >= 10 ? "passed":"failed";
-                setPractisedGrammarResult(item?.id,result).then((res) => console.warn('save: ',res))
+                // let result = excerciseStatictis?.correct_num || 0;
+
+                let practice_percentage = ((correct_num / excerciseList.length) * 100).toFixed(1);
+                if (practice_percentage > 60) {
+                    setCompleteGrammar(item?.id).then((res) => console.warn('complete: ', res))
+                }
+                console.warn('ss: ', practice_percentage);
+
+                setPractisedGrammarResult(item?.id, practice_percentage).then((res) => console.warn('save: ', res))
             }, 1200);
         }
-
-        // return;
-
-        // let additional;
-        // let actual_answer = currentQuiz.data[data];
-        // if (currentQuiz.data?.answer === data) {
-        //   additional = { ...quizList[currentQuiz.index], selected_option: data.toString(), status: true, actual_answer: actual_answer };
-        // } else {
-        //   additional = { ...quizList[currentQuiz.index], selected_option: data.toString(), status: false, actual_answer: actual_answer };
-        // }
-        // let tempQuizList = quizList;
-        // tempQuizList[currentQuiz.index] = additional;
-        // setQuizList(tempQuizList);
-        // setSelectedAnswer(data.toString());
     }
 
     const _onExcerciseStartPress = () => {
-        setPractisedExcercise([excerciseList[0]]);
+        // return;
+        if (item != null && item != undefined && excerciseList[0]) {
+            setPractisedExcercise([excerciseList[0]]);
+        }
     }
 
     const _onExplainPress = (data) => {
@@ -282,21 +264,21 @@ const GrammarExcerciseScreen = (props) => {
                     justifyContent: 'center',
                     height: 200,
                     width: 200,
-                    top: '30%'
-
+                    top: '30%',
+                    padding: 12
                 }}
             >
-             
+
                 <TouchableOpacity
                     onPress={_onExcerciseStartPress}
                     style={{
-                        alignItems:'center',
-                        justifyContent:'center'
+                        alignItems: 'center',
+                        justifyContent: 'center'
                     }}
                 >
-                    <Text style={FONTS.body4,{textAlign:'center'}}>Mục tiêu: Điểm số lớn hơn 5 cho 20 cấu hỏi</Text>
+                    <Text style={FONTS.body4, { textAlign: 'center' }}>Mục tiêu: Điểm số lớn hơn 60% </Text>
 
-                    <Text style={[FONTS.h2,{marginTop:12,color:COLORS.primary}]}>Bắt Đầu</Text>
+                    <Text style={[FONTS.h2, { marginTop: 12, color: COLORS.primary }]}>Bắt Đầu</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -385,7 +367,7 @@ const GrammarExcerciseScreen = (props) => {
                             borderColor: 'coral',
                             borderWidth: 2
                         }}>
-                            <Text style={{ fontSize: 26 }}>{data?.correct_num ? (data?.correct_num * 0.5).toFixed(2) : 0}</Text>
+                            <Text style={{ fontSize: 26 }}>{((excerciseStatictis?.correct_num / excerciseList.length) * 100).toFixed(1)}%</Text>
                             <Text style={{ fontWeight: '700' }}>Điểm số</Text>
                         </View>
                     </View>
@@ -400,7 +382,7 @@ const GrammarExcerciseScreen = (props) => {
 
 
                             source={
-                                data?.correct_num * 0.5 > 5 ?
+                                ((excerciseStatictis?.correct_num / excerciseList.length) * 100).toFixed(1) >= 60 ?
                                     require('../../app/assets/images/ic_passed.png')
                                     :
                                     require('../../app/assets/images/ic_failed.png')
@@ -427,12 +409,12 @@ const GrammarExcerciseScreen = (props) => {
                                 width: 120,
                                 alignItems: 'center'
                             }}
-                            onPress={onReview}
+                            onPress={onBack}
                         >
                             <Text style={{
                                 color: 'white',
                                 fontWeight: '700'
-                            }}>Xem Lai</Text>
+                            }}>Thoát</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{
@@ -442,12 +424,12 @@ const GrammarExcerciseScreen = (props) => {
                                 width: 120,
                                 alignItems: 'center'
                             }}
-                            onPress={onBack}
+                            onPress={onReview}
                         >
                             <Text style={{
                                 color: 'white',
                                 fontWeight: '700'
-                            }}>Ôn lại</Text>
+                            }}>Xem lại</Text>
                         </TouchableOpacity>
                     </View>
                 </Modal>
@@ -457,6 +439,9 @@ const GrammarExcerciseScreen = (props) => {
 
 
     React.useLayoutEffect(() => {
+        props.navigation.setOptions({
+            title: item?.name
+        })
         props.navigation.dangerouslyGetParent().setOptions({
             tabBarVisible: false
         })
@@ -471,16 +456,17 @@ const GrammarExcerciseScreen = (props) => {
 
     React.useEffect(() => {
         GrammarAPI.getGrammarExcercise(item.id)
-        .then((res) => {
-            if(res.status_code === 200){
-                setExcerciseList(res?.data)
-            }
-        })
-        .catch((err) => {
-            console.warn('err: ',err)
-        })
-    },[]);
+            .then((res) => {
+                if (res.status_code === 200) {
+                    setExcerciseList(res?.data)
+                }
+            })
+            .catch((err) => {
+                console.warn('err: ', err)
+            })
+    }, []);
 
+    const _refFlatList = React.useRef();
 
     return (
         <Provider>
@@ -492,40 +478,72 @@ const GrammarExcerciseScreen = (props) => {
                     flex: 1
                 }}
             >
+                <View
+                    style={{
+                        display: 'flex',
+                        alignSelf: 'center',
+                        paddingVertical: 6
+                    }}
+                >
+                    {
+                        adUnitId &&
+                        <BannerAd
+                            unitId={adUnitId}
+                            size={BannerAdSize.BANNER}
+                            requestOptions={{
+                                requestNonPersonalizedAdsOnly: true,
+                                keywords: ['education', 'ielts', 'shopping', 'books']
+                            }}
+
+                        />
+
+                    }
+                </View>
                 {
                     practisedExcercise.length <= 0 &&
                     renderExcerciseStart()
                 }
 
+                {
+                    practisedExcercise.length > 0 &&
 
-                <FlatList
-                    data={practisedExcercise}
-                    renderItem={({ item, index }) =>
-                        <QuizCard
-                            item={item}
-                            index={index}
-                            onAnswerPress={_onSelectAnswer}
-                            onExplainPress={() => _onExplainPress(item?.answer_reference)}
+                    <>
+                        <FlatList
+                            data={practisedExcercise}
+                            renderItem={({ item, index }) =>
+                                <QuizCard
+                                    item={item}
+                                    index={index}
+                                    onAnswerPress={_onSelectAnswer}
+                                    onExplainPress={() => _onExplainPress(item?.answer_reference)}
+                                />
+                            }
+                            keyExtractor={(item) => item.id}
+
+                            ref={_refFlatList}
+                            onContentSizeChange={() => _refFlatList.current.scrollToEnd({ animated: true })}
+                            onLayout={() => _refFlatList.current.scrollToEnd({ animated: true })}
+
                         />
-                    }
+                        <View
+                            style={{
+                                height: 80,
+                                backgroundColor: COLORS.white,
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
 
-                />
-                <View
-                    style={{
-                        height: 80,
-                        backgroundColor: COLORS.white,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
+                            {/* <Text>{practisedExcercise?.length}/{excerciseList?.length}</Text> */}
+                            <Badge size={42} style={{ backgroundColor: 'green', marginHorizontal: 6, color: 'white' }}>{excerciseStatictis?.correct_num}</Badge>
+                            <Badge size={42} style={{ backgroundColor: 'coral', marginHorizontal: 6, color: 'white' }}>{excerciseStatictis?.incorrect_num}</Badge>
 
-                    {/* <Text>{practisedExcercise?.length}/{excerciseList?.length}</Text> */}
-                    <Badge size={42} style={{ backgroundColor: 'lightblue', marginHorizontal: 6, color: 'white' }}>{excerciseStatictis?.correct_num}</Badge>
-                    <Badge size={42} style={{ backgroundColor: 'lightgray', marginHorizontal: 6, color: 'white' }}>{excerciseStatictis?.incorrect_num}</Badge>
+                        </View>
+                    </>
 
-                </View>
+                }
             </View>
         </Provider>
 

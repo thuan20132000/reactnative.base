@@ -28,8 +28,6 @@ export const skipVocabulary = (vocabulary) => {
 
 export const setTopicVocabularyList = (vocabulary_list,vocabulary_stack,topic_slug) => {
     return async (dispatch) => {
-        // let vocabulary_list = await fetch(``)
-        console.warn('list: ',vocabulary_list);
         let temp_vocal = vocabulary_list
         dispatch({
             data: temp_vocal,

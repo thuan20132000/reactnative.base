@@ -1,13 +1,13 @@
 export default {
     
     // Dev
-    api_url:"http://192.168.1.6:8000",
-    media_url:"http://192.168.1.6:8000/media",
+    // api_url:"http://192.168.1.10:8000",
+    // media_url:"http://192.168.1.10:8000/media",
 
 
     // production
-    // api_url:"http://35.198.237.6/",
-    // media_url:"http://35.198.237.6/media",
+    api_url:"http://35.198.237.6",
+    media_url:"http://35.198.237.6/media",
 
     // Pro
     // "api_url":"https://askme-it.com/dictionary/api/v1",

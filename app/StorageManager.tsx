@@ -65,3 +65,34 @@ export const getPractisedGrammarResult = async (grammar_id: string) => {
 }
 
 
+/**
+ * 
+ * @param igrammar_id
+ * @param value 
+ * @returns 
+ */
+ export const setCompleteGrammar = async (grammar_id: string, value: any) => {
+    try {
+        return await AsyncStorage.setItem(`@grammar_complete_${grammar_id}`, JSON.stringify(value))
+    } catch (error) {
+        throw error
+    }
+}
+
+
+
+/**
+ * 
+ * @param grammar_id
+ * @returns 
+ */
+export const getCompleteGrammar = async (grammar_id: string) => {
+    try {
+        let data = await AsyncStorage.getItem(`@grammar_complete_${grammar_id}`);
+        return JSON.parse(data)
+    } catch (error) {
+        return null
+    }
+}
+
+
