@@ -355,6 +355,9 @@ const GrammarStack = ()=> {
             <GrammarStackNavigator.Screen
                 name={"GrammarList"}
                 component={GrammarListScreen}
+                options={{
+                    title:"Ngữ pháp"
+                }}
             />
             <GrammarStackNavigator.Screen
                 name={"GrammarDescription"}

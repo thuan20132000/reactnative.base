@@ -49,7 +49,6 @@ const F_FLashCardPracticeScreen = (props) => {
 
         setTimeout(() => {
             let path = `${word?.sound_us}`;
-            console.warn(path)
             var sound = new Sound(path, '', (error) => {
                 /* ... */
                 if (error) {

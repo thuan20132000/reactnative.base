@@ -8,7 +8,6 @@ import config from '../../app/constants/config';
 import FieldModel from '../../app/models/fieldModel'
 const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_app_id;
 
-import SQLiteManager from '../../app/DB/SQLiteManage';
 import QuizAPI from '../../app/API/QuizAPI'
 
 const F_FlashCardFieldScreen = (props) => {

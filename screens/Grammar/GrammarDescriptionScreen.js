@@ -471,8 +471,11 @@ const GrammarDescriptionScreen = (props) => {
 
 
     React.useLayoutEffect(() => {
+        props.navigation.setOptions({
+            title:item?.name
+        })
         props.navigation.dangerouslyGetParent().setOptions({
-            tabBarVisible: false
+            tabBarVisible: false,
         })
 
         return () => {
@@ -484,9 +487,11 @@ const GrammarDescriptionScreen = (props) => {
 
 
     const _onGrammarExcercisePress = () => {
-        props.navigation.push('GrammarExcerciseScreen',{
-            item:item
-        });
+        if(item){
+            props.navigation.push('GrammarExcerciseScreen',{
+                item:item
+            });
+        }
     }
 
     React.useEffect(() => {

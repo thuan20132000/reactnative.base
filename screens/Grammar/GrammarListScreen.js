@@ -7,99 +7,14 @@ import CommonIcons from '../../utils/CommonIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getPractisedGrammarResult, setPractisedGrammarResult } from '../../app/StorageManager';
 
+import GrammarItem from './components/GrammarItem';
 
 
-const GrammarItem = ({
-    item, image_url, onPress, onPractisePress, grammar, navigation
-}) => {
-
-    const [state, setState] = React.useState('');
-
-
-
-    React.useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            // The screen is focused
-            // Call any action
-            getPractisedGrammarResult(item?.id).then((res) => {
-                console.warn('render: ', res);
-                setState(res);
-            });
-        });
-
-        // Return the function to unsubscribe from the event so it gets removed on unmount
-        return unsubscribe;
-    }, [])
-
-    return (
-        <View
-            style={{
-                backgroundColor: COLORS.white,
-                height: 60,
-                marginVertical: 1,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginHorizontal: 4,
-                borderRadius: 6,
-                paddingHorizontal: 4,
-                marginBottom: 8,
-                ...BOXSHADOW.normal,
-                position: 'relative'
-            }}
-
-        >
-            <TouchableOpacity
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                }}
-                onPress={onPress}
-
-            >
-                <MaterialCommunityIcon
-                    name={CommonIcons.bell}
-                    size={22}
-                    color={COLORS.primary}
-                    style={{
-                        marginHorizontal: 16
-                    }}
-                />
-                <View>
-                    <Text style={FONTS.h4}>{item?.name}</Text>
-                    <Text style={FONTS.body4}>{item?.id} {state}</Text>
-                </View>
-
-            </TouchableOpacity>
-            {/* <TouchableOpacity
-                style={{
-                    right: 10,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    display: 'flex',
-                    backgroundColor: COLORS.primary,
-                    padding: 6,
-                    borderRadius: 6
-                }}
-
-            > */}
-            <MaterialCommunityIcon
-                name={CommonIcons.arrowRight}
-                size={22}
-                color={COLORS.darkgray}
-                onPress={onPractisePress}
-            />
-            {/* <Text style={FONTS.body4,{color:COLORS.white,fontWeight:"700"}}>Luyen Tap</Text> */}
-            {/* </TouchableOpacity> */}
-        </View>
-    )
-}
 
 
 const GrammarListScreen = (props) => {
 
-    const [grammarList, setGrammarList] = React.useState([{}]);
+    const [grammarList, setGrammarList] = React.useState([]);
 
 
 
@@ -142,43 +57,34 @@ const GrammarListScreen = (props) => {
 
         <SafeAreaView>
 
-            <FlatList
-                data={grammarList}
-                renderItem={({ item }) =>
-                    <GrammarItem
-                        item={item}
-                        onPress={() => _onGrammarDescriptionPress(item)}
-                        onPractisePress={() => _onPractisePress(item)}
-                        navigation={props.navigation}
+            {
+                grammarList.length > 0 &&
+                <FlatList
+                    data={grammarList}
+                    renderItem={({ item, index }) =>
+                        <GrammarItem
+                            item={item}
+                            onPress={() => _onGrammarDescriptionPress(item)}
+                            onPractisePress={() => _onPractisePress(item)}
+                            navigation={props.navigation}
 
-                    />
-                }
-                // keyExtractor={item => `post-${item.id.toString()}`}
-
-                // ListFooterComponent={
-
-
-                //     <View>
-                //         <ActivityIndicator
-                //             size={'large'}
-                //             color={'coral'}
-                //             // animating={isLoadMore}
-                //         />
-                //     </View>
-
-                // }
-
-                onEndReachedThreshold={0.2}
-            // onEndReached={_onLoadMoreItem}
+                        />
+                    }
+                    keyExtractor={(item) => `post-${item?.id?.toString()}`}
 
 
-            // onRefresh={_onRefreshItemList}
+                    onEndReachedThreshold={0.2}
+                // onEndReached={_onLoadMoreItem}
 
-            // refreshing={isRefreshing}
+
+                // onRefresh={_onRefreshItemList}
+
+                // refreshing={isRefreshing}
 
 
 
-            />
+                />
+            }
         </SafeAreaView>
 
 

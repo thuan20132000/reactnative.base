@@ -10,7 +10,7 @@ class QuizAPI {
     }
 
     async getAllField() {
-        return this.axios.get(this.api_url + 'quiz/v1/fields/', {
+        return this.axios.get(this.api_url + '/quiz/v1/fields/', {
             params: {}
         })
             .then(function (response) {
@@ -22,7 +22,7 @@ class QuizAPI {
     }
 
     async getAllTopicByField(field_id) {
-        return this.axios.get(this.api_url + `quiz/v1/field/${field_id}`, {
+        return this.axios.get(this.api_url + `/quiz/v1/field/${field_id}`, {
             params: {}
         })
             .then(function (response) {
@@ -35,7 +35,7 @@ class QuizAPI {
 
 
     async getTopicVocabulary(topic_id) {
-        let path = `quiz/v1/topic/${topic_id}/vocabulary`
+        let path = `/quiz/v1/topic/${topic_id}/vocabulary`
         return this.axios.get(this.api_url + path, {
             params: {}
         })
