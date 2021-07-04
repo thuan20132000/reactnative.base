@@ -1,14 +1,18 @@
-import { Platform } from "react-native";
-import SQLite from "react-native-sqlite-storage";
-import FieldModel from "../models/fieldModel";
+import { SQLiteFactory } from "react-native-sqlite-storage/lib/sqlite.core";
 import SQLiteManager from "./SQLiteManage";
 
 
-class Quiz extends SQLiteManager {
 
-   
-    getAllField(success,error) {
-        this.openDB().then(() => {
+class FlashCard extends SQLiteManager {
+
+    constructor() {
+        this.openDB()
+    }
+
+
+    getAllTopic(success, err) {
+
+        try {
             this.db.transaction((tx) => {
                 tx.executeSql("SELECT * FROM quiz_field", [], (tx, results) => {
 
@@ -18,15 +22,15 @@ class Quiz extends SQLiteManager {
                             temp.push(results.rows.item(i));
                         }
                     }
+                    this.db.close()
                     success(temp)
+
                 })
             })
-        })
-        
+
+        } catch (error) {
+            this.db.close()
+            err(error);
+        }
     }
-
-
 }
-
-
-export default new Quiz()
