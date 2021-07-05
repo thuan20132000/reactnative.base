@@ -7,6 +7,7 @@ import { filterDuplicate, getLearntVocabularyByTopic } from '../../../utils/help
 import { useSelector } from 'react-redux';
 import { config } from '../../../app/constants'
 import { IconButton } from 'react-native-paper'
+import Quiz from '../../../app/DB/Quiz'
 
 
 const CardTopic = ({
@@ -19,7 +20,7 @@ const CardTopic = ({
     const flashcard = useSelector(state => state.flashcard);
     const [learntVocabularyList, setLearntVocabularyList] = React.useState([]);
     const [leaveVocabularyList, setLeaveVocabularyList] = React.useState(0);
-
+    const [vocabularyTotal, setVocabularyTotal] = React.useState(0);
 
     React.useEffect(() => {
         let topic_name = topic?.slug?.toLowerCase();
@@ -35,6 +36,16 @@ const CardTopic = ({
     }, [flashcard.learnt_vocabulary_list]);
 
 
+    React.useEffect(() => {
+        Quiz.getTopicVocabularyTotal(topic?.id)
+            .then((res) => {
+                setVocabularyTotal(res);
+
+            })
+    }, []);
+
+
+    const image_url = config.aws_url + image_path;
 
     return (
         <TouchableOpacity
@@ -49,7 +60,7 @@ const CardTopic = ({
             <Image
 
                 source={{
-                    uri: image_path ?? CommonImages.avatar
+                    uri: image_url
                 }}
 
                 style={{
@@ -83,7 +94,7 @@ const CardTopic = ({
                         fontWeight: '700',
                     }}
                 >
-                    {learntVocabularyList.length}/{topic_vocabulary_number}
+                    {learntVocabularyList.length}/{vocabularyTotal}
                 </Text>
 
             </View>

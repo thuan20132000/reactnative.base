@@ -23,7 +23,6 @@ const F_FlashCardFieldScreen = (props) => {
         })
 
         Quiz.getAllField((success) => {
-            console.warn('success: ', success);
             let fieldListData = [];
             success.forEach(element => {
                 let field = new FieldModel(element);
@@ -45,8 +44,8 @@ const F_FlashCardFieldScreen = (props) => {
 
     }
 
-
-    React.useEffect(() => {
+    // remote api
+    // React.useEffect(() => {
         // QuizAPI.getAllField().then(res => {
         //     if (res?.status_code === 200) {
         //         let fieldListData = [];
@@ -58,7 +57,7 @@ const F_FlashCardFieldScreen = (props) => {
         //     }
         // })
 
-    }, []);
+    // }, []);
 
     return (
         <SafeAreaView>

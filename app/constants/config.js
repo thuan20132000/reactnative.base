@@ -8,6 +8,9 @@ export default {
     // production
     api_url:"http://35.198.237.6",
     media_url:"http://35.198.237.6/media",
+    aws_url:"https://practiceenglish.s3.ap-southeast-1.amazonaws.com/",
+    audio_url:"https://practiceenglish.s3.ap-southeast-1.amazonaws.com/audio/",
+
 
     // Pro
     // "api_url":"https://askme-it.com/dictionary/api/v1",

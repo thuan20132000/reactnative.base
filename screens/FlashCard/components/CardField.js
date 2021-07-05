@@ -13,7 +13,7 @@ const CardField = ({
 
 
 
-    const image_url = `https://practiceenglish.s3.ap-southeast-1.amazonaws.com/`+image_path ?? 'https://picsum.photos/700';
+    const image_url = config.aws_url+image_path;
 
     return (
         <TouchableOpacity
