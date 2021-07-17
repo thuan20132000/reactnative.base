@@ -18,6 +18,8 @@ import AudioPlay from '../../components/Card/AudioPlay';
 import { InterstitialAd, RewardedAd, BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
 import config from '../../app/constants/config';
 import ReadingAPI from '../../app/API/ReadingAPI';
+import ReadingPostDB from '../../app/DB/ReadingPost';
+import ReadingModel from '../../app/models/readingModel';
 const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_app_id;
 
 var RNFS = require('react-native-fs');
@@ -62,28 +64,17 @@ const ReadingPracticeScreen = (props) => {
         //     setReadingPost(readingpost);
         // }
 
-        ReadingAPI.getReadingPostDetail(readingpost.id)
-            .then((res) => {
-                console.log(res)
-                if (res.status_code === 200) {
-                    setReadingPost(res.data);
-                    if (res.reading_post_vocabulary?.length > 0) {
-                        let nameList = res.reading_post_vocabulary.map((e) => e.name);
-                        setHighlightVocabulary(nameList);
-                    }
-                }
-            })
-            .catch((err) => {
-                console.log('error: ', err)
-            })
-            .finally(() => console.log('finnally'))
+        ReadingPostDB.getReadingPostDetail(readingpost?.id, res => {
+            if (res) {
+                let readingPost = new ReadingModel(res)
+                setReadingPost(readingPost);
+            }
+        })
 
 
 
 
-        props.navigation.dangerouslyGetParent().setOptions({
-            tabBarVisible: false
-        });
+
 
 
         PermissionsAndroid.request(
@@ -124,11 +115,6 @@ const ReadingPracticeScreen = (props) => {
         })
 
 
-        return () => {
-            props.navigation.dangerouslyGetParent().setOptions({
-                tabBarVisible: true
-            });
-        }
 
     }, []);
 
@@ -295,9 +281,6 @@ const ReadingPracticeScreen = (props) => {
 
 
 
-    const readingText = "Claire was applying to private schools. Most private schools required letters of recommendation. Claire did not know who to ask. She felt like her teachers did not know her that well. Claire asked her teachers anyways. Some of them said yes, and some of them said no. One week later, Ms. Hershey gave Claire a letter of recommendation in an envelope. Claire wasn't supposed to open it, but she really wanted to know what Ms. Hershey wrote. Claire carefully tore it open and read the letter. She was disappointed. Ms. Hershey didn't write anything interesting about Claire. Ms. Hershey just wrote that Claire was a smart, nice girl. Claire couldn't get into her top schools with that letter. Claire asked her swim coach to write her a letter of recommendation. Her swim coach knew her well. The problem was that the swim coach wasn't the best writer. He did not go to college. Claire asked him to write a letter anyways. Of course, I'll write you a letter. I'll even send it to you, he said. One week later, Claire got an email from her swim coach. She was nervous to read what he wrote. Claire was impressed with the letter. Her swim coach was really funny, yet intelligent in the letter! ";
-
-
 
     const [saveAudioVisible, setSaveAudioVisible] = React.useState(false);
 
@@ -370,6 +353,13 @@ const ReadingPracticeScreen = (props) => {
         audioRecorderPlayer.removePlayBackListener();
         setPracticeAudio(null);
     }
+
+    React.useLayoutEffect(() => {
+        props.navigation.dangerouslyGetParent().setOptions({
+            tabBarVisible: false
+        });
+       
+    }, [])
 
 
     if (!readingPost) {
@@ -505,7 +495,7 @@ const ReadingPracticeScreen = (props) => {
                     }}
                 >
                     <BannerAd
-                        unitId={'ca-app-pub-7783640686150605/2939455462'}
+                        unitId={adUnitId}
                         size={BannerAdSize.BANNER}
                         requestOptions={{
                             requestNonPersonalizedAdsOnly: true,
@@ -703,7 +693,7 @@ const ReadingPracticeScreen = (props) => {
                                 >
                                     x2
                                 </Button>
-                               
+
 
                             </View>
                         </View>

@@ -14,7 +14,7 @@ const CardBox = ({
     image_path
 }) => {
 
-    const image_url = image_path ?? CommonImages.avatar
+    const image_url = config?.aws_url+image_path;
     return (
         <TouchableOpacity
             style={[

@@ -1,15 +1,17 @@
 export default {
     
+    aws_url:"https://practiceenglish.s3.ap-southeast-1.amazonaws.com/",
+    audio_url:"https://practiceenglish.s3.ap-southeast-1.amazonaws.com/audio/",
+
+
     // Dev
-    // api_url:"http://192.168.1.10:8000",
-    // media_url:"http://192.168.1.10:8000/media",
+    api_url:"http://192.168.1.6:8000",
+    media_url:"http://192.168.1.6:8000/media",
 
 
     // production
-    api_url:"http://35.198.237.6",
-    media_url:"http://35.198.237.6/media",
-    aws_url:"https://practiceenglish.s3.ap-southeast-1.amazonaws.com/",
-    audio_url:"https://practiceenglish.s3.ap-southeast-1.amazonaws.com/audio/",
+    // api_url:"http://35.198.237.6",
+    // media_url:"http://35.198.237.6/media",
 
 
     // Pro

@@ -8,7 +8,7 @@ import CardBox from './components/CardBox';
 import ReadingAPI from '../../app/API/ReadingAPI';
 import ReadingModel from '../../app/models/readingModel';
 import ReadingTopicModel from '../../app/models/readingTopicModel';
-
+import ReadingPostDB from '../../app/DB/ReadingPost';
 const ReadingListScreen = (props) => {
 
     const dispatch = useDispatch();
@@ -19,55 +19,35 @@ const ReadingListScreen = (props) => {
     const [nextPageLink, setNextPageLink] = React.useState();
     const [isLoadMore, setIsLoadMore] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
+    const _refTopicScroll = React.useRef();
 
     React.useEffect(() => {
 
-        ReadingAPI.getAllReadingPost()
-            .then((res) => {
-                console.log('sa  ', res)
-                setIsLoading(true);
-                if (res.status_code === 200 && res.data?.length > 0) {
+        ReadingPostDB.getAllTopic(success => {
+            if (success && success.length > 0) {
+                let readingTopic = [];
+                success.forEach(ele => {
+                    let topic = new ReadingTopicModel(ele)
+                    readingTopic = [...readingTopic, topic]
+                })
+                console.log(readingTopic)
+                setReadingTopic(readingTopic)
+            }
+        })
 
-                    let readingList = [];
-                    res.data.forEach(element => {
-                        let reading = new ReadingModel(element)
-                        readingList = [...readingList, reading];
-                    });
-                    setReadingPost(readingList);
-                    if (res.next) {
-                        setNextPageLink(res.next);
-                    }
+        ReadingPostDB.getReadingPost(success => {
+            if (success && success.length > 0) {
+                let readingList = [];
+                success.forEach(element => {
+                    let reading = new ReadingModel(element)
+                    readingList = [...readingList, reading];
+                });
+                setReadingPost(readingList);
+                if (success.next) {
+                    setNextPageLink(success.next);
                 }
-            })
-            .catch((err) => {
-                console.log('err: ', err)
-            })
-            .finally(() => setIsLoading(false))
-
-        ReadingAPI.getReadingTopicList()
-            .then((res) => {
-                if (res.status_code === 200 && res.data?.length > 0) {
-                    let topicList = [];
-                    res.data.forEach(element => {
-                        let topic = new ReadingTopicModel(element)
-                        topicList = [...topicList, topic];
-                    });
-                    setReadingTopic(topicList);
-                }
-            })
-
-        // getReadingTopicsList()
-        //     .then((res) => {
-        //         if (res.status && res.data.length > 0) {
-        //             setReadingTopic(res.data)
-        //         }
-        //     })
-        //     .catch((err) => {
-        //         console.log('error: ', err);
-        //     })
-        //     .finally(() => {
-        //         console.log('finally');
-        //     })
+            }
+        })
 
     }, []);
 
@@ -97,6 +77,12 @@ const ReadingListScreen = (props) => {
             title: "",
             headerShown: false
         })
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            props.navigation.dangerouslyGetParent().setOptions({
+                tabBarVisible: true
+            });
+        });
+        return unsubscribe;
 
     }, []);
 
@@ -138,53 +124,49 @@ const ReadingListScreen = (props) => {
     const _onRefreshItemList = async () => {
         setReadingPost([]);
         setIsRefreshing(true);
-   
-            ReadingAPI.getAllReadingPost()
-            .then((res) => {
-                if (res.status_code === 200 && res.data?.length > 0) {
 
-                    let readingList = [];
-                    res.data.forEach(element => {
-                        let reading = new ReadingModel(element)
-                        readingList = [...readingList, reading];
-                    });
-                    setReadingPost(readingList);
-                    if (res.next) {
-                        setNextPageLink(res.next);
-                    }
+        ReadingPostDB.getReadingPost(success => {
+            if (success && success.length > 0) {
+                let readingList = [];
+                success.forEach(element => {
+                    let reading = new ReadingModel(element)
+                    readingList = [...readingList, reading];
+                });
+                setReadingPost(readingList);
+                if (success.next) {
+                    setNextPageLink(success.next);
                 }
-            })
-            .catch((err) => {
-                console.log('err: ', err)
-            })
-            .finally(() => setIsRefreshing(false))
+                setIsRefreshing(false)
+            }
+        })
 
 
     }
 
 
-    const _onGetTopicVocabularyPress = async (topic) => {
-      
-        ReadingAPI.getAllReadingPost(topic.id)
-            .then((res) => {
-                setIsLoading(true);
-                if (res.status_code === 200 && res.data?.length > 0) {
+    const _onGetTopicVocabularyPress = async (topic, index) => {
 
-                    let readingList = [];
-                    res.data.forEach(element => {
-                        let reading = new ReadingModel(element)
-                        readingList = [...readingList, reading];
-                    });
-                    setReadingPost(readingList);
-                    if (res.next) {
-                        setNextPageLink(res.next);
-                    }
+        _refTopicScroll.current.scrollToIndex({
+            animated: true,
+            index: index,
+            viewPosition: 0.5
+        })
+
+        ReadingPostDB.getReadingPostByTopic(topic?.id, success => {
+            if (success && success.length > 0) {
+                let readingList = [];
+                success.forEach(element => {
+                    let reading = new ReadingModel(element)
+                    readingList = [...readingList, reading];
+                });
+                setReadingPost(readingList);
+                if (success.next) {
+                    setNextPageLink(success.next);
                 }
-            })
-            .catch((err) => {
-                console.log('err: ', err)
-            })
-            .finally(() => setIsLoading(false))
+                setIsRefreshing(false)
+            }
+        })
+
     }
 
 
@@ -192,30 +174,30 @@ const ReadingListScreen = (props) => {
         <>
             <View>
 
-                <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    style={{
-                        marginVertical: 8
-                    }}
 
-                >
-                    {
-                        (readingTopic && readingTopic.length > 0) &&
-                        readingTopic.map((topic, index) =>
-                            <CardBox key={`topic-${topic.id?.toString()}`}
-                                label={topic.name}
-                                onItemPress={() => _onGetTopicVocabularyPress(topic)}
+                <FlatList
+                    data={readingTopic}
+                    renderItem={({ item, index }) => {
+                        return (
+                            <CardBox key={`topic-${item.id?.toString()}`}
+                                label={item.name}
+                                onItemPress={() => _onGetTopicVocabularyPress(item, index)}
                                 labelStyle={{
                                     fontWeight: '700',
                                     color: 'black'
                                 }}
-                                image_path={topic.image}
+                                image_path={item.image}
 
                             />
+
                         )
                     }
-                </ScrollView>
+                    }
+                    keyExtractor={item => `post-${item.id.toString()}`}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    ref={_refTopicScroll}
+                />
             </View>
 
 
@@ -255,14 +237,18 @@ const ReadingListScreen = (props) => {
 
                     <FlatList
                         data={readingPost}
-                        renderItem={({ item }) =>
-                            <CardReading
-                                onPracticePress={() => _onNavigateToPractice(item)}
-                                onVocabularyPress={() => _onNavigateToReadingVocabulary(item)}
-                                title={item.title}
-                                summary={item.summary}
-                                image_path={item.image}
-                            />
+                        renderItem={({ item }) => {
+                            return (
+                                <CardReading
+                                    onPracticePress={() => _onNavigateToPractice(item)}
+                                    onVocabularyPress={() => _onNavigateToReadingVocabulary(item)}
+                                    title={item?.title}
+                                    summary={item.summary}
+                                    image_path={item.image}
+                                />
+
+                            )
+                        }
                         }
                         keyExtractor={item => `post-${item.id.toString()}`}
 
@@ -281,8 +267,6 @@ const ReadingListScreen = (props) => {
 
                         onEndReachedThreshold={0.2}
                         onEndReached={_onLoadMoreItem}
-
-
                         onRefresh={_onRefreshItemList}
 
                         refreshing={isRefreshing}

@@ -289,7 +289,7 @@ const TabBottom = () => {
                     title: "Luyện Đọc"
                 }}
             />
-            <TabBottomNavigator.Screen
+            {/* <TabBottomNavigator.Screen
                 name="TabGrammar"
                 component={GrammarStack}
                 options={{
@@ -297,7 +297,7 @@ const TabBottom = () => {
                     // tabBarBadge: notificationNumber
                 }}
 
-            />
+            /> */}
             <TabBottomNavigator.Screen
                 name="TabSetting"
                 component={SettingStack}

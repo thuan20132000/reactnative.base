@@ -17,6 +17,8 @@ import CommonColor from '../../utils/CommonColor';
 import QuizAPI from '../../app/API/QuizAPI';
 import { config } from '../../app/constants';
 import ReadingAPI from '../../app/API/ReadingAPI';
+import ReadingPostDB from '../../app/DB/ReadingPost';
+import ReadingModel from '../../app/models/readingModel';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -28,12 +30,8 @@ const ReadingVocabularyScreen = (props) => {
     const { readingpost } = props.route?.params;
 
 
-    const [readingPost, setReadingPost] = React.useState({
-        title: '',
-        content: '',
-        reading_post_vocabulary: [],
-        reading_audio: '',
-    });
+    const [readingPost, setReadingPost] = React.useState(new ReadingModel());
+    const [readingPostVocabulary, setReadingPostVocabulary] = React.useState([]);
 
     const [highlightVocabulary, setHighlightVocabulary] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -41,8 +39,10 @@ const ReadingVocabularyScreen = (props) => {
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [duration, setDuration] = React.useState();
     const [currentProgress, setCurrentProgress] = React.useState(0);
+
+
     const _onStartPlay = async () => {
-        if (!readingPost.reading_audio) {
+        if (!readingPost.practice_audio) {
             return;
         }
 
@@ -50,7 +50,7 @@ const ReadingVocabularyScreen = (props) => {
         try {
 
 
-            let reading_audio_path = `${readingPost.reading_audio}`;
+            let reading_audio_path = config.aws_url + `${readingPost.practice_audio}`;
             let e = await audioRecorderPlayer.startPlayer(reading_audio_path);
 
             await audioRecorderPlayer.setVolume(1.0);
@@ -87,8 +87,7 @@ const ReadingVocabularyScreen = (props) => {
                         .finally(() => {
                             setIsPlaying(false);
                         })
-                    // audioRecorderPlayer.removePlayBackListener()
-                    // return;
+              
                 }
 
             });
@@ -114,26 +113,20 @@ const ReadingVocabularyScreen = (props) => {
         audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
 
-        setIsLoading(true);
+        ReadingPostDB.getReadingPostDetail(readingpost?.id, res => {
+            if (res) {
+                let readingPost = new ReadingModel(res)
+                setReadingPost(readingPost);
+            }
+        })
 
-        ReadingAPI.getReadingPostDetail(readingpost.id)
-            .then((res) => {
-
-                if (res.status_code === 200) {
-                    setReadingPost(res.data);
-                    console.log(res);
-                    if (res.data?.reading_post_vocabulary?.length > 0) {
-
-                        let nameList = res.data?.reading_post_vocabulary.map((e) => e.name);
-                        setHighlightVocabulary(nameList);
-                    }
-                }
-            })
-            .catch((err) => {
-                console.log('error: ', err)
-            })
-            .finally(() => setIsLoading(false))
-
+        ReadingPostDB.getReadingPostVocabulary(readingpost?.id, res => {
+            if (res && res.length > 0) {
+                setReadingPostVocabulary(res);
+                let highlightVocabulary = res.map(e => e.name)
+                setHighlightVocabulary(highlightVocabulary)
+            }
+        })
 
         dispatch(readingActions.resetLearnVocabularyList())
 
@@ -195,11 +188,19 @@ const ReadingVocabularyScreen = (props) => {
         audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
 
-        props.navigation.navigate('ReadingPractice', {
+        props.navigation.replace('ReadingPractice', {
             readingpost: readingpost
         });
     }
 
+
+    React.useLayoutEffect(() => {
+        props.navigation.dangerouslyGetParent().setOptions({
+            tabBarVisible: false
+        })
+
+       
+    }, [])
 
 
     return (
@@ -240,7 +241,7 @@ const ReadingVocabularyScreen = (props) => {
                 >
 
                     {
-                        readingPost?.reading_post_vocabulary?.map((e, index) =>
+                        readingPostVocabulary?.map((e, index) =>
                             <List.Item key={e.ID}
                                 title={`${e.name} (${e.word_type})`}
                                 titleStyle={{ fontSize: 16, fontWeight: '500' }}
@@ -257,30 +258,7 @@ const ReadingVocabularyScreen = (props) => {
 
                 </List.Accordion>
 
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginVertical: 2
-                    }}
-                >
-                    {/* <ButtonText
-                        label={`Học từ vựng`}
-                        labelStyle={{
-                            fontWeight: '700'
-                        }}
-                        onItemPress={_onNavigateToVocabularyPractice}
-                    /> */}
-                    <ButtonText
-                        label={`Luyện đọc`}
-                        labelStyle={{
-                            fontWeight: '700'
-                        }}
-                        onItemPress={_onNavigateToReadingPractice}
-                    />
-                </View>
+
 
                 <View
                     style={{
@@ -289,13 +267,7 @@ const ReadingVocabularyScreen = (props) => {
                     }}
                 >
 
-                    <AudioPlay
-                        onPlay={_onStartPlay}
-                        onPause={_onPausePlay}
-                        isPlaying={isPlaying}
-                        durationTime={duration}
-                        currentProgress={currentProgress}
-                    />
+
 
 
                     <Text
@@ -323,6 +295,43 @@ const ReadingVocabularyScreen = (props) => {
 
                 </View>
             </ScrollView>
+            <AudioPlay
+                onPlay={_onStartPlay}
+                onPause={_onPausePlay}
+                isPlaying={isPlaying}
+                durationTime={duration}
+                currentProgress={currentProgress}
+            />
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginVertical: 2,
+                    position: 'absolute',
+                    bottom: 80,
+                    right: 0,
+                    alignSelf: 'center'
+                }}
+            >
+                {/* <ButtonText
+                        label={`Học từ vựng`}
+                        labelStyle={{
+                            fontWeight: '700'
+                        }}
+                        onItemPress={_onNavigateToVocabularyPractice}
+                    /> */}
+
+                <ButtonText
+                    label={`Luyện đọc`}
+                    labelStyle={{
+                        fontWeight: '700'
+                    }}
+                    onItemPress={_onNavigateToReadingPractice}
+                    rightIcon
+                />
+            </View>
         </Provider>
 
     )
