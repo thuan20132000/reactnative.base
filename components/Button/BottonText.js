@@ -1,20 +1,24 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CommonColor from '../../utils/CommonColor'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import CommonIcons from '../../utils/CommonIcons'
 
 const ButtonText = ({
     label,
     labelStyle,
     onItemPress,
     disabled = false,
-    containerStyle
+    containerStyle,
+    rightIcon
 }) => {
     return (
         <TouchableOpacity
             style={[
                 styles.container,
                 {
-                    backgroundColor: disabled ? 'gray' : CommonColor.btnSubmit
+                    backgroundColor: disabled ? 'gray' : CommonColor.btnSubmit,
+                    flexDirection:'row'
                 },
                 containerStyle
 
@@ -30,6 +34,14 @@ const ButtonText = ({
             >
                 {label}
             </Text>
+            {
+                rightIcon &&
+                <MaterialCommunityIcons
+                    name={CommonIcons.arrowRightChevron}
+                    size={24}
+                    color={'white'}
+                />
+            }
         </TouchableOpacity>
     )
 }

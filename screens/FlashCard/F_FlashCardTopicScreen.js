@@ -8,11 +8,12 @@ import { getLearntVocabularyByTopic, saveLearntVocabularyByTopic, _onPlaySoundLo
 import TopicModel from '../../app/models/topicModel';
 import VocabularyModel from '../../app/models/vocabularyModel';
 import QuizAPI from '../../app/API/QuizAPI';
+import Quiz from '../../app/DB/Quiz';
 
 
 const F_FlashCardTopicScreen = (props) => {
 
-    const {field} = props.route?.params;
+    const { field } = props.route?.params;
 
     const dispatch = useDispatch();
 
@@ -41,24 +42,34 @@ const F_FlashCardTopicScreen = (props) => {
 
 
     useEffect(() => {
-
-        QuizAPI.getAllTopicByField(field?.id)
-        .then(res => {
-            setIsLoading(true)
-            if(res.status_code === 200 && res.data?.length > 0){
-                let topicListData = [];
-                res.data?.forEach((e) => {
-                    let topic = new TopicModel(e);
-                    topicListData = [...topicListData,topic];
-                });
-                setTopicList(topicListData);
+        Quiz.getFieldTopic(field?.id, success => {
+            if (success?.length > 0) {
+                setTopicList(success)
             }
-        }).catch((err) => {
-            console.log('err: ',err)
+        }, () => {
+            console.warn('failed')
         })
-        .finally(() => setIsLoading(false))
-
     }, [])
+
+    // remote API
+    // useEffect(() => {
+    //     QuizAPI.getAllTopicByField(field?.id)
+    //         .then(res => {
+    //             setIsLoading(true)
+    //             if (res.status_code === 200 && res.data?.length > 0) {
+    //                 let topicListData = [];
+    //                 res.data?.forEach((e) => {
+    //                     let topic = new TopicModel(e);
+    //                     topicListData = [...topicListData, topic];
+    //                 });
+    //                 setTopicList(topicListData);
+    //             }
+    //         }).catch((err) => {
+    //             console.log('err: ', err)
+    //         })
+    //         .finally(() => setIsLoading(false))
+
+    // }, [])
 
     function getFields(input, field) {
         var output = [];
@@ -76,19 +87,20 @@ const F_FlashCardTopicScreen = (props) => {
             // get learnt vocabulary from localstorage
             let learnt_vocabulary_list = await getLearntVocabularyByTopic(topic.slug);
 
-            if (learnt_vocabulary_list?.length == topic.vocabulary_total) {
+            let topic_vocabulary_total = await Quiz.getTopicVocabularyTotal(topic?.id);
+            if (learnt_vocabulary_list?.length == topic_vocabulary_total) {
                 props.navigation.navigate('FlashCardTopicVocabulary', {
                     topic: topic
                 })
 
             } else {
-                let topic_vocabulary_all_list = await QuizAPI.getTopicVocabulary(topic.id);
-                topic_vocabulary_all_list = topic_vocabulary_all_list.data;
-               
+                let topic_vocabulary_all_list = await Quiz.getTopicVocabularyList(topic.id);
+
+                topic_vocabulary_all_list = topic_vocabulary_all_list;
+
                 if (learnt_vocabulary_list == null) {
                     learnt_vocabulary_list = [];
-                } 
-                console.log(topic_vocabulary_all_list);
+                }
                 // get learnt vocabulary ID list
                 let fields_id = getFields(learnt_vocabulary_list, 'id');
                 if (topic_vocabulary_all_list && topic_vocabulary_all_list.length > 0) {
@@ -126,13 +138,13 @@ const F_FlashCardTopicScreen = (props) => {
 
 
 
-    if(isLoading){
+    if (isLoading) {
         return (
             <View
                 style={{
-                    display:'flex',
-                    flex:1,
-                    justifyContent:'center'
+                    display: 'flex',
+                    flex: 1,
+                    justifyContent: 'center'
                 }}
             >
                 <ActivityIndicator
@@ -148,7 +160,7 @@ const F_FlashCardTopicScreen = (props) => {
 
 
         <ScrollView
-          
+
         >
             {
                 topicList.length > 0 &&

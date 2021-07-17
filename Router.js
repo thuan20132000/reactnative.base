@@ -9,22 +9,16 @@ import { useSelector } from 'react-redux';
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CommonIcons from './utils/CommonIcons';
-import D_HomeSearchScreen from './screens/Dictionary/D_HomeSearchScreen';
-import D_WordDefinitionScreen from './screens/Dictionary/D_WordDefinitionScreen';
 import F_FlashCardHomeScreen from './screens/FlashCard/F_FlashCardHomeScreen';
 import F_FlashCardChoiceScreen from './screens/FlashCard/F_FlashCardChoiceScreen';
 import F_FLashCardPracticeScreen from './screens/FlashCard/F_FLashCardPracticeScreen';
 import F_FlashCardPracticeFinishScreen from './screens/FlashCard/F_FlashCardPracticeFinishScreen';
 import F_TopicVocabularyListScreen from './screens/FlashCard/F_TopicVocabularyListScreen';
 import F_VocabularyDefinitionScreen from './screens/FlashCard/F_VocabularyDefinitionScreen';
-import D_SearchHistoryScreen from './screens/Dictionary/D_SearchHistoryScreen';
 import S_SettingHomeSceen from './screens/Settings/S_SettingHomeSceen';
 import S_VocabularyRemindScreen from './screens/Settings/S_VocabularyRemindScreen';
 import S_ContributionScreen from './screens/Settings/S_ContributionScreen';
-import N_NotificationHomeScreen from './screens/Notification/N_NotificationHomeScreen';
-import C_CommunityHomeScreen from './screens/Community/C_CommunityHomeScreen';
-import C_CommunityPostDetailScreen from './screens/Community/C_CommunityPostDetailScreen';
-import C_CommunityRecordPractiseScreen from './screens/Community/C_CommunityRecordPractiseScreen';
+
 import F_FlashCardFieldScreen from './screens/FlashCard/F_FlashCardFieldScreen';
 import F_FlashCardTopicScreen from './screens/FlashCard/F_FlashCardTopicScreen';
 import ReadingListScreen from './screens/ReadingPracticeStack/ReadingListScreen';
@@ -34,55 +28,10 @@ import ReadingVocabularyPracticeScreen from './screens/ReadingPracticeStack/Read
 import ReadingVocabularyPracticeFinishScreen from './screens/ReadingPracticeStack/ReadingVocabularyPracticeFinishScreen';
 import S_PrivacyPolicyScreen from './screens/Settings/S_PrivacyPolicyScreen';
 import S_TermAndConditionsScreen from './screens/Settings/S_TermAndConditionsScreen';
-import A_Signin from './screens/Authentication/A_Signin';
-import C_VideoRecordScreen from './screens/Community/C_VideoRecordScreen';
-import C_CommunityUploadScreen from './screens/Community/C_CommunityUploadScreen';
-import C_CommunityProfileScreen from './screens/Community/C_CommunityProfileScreen';
+
 import GrammarListScreen from './screens/Grammar/GrammarListScreen';
 import GrammarDescriptionScreen from './screens/Grammar/GrammarDescriptionScreen';
 import GrammarExcerciseScreen from './screens/Grammar/GrammarExcerciseScreen';
-
-
-const DictionaryStackNavigator = createStackNavigator();
-const DictionaryStack = (props) => {
-
-    const config = {
-        animation: 'spring',
-        config: {
-            stiffness: 1000,
-            damping: 500,
-            mass: 3,
-            overshootClamping: true,
-            restDisplacementThreshold: 0.01,
-            restSpeedThreshold: 0.01,
-
-        },
-    };
-
-
-    return (
-        <DictionaryStackNavigator.Navigator
-
-        >
-            <DictionaryStackNavigator.Screen
-                name={"HomeSearch"}
-                component={D_HomeSearchScreen}
-                options={{
-                    headerShown: false
-                }}
-            />
-            <DictionaryStackNavigator.Screen
-                name={"VocabularyDefinition"}
-                component={D_WordDefinitionScreen}
-            />
-            <DictionaryStackNavigator.Screen
-                name={"SearchHistory"}
-                component={D_SearchHistoryScreen}
-            />
-        </DictionaryStackNavigator.Navigator>
-    )
-}
-
 
 
 
@@ -192,17 +141,10 @@ const SettingStack = () => {
                 component={S_VocabularyRemindScreen}
             />
             <SettingStackNavigator.Screen
-                name={"SearchHistory"}
-                component={D_SearchHistoryScreen}
-            />
-            <SettingStackNavigator.Screen
                 name={"Contribution"}
                 component={S_ContributionScreen}
             />
-            <SettingStackNavigator.Screen
-                name={"VocabularyDefinition"}
-                component={D_WordDefinitionScreen}
-            />
+         
             <SettingStackNavigator.Screen
                 name={"PrivacyPolicy"}
                 component={S_PrivacyPolicyScreen}
@@ -262,91 +204,6 @@ const ReadingPracticeStack = () => {
 
 
 
-const NotificationStackNavigator = createStackNavigator();
-const NotificationStack = () => {
-    return (
-        <NotificationStackNavigator.Navigator
-            screenOptions={{
-                title: "Thông báo"
-            }}
-        >
-            <NotificationStackNavigator.Screen
-                name={"NotificationHome"}
-                component={N_NotificationHomeScreen}
-            />
-            <NotificationStackNavigator.Screen
-                name={"VocabularyDefinition"}
-                component={D_WordDefinitionScreen}
-            />
-        </NotificationStackNavigator.Navigator>
-    )
-}
-
-
-
-
-const CommunityStackNavigator = createStackNavigator();
-const CommunityStack = () => {
-
-    const { userInformation } = useSelector(state => state.authentication);
-    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-
-    React.useEffect(() => {
-        if (userInformation.access) {
-            setIsAuthenticated(true);
-        } else {
-            setIsAuthenticated(false);
-        }
-    }, [userInformation.access])
-
-    return (
-        <CommunityStackNavigator.Navigator>
-
-            {
-                isAuthenticated ?
-                    <>
-                        <CommunityStackNavigator.Screen
-                            name="CommunityHome"
-                            component={C_CommunityHomeScreen}
-                        />
-                        <CommunityStackNavigator.Screen
-                            name="CommunityPostDetail"
-                            component={C_CommunityPostDetailScreen}
-                        />
-                        <CommunityStackNavigator.Screen
-                            name="CommunityRecordPractise"
-                            component={C_CommunityRecordPractiseScreen}
-                        />
-                        <CommunityStackNavigator.Screen
-                            name="CommunityVideoRecord"
-                            component={C_VideoRecordScreen}
-                        />
-                        <CommunityStackNavigator.Screen
-                            name="CommunityUpload"
-                            component={C_CommunityUploadScreen}
-                        />
-                        <CommunityStackNavigator.Screen
-                            name="CommunityProfile"
-                            component={C_CommunityProfileScreen}
-                        />
-                    </>
-                    :
-                    <>
-                        {/* <CommunityStackNavigator.Screen
-                            name="VideoRecord"
-                            component={C_VideoRecordScreen}
-                        /> */}
-                        <CommunityStackNavigator.Screen
-                            name="Signin"
-                            component={A_Signin}
-                        />
-                    </>
-            }
-
-
-        </CommunityStackNavigator.Navigator>
-    )
-}
 
 const GrammarStackNavigator = createStackNavigator();
 const GrammarStack = ()=> {
@@ -432,29 +289,12 @@ const TabBottom = () => {
                     title: "Luyện Đọc"
                 }}
             />
-            <TabBottomNavigator.Screen
+            {/* <TabBottomNavigator.Screen
                 name="TabGrammar"
                 component={GrammarStack}
                 options={{
                     title: "Ngữ Pháp",
                     // tabBarBadge: notificationNumber
-                }}
-
-            />
-            {/* <TabBottomNavigator.Screen
-                name="Community"
-                component={CommunityStack}
-                options={{
-                    title: "Cộng đồng",
-
-                }}
-            />
-            <TabBottomNavigator.Screen
-                name="TabDictionary"
-                component={DictionaryStack}
-                options={{
-                    title: "Từ điển",
-
                 }}
 
             /> */}

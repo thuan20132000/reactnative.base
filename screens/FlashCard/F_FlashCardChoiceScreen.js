@@ -31,11 +31,11 @@ const F_FlashCardChoiceScreen = (props) => {
     const [isPlaySound, setIsPlaySound] = useState(false);
     const _onPlayVocabularySound = async () => {
         setIsPlaySound(true);
-        // let res = await _onPlayFlashCardSound(vocabulary?.sound_us);
-        // setTimeout(() => {
+      
+        let str = vocabulary.sound_us.slice(7);
+        let encode = encodeURIComponent(str)
+        let path = config.audio_url+encode;
 
-        // }, 1200);
-        let path = `${vocabulary.sound_us}`;
 
         setTimeout(() => {
             var sound = new Sound(path, '', (error) => {

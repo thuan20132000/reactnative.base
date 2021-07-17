@@ -48,7 +48,10 @@ const F_FLashCardPracticeScreen = (props) => {
         setSelectedWord(word);
 
         setTimeout(() => {
-            let path = `${word?.sound_us}`;
+            let str = word?.sound_us.slice(7);
+            let encode = encodeURIComponent(str)
+            let path = config.audio_url+encode;
+
             var sound = new Sound(path, '', (error) => {
                 /* ... */
                 if (error) {

@@ -135,10 +135,8 @@ android {
         applicationId "com.english_practice_askmeit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 17
-        versionName "1.7"
-        missingDimensionStrategy 'react-native-camera', 'general' // <--- insert this line
-
+        versionCode 19
+        versionName "1.9"
     }
     splits {
         abi {
@@ -196,11 +194,11 @@ android {
 
 dependencies {
 
-    implementation project(':react-native-camera')
-    compile project(':@react-native-community_cameraroll')
 
     // For animated GIF support
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
+    implementation project(':react-native-sqlite-storage')
+
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
