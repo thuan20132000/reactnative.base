@@ -55,15 +55,12 @@ const ReadingVocabularyScreen = (props) => {
 
             await audioRecorderPlayer.setVolume(1.0);
             audioRecorderPlayer.addPlayBackListener((e) => {
-                // console.log(e.current_position);
-
-                let leave_time = e.duration - e.current_position;
+             
+                let leave_time = e.duration - e.currentPosition;
                 let xx = millisToMinutesAndSeconds(leave_time);
+              
                 setDuration(xx);
-                // setCurrentProgress(1/Number(leave_time));
-                let progress = e.current_position / e.duration;
-                // console.log()
-                // console.log('progress: ', progress);
+                let progress = e.currentPosition / e.duration;
                 if (progress) {
                     setCurrentProgress(progress);
 
@@ -72,7 +69,7 @@ const ReadingVocabularyScreen = (props) => {
                 // console.log('playing...', xx);
 
 
-                if (e.current_position >= e.duration) {
+                if (e.currentPosition >= e.duration) {
 
                     audioRecorderPlayer.stopPlayer()
                         .then(() => {

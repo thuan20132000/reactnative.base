@@ -182,9 +182,9 @@ const ReadingPracticeScreen = (props) => {
                 setIsRecording(true);
 
                 audioRecorderPlayer.addRecordBackListener(e => {
-                    // console.log('Recording . . . ', e.current_position);
+                    // console.log('Recording . . . ', e.currentPosition);
 
-                    let x = audioRecorderPlayer.mmssss(Math.floor(e.current_position));
+                    let x = audioRecorderPlayer.mmssss(Math.floor(e.currentPosition));
                     setRecordingTime(x);
 
                     return;
@@ -241,15 +241,15 @@ const ReadingPracticeScreen = (props) => {
 
             await audioRecorderPlayer.setVolume(1.0);
             audioRecorderPlayer.addPlayBackListener((e) => {
-                // console.log(e.current_position);
-                // console.log('playing...', e.current_position);
-                let leave_time = e.duration - e.current_position;
+                // console.log(e.currentPosition);
+                // console.log('playing...', e.currentPosition);
+                let leave_time = e.duration - e.currentPosition;
                 let xx = millisToMinutesAndSeconds(leave_time);
                 setDuration(xx);
-                let progress = e.current_position / e.duration;
+                let progress = e.currentPosition / e.duration;
                 setCurrentProgress(progress);
 
-                if (e.current_position === e.duration) {
+                if (e.currentPosition === e.duration) {
 
                     audioRecorderPlayer.stopPlayer()
                         .then(() => {
