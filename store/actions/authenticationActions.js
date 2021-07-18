@@ -12,6 +12,15 @@ export const signin = (data) => {
     }
 }
 
+export const logout = (data='') => {
+    console.warn('log')
+
+    return {
+        type:LOGOUT,
+        data:data
+    }
+}
+
 
 export const updateUserProfile = (data) => {
     return {

@@ -96,3 +96,34 @@ export const getCompleteGrammar = async (grammar_id: string) => {
 }
 
 
+
+
+/**
+ * 
+ * @param 
+ * @param  
+ * @returns 
+ */
+ export const setUserAuth = async (user: any) => {
+    try {
+        return await AsyncStorage.setItem(`@user_auth`, JSON.stringify(user))
+    } catch (error) {
+        throw error
+    }
+}
+
+
+
+/**
+ * 
+ * @param 
+ * @returns 
+ */
+export const getUserAuth = async () => {
+    try {
+        let data = await AsyncStorage.getItem(`@user_auth`);
+        return JSON.parse(data)
+    } catch (error) {
+        return null
+    }
+}

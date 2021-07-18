@@ -34,6 +34,10 @@ import GrammarDescriptionScreen from './screens/Grammar/GrammarDescriptionScreen
 import GrammarExcerciseScreen from './screens/Grammar/GrammarExcerciseScreen';
 import VideoCall from './screens/VideoCall/VideoCall';
 import VideoHome from './screens/VideoCall/VideoHome';
+import A_Signin from './screens/Authentication/A_Signin';
+import SignIn from './screens/Authentication/SignIn';
+import { getUserAuth } from './app/StorageManager';
+import AppManager from './app/AppManager';
 
 
 
@@ -146,7 +150,7 @@ const SettingStack = () => {
                 name={"Contribution"}
                 component={S_ContributionScreen}
             />
-         
+
             <SettingStackNavigator.Screen
                 name={"PrivacyPolicy"}
                 component={S_PrivacyPolicyScreen}
@@ -208,21 +212,21 @@ const ReadingPracticeStack = () => {
 
 
 const GrammarStackNavigator = createStackNavigator();
-const GrammarStack = ()=> {
+const GrammarStack = () => {
     return (
         <GrammarStackNavigator.Navigator>
             <GrammarStackNavigator.Screen
                 name={"GrammarList"}
                 component={GrammarListScreen}
                 options={{
-                    title:"Ngữ pháp"
+                    title: "Ngữ pháp"
                 }}
             />
             <GrammarStackNavigator.Screen
                 name={"GrammarDescription"}
                 component={GrammarDescriptionScreen}
             />
-             <GrammarStackNavigator.Screen
+            <GrammarStackNavigator.Screen
                 name={"GrammarExcerciseScreen"}
                 component={GrammarExcerciseScreen}
             />
@@ -231,22 +235,69 @@ const GrammarStack = ()=> {
 }
 
 const VideoStackNavigator = createStackNavigator();
-const VideoStack = ()=> {
+const VideoStack = () => {
+
+    // React.useEffect(() => {
+    //     getUserAuth().then(res => {
+    //         console.warn('a: ', res)
+    //     })
+    // }, [])
+    // console.warn('dsfds')
+    const [isAuth, setIsAuth] = React.useState(false);
+    const { userInformation } = useSelector(state => state.authentication);
+
+    React.useEffect(() => {
+        // getUserAuth().then(res => {
+        //     if(res){
+        //         setIsAuth(true)
+        //     }else{
+        //         setIsAuth(false)
+        //     }
+        // })
+        // console.warn('auth: ', AppManager.shared.user?.name)
+        console.warn('dsadada d', userInformation.toString())
+        if (userInformation.toString()) {
+            setIsAuth(true)
+        } else {
+            setIsAuth(false)
+        }
+
+    }, [userInformation])
+
     return (
         <VideoStackNavigator.Navigator>
-            <VideoStackNavigator.Screen
-                name={"VideoHome"}
-                component={VideoHome}
-                options={{
-                    title:"Video Home"
-                }}
-            />
-            <VideoStackNavigator.Screen
-                name={"VideoCall"}
-                component={VideoCall}
-            
-            />
-         
+
+            {
+                !isAuth &&
+                <VideoStackNavigator.Screen
+                    name={"Signin"}
+                    component={SignIn}
+                    options={{
+                        title: "Sign In"
+                    }}
+                />
+
+            }
+
+            {
+                isAuth &&
+                <>
+                    <VideoStackNavigator.Screen
+                        name={"VideoHome"}
+                        component={VideoHome}
+                        options={{
+                            title: "Video Home"
+                        }}
+                    />
+                    <VideoStackNavigator.Screen
+                        name={"VideoCall"}
+                        component={VideoCall}
+
+                    />
+                </>
+            }
+
+
         </VideoStackNavigator.Navigator>
     )
 }

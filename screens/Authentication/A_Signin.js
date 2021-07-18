@@ -5,6 +5,9 @@ import { ActivityIndicator, Button, HelperText, Snackbar, Title } from 'react-na
 import { sigin } from '../../utils/api_v1';
 import * as authenticationActions from '../../store/actions/authenticationActions';
 import { useDispatch } from 'react-redux';
+
+
+
 const A_Signin = () => {
     const dispatch = useDispatch();
     const [userAuth, setUserAuth] = useState({
@@ -20,7 +23,7 @@ const A_Signin = () => {
     const _login = async () => {
         if (!userAuth.phonenumber || !userAuth.password) {
             setLoginError({
-                message:"Please Enter full phonenumber and password!"
+                message: "Please Enter full phonenumber and password!"
             });
             return;
         }
@@ -36,7 +39,7 @@ const A_Signin = () => {
                 } else {
                     if (res.message) {
 
-                        setLoginError({message:res.message});
+                        setLoginError({ message: res.message });
 
 
                     }
@@ -80,7 +83,7 @@ const A_Signin = () => {
                     <Text style={[styles.error]}>{loginError?.message}</Text>
 
                 }
-               
+
                 <TextInput
                     style={[styles.inputLogin, {}]}
                     onChangeText={text => setUserAuth({ ...userAuth, phonenumber: text })}
@@ -108,34 +111,7 @@ const A_Signin = () => {
                     }
                 </TouchableOpacity>
             </View>
-            {/* <View style={styles.socialNetworkLogin}>
-                <Button style={{ marginRight: 16 }}
-                    labelStyle={{
-                        color: 'white'
-                    }}
-                    icon="facebook"
-                    mode="contained" onPress={() => console.log('Pressed')}
-                >
-                    Facebook
-                    </Button>
-                <Button
-                    labelStyle={{
-                        color: 'white'
-                    }}
-                    color={'salmon'}
-                    icon="google"
-                    mode="contained" onPress={() => console.log('Pressed')}
-                >
-                    Google
-                    </Button>
-            </View> */}
-            {/* <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
-                <TouchableOpacity
-                    onPress={() => console.warn('ds')}
-                >
-                    <Text>Quên mật khẩu?</Text>
-                </TouchableOpacity>
-            </View> */}
+        
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('register')}
@@ -143,7 +119,7 @@ const A_Signin = () => {
                     <Text>Đăng ký tài khoản mới?</Text>
                 </TouchableOpacity>
             </View>
-
+            
 
 
         </View>
@@ -195,9 +171,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
 
     },
-    error:{
-        color:'red',
-        textAlign:'center'
+    error: {
+        color: 'red',
+        textAlign: 'center'
     }
 
 })

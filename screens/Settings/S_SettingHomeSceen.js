@@ -3,9 +3,20 @@ import { Image, StyleSheet, Text, View, Linking, Share } from 'react-native'
 import CommonIcons from '../../utils/CommonIcons'
 import RowItem from '../Settings/components/RowItem'
 import LearningActivities from './components/LearningActivities'
+import {
+    AccessToken,
+    AuthenticationToken,
+    LoginButton,
+    LoginManager
+} from 'react-native-fbsdk-next';
+import { setUserAuth } from '../../app/StorageManager';
+import AppManager from '../../app/AppManager'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../store/actions/authenticationActions'
 
 const S_SettingHomeSceen = (props) => {
 
+    const dispatch = useDispatch();
 
     const _onOpenSharing = async () => {
         try {
@@ -43,6 +54,14 @@ const S_SettingHomeSceen = (props) => {
 
     }
 
+    const _onLogOut = async () => {
+        console.log('logout')
+        setUserAuth(null)
+        // props.navigation.replace('VideoHome')
+        AppManager.shared.user = null
+        dispatch(logout())
+
+    }
 
     return (
         <View
@@ -185,22 +204,32 @@ const S_SettingHomeSceen = (props) => {
                 }}
                 onItemPress={() => props.navigation.navigate('PrivacyPolicy')}
             />
-            <RowItem
-                label={"Terms and Conditions"}
-                leftIconName={CommonIcons.checkProgress}
-                leftIconStyle={{
-                    color: 'coral'
+            <LoginButton
+                onLoginFinished={(error, result) => {
+                    if (error) {
+                        console.log('login has error: ' + result);
+                    } else if (result.isCancelled) {
+                        console.log('login is cancelled.');
+                    } else {
+                        if (Platform.OS === 'ios') {
+                            AuthenticationToken.getAuthenticationTokenIOS().then((data) => {
+                                console.log(data?.authenticationToken);
+                            });
+                        } else {
+                            AccessToken.getCurrentAccessToken().then((data) => {
+                                console.log(data?.accessToken.toString());
+                                console.log('adta: ', data)
+                            
+                            });
+                        }
+                    }
                 }}
-                containerStyle={[styles.itemContainer]}
+                onLogoutFinished={_onLogOut}
+                loginTrackingIOS={'limited'}
+                nonceIOS={'my_nonce'}
 
-                leftIconSize={26}
-                labelStyle={{
-                    marginLeft: 16,
-                    fontSize: 16
-
-                }}
-                onItemPress={() => props.navigation.navigate('TermConditions')}
             />
+
             <View
                 style={[
                     {
