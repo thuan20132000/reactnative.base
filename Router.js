@@ -32,6 +32,8 @@ import S_TermAndConditionsScreen from './screens/Settings/S_TermAndConditionsScr
 import GrammarListScreen from './screens/Grammar/GrammarListScreen';
 import GrammarDescriptionScreen from './screens/Grammar/GrammarDescriptionScreen';
 import GrammarExcerciseScreen from './screens/Grammar/GrammarExcerciseScreen';
+import VideoCall from './screens/VideoCall/VideoCall';
+import VideoHome from './screens/VideoCall/VideoHome';
 
 
 
@@ -228,6 +230,27 @@ const GrammarStack = ()=> {
     )
 }
 
+const VideoStackNavigator = createStackNavigator();
+const VideoStack = ()=> {
+    return (
+        <VideoStackNavigator.Navigator>
+            <VideoStackNavigator.Screen
+                name={"VideoHome"}
+                component={VideoHome}
+                options={{
+                    title:"Video Home"
+                }}
+            />
+            <VideoStackNavigator.Screen
+                name={"VideoCall"}
+                component={VideoCall}
+            
+            />
+         
+        </VideoStackNavigator.Navigator>
+    )
+}
+
 // 
 const TabBottomNavigator = createBottomTabNavigator();
 const TabBottom = () => {
@@ -287,6 +310,13 @@ const TabBottom = () => {
                 component={ReadingPracticeStack}
                 options={{
                     title: "Luyện Đọc"
+                }}
+            />
+            <TabBottomNavigator.Screen
+                name="VideoCall"
+                component={VideoStack}
+                options={{
+                    title: "Video Call"
                 }}
             />
             {/* <TabBottomNavigator.Screen

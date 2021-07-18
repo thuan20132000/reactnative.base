@@ -79,6 +79,8 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
+    entryFile: "index.js",
+    bundleAssetName: "app.bundle",
     enableHermes: false,  // clean and rebuild if changing
 ]
 
@@ -135,7 +137,7 @@ android {
         applicationId "com.english_practice_askmeit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
+        versionCode 20
         versionName "1.9"
     }
     splits {
@@ -190,6 +192,16 @@ android {
 
         }
     }
+    packagingOptions {
+      pickFirst 'lib/x86/libc++_shared.so'
+      pickFirst 'lib/x86/libjsc.so'
+      pickFirst 'lib/x86_64/libjsc.so'
+      pickFirst 'lib/arm64-v8a/libjsc.so'
+      pickFirst 'lib/arm64-v8a/libc++_shared.so'
+      pickFirst 'lib/x86_64/libc++_shared.so'
+      pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+      pickFirst 'lib/armeabi-v7a/libjsc.so'
+  }
 }
 
 dependencies {
@@ -199,6 +211,20 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
     implementation project(':react-native-sqlite-storage')
 
+    implementation(project(':react-native-jitsi-meet')){
+        exclude group: 'com.facebook.react',module:'react-native-locale-detector'
+        exclude group: 'com.facebook.react',module:'react-native-vector-icons'
+        // Un-comment below if using hermes
+        //exclude group: 'com.facebook',module:'hermes'
+        // Un-comment any packages below that you have added to your project to prevent `duplicate_classes` errors
+        exclude group: 'com.facebook.react',module:'react-native-community-async-storage'
+        //exclude group: 'com.facebook.react',module:'react-native-community_netinfo'
+        //exclude group: 'com.facebook.react',module:'react-native-svg'
+        //exclude group: 'com.facebook.react',module:'react-native-fetch-blob'
+        exclude group: 'com.facebook.react',module:'react-native-webview'
+        //exclude group: 'com.facebook.react',module:'react-native-linear-gradient'
+        exclude group: 'com.facebook.react',module:'react-native-sound'
+    }
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
