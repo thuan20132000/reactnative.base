@@ -21,8 +21,10 @@ const F_FlashCardFieldScreen = (props) => {
         props.navigation.setOptions({
             headerShown: false
         })
+        console.warn('ff')
 
         Quiz.getAllField((success) => {
+            console.warn('ff 2')
             let fieldListData = [];
             success.forEach(element => {
                 let field = new FieldModel(element);

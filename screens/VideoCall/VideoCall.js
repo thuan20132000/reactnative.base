@@ -6,10 +6,16 @@ import ButtonText from '../../components/Button/BottonText';
 import ReadingText from './components/ReadingText';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../utils/CommonIcons';
+import ConversationTopicModel from '../../app/models/conversationTopicModel';
+import ConversationAPI from '../../app/API/ConversationAPI';
+import ConversationPostModel from '../../app/models/conversationPostModel';
+import RNProgressHud from 'progress-hud';
+import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
 
 const VideoCall = (props) => {
 
     const [isCalling, setIsCalling] = useState(false);
+    const [conversation, setConversation] = useState(null);
 
     const { item } = props?.route?.params
 
@@ -31,7 +37,7 @@ const VideoCall = (props) => {
         setIsCalling(false)
     }
 
-
+   
 
     function onConferenceTerminated(nativeEvent) {
         /* Conference terminated event */
@@ -54,6 +60,19 @@ const VideoCall = (props) => {
 
 
     useLayoutEffect(() => {
+
+        RNProgressHud.show();
+
+        ConversationAPI.getConversationPostDetail(1)
+            .then((res) => {
+                if (res.status_code == 200) {
+                    setConversation(new ConversationPostModel(res?.data))
+                }
+            }).finally(() => {
+                RNProgressHud.dismiss()
+                console.log(conversation)
+            })
+
         props.navigation.setOptions({
             headerShown: false
         })
@@ -192,7 +211,11 @@ const VideoCall = (props) => {
                     flex: 1
                 }}
             >
-                <ReadingText readingpost={item} />
+                {
+                    conversation &&
+                    <ReadingText readingpost={conversation} postContent={conversation?.content} />
+
+                }
             </View>
 
 

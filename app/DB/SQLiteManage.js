@@ -27,15 +27,19 @@ class SQLiteManager {
                 name: database_name,
                 location: 'default',
                 createFromLocation: '~www/db.sqlite3',
-            },()=>{
+            }, () => {
                 console.warn('connect success')
-            },(err)=> {
+            }, (err) => {
                 console.warn(err)
             })
         } else {
             this.db = SQLite.openDatabase({
                 name: database_name,
                 createFromLocation: 1
+            }, () => {
+                console.warn('connect success ios ',database_name)
+            }, (err) => {
+                console.warn(err)
             })
         }
         return this.db

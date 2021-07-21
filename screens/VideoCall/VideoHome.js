@@ -7,16 +7,33 @@ import AppManager from '../../app/AppManager';
 import ButtonText from '../../components/Button/BottonText';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/actions/authenticationActions';
+import ConversationAPI from '../../app/API/ConversationAPI';
+import RNProgressHud from 'progress-hud';
+
+
 const VideoHome = (props) => {
 
     const [readingPost, setReadingPosts] = useState([]);
 
     useEffect(() => {
-        ReadingPostDB.getReadingPost(success => {
-            if (success && success.length > 0) {
-                setReadingPosts(success)
+        // ReadingPostDB.getReadingPost(success => {
+        //     if (success && success.length > 0) {
+        //         setReadingPosts(success)
+        //     }
+        // })
+        RNProgressHud.show()
+        ConversationAPI.getAllConversationPost()
+        .then(res => {
+            console.warn('res :',res)
+            if(res.status_code == 200){
+                setReadingPosts(res.data)
             }
         })
+        .catch((err) => {
+            console.warn('err" ',err)
+        })
+        .finally(() => RNProgressHud.dismiss())
+
     }, []);
 
 

@@ -27,7 +27,6 @@ const CardReading = ({
 
 
 
-    const image_url = config.aws_url+image_path
 
     return (
         <Card
@@ -44,7 +43,7 @@ const CardReading = ({
             <Image
 
                 source={{
-                    uri: image_url
+                    uri: image_path
                 }}
                 style={{
                     width: deviceWidth,

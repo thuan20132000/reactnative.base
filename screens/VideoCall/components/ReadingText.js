@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
-import { ScrollView, Linking, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing, Platform, TextInput, ActivityIndicator, Alert } from 'react-native'
+import { ScrollView, Linking, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing, Platform, TextInput, ActivityIndicator, Alert, useWindowDimensions } from 'react-native'
 import Highlighter from 'react-native-highlight-words';
 import ReadingModel from '../../../app/models/readingModel';
 import ReadingPostDB from '../../../app/DB/ReadingPost';
 import { FAB, Portal, Provider } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { WebView } from 'react-native-webview';
+import RenderHtml from "react-native-render-html";
+import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
+const audioRecorderPlayer = new AudioRecorderPlayer();
 
-const ReadingText = ({ readingpost }) => {
+const ReadingText = ({ readingpost, postContent }) => {
     const navigation = useNavigation();
 
     const _refRecordingTime = React.useRef();
@@ -18,7 +22,7 @@ const ReadingText = ({ readingpost }) => {
     const [readingPost, setReadingPost] = React.useState();
     const [readStyle, setReadStyle] = useState({
         fontSize: 24,
-        speed: 35
+        speed: 45
     });
     const [contentHeight, setContentHeight] = useState(0)
 
@@ -26,6 +30,81 @@ const ReadingText = ({ readingpost }) => {
     const _onRunTextScroll = () => {
 
 
+        setTimeout(() => {
+            _onRunScroll()
+        }, 3000);
+    }
+
+    const _onPlayAudio = async () => {
+        if (!readingpost?.audio) {
+            return;
+        }
+
+        try {
+
+
+            let reading_audio_path = readingpost?.audio;
+            let e = await audioRecorderPlayer.startPlayer(reading_audio_path);
+            await audioRecorderPlayer.setVolume(1.0);
+            audioRecorderPlayer.addPlayBackListener((e) => {
+                console.warn(e.currentPosition)
+
+                // let leave_time = e.duration - e.currentPosition;
+                // let xx = millisToMinutesAndSeconds(leave_time);
+
+                // setDuration(xx);
+                // let progress = e.currentPosition / e.duration;
+                // if (progress) {
+                //     setCurrentProgress(progress);
+
+                // }
+
+                // console.log('playing...', xx);
+
+
+                // if (e.currentPosition >= e.duration) {
+
+                //     audioRecorderPlayer.stopPlayer()
+                //         .then(() => {
+                //             console.log('stopped play')
+                //             audioRecorderPlayer.removePlayBackListener();
+                //         })
+                //         .catch((err) => {
+                //             console.log('error: ', err);
+                //             // setIsPlaying(false);
+
+                //         })
+                //         .finally(() => {
+                //             setIsPlaying(false);
+                //         })
+
+                // }
+
+            });
+
+
+
+        } catch (error) {
+            console.log('error: ', error);
+        }
+    }
+
+    const _onStopPlayAudio = () => {
+        audioRecorderPlayer.stopPlayer()
+            .then(() => {
+                console.log('stopped play')
+                audioRecorderPlayer.removePlayBackListener();
+            })
+            .catch((err) => {
+                console.log('error: ', err);
+                // setIsPlaying(false);
+
+            })
+
+
+    }
+
+    const _onRunScroll = () => {
         scrollAnimation.current.addListener((animation) => {
             _refScrollView.current &&
                 _refScrollView.current.scrollTo({
@@ -43,18 +122,21 @@ const ReadingText = ({ readingpost }) => {
             }).start()
 
         }
-
-
     }
 
 
     React.useEffect(() => {
-        ReadingPostDB.getReadingPostDetail(readingpost?.id, res => {
-            if (res) {
-                let readingPost = new ReadingModel(res)
-                setReadingPost(readingPost);
-            }
-        })
+        // ReadingPostDB.getReadingPostDetail(readingpost?.id, res => {
+        //     if (res) {
+        //         let readingPost = new ReadingModel(res)
+        //         setReadingPost(readingPost);
+        //     }
+        // })
+
+        console.warn('cdcd ', postContent)
+        return () => {
+            _onStopPlayAudio()
+        }
     }, [])
 
 
@@ -63,9 +145,10 @@ const ReadingText = ({ readingpost }) => {
 
     const onStateChange = ({ open }) => setFabState({ open });
 
+    const { width } = useWindowDimensions();
 
 
-
+    const html = `${postContent}`;
 
     return (
         <Provider>
@@ -91,15 +174,16 @@ const ReadingText = ({ readingpost }) => {
                             },
                         },
                         {
-                            icon: '0',
-                            label: 'Remind',
-                            onPress: () => console.log('Pressed notifications'),
-                            small: false,
+                            icon: 'email',
+                            label: 'play audio',
+                            onPress: () => {
+                                _onPlayAudio()
+                            },
                         },
                     ]}
                     onStateChange={onStateChange}
                     onPress={() => {
-                    
+
                     }}
                 />
             </Portal>
@@ -116,9 +200,12 @@ const ReadingText = ({ readingpost }) => {
                 }}
 
 
-            >
 
-                <View
+            >
+                <RenderHtml source={{ html }} contentWidth={width} baseStyle={{
+                    paddingHorizontal: 12
+                }} />
+                {/* <View
                     style={{
                         backgroundColor: 'white',
                         paddingHorizontal: 12
@@ -145,8 +232,8 @@ const ReadingText = ({ readingpost }) => {
                         }
 
                     </Text>
-                 
-                </View>
+
+                </View> */}
 
             </Animated.ScrollView>
         </Provider>
