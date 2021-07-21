@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { ScrollView, Linking, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing, Platform, TextInput, ActivityIndicator, Alert, useWindowDimensions } from 'react-native'
-import Highlighter from 'react-native-highlight-words';
-import ReadingModel from '../../../app/models/readingModel';
-import ReadingPostDB from '../../../app/DB/ReadingPost';
+
 import { FAB, Portal, Provider } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { WebView } from 'react-native-webview';
 import RenderHtml from "react-native-render-html";
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
+
+
+
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const ReadingText = ({ readingpost, postContent }) => {
@@ -47,7 +47,6 @@ const ReadingText = ({ readingpost, postContent }) => {
             let e = await audioRecorderPlayer.startPlayer(reading_audio_path);
             await audioRecorderPlayer.setVolume(1.0);
             audioRecorderPlayer.addPlayBackListener((e) => {
-                console.warn(e.currentPosition)
 
                 // let leave_time = e.duration - e.currentPosition;
                 // let xx = millisToMinutesAndSeconds(leave_time);
@@ -126,19 +125,16 @@ const ReadingText = ({ readingpost, postContent }) => {
 
 
     React.useEffect(() => {
-        // ReadingPostDB.getReadingPostDetail(readingpost?.id, res => {
-        //     if (res) {
-        //         let readingPost = new ReadingModel(res)
-        //         setReadingPost(readingPost);
-        //     }
-        // })
 
-        console.warn('cdcd ', postContent)
         return () => {
             _onStopPlayAudio()
         }
     }, [])
 
+
+    const _onNavigateToGroup = () => {
+        navigation.navigate('ConversationGroup')
+    }
 
 
     const [fabState, setFabState] = React.useState({ open: false });
@@ -160,7 +156,7 @@ const ReadingText = ({ readingpost, postContent }) => {
                         { icon: 'plus', onPress: () => console.log('Pressed add') },
                         {
                             icon: 'star',
-                            label: 'Start',
+                            label: 'Bắt đầu',
                             onPress: () => {
                                 // scrollAnimation.current.stopAnimation((val => console.warn('v: ', val))
                                 _onRunTextScroll()
@@ -175,9 +171,16 @@ const ReadingText = ({ readingpost, postContent }) => {
                         },
                         {
                             icon: 'email',
-                            label: 'play audio',
+                            label: 'Nghe',
                             onPress: () => {
                                 _onPlayAudio()
+                            },
+                        },
+                        {
+                            icon: 'email',
+                            label: 'Tạo nhóm',
+                            onPress: () => {
+                                _onNavigateToGroup()
                             },
                         },
                     ]}

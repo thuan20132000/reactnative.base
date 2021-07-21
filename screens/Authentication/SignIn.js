@@ -19,16 +19,13 @@ const SignIn = (props) => {
 
     const dispatch = useDispatch();
     const _onGetUserInfo = async (access_token) => {
-        console.warn(access_token)
 
         authenticationAPI.signinWithFacebook(access_token)
             .then((res) => {
                 if (res) {
-                    let user = new UserModel(res)
-                    user.token = access_token
-                    AppManager.shared.user = user
-                    setUserAuth(user.toString())
-                    dispatch(signin(user))
+                    AppManager.shared.user = res
+                    setUserAuth(res.toString())
+                    dispatch(signin(res))
                 }
             })
             .catch((err) => {

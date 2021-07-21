@@ -1,6 +1,6 @@
 
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet'
 import ButtonText from '../../components/Button/BottonText';
 import ReadingText from './components/ReadingText';
@@ -11,8 +11,9 @@ import ConversationAPI from '../../app/API/ConversationAPI';
 import ConversationPostModel from '../../app/models/conversationPostModel';
 import RNProgressHud from 'progress-hud';
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
+import AppManager from '../../app/AppManager';
 
-const VideoCall = (props) => {
+const ConversationDetail = (props) => {
 
     const [isCalling, setIsCalling] = useState(false);
     const [conversation, setConversation] = useState(null);
@@ -61,6 +62,8 @@ const VideoCall = (props) => {
 
     useLayoutEffect(() => {
 
+        console.log('sss ',AppManager.shared.user)
+
         RNProgressHud.show();
 
         ConversationAPI.getConversationPostDetail(1)
@@ -90,7 +93,7 @@ const VideoCall = (props) => {
     }, [])
 
     return (
-        <View
+        <SafeAreaView
             style={{
                 flex: 1
             }}
@@ -116,6 +119,7 @@ const VideoCall = (props) => {
                         flexDirection: 'row'
                     }}
                 >
+                    
                     <View
                         style={{
                             display: 'flex',
@@ -125,7 +129,9 @@ const VideoCall = (props) => {
                         }}
                     >
                         <Image
-                            source={require('../../utils/photos/avatar1.jpeg')}
+                            source={{
+                                uri:AppManager.shared.user?.image_path
+                            }}
                             resizeMode="cover"
                             style={{
                                 width: 60,
@@ -133,7 +139,7 @@ const VideoCall = (props) => {
                                 borderRadius: 30
                             }}
                         />
-                        <Text style={{ fontWeight: '700', fontSize: 12 }}>Thuantruong</Text>
+                        <Text style={{ fontWeight: '700', fontSize: 12 }}>{AppManager.shared?.user?.name}</Text>
                     </View>
                     <View
                         style={{
@@ -248,11 +254,11 @@ const VideoCall = (props) => {
 
                 }
             </View>
-        </View>
+        </SafeAreaView>
 
 
 
     )
 }
 
-export default VideoCall
+export default ConversationDetail

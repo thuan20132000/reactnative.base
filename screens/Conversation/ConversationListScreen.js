@@ -11,7 +11,7 @@ import ConversationAPI from '../../app/API/ConversationAPI';
 import RNProgressHud from 'progress-hud';
 
 
-const VideoHome = (props) => {
+const ConversationList = (props) => {
 
     const [readingPost, setReadingPosts] = useState([]);
 
@@ -37,13 +37,9 @@ const VideoHome = (props) => {
     }, []);
 
 
-    useEffect(() => {
-        console.warn('dfd')
-    }, [AppManager.shared.user?.name])
-
 
     const _onOpenPostPractice = (post) => {
-        props.navigation.navigate('VideoCall', {
+        props.navigation.navigate('ConversationDetail', {
             item: post
         })
     }
@@ -73,6 +69,6 @@ const VideoHome = (props) => {
     )
 }
 
-export default VideoHome
+export default ConversationList
 
 const styles = StyleSheet.create({})

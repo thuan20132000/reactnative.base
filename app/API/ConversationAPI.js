@@ -45,9 +45,24 @@ class ConversationAPI {
                 return response.data
             })
             .catch(function (error) {
-                throw error
+                throw error?.message
             })
     }
+
+    async getConversationGroup(conversation_id){
+        try {
+            let path = `/conversation/v1/conversation-groups/${conversation_id}`;
+            let res = await this.axios.get(this.api_url+path,{
+                params:{}
+            })
+            let dataRes = await res.data
+            return dataRes
+            
+        } catch (error) {
+            throw error
+        }
+    }
+    
 
 
 }

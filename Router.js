@@ -32,12 +32,13 @@ import S_TermAndConditionsScreen from './screens/Settings/S_TermAndConditionsScr
 import GrammarListScreen from './screens/Grammar/GrammarListScreen';
 import GrammarDescriptionScreen from './screens/Grammar/GrammarDescriptionScreen';
 import GrammarExcerciseScreen from './screens/Grammar/GrammarExcerciseScreen';
-import VideoCall from './screens/VideoCall/VideoCall';
-import VideoHome from './screens/VideoCall/VideoHome';
+import ConversationDetailScreen from './screens/Conversation/ConversationDetailScreen';
+import ConversationListScreen from './screens/Conversation/ConversationListScreen';
 import A_Signin from './screens/Authentication/A_Signin';
 import SignIn from './screens/Authentication/SignIn';
 import { getUserAuth } from './app/StorageManager';
 import AppManager from './app/AppManager';
+import ConversationGroupScreen from './screens/Conversation/ConversationGroupScreen';
 
 
 
@@ -283,15 +284,20 @@ const VideoStack = () => {
                 isAuth &&
                 <>
                     <VideoStackNavigator.Screen
-                        name={"VideoHome"}
-                        component={VideoHome}
+                        name={"ConversationList"}
+                        component={ConversationListScreen}
                         options={{
                             title: "Video Home"
                         }}
                     />
                     <VideoStackNavigator.Screen
-                        name={"VideoCall"}
-                        component={VideoCall}
+                        name={"ConversationDetail"}
+                        component={ConversationDetailScreen}
+
+                    />
+                    <VideoStackNavigator.Screen
+                        name={"ConversationGroup"}
+                        component={ConversationGroupScreen}
 
                     />
                 </>
