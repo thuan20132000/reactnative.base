@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import ReadingCard from './components/ReadingCard'
-import ReadingPostDB from '../../app/DB/ReadingPost';
-import ReadingModel from '../../app/models/readingModel';
-import AppManager from '../../app/AppManager';
-import ButtonText from '../../components/Button/BottonText';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../store/actions/authenticationActions';
+
 import ConversationAPI from '../../app/API/ConversationAPI';
 import RNProgressHud from 'progress-hud';
+import AppManager from '../../app/AppManager';
 
 
 const ConversationList = (props) => {
@@ -23,16 +19,15 @@ const ConversationList = (props) => {
         // })
         RNProgressHud.show()
         ConversationAPI.getAllConversationPost()
-        .then(res => {
-            console.warn('res :',res)
-            if(res.status_code == 200){
-                setReadingPosts(res.data)
-            }
-        })
-        .catch((err) => {
-            console.warn('err" ',err)
-        })
-        .finally(() => RNProgressHud.dismiss())
+            .then(res => {
+                if (res.status_code == 200) {
+                    setReadingPosts(res.data)
+                }
+            })
+            .catch((err) => {
+                console.warn('err" ', err)
+            })
+            .finally(() => RNProgressHud.dismiss())
 
     }, []);
 
@@ -43,11 +38,25 @@ const ConversationList = (props) => {
             item: post
         })
     }
-    const dispatch = useDispatch();
 
+    const _onOpenConversationgroups = async (conversation) => {
+        props.navigation.navigate('ConversationGroup',{
+            conversation:conversation
+        })
+    }
+
+    React.useLayoutEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            props.navigation.dangerouslyGetParent().setOptions({
+                tabBarVisible: true
+            });
+        });
+        return unsubscribe;
+
+    }, [])
     return (
         <View>
-        
+
             <FlatList
 
                 data={readingPost}
@@ -57,6 +66,7 @@ const ConversationList = (props) => {
                             title={item.title}
                             image_path={item.image}
                             onPracticePress={() => _onOpenPostPractice(item)}
+                            onGroupPress={() => _onOpenConversationgroups(item)}
                         />
 
                     )

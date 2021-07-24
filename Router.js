@@ -235,78 +235,7 @@ const GrammarStack = () => {
     )
 }
 
-const VideoStackNavigator = createStackNavigator();
-const VideoStack = () => {
 
-    // React.useEffect(() => {
-    //     getUserAuth().then(res => {
-    //         console.warn('a: ', res)
-    //     })
-    // }, [])
-    // console.warn('dsfds')
-    const [isAuth, setIsAuth] = React.useState(false);
-    const { userInformation } = useSelector(state => state.authentication);
-
-    React.useEffect(() => {
-        // getUserAuth().then(res => {
-        //     if(res){
-        //         setIsAuth(true)
-        //     }else{
-        //         setIsAuth(false)
-        //     }
-        // })
-        // console.warn('auth: ', AppManager.shared.user?.name)
-        console.warn('dsadada d', userInformation.toString())
-        if (userInformation.toString()) {
-            setIsAuth(true)
-        } else {
-            setIsAuth(false)
-        }
-
-    }, [userInformation])
-
-    return (
-        <VideoStackNavigator.Navigator>
-
-            {
-                !isAuth &&
-                <VideoStackNavigator.Screen
-                    name={"Signin"}
-                    component={SignIn}
-                    options={{
-                        title: "Sign In"
-                    }}
-                />
-
-            }
-
-            {
-                isAuth &&
-                <>
-                    <VideoStackNavigator.Screen
-                        name={"ConversationList"}
-                        component={ConversationListScreen}
-                        options={{
-                            title: "Video Home"
-                        }}
-                    />
-                    <VideoStackNavigator.Screen
-                        name={"ConversationDetail"}
-                        component={ConversationDetailScreen}
-
-                    />
-                    <VideoStackNavigator.Screen
-                        name={"ConversationGroup"}
-                        component={ConversationGroupScreen}
-
-                    />
-                </>
-            }
-
-
-        </VideoStackNavigator.Navigator>
-    )
-}
 
 // 
 const TabBottomNavigator = createBottomTabNavigator();
@@ -393,6 +322,68 @@ const TabBottom = () => {
                 }}
             />
         </TabBottomNavigator.Navigator>
+    )
+}
+
+const VideoStackNavigator = createStackNavigator();
+const VideoStack = () => {
+
+   
+    const [isAuth, setIsAuth] = React.useState(false);
+    const { userInformation } = useSelector(state => state.authentication);
+
+    React.useEffect(() => {
+      
+        console.warn('dsadada d', userInformation.toString())
+        if (userInformation.toString()) {
+            setIsAuth(true)
+        } else {
+            setIsAuth(false)
+        }
+
+    }, [userInformation])
+
+    return (
+        <VideoStackNavigator.Navigator>
+
+            {
+                !isAuth &&
+                <VideoStackNavigator.Screen
+                    name={"Signin"}
+                    component={SignIn}
+                    options={{
+                        title: "Sign In",
+                        headerShown:false
+                    }}
+                />
+
+            }
+
+            {
+                isAuth &&
+                <>
+                    <VideoStackNavigator.Screen
+                        name={"ConversationList"}
+                        component={ConversationListScreen}
+                        options={{
+                            title: "Video Home"
+                        }}
+                    />
+                    <VideoStackNavigator.Screen
+                        name={"ConversationDetail"}
+                        component={ConversationDetailScreen}
+
+                    />
+                    <VideoStackNavigator.Screen
+                        name={"ConversationGroup"}
+                        component={ConversationGroupScreen}
+
+                    />
+                </>
+            }
+
+
+        </VideoStackNavigator.Navigator>
     )
 }
 

@@ -10,6 +10,7 @@ import { getTopicVocabulary } from '../../../utils/api_v1'
 import * as flashcardAction from '../../../store/actions/flashcardActions';
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { config } from '../../../app/constants'
+import CommonIcons from '../../../utils/CommonIcons'
 
 
 const CardReading = ({
@@ -21,6 +22,8 @@ const CardReading = ({
     summary,
     title,
     image_path,
+    onGroupPress,
+    
 
 }) => {
 
@@ -61,20 +64,33 @@ const CardReading = ({
                     {summary}
                 </Paragraph>
             </Card.Content>
-            <Card.Actions>
+            <Card.Actions
+                style={{
+                    display:'flex',
+                    justifyContent:'space-between'
+                }}
+            >
                 <Button
                     onPress={onVocabularyPress}
                     style={{
                         padding: 8,
                         minWidth: 120
                     }}
+                    icon={CommonIcons.volumnHigh}
                 >
                     Nghe
                 </Button>
                 <Button
                     onPress={onPracticePress}
+                    icon={CommonIcons.microphonePlus}
                 >
                     Luyện đọc
+                </Button>
+                <Button
+                    onPress={onGroupPress}
+                    icon={CommonIcons.person}
+                >
+                    Nhóm
                 </Button>
             </Card.Actions>
         </Card>

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
 import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet'
 import ButtonText from '../../components/Button/BottonText';
 import ReadingText from './components/ReadingText';
@@ -17,12 +17,14 @@ const ConversationDetail = (props) => {
 
     const [isCalling, setIsCalling] = useState(false);
     const [conversation, setConversation] = useState(null);
+    const [memberList, setMemberList] = useState([]);
 
-    const { item } = props?.route?.params
+    const { item } = props?.route?.params ?? ''
 
     const _onCalling = () => {
         setIsCalling(true)
         const url = `https://meet.jit.si/thuantruongtest${item?.id}`;
+        console.log('url: ',url)
         const userInfo = {
             displayName: 'thuantruong',
             email: 'user@example.com',
@@ -38,7 +40,7 @@ const ConversationDetail = (props) => {
         setIsCalling(false)
     }
 
-   
+
 
     function onConferenceTerminated(nativeEvent) {
         /* Conference terminated event */
@@ -61,11 +63,9 @@ const ConversationDetail = (props) => {
 
 
     useLayoutEffect(() => {
-
-        console.log('sss ',AppManager.shared.user)
+        console.log(item)
 
         RNProgressHud.show();
-
         ConversationAPI.getConversationPostDetail(1)
             .then((res) => {
                 if (res.status_code == 200) {
@@ -75,7 +75,6 @@ const ConversationDetail = (props) => {
                 RNProgressHud.dismiss()
                 console.log(conversation)
             })
-
         props.navigation.setOptions({
             headerShown: false
         })
@@ -85,9 +84,7 @@ const ConversationDetail = (props) => {
         });
 
         return () => {
-            props.navigation.dangerouslyGetParent().setOptions({
-                tabBarVisible: true
-            });
+          
             _onEndCalling()
         };
     }, [])
@@ -113,13 +110,11 @@ const ConversationDetail = (props) => {
                 }}
             >
 
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row'
-                    }}
+                <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
                 >
-                    
+
                     <View
                         style={{
                             display: 'flex',
@@ -130,7 +125,7 @@ const ConversationDetail = (props) => {
                     >
                         <Image
                             source={{
-                                uri:AppManager.shared.user?.image_path
+                                uri: AppManager.shared.user?.image_path
                             }}
                             resizeMode="cover"
                             style={{
@@ -141,28 +136,34 @@ const ConversationDetail = (props) => {
                         />
                         <Text style={{ fontWeight: '700', fontSize: 12 }}>{AppManager.shared?.user?.name}</Text>
                     </View>
-                    <View
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            marginHorizontal: 4
 
-                        }}
-                    >
-                        <Image
-                            source={require('../../utils/photos/avatar1.jpeg')}
-                            resizeMode="cover"
-                            style={{
-                                width: 60,
-                                height: 60,
-                                borderRadius: 30
-                            }}
-                        />
-                        <Text style={{ fontWeight: '700', fontSize: 12 }}>ThaoNguyen</Text>
-                    </View>
+                    {
+                        memberList.map((e, index) =>
+                            <View
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    marginHorizontal: 4
 
-                </View>
+                                }}
+                            >
+                                <Image
+                                    source={require('../../utils/photos/avatar1.jpeg')}
+                                    resizeMode="cover"
+                                    style={{
+                                        width: 60,
+                                        height: 60,
+                                        borderRadius: 30
+                                    }}
+                                />
+                                <Text style={{ fontWeight: '700', fontSize: 12 }}>ThaoNguyen</Text>
+                            </View>
+
+                        )
+                    }
+
+                </ScrollView>
 
 
 
@@ -190,6 +191,7 @@ const ConversationDetail = (props) => {
                             onChange={() => {
                                 console.warn('fds')
                             }}
+                            
                         />
 
                     }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Platform, StyleSheet } from 'react-native';
+import { View, Platform, StyleSheet, Image } from 'react-native';
 import {
     AccessToken,
     AuthenticationToken,
@@ -23,8 +23,7 @@ const SignIn = (props) => {
         authenticationAPI.signinWithFacebook(access_token)
             .then((res) => {
                 if (res) {
-                    AppManager.shared.user = res
-                    setUserAuth(res.toString())
+                    AppManager.shared.access_token = res.access_token
                     dispatch(signin(res))
                 }
             })
@@ -72,38 +71,43 @@ const SignIn = (props) => {
                 alignItems: 'center'
             }}
         >
-            <ButtonText
-                label={'login'}
-                onItemPress={_onLogin}
-
-            />
-            {/* <LoginButton
-                onLoginFinished={(error, result) => {
-                    if (error) {
-                        console.log('login has error: ' + result);
-                    } else if (result.isCancelled) {
-                        console.log('login is cancelled.');
-                    } else {
-                        if (Platform.OS === 'ios') {
-                            AuthenticationToken.getAuthenticationTokenIOS().then((data) => {
-                                console.log(data?.authenticationToken);
-                            });
-                        } else {
-                            AccessToken.getCurrentAccessToken().then((data) => {
-                                _onGetUserInfo(data?.accessToken.toString())
-                            });
-                        }
-                    }
+            <View
+                style={{
+                    alignItems: 'center',
+                    justifyContent: 'center'
                 }}
-                onLogoutFinished={_onLogOut}
-                loginTrackingIOS={'limited'}
-                nonceIOS={'my_nonce'}
+            >
+                <Image
+                    source={require('../../app/assets/images/ic_fb.png')}
+                    style={{
+                        width: 100,
+                        height: 100,
+                       
+                        marginBottom: 22,
+                       
+                    }}
+                />
+                <ButtonText
+                    label={'login'}
+                    onItemPress={_onLogin}
+                    containerStyle={styles.loginButton}
+                    labelStyle={{
+                        fontWeight: '700',
+                        fontSize: 18
+                    }}
+                />
 
-            /> */}
+            </View>
+
         </View>
     )
 }
 
 export default SignIn
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    loginButton: {
+        width: 220,
+        paddingVertical: 12
+    }
+})

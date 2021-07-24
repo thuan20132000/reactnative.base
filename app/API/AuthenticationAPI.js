@@ -2,12 +2,14 @@ import { config } from "../constants/index";
 import axios from 'axios'
 import UserModel from '../models/userModel'
 import { getUniqueId, getManufacturer, getDeviceId } from 'react-native-device-info';
+import { getStorageData, setStorageData, setUserAuth } from "../StorageManager";
 
 class AuthenticationAPI {
 
     constructor() {
         this.axios = axios
         this.facebook_graph = `https://graph.facebook.com/v11.0/me?`
+        this.api_url = config.api_url
     }
 
     async signinWithFacebook(access_token) {
@@ -15,7 +17,6 @@ class AuthenticationAPI {
             let res = await this.axios.get(this.facebook_graph + `fields=id,name,link,picture{url}&access_token=${access_token}`);
             let resData = await res.data;
             let user = new UserModel(resData)
-            user.token = access_token
             user.device_id = getUniqueId()
             let signinData = await this.signin(
                 user.id,
@@ -25,6 +26,10 @@ class AuthenticationAPI {
                 'facebook',
                 access_token
             )
+            user.access_token = signinData?.access
+            setUserAuth(user.toString())
+            setStorageData('access_token',signinData.access)
+
             return user
         } catch (error) {
             throw error
@@ -42,7 +47,7 @@ class AuthenticationAPI {
             dataform.append('device_id', device_id)
             dataform.append('provider', provider)
             dataform.append('access_token', access_token)
-            let res = await this.axios.post(`http://192.168.1.4:8000/conversation/v1/signin`, dataform, {
+            let res = await this.axios.post(`${this.api_url}/conversation/v1/signin`, dataform, {
                 headers: {
                     "Content-Type": "application/json"
                 }

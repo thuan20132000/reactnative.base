@@ -6,6 +6,7 @@ class AppManager {
     static shared = new AppManager();
 
     user: UserModel = null
+    access_token = ''
 
 
 }

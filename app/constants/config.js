@@ -5,8 +5,8 @@ export default {
 
 
     // Dev
-    api_url:"http://192.168.1.4:8000",
-    media_url:"http://192.168.1.4:8000/media",
+    api_url:"http://192.168.1.6:8000",
+    media_url:"http://192.168.1.6:8000/media",
 
 
     // production

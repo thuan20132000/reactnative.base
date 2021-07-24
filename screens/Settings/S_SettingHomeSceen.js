@@ -204,31 +204,39 @@ const S_SettingHomeSceen = (props) => {
                 }}
                 onItemPress={() => props.navigation.navigate('PrivacyPolicy')}
             />
-            <LoginButton
-                onLoginFinished={(error, result) => {
-                    if (error) {
-                        console.log('login has error: ' + result);
-                    } else if (result.isCancelled) {
-                        console.log('login is cancelled.');
-                    } else {
-                        if (Platform.OS === 'ios') {
-                            AuthenticationToken.getAuthenticationTokenIOS().then((data) => {
-                                console.log(data?.authenticationToken);
-                            });
-                        } else {
-                            AccessToken.getCurrentAccessToken().then((data) => {
-                                console.log(data?.accessToken.toString());
-                                console.log('adta: ', data)
-                            
-                            });
-                        }
-                    }
-                }}
-                onLogoutFinished={_onLogOut}
-                loginTrackingIOS={'limited'}
-                nonceIOS={'my_nonce'}
 
-            />
+            <View
+                style={{
+                    display:'flex',
+                    alignItems:'center',
+                    justifyContent:'center',
+                    marginVertical:30
+                }}
+            >
+                <LoginButton
+                    onLoginFinished={(error, result) => {
+                        if (error) {
+                            console.log('login has error: ' + result);
+                        } else if (result.isCancelled) {
+                            console.log('login is cancelled.');
+                        } else {
+                            if (Platform.OS === 'ios') {
+                                AuthenticationToken.getAuthenticationTokenIOS().then((data) => {
+                                    console.log(data?.authenticationToken);
+                                });
+                            } else {
+                                AccessToken.getCurrentAccessToken().then((data) => {
+                                    console.log(data?.accessToken.toString());
+                                    console.log('adta: ', data)
+
+                                });
+                            }
+                        }
+                    }}
+                    onLogoutFinished={_onLogOut}
+                />
+
+            </View>
 
             <View
                 style={[
