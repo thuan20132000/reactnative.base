@@ -40,9 +40,12 @@ const ConversationGroupScreen = (props) => {
     }, [])
 
 
+
+
     const _onOpenConversationGroup = (group) => {
         navigation.navigate('ConversationDetail', {
-            item: group
+            group: group,
+            groupConversation:group?.conversation
         })
     }
 

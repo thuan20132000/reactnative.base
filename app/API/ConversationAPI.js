@@ -116,6 +116,26 @@ class ConversationAPI {
         }
     }
 
+    async getGroupMember(groupId) {
+        try {
+            let token = await getStorageData('access_token')
+            console.log('tk: ',token)
+
+            let path = `/conversation/v1/conversation-group-member/${groupId}`;
+            let res = await this.axios.get(this.api_url + path, {
+                params: {},
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
 
 
 }

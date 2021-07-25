@@ -8,11 +8,9 @@ class Quiz extends SQLiteManager {
 
 
     getAllField(success, error) {
-        console.warn('dsf')
         this.openDB().then(() => {
             this.db.transaction((tx) => {
                 tx.executeSql("SELECT * FROM quiz_field", [], (tx, results) => {
-                    console.warn('selecting')
 
                     let temp = [];
                     if (results.rows.length > 0) {

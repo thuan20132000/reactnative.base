@@ -5,17 +5,18 @@ import { FAB, Portal, Provider } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import RenderHtml from "react-native-render-html";
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
+import AppManager from '../../../app/AppManager';
 
 
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
-const ReadingText = ({ readingpost, postContent }) => {
+const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScroll = false, setIsRunTextScroll, connect_code }) => {
     const navigation = useNavigation();
 
     const _refRecordingTime = React.useRef();
     const _refScrollView = React.useRef();
-
+    const [scrollEnable, setScrollEnable] = useState(true)
     const scrollAnimation = React.useRef(new Animated.Value(0))
     const [highlightVocabulary, setHighlightVocabulary] = React.useState(['Parent', 'Teacher']);
 
@@ -28,20 +29,49 @@ const ReadingText = ({ readingpost, postContent }) => {
 
 
     const _onRunTextScroll = () => {
+        let data = {
+            name: "thuantruong",
+            message: "Hello mobile",
+            type: "run",
+            connect_code: 'RUN_SCROLL'
+        }
+        websocket.send(JSON.stringify(data))
 
-
-        setTimeout(() => {
-            _onRunScroll()
-        }, 3000);
     }
+
+
+
+    React.useEffect(() => {
+        console.warn('c: ', connect_code)
+        switch (connect_code) {
+            case 'RUN_SCROLL':
+                _runScroll()
+                break
+            case 'RESET_SCROLL':
+                _onResetTextScroll()
+                break
+
+            case 'PLAY_AUDIO':
+                _onPlayAudio()
+                break
+
+            default:
+                break;
+        }
+    }, [connect_code])
 
     const _onPlayAudio = async () => {
         if (!readingpost?.audio) {
             return;
         }
-
+        let data = {
+            name: "thuantruong",
+            message: "Hello mobile",
+            type: "run",
+            connect_code: 'PLAY_AUDIO'
+        }
+        websocket.send(JSON.stringify(data))
         try {
-
 
             let reading_audio_path = readingpost?.audio;
             let e = await audioRecorderPlayer.startPlayer(reading_audio_path);
@@ -86,6 +116,8 @@ const ReadingText = ({ readingpost, postContent }) => {
         } catch (error) {
             console.log('error: ', error);
         }
+
+
     }
 
     const _onStopPlayAudio = () => {
@@ -103,8 +135,13 @@ const ReadingText = ({ readingpost, postContent }) => {
 
     }
 
-    const _onRunScroll = () => {
+    const _runScroll = () => {
+        setScrollEnable(false)
         scrollAnimation.current.addListener((animation) => {
+            console.log(animation.value)
+            if (animation.value >= contentHeight) {
+                setScrollEnable(true)
+            }
             _refScrollView.current &&
                 _refScrollView.current.scrollTo({
                     y: animation.value,
@@ -124,10 +161,28 @@ const ReadingText = ({ readingpost, postContent }) => {
     }
 
 
+    const _onResetTextScroll = () => {
+        setScrollEnable(true)
+        let data = {
+            name: "thuantruong",
+            message: "Hello mobile",
+            type: "run",
+            connect_code: 'RESET_SCROLL'
+        }
+        websocket.send(JSON.stringify(data))
+        scrollAnimation.current.setValue(0)
+        setIsRunTextScroll(false)
+        _onStopPlayAudio()
+
+
+    }
+
+
     React.useEffect(() => {
 
         return () => {
             _onStopPlayAudio()
+            scrollAnimation.current.removeAllListeners()
         }
     }, [])
 
@@ -147,49 +202,47 @@ const ReadingText = ({ readingpost, postContent }) => {
     const html = `${postContent}`;
 
     return (
-        <Provider>
-            <Portal>
-                <FAB.Group
-                    open={fabState.open}
-                    icon={fabState.open ? 'calendar-today' : 'plus'}
-                    actions={[
-                        { icon: 'plus', onPress: () => console.log('Pressed add') },
-                        {
-                            icon: 'star',
-                            label: 'Bắt đầu',
-                            onPress: () => {
-                                // scrollAnimation.current.stopAnimation((val => console.warn('v: ', val))
-                                _onRunTextScroll()
-                            },
-                        },
-                        {
-                            icon: 'email',
-                            label: 'Reset',
-                            onPress: () => {
-                                scrollAnimation.current.setValue(0)
-                            },
-                        },
-                        {
-                            icon: 'email',
-                            label: 'Nghe',
-                            onPress: () => {
-                                _onPlayAudio()
-                            },
-                        },
-                        {
-                            icon: 'email',
-                            label: 'Tạo nhóm',
-                            onPress: () => {
-                                _onNavigateToGroup()
-                            },
-                        },
-                    ]}
-                    onStateChange={onStateChange}
-                    onPress={() => {
+        <>
+            {
+                AppManager.shared.user?.id == group?.author?.id &&
+                <Portal>
+                    <FAB.Group
+                        open={fabState.open}
+                        icon={'plus'}
+                      
+                        
+                        actions={[
+                            {
+                                icon: 'clock-start',
+                                label: 'Start',
+                                onPress: () => {
+                                    // scrollAnimation.current.stopAnimation((val => console.warn('v: ', val))
+                                    _onRunTextScroll()
+                                },
 
-                    }}
-                />
-            </Portal>
+                            },
+                            {
+                                icon: 'restart',
+                                label: 'Reset',
+                                onPress: () => _onResetTextScroll(),
+                            },
+                            {
+                                icon: 'volume-high',
+                                label: 'Audio',
+                                onPress: () => {
+                                    _onPlayAudio()
+                                },
+                            },
+
+                        ]}
+                        onStateChange={onStateChange}
+                        onPress={() => {
+
+                        }}
+                       
+                    />
+                </Portal>
+            }
 
             <Animated.ScrollView
                 ref={_refScrollView}
@@ -201,45 +254,15 @@ const ReadingText = ({ readingpost, postContent }) => {
                 onScrollBeginDrag={() => {
                     scrollAnimation.current.stopAnimation()
                 }}
-
+                scrollEnabled={scrollEnable}
 
 
             >
                 <RenderHtml source={{ html }} contentWidth={width} baseStyle={{
                     paddingHorizontal: 12
                 }} />
-                {/* <View
-                    style={{
-                        backgroundColor: 'white',
-                        paddingHorizontal: 12
-                    }}
-                >
-                    <Text
-                        style={{
-                            lineHeight: 52,
-                            textAlign: 'justify',
-                        }}
-                        // suppressHighlighting={true}
-                        // selectable={true}
-                        allowFontScaling={true}
-
-                    >
-                        {
-                            (readingPost?.content && readingPost.content || '') &&
-                            <Highlighter
-                                highlightStyle={{ color: 'red', fontWeight: '700' }}
-                                searchWords={highlightVocabulary}
-                                textToHighlight={readingPost?.content}
-                            />
-
-                        }
-
-                    </Text>
-
-                </View> */}
-
             </Animated.ScrollView>
-        </Provider>
+        </>
     )
 }
 

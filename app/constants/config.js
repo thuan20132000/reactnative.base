@@ -5,9 +5,10 @@ export default {
 
 
     // Dev
-    api_url:"http://192.168.1.6:8000",
-    media_url:"http://192.168.1.6:8000/media",
+    api_url:"http://192.168.1.9:8000",
+    media_url:"http://192.168.1.9:8000/media",
 
+    IP_ADDRESS:"192.168.1.9",
 
     // production
     // api_url:"http://35.198.237.6",

@@ -334,7 +334,6 @@ const VideoStack = () => {
 
     React.useEffect(() => {
       
-        console.warn('dsadada d', userInformation.toString())
         if (userInformation.toString()) {
             setIsAuth(true)
         } else {

@@ -39,12 +39,13 @@ import authentication_reducer from './store/reducer/authenticationReducer';
 
 import { Provider } from 'react-native-paper';
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
+import { config } from './app/constants';
 
 const rootReducer = combineReducers({
   flashcard: flashcard_list_reducer,
   notification: notification_reducer,
   reading: reading_list_reducer,
-  authentication:authentication_reducer
+  authentication: authentication_reducer
 });
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
@@ -83,7 +84,8 @@ const App = () => {
 
 
 
-    // Unsubscribe from events on unmount
+  // Unsubscribe from events on unmount
+
 
 
 

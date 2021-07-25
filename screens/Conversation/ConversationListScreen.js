@@ -35,7 +35,7 @@ const ConversationList = (props) => {
 
     const _onOpenPostPractice = (post) => {
         props.navigation.navigate('ConversationDetail', {
-            item: post
+            groupConversation: post
         })
     }
 

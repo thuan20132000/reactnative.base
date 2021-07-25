@@ -3,6 +3,7 @@ import axios from 'axios'
 import UserModel from '../models/userModel'
 import { getUniqueId, getManufacturer, getDeviceId } from 'react-native-device-info';
 import { getStorageData, setStorageData, setUserAuth } from "../StorageManager";
+import AppManager from "../AppManager";
 
 class AuthenticationAPI {
 
@@ -28,6 +29,7 @@ class AuthenticationAPI {
             )
             user.access_token = signinData?.access
             setUserAuth(user.toString())
+            AppManager.shared.user = user
             setStorageData('access_token',signinData.access)
 
             return user
