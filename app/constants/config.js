@@ -1,19 +1,23 @@
 export default {
     
-    aws_url:"https://practiceenglish.s3.ap-southeast-1.amazonaws.com/",
-    audio_url:"https://practiceenglish.s3.ap-southeast-1.amazonaws.com/audio/",
+    aws_url:"https://practiceenglishv2.s3.ap-southeast-1.amazonaws.com/",
+    audio_url:"https://practiceenglishv2.s3.ap-southeast-1.amazonaws.com/audio/",
 
 
     // Dev
-    api_url:"http://192.168.1.9:8000",
-    media_url:"http://192.168.1.9:8000/media",
+    // api_url:"http://192.168.1.3:8000",
+    // media_url:"http://192.168.1.3:8000/media",
+    // IP_ADDRESS:"192.168.1.3",
 
-    IP_ADDRESS:"192.168.1.9",
+    // staging
+    // api_url:"http://34.87.31.84:8000",
+    // media_url:"http://34.87.31.84:8000/media",
+    // IP_ADDRESS:"34.87.31.84",
 
     // production
-    // api_url:"http://35.198.237.6",
-    // media_url:"http://35.198.237.6/media",
-
+    api_url:"http://34.87.31.84",
+    media_url:"http://34.87.31.84/media",
+    IP_ADDRESS:"34.87.31.84",
 
     // Pro
     // "api_url":"https://askme-it.com/dictionary/api/v1",

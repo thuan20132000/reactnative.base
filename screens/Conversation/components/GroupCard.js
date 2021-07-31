@@ -41,7 +41,7 @@ export default GroupCard
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        backgroundColor: COLORS.secondary,
+        backgroundColor: 'deepskyblue',
         alignSelf: 'center',
         margin: 4,
         height: 120,

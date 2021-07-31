@@ -14,15 +14,16 @@ import { setUserAuth } from '../../app/StorageManager';
 import ButtonText from '../../components/Button/BottonText';
 import { signin } from '../../store/actions/authenticationActions';
 
+import RNProgressHud from 'progress-hud';
 
 const SignIn = (props) => {
 
     const dispatch = useDispatch();
     const _onGetUserInfo = async (access_token) => {
-
+        RNProgressHud.show()
         authenticationAPI.signinWithFacebook(access_token)
             .then((res) => {
-                if (res) {
+                if (res.access_token) {
                     console.log('login : ',res)
                     AppManager.shared.access_token = res.access_token
                     dispatch(signin(res))
@@ -31,6 +32,7 @@ const SignIn = (props) => {
             .catch((err) => {
                 console.warn('error: ', err)
             })
+            .finally(()=>RNProgressHud.dismiss())
     }
 
     const _onLogin = () => {

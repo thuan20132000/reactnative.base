@@ -21,7 +21,7 @@ const CardTopic = ({
     const [learntVocabularyList, setLearntVocabularyList] = React.useState([]);
     const [leaveVocabularyList, setLeaveVocabularyList] = React.useState(0);
     const [vocabularyTotal, setVocabularyTotal] = React.useState(0);
-
+    const [imagePath, setImagePath] = React.useState('');
     React.useEffect(() => {
         let topic_name = topic?.slug?.toLowerCase();
         getLearntVocabularyByTopic(topic_name).then(value => {
@@ -42,10 +42,10 @@ const CardTopic = ({
                 setVocabularyTotal(res);
 
             })
+        setImagePath(config.aws_url + image_path)
     }, []);
 
 
-    const image_url = config.aws_url + image_path;
 
     return (
         <TouchableOpacity
@@ -58,9 +58,8 @@ const CardTopic = ({
 
         >
             <Image
-
                 source={{
-                    uri: image_url
+                    uri: imagePath
                 }}
 
                 style={{
@@ -68,6 +67,7 @@ const CardTopic = ({
                     height: 80,
                     borderRadius: 40
                 }}
+
             />
             <View
                 style={[

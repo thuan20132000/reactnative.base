@@ -52,7 +52,7 @@ export const BOXSHADOW = {
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-
+        
         elevation: 5,
     }
 }
@@ -70,6 +70,6 @@ export const FONTS = {
     body5: { fontSize: SIZES.body5, lineHeight: 22 },
 };
 
-const appTheme = { COLORS, SIZES, FONTS };
+const appTheme = { COLORS, SIZES, FONTS,BOXSHADOW };
 
 export default appTheme;

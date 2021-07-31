@@ -110,7 +110,7 @@ const S_SettingHomeSceen = (props) => {
                 }}
                 onItemPress={() => props.navigation.navigate('VocabularyRemind')}
             />
-            <RowItem
+            {/* <RowItem
                 label={"Lịch sử tìm kiếm"}
                 leftIconName={CommonIcons.search}
                 leftIconStyle={{
@@ -126,7 +126,7 @@ const S_SettingHomeSceen = (props) => {
                 }}
                 onItemPress={() => props.navigation.navigate('SearchHistory')}
 
-            />
+            /> */}
             {/* <RowItem
                 label={"Ngữ pháp tiếng anh"}
                 leftIconName={CommonIcons.account}
@@ -205,12 +205,13 @@ const S_SettingHomeSceen = (props) => {
                 onItemPress={() => props.navigation.navigate('PrivacyPolicy')}
             />
 
+
             <View
                 style={{
-                    display:'flex',
-                    alignItems:'center',
-                    justifyContent:'center',
-                    marginVertical:30
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginVertical: 30
                 }}
             >
                 <LoginButton
@@ -227,8 +228,6 @@ const S_SettingHomeSceen = (props) => {
                             } else {
                                 AccessToken.getCurrentAccessToken().then((data) => {
                                     console.log(data?.accessToken.toString());
-                                    console.log('adta: ', data)
-
                                 });
                             }
                         }
@@ -237,6 +236,8 @@ const S_SettingHomeSceen = (props) => {
                 />
 
             </View>
+
+
 
             <View
                 style={[

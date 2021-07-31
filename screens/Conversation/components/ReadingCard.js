@@ -67,19 +67,9 @@ const CardReading = ({
             <Card.Actions
                 style={{
                     display:'flex',
-                    justifyContent:'space-between'
+                    justifyContent:'space-around'
                 }}
-            >
-                <Button
-                    onPress={onVocabularyPress}
-                    style={{
-                        padding: 8,
-                        minWidth: 120
-                    }}
-                    icon={CommonIcons.volumnHigh}
-                >
-                    Nghe
-                </Button>
+            >            
                 <Button
                     onPress={onPracticePress}
                     icon={CommonIcons.microphonePlus}

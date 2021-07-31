@@ -9,6 +9,11 @@ import ButtonText from '../../components/Button/BottonText';
 import { BOXSHADOW, COLORS } from '../../app/constants/themes';
 import { Provider, Modal, Portal } from 'react-native-paper';
 import CreateGroupModal from './components/CreateGroupModal';
+import { config } from '../../app/constants';
+
+import { BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
+
+const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_app_id;
 
 const ConversationGroupScreen = (props) => {
     const navigation = useNavigation();
@@ -45,7 +50,7 @@ const ConversationGroupScreen = (props) => {
     const _onOpenConversationGroup = (group) => {
         navigation.navigate('ConversationDetail', {
             group: group,
-            groupConversation:group?.conversation
+            groupConversation: group?.conversation
         })
     }
 
@@ -59,7 +64,7 @@ const ConversationGroupScreen = (props) => {
         RNProgressHud.show()
         ConversationAPI.createConversationGroup(groupName, conversation?.id)
             .then((res) => {
-                if(res.status_code === 201){
+                if (res.status_code === 201) {
                     _onGetConversationGroups()
                 }
             })
@@ -68,7 +73,7 @@ const ConversationGroupScreen = (props) => {
                 RNProgressHud.dismiss()
 
             })
-          
+
     }
 
 
@@ -77,7 +82,10 @@ const ConversationGroupScreen = (props) => {
             tabBarVisible: false,
 
         });
-
+        const unsubscribe = navigation.addListener('focus', () => {
+            _onGetConversationGroups()
+        });
+        return unsubscribe;
 
     }, [])
     return (
@@ -111,14 +119,29 @@ const ConversationGroupScreen = (props) => {
                     keyExtractor={(item) => item?.id}
 
                 />
+                <View
+                    style={{
+                        display: 'flex',
+                        alignSelf: 'center'
+                    }}
+                >
+                    <BannerAd
+                        unitId={adUnitId}
+                        size={BannerAdSize.BANNER}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                    />
+
+                </View>
                 <View>
                     <ButtonText
-                        label={'Tạo nhóm'}
+                        label={'CREATE GROUP'}
                         containerStyle={styles.buttonCreate}
                         labelStyle={{
                             color: COLORS.secondary,
                             fontSize: 16,
-                            fontWeight: '600'
+                            fontWeight: '700'
                         }}
                         onItemPress={_onCreateGroupVisiblePress}
                     />

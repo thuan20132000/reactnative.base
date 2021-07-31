@@ -6,14 +6,12 @@ import { useNavigation } from '@react-navigation/native';
 import RenderHtml from "react-native-render-html";
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
 import AppManager from '../../../app/AppManager';
-import RNProgressHud from 'progress-hud';
-import ConversationAPI from '../../../app/API/ConversationAPI';
 
 
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
-const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScroll = false, setIsRunTextScroll, connect_code, type }) => {
+const ReadingTextPractice = ({ group, readingpost, postContent, setIsRunTextScroll }) => {
     const navigation = useNavigation();
 
     const _refRecordingTime = React.useRef();
@@ -25,60 +23,15 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
     const [readingPost, setReadingPost] = React.useState();
     const [readStyle, setReadStyle] = useState({
         fontSize: 24,
-        speed: 55
+        speed: 65
     });
     const [contentHeight, setContentHeight] = useState(0)
 
-
-    const _onRunTextScroll = () => {
-        let data = {
-            name: "thuantruong",
-            message: "Hello mobile",
-            type: "run",
-            connect_code: 'RUN_SCROLL'
-        }
-        if (type == 'group') {
-            websocket.send(JSON.stringify(data))
-        }
-
-    }
-
-
-
-    React.useEffect(() => {
-        console.warn('c: ', connect_code)
-        switch (connect_code) {
-            case 'RUN_SCROLL':
-                _runScroll()
-                break
-            case 'RESET_SCROLL':
-                _onResetTextScroll()
-                break
-
-            case 'PLAY_AUDIO':
-                _onPlayAudio()
-                break
-
-            default:
-                break;
-        }
-    }, [connect_code])
-
     const _onPlayAudio = async () => {
-        _onStopPlayAudio()
         if (!readingpost?.audio) {
             return;
         }
 
-        let data = {
-            name: "thuantruong",
-            message: "Hello mobile",
-            type: "run",
-            connect_code: 'PLAY_AUDIO'
-        }
-        if (type == 'group') {
-            websocket.send(JSON.stringify(data))
-        }
         try {
 
             let reading_audio_path = readingpost?.audio;
@@ -145,12 +98,9 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
     const [padding, setPadding] = useState(0)
     const _runScroll = () => {
         setPadding(800)
-        setScrollEnable(false)
         scrollAnimation.current.addListener((animation) => {
-            console.log(animation.value)
             if (animation.value >= contentHeight) {
                 setScrollEnable(true)
-                _onResetTextScroll()
                 setPadding(0)
 
             }
@@ -159,9 +109,6 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
                     y: animation.value,
                     animated: false,
                 })
-
-
-
         })
 
         if (contentHeight) {
@@ -173,58 +120,20 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
             }).start()
 
         }
-
     }
 
 
     const _onResetTextScroll = () => {
-        setScrollEnable(true)
         setPadding(0)
 
-        let data = {
-            name: "thuantruong",
-            message: "Hello mobile",
-            type: "run",
-            connect_code: 'RESET_SCROLL'
-        }
-
-        if (type == 'group') {
-            websocket.send(JSON.stringify(data))
-        }
+        setScrollEnable(true)
         scrollAnimation.current.setValue(0)
         setIsRunTextScroll(false)
         _onStopPlayAudio()
 
+
     }
 
-    const removeGroup = () => {
-        RNProgressHud.show()
-        ConversationAPI.removeGroup(group?.id)
-            .then(res => {
-                if (res?.status_code === 204) {
-                    navigation.goBack()
-                }
-            })
-            .catch((err) => {
-                console.warn('err: ', err)
-            })
-            .finally(() => { RNProgressHud.dismiss() })
-    }
-
-    const _onRemoveGroup = () => {
-        Alert.alert(
-            "Xác nhận",
-            "Bạn có muốn xóa nhóm không",
-            [
-                {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                },
-                { text: "OK", onPress: () => removeGroup() }
-            ]
-        );
-    }
 
     React.useEffect(() => {
 
@@ -252,7 +161,6 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
     return (
         <>
             {
-                type != 'group' &&
                 <Portal>
                     <FAB.Group
                         open={fabState.open}
@@ -264,58 +172,8 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
                                 icon: 'clock-start',
                                 label: 'Start',
                                 onPress: () => {
-                                    // scrollAnimation.current.stopAnimation((val => console.warn('v: ', val))
-                                    _onRunTextScroll()
-                                },
-
-                            },
-                            {
-                                icon: 'restart',
-                                label: 'Reset',
-                                onPress: () => _onResetTextScroll(),
-                            },
-                            {
-                                icon: 'volume-high',
-                                label: 'Audio',
-                                onPress: () => {
-                                    _onPlayAudio()
-                                },
-                            },
-
-                        ]}
-                        onStateChange={onStateChange}
-                        onPress={() => {
-
-                        }}
-                    />
-                </Portal>
-
-            }
-            {
-                (type == 'group' && AppManager.shared.user?.id == group?.author?.id) &&
-                <Portal>
-                    <FAB.Group
-                        open={fabState.open}
-                        icon={'plus'}
-
-
-                        actions={[
-                            {
-                                icon: 'trash-can-outline',
-                                label: 'Remove',
-                                onPress: () => {
-                                    // scrollAnimation.current.stopAnimation((val => console.warn('v: ', val))
-                                    _onRemoveGroup()
-                                },
-
-                            },
-                            {
-                                icon: 'clock-start',
-                                label: 'Start',
-                                onPress: () => {
-                                    // scrollAnimation.current.stopAnimation((val => console.warn('v: ', val))
-                                    _onRunTextScroll()
-                                },
+                                    _runScroll()
+                                }
 
                             },
                             {
@@ -340,13 +198,11 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
                     />
                 </Portal>
             }
-
-
 
             <Animated.ScrollView
                 ref={_refScrollView}
                 onContentSizeChange={(width, height) => {
-                    setContentHeight(height+300)
+                    setContentHeight(height)
                 }}
                 showsVerticalScrollIndicator={false}
 
@@ -357,13 +213,24 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
 
 
             >
-
+                <View
+                    style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginVertical: 12
+                    }}
+                >
+                    <Text style={{ fontSize: 26, fontWeight: '600',color:'red' }}>
+                        {readingpost?.title}
+                    </Text>
+                </View>
                 <RenderHtml
                     source={{ html }}
                     contentWidth={width}
                     baseStyle={{
                         paddingHorizontal: 12,
                         paddingBottom: padding
+
                     }}
                 />
             </Animated.ScrollView>
@@ -371,6 +238,6 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
     )
 }
 
-export default ReadingText
+export default ReadingTextPractice
 
 const styles = StyleSheet.create({})

@@ -1,28 +1,26 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import CommonColor from '../../utils/CommonColor'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import CommonIcons from '../../utils/CommonIcons'
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 
-const ButtonText = ({
+
+const TopicItem = ({
     label,
     labelStyle,
     onItemPress,
     disabled = false,
     containerStyle,
-    rightIcon,
-    width
+    image_path
 }) => {
+
     return (
         <TouchableOpacity
             style={[
                 styles.container,
                 {
-                    backgroundColor: disabled ? 'gray' : CommonColor.btnSubmit,
-                    flexDirection:'row',
-                    width,
-                    padding:8
-                    
+                    backgroundColor: 'white',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    height: 80,
+                    minWidth:200
                 },
                 containerStyle
 
@@ -30,6 +28,16 @@ const ButtonText = ({
             onPress={onItemPress}
             disabled={disabled}
         >
+            <Image
+                source={{
+                    uri: image_path
+                }}
+                style={{
+                    width: 70,
+                    height: 60
+                }}
+                resizeMode={'contain'}
+            />
             <Text
                 style={[
                     styles.text,
@@ -38,28 +46,29 @@ const ButtonText = ({
             >
                 {label}
             </Text>
-            {
-                rightIcon &&
-                <MaterialCommunityIcons
-                    name={CommonIcons.arrowRightChevron}
-                    size={24}
-                    color={'white'}
-                />
-            }
+
         </TouchableOpacity>
     )
 }
 
-export default ButtonText
+export default TopicItem
 
 const styles = StyleSheet.create({
     container: {
         borderRadius: 6,
-        minWidth: 60,
+        minWidth: 120,
         minHeight: 30,
         marginVertical: 4,
         marginHorizontal: 4,
-      
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+
+        elevation: 10,
         padding: 6,
         alignItems: 'center',
         display: 'flex',
@@ -68,6 +77,7 @@ const styles = StyleSheet.create({
     text: {
         color: 'white',
         textAlign: 'center',
-        fontSize: 12
+        fontSize: 14,
+        fontWeight: '700'
     }
 })

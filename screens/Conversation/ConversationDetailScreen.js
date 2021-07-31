@@ -31,12 +31,12 @@ const ConversationDetail = (props) => {
 
     const user_id = AppManager.shared.user?.id;
 
-    const _refSocket = React.useMemo(() => new WebSocket(`ws://${config.IP_ADDRESS}:8000/ws/conversation/${group?.id}/user/${user_id}/`), [])
+    const _refSocket = React.useMemo(() => new WebSocket(`ws://${config.IP_ADDRESS}:8001/ws/conversation/${group?.id}/user/${user_id}/`), [])
 
     const _onCalling = () => {
         setIsCalling(true)
         try {
-            
+
             const url = `https://meet.jit.si/thuantruongtest${group?.id}`;
             const userInfo = {
                 displayName: 'thuantruong',
@@ -45,11 +45,11 @@ const ConversationDetail = (props) => {
             };
             JitsiMeet.call(url, userInfo);
         } catch (error) {
-            console.log('call error: ',error)
+            console.log('call error: ', error)
         }
         /* Você também pode usar o JitsiMeet.audioCall (url) para chamadas apenas de áudio */
         /* Você pode terminar programaticamente a chamada com JitsiMeet.endCall () */
-     
+
     }
 
     const _onEndCalling = () => {
@@ -180,7 +180,9 @@ const ConversationDetail = (props) => {
                         backgroundColor: 'white',
                         margin: 6,
                         borderRadius: 8,
-                        overflow: 'hidden'
+                        overflow: 'hidden',
+                        height: 80
+
                     }}
                 >
 
@@ -195,7 +197,7 @@ const ConversationDetail = (props) => {
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
-                                        marginHorizontal: 4
+                                        marginHorizontal: 4,
 
                                     }}
                                 >
@@ -205,9 +207,9 @@ const ConversationDetail = (props) => {
                                         }}
                                         resizeMode="cover"
                                         style={{
-                                            width: 60,
-                                            height: 60,
-                                            borderRadius: 30
+                                            width: 40,
+                                            height: 40,
+                                            borderRadius: 20
                                         }}
                                     />
                                     <Text style={{ fontWeight: '700', fontSize: 12 }}>{e.username}</Text>
@@ -249,17 +251,18 @@ const ConversationDetail = (props) => {
 
                         }
                         {
-                            !isCalling &&
-                            <View
-                                style={{
-                                    alignSelf: 'center'
-                                }}
-                            >
-                                <MaterialCommunityIcons
-                                    name={CommonIcons.volumnHigh}
-                                    size={35}
-                                />
-                            </View>
+                            // !isCalling &&
+                            // <View
+                            //     style={{
+                            //         alignSelf: 'center'
+                            //     }}
+                            // >
+                            //     <MaterialCommunityIcons
+                            //         name={CommonIcons.person}
+                            //         size={35}
+                            //         color={'red'}
+                            //     />
+                            // </View>
                         }
                     </View>
                 </View>
@@ -285,6 +288,7 @@ const ConversationDetail = (props) => {
                         isRunTextScroll={isRunTextScroll}
                         setIsRunTextScroll={setIsRunTextScroll}
                         connect_code={connectCode}
+                        type={'group'}
                     />
 
                 }
@@ -309,7 +313,9 @@ const ConversationDetail = (props) => {
                         <ButtonText
                             label={'ENDCALL'}
                             containerStyle={{
-                                backgroundColor: 'red'
+                                backgroundColor: 'red',
+                                width:120
+
                             }}
                             onItemPress={_onEndCalling}
                         /> :
@@ -320,6 +326,11 @@ const ConversationDetail = (props) => {
                             }}
                             onItemPress={_onCalling}
                             rightIcon
+                            containerStyle={{
+                                backgroundColor: 'green',
+                                width:120
+                            }}
+
                         />
 
 

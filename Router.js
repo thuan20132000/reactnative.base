@@ -39,6 +39,7 @@ import SignIn from './screens/Authentication/SignIn';
 import { getUserAuth } from './app/StorageManager';
 import AppManager from './app/AppManager';
 import ConversationGroupScreen from './screens/Conversation/ConversationGroupScreen';
+import ConversationPracticeScreen from './screens/Conversation/ConversationPracticeScreen';
 
 
 
@@ -257,8 +258,8 @@ const TabBottom = () => {
                         iconName = CommonIcons.checkboxMarked
                     } else if (route.name === 'ReadingPracticeStack') {
                         iconName = CommonIcons.bookOpen
-                    } else if (route.name === 'Accounts') {
-                        iconName = CommonIcons.account
+                    } else if (route.name === 'VideoCall') {
+                        iconName = 'account-multiple-check'
                     }
                     else if (route.name === 'Notification') {
                         iconName = CommonIcons.bell
@@ -288,21 +289,21 @@ const TabBottom = () => {
                 name="FlashCard"
                 component={FlashCardStack}
                 options={{
-                    title: "Học Từ Vựng"
+                    title: "FLASHCARD"
                 }}
             />
-            <TabBottomNavigator.Screen
+            {/* <TabBottomNavigator.Screen
                 name="ReadingPracticeStack"
                 component={ReadingPracticeStack}
                 options={{
                     title: "Luyện Đọc"
                 }}
-            />
+            /> */}
             <TabBottomNavigator.Screen
                 name="VideoCall"
                 component={VideoStack}
                 options={{
-                    title: "Video Call"
+                    title: "READING & SPEAKING"
                 }}
             />
             {/* <TabBottomNavigator.Screen
@@ -318,7 +319,7 @@ const TabBottom = () => {
                 name="TabSetting"
                 component={SettingStack}
                 options={{
-                    title: "Thiết Lập"
+                    title: "SETTING"
                 }}
             />
         </TabBottomNavigator.Navigator>
@@ -365,16 +366,29 @@ const VideoStack = () => {
                         name={"ConversationList"}
                         component={ConversationListScreen}
                         options={{
-                            title: "Video Home"
+                            title: "Practice List"
+                        }}
+                    />
+                    <VideoStackNavigator.Screen
+                        name={"ConversationPractice"}
+                        component={ConversationPracticeScreen}
+                        options={{
+                            title: "Practice"
                         }}
                     />
                     <VideoStackNavigator.Screen
                         name={"ConversationDetail"}
                         component={ConversationDetailScreen}
+                        options={{
+                            title: "Practice Conversation"
+                        }}
 
                     />
                     <VideoStackNavigator.Screen
                         name={"ConversationGroup"}
+                        options={{
+                            title: "Groups"
+                        }}
                         component={ConversationGroupScreen}
 
                     />

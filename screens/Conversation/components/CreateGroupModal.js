@@ -31,11 +31,14 @@ const CreateGroupModal = ({ isShow, setIsShow, onCreatePress }) => {
                         borderStartColor: 'gray',
                         borderWidth: 0.2
                     }}
-                    placeholder={'Tên nhóm'}
+                    placeholder={'Group name'}
                 />
 
                 <ButtonText
-                    label={'Thêm'}
+                    label={'ADD'}
+                    labelStyle={{
+                        fontWeight:'700'
+                    }}
                     containerStyle={{
                         marginTop: 22,
                         height: 40

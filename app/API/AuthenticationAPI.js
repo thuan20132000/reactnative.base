@@ -27,6 +27,7 @@ class AuthenticationAPI {
                 'facebook',
                 access_token
             )
+            console.log('signin data: ',signinData)
             user.access_token = signinData?.access
             setUserAuth(user.toString())
             AppManager.shared.user = user
@@ -34,6 +35,8 @@ class AuthenticationAPI {
 
             return user
         } catch (error) {
+            AppManager.shared.user = null
+
             throw error
         }
 

@@ -20,9 +20,27 @@ class ConversationAPI {
     }
 
 
+    async getAllConversationTopic() {
+        let path = `/conversation/v1/conversations-topic`;
+        let token = await getStorageData('access_token')
+        return this.axios.get(this.api_url + path, {
+            params: {},
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(function (response) {
+                return response.data
+            })
+            .catch(function (error) {
+                throw error
+            })
+    }
+
+
     async getAllConversationPost(topic_id = null) {
         let path = `/conversation/v1/conversations-post`;
-        path = topic_id == null ? path : `${path}?topic=${topic_id}`
+        path = topic_id == null ? path : `${path}?topic_id=${topic_id}`
         let token = await getStorageData('access_token')
         return this.axios.get(this.api_url + path, {
             params: {},
@@ -119,11 +137,28 @@ class ConversationAPI {
     async getGroupMember(groupId) {
         try {
             let token = await getStorageData('access_token')
-            console.log('tk: ',token)
+            console.log('tk: ', token)
 
             let path = `/conversation/v1/conversation-group-member/${groupId}`;
             let res = await this.axios.get(this.api_url + path, {
                 params: {},
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async removeGroup(groupId) {
+        try {
+            let token = await getStorageData('access_token')
+            let path = `/conversation/v1/conversation-group/${groupId}`;
+            let res = await this.axios.post(this.api_url + path,{}, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
