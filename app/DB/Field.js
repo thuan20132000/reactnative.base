@@ -37,7 +37,6 @@ class Field extends SQLiteManager {
                             temp.push(results.rows.item(i));
                         }
                     }
-                    console.log('get')
                     success(temp)
                     this.db.close()
 

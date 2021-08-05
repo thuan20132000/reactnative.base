@@ -68,7 +68,6 @@ const ConversationDetail = (props) => {
 
         // a message was received
         let receivedData = JSON.parse(e.data)
-        console.warn('received: ', receivedData)
         setConnectCode(receivedData?.message?.connect_code);
         switch (receivedData?.message?.connect_code) {
             case 'NEWMEMBER':
@@ -102,20 +101,17 @@ const ConversationDetail = (props) => {
     function onConferenceTerminated(nativeEvent) {
         /* Conference terminated event */
         console.log('terminated: ', nativeEvent);
-        console.warn('log out')
     }
 
     function onConferenceJoined(nativeEvent) {
         /* Conference joined event */
         console.log('join: ', nativeEvent)
-        console.warn('log na')
 
     }
 
     function onConferenceWillJoin(nativeEvent) {
         /* Conference will join event */
         console.log('will join: ', nativeEvent)
-        console.warn('will join')
     }
 
     const _onGetGroupMembers = () => {
@@ -244,7 +240,7 @@ const ConversationDetail = (props) => {
 
                                 }}
                                 onChange={() => {
-                                    console.warn('fds')
+                                    console.log('fds')
                                 }}
 
                             />

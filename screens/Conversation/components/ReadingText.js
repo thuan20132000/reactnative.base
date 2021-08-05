@@ -46,7 +46,6 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
 
 
     React.useEffect(() => {
-        console.warn('c: ', connect_code)
         switch (connect_code) {
             case 'RUN_SCROLL':
                 _runScroll()
@@ -131,7 +130,6 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
     const _onStopPlayAudio = () => {
         audioRecorderPlayer.stopPlayer()
             .then(() => {
-                console.log('stopped play')
                 audioRecorderPlayer.removePlayBackListener();
             })
             .catch((err) => {

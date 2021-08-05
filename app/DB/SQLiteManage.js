@@ -93,18 +93,15 @@ class SQLiteManager {
     async getProducts(success) {
 
 
-        console.log('get products')
         this.db.transaction((tx) => {
             tx.executeSql("SELECT * FROM albums", [], (tx, results) => {
 
-                console.log('data: ', results);
                 let temp = [];
                 if (results.rows.length > 0) {
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
                     }
                 }
-                console.log('get')
                 success(temp)
                 this.db.close()
 
@@ -128,7 +125,6 @@ class SQLiteManager {
                 tx.executeSql('CREATE TEMPORARY TABLE temp_table1( name TEXT )');
             })
         } else {
-            console.log('db: ', this.db)
             // this.openDB(); 
             // this.db.executeSql('CREATE TABLE IF NOT EXISTS Product (prodId, prodName, prodDesc, prodImage, prodPrice)');
             // this.db.executeSql('CREATE TABLE IF NOT EXISTS Product (prodId, prodName, prodDesc, prodImage, prodPrice)')

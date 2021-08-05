@@ -80,7 +80,6 @@ class Quiz extends SQLiteManager {
 
 
     getTopicVocabularyList(topic_id) {
-        console.warn('t: ', topic_id)
         return new Promise((resolve, reject) => {
             this.openDB().then(() => {
                 this.db.transaction((tx) => {

@@ -120,7 +120,6 @@ class ConversationAPI {
             bodyData.append('name', groupName)
             bodyData.append('conversation_id', conversation_id)
 
-            console.log(this.headers)
             let res = await this.axios.post(this.api_url + path, bodyData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -137,7 +136,6 @@ class ConversationAPI {
     async getGroupMember(groupId) {
         try {
             let token = await getStorageData('access_token')
-            console.log('tk: ', token)
 
             let path = `/conversation/v1/conversation-group-member/${groupId}`;
             let res = await this.axios.get(this.api_url + path, {
