@@ -40,6 +40,7 @@ import authentication_reducer from './store/reducer/authenticationReducer';
 import { Provider } from 'react-native-paper';
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 import { config } from './app/constants';
+import OneSignal from 'react-native-onesignal';
 
 const rootReducer = combineReducers({
   flashcard: flashcard_list_reducer,
@@ -78,6 +79,35 @@ const App = () => {
         // Request config successfully set!
         console.log('admod config successfully')
       });
+
+    //OneSignal Init Code
+    OneSignal.setLogLevel(6, 0);
+    OneSignal.setAppId("11adcd6a-04d0-4080-853c-9ba3780fe5c2");
+    OneSignal.setRequiresUserPrivacyConsent(false)
+
+    //END OneSignal Init Code
+
+    OneSignal.getDeviceState().then(res => {
+      console.warn(res.userId)
+    })
+
+    //Method for handling notifications received while app in foreground
+    OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+      console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+      let notification = notificationReceivedEvent.getNotification();
+      console.log("notification: ", notification);
+      const data = notification.additionalData
+      console.log("additionalData: ", data);
+      // Complete with null means don't show a notification.
+      notificationReceivedEvent.complete(notification);
+    });
+
+    //Method for handling notifications opened
+    OneSignal.setNotificationOpenedHandler(notification => {
+      console.log("OneSignal: notification opened:", notification);
+    });
+
+
   }, []);
 
 
@@ -85,6 +115,9 @@ const App = () => {
 
 
   // Unsubscribe from events on unmount
+
+
+
 
 
 

@@ -10,6 +10,9 @@ buildscript {
         androidXAnnotation = "1.1.0"
         androidXBrowser = "1.0.0"
         // Put here other AndroidX dependencies
+        kotlinVersion = '1.5.0'
+        googlePlayServicesAuthVersion = "16.0.1" // <--- use this version or newer
+
     }
     repositories {
         google()
@@ -22,6 +25,8 @@ buildscript {
 
         classpath 'com.google.gms:google-services:4.3.5'
         // Add me --- /\
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+
     }   
 }
 

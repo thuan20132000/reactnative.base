@@ -30,7 +30,18 @@
 				<string>fb566146441223542</string>
 			</array>
 		</dict>
-		<dict/>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string></string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>google</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.762174979149-d0nu6ershjiqm54t67k0o35dusaeg0hn</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
@@ -73,15 +84,13 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires to access your photo library to show image on profile and send via chat</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to use your microphone. Your record wont be shared without your permission.</string>
-  <key>NSCameraUsageDescription</key>
-  <string>This app requires to access your photo library to show image on profile and send via chat</string>
 	<key>SKAdNetworkItems</key>
-  
-  
 	<array>
 		<dict>
 			<key>SKAdNetworkIdentifier</key>
@@ -239,6 +248,8 @@
 		<string>IonIcons.ttf</string>
 		<string>AntDesign.ttf</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -253,8 +264,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>UIBackgroundModes</key>
-  <array>
-  </array>
 </dict>
 </plist>

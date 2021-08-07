@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 
 import com.android.build.OutputFile
 
@@ -77,6 +77,16 @@ import com.android.build.OutputFile
  *   extraPackagerArgs: []
  * ]
  */
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.10, 0.99.99]'
+    }
+}
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
 
 project.ext.react = [
     entryFile: "index.js",
@@ -211,7 +221,9 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
     implementation project(':react-native-sqlite-storage')
     implementation project(':react-native-fbsdk-next')
-    
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0' // <-- add this; newer versions should work too
+
+
     implementation(project(':react-native-jitsi-meet')){
         exclude group: 'com.facebook.react',module:'react-native-locale-detector'
         exclude group: 'com.facebook.react',module:'react-native-vector-icons'
@@ -265,3 +277,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+apply plugin: 'com.google.gms.google-services'
