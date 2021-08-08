@@ -6,18 +6,18 @@ import Sound from 'react-native-sound';
 import CommonColor from '../../utils/CommonColor';
 import { getLearntVocabularyByTopic, saveLearntVocabularyByTopic } from '../../utils/helper';
 
-import {InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
+import { InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
 
 
 import config from '../../app/constants/config';
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_android_app_id;
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_android_fullpage;
 
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
     requestNonPersonalizedAdsOnly: true,
     keywords: ['fashion', 'clothing'],
-  });
+});
 
 const F_FlashCardPracticeFinishScreen = (props) => {
 
@@ -47,61 +47,59 @@ const F_FlashCardPracticeFinishScreen = (props) => {
         }, 100);
 
 
-        // const eventListener = rewarded.onAdEvent((type, error, reward) => {
-        //     if (type === RewardedAdEventType.LOADED) {
-        //         setAdvLoaded(true);
-        //     }
-        //     if (type === RewardedAdEventType.EARNED_REWARD) {
-        //         console.log('User earned reward of ', reward);
-        //       }
-        // });
 
         const eventListener = interstitial.onAdEvent(type => {
             if (type === AdEventType.LOADED) {
-              setAdvLoaded(true);
+                setAdvLoaded(true);
             }
-          });
-      
-          // Start loading the interstitial straight away
+        });
+
+        // Start loading the interstitial straight away
+        const unsubscribe = props.navigation.addListener('beforeRemove', () => {
+            interstitial.show()
+        });
+
+
+        // Start loading the interstitial straight away
         interstitial.load();
-      
-      
-      
+
+
+
 
         props.navigation.setOptions({
-            headerBackTitleVisible:false,
-            headerShown:false
+            headerBackTitleVisible: false,
+            headerShown: false
         })
 
         // Unsubscribe from events on unmount
         return () => {
             eventListener();
+            unsubscribe();
         };
 
     }, []);
 
 
-    const [advClicked, setAdvClicked] = React.useState(false);
 
-    const _onLoadAdv = () => {
-        if(interstitial.loaded){
-            interstitial.show();
-            setAdvClicked(true);
-        }
-    }
 
 
     const _onBackHome = async () => {
 
         //flashcard.topic ==> topic is a slug name already
         let res = await saveLearntVocabularyByTopic(flashcard?.topic, flashcard.learnt_vocabulary_list);
-        
-        if(!res){
-            console.warn('error: ',res);
+
+        if (!res) {
+            console.warn('error: ', res);
             return;
         }
         props.navigation.goBack();
 
+    }
+
+
+
+    if (!advLoaded) {
+        return <View />;
     }
 
     return (
@@ -146,7 +144,7 @@ const F_FlashCardPracticeFinishScreen = (props) => {
                     paddingHorizontal: 22,
                     borderRadius: 6
                 }}
-                onPress={advClicked ? _onBackHome : _onLoadAdv}
+                onPress={_onBackHome}
             >
                 <Text
                     style={{

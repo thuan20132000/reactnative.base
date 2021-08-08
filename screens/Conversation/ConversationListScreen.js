@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import ReadingCard from './components/ReadingCard'
 
 import ConversationAPI from '../../app/API/ConversationAPI';
@@ -12,8 +12,10 @@ import { BOXSHADOW } from '../../app/constants/themes';
 import { config } from '../../app/constants';
 
 import { BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
+import SearchBar from '../../components/shared/SearchBar';
+import SelectionItem from './components/SelectionItem';
 
-const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_app_id;
+const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
 
 const ConversationList = (props) => {
 
@@ -22,7 +24,7 @@ const ConversationList = (props) => {
     const _refTopicItem = useRef();
     const [selectedTopic, setSelectedTopic] = useState(null)
     useEffect(() => {
-     
+
 
         RNProgressHud.show()
         ConversationAPI.getAllConversationTopic()
@@ -78,6 +80,10 @@ const ConversationList = (props) => {
             .finally(() => RNProgressHud.dismiss())
     }
 
+    const _onNavigateLearner = () => {
+        props.navigation.navigate('LearnerHome')
+    }
+
     React.useLayoutEffect(() => {
         props.navigation.setOptions({
             headerShown: false
@@ -97,85 +103,118 @@ const ConversationList = (props) => {
                 flex: 1
             }}
         >
-            <View
-                style={{
-                    borderBottomLeftRadius: 12,
-                    borderBottomRightRadius: 12,
 
-                    backgroundColor: 'white',
-                }}
+            <ScrollView
+                stickyHeaderIndices={[2]}
             >
-                <FlatList
-                    ref={_refTopicItem}
+                <View
+                    style={[{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        alignItems: 'center',
+                        // borderBottomWidth:0.4,
+                        // borderBottomColor:"gray",
+                        width: '80%',
+                        alignSelf: 'center'
+                    }]}
+                >
+                    <SelectionItem
+                        imagePath={require('../../app/assets/images/ic_friends.png')}
+                        label={'LEARNER'}
+                        onPress={_onNavigateLearner}
+                    />
+                    <SelectionItem
+                        imagePath={require('../../app/assets/images/ic_tutor.png')}
+                        label={'TUTOR'}
 
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={conversationTopic}
-                    renderItem={({ item, index }) => {
-                        return (
-                            <TopicItem
-                                image_path={item?.image}
-                                label={item?.name}
-                                labelStyle={{ color: 'red', fontWeight: '700' }}
-                                onItemPress={() => _onGetConversationByTopic(item, index)}
+                    />
+                </View>
 
-                                containerStyle={selectedTopic == index ?
-                                    {
-                                        borderWidth: 1,
-                                        borderColor: 'red'
-                                    } : {}
-                                }
+                <View
+                    style={{
+                        display: 'flex',
+                        alignSelf: 'center',
+                        backgroundColor: 'transparent'
+                    }}
+                >
+                    <BannerAd
+                        unitId={adUnitId}
+                        size={BannerAdSize.BANNER}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                    />
+
+                </View>
+
+                <View
+                    style={{
+                        borderBottomLeftRadius: 12,
+                        borderBottomRightRadius: 12,
+
+                        backgroundColor: 'white',
+                    }}
+                >
+                    <FlatList
+                        ref={_refTopicItem}
+
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        data={conversationTopic}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <TopicItem
+                                    image_path={item?.image}
+                                    label={item?.name}
+                                    labelStyle={{ color: 'red', fontWeight: '700' }}
+                                    onItemPress={() => _onGetConversationByTopic(item, index)}
+
+                                    containerStyle={selectedTopic == index ?
+                                        {
+                                            borderWidth: 1,
+                                            borderColor: 'red'
+                                        } : {}
+                                    }
+                                />
+
+                            )
+                        }}
+                        keyExtractor={(item) => item?.id}
+                        contentContainerStyle={{
+                            paddingVertical: 12,
+
+                        }}
+
+                    />
+
+                </View>
+
+                {/* body */}
+                <View
+                    style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        flexDirection: 'row'
+                    }}
+                >
+                    {
+                        readingPost?.map((item, index) => (
+                            <ConversationItem
+                                key={item?.id?.toString()}
+                                title={item.title}
+                                image_path={item.image}
+                                onPracticePress={() => _onOpenPostPractice(item)}
+                                onGroupPress={() => _onOpenConversationgroups(item)}
                             />
+                        ))
+                    }
+                </View>
 
-                        )
-                    }}
-                    keyExtractor={(item) => item?.id}
-                    contentContainerStyle={{
-                        paddingVertical: 12,
 
-                    }}
-
-                />
-
-            </View>
-
-            <FlatList
-                data={readingPost}
-                renderItem={({ item }) => {
-                    return (
-                        <ConversationItem
-                            title={item.title}
-                            image_path={item.image}
-                            onPracticePress={() => _onOpenPostPractice(item)}
-                            onGroupPress={() => _onOpenConversationgroups(item)}
-                        />
-
-                    )
-                }}
-                keyExtractor={(item) => item?.id}
-                numColumns={2}
-            // contentContainerStyle={{
-            //     marginTop: 20,
-            // }}
-
-            />
-            <View
-                style={{
-                    display: 'flex',
-                    alignSelf: 'center',
-                    backgroundColor:'transparent'
-                }}
-            >
-                <BannerAd
-                    unitId={adUnitId}
-                    size={BannerAdSize.BANNER}
-                    requestOptions={{
-                        requestNonPersonalizedAdsOnly: true,
-                    }}
-                />
-
-            </View>
+            </ScrollView>
         </SafeAreaView>
+
     )
 }
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CardDefinition from './components/CardDefinition'
 import CardFlip from 'react-native-card-flip';
 import { Button, IconButton, ProgressBar, Modal, Portal, Provider } from 'react-native-paper';
@@ -25,6 +25,13 @@ import ModalLoading from '../../components/Modal/ModalLoading';
 import * as flashcardActions from '../../store/actions/flashcardActions';
 import ButtonText from '../../components/Button/BottonText';
 import { config } from '../../app/constants';
+
+
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+
+const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
+
+
 const F_FLashCardPracticeScreen = (props) => {
 
     const flashcard = useSelector(state => state.flashcard);
@@ -50,7 +57,7 @@ const F_FLashCardPracticeScreen = (props) => {
         setTimeout(() => {
             let str = word?.sound_us.slice(7);
             let encode = encodeURIComponent(str)
-            let path = config.audio_url+encode;
+            let path = config.audio_url + encode;
 
             var sound = new Sound(path, '', (error) => {
                 /* ... */
@@ -214,7 +221,7 @@ const F_FLashCardPracticeScreen = (props) => {
     return (
         <Provider>
 
-            <View>
+            <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
 
                 <Portal>
                     <Modal
@@ -230,9 +237,9 @@ const F_FLashCardPracticeScreen = (props) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                             borderRadius: 6,
-                            bottom:120
+                            bottom: 120
                         }}
-                        onDismiss={()=>setIsVisible(false)}
+                        onDismiss={() => setIsVisible(false)}
                     >
                         <View>
                             {
@@ -241,13 +248,13 @@ const F_FLashCardPracticeScreen = (props) => {
                                         name={CommonIcons.checkProgress}
                                         color={'green'}
                                         size={52}
-                                        onPress={()=>setIsVisible(false)}
+                                        onPress={() => setIsVisible(false)}
                                     /> :
                                     <MaterialCommunityIcon
                                         name={CommonIcons.closeProgress}
                                         color={'red'}
                                         size={52}
-                                        onPress={()=>setIsVisible(false)}
+                                        onPress={() => setIsVisible(false)}
 
                                     />
 
@@ -407,18 +414,18 @@ const F_FLashCardPracticeScreen = (props) => {
                             icon={CommonIcons.checkboxCircleMark}
                             onItemPress={_onCheckWord}
                             disabled={selectedWord ? false : true}
-                     
+
                             label={`Kiểm tra`}
                             labelStyle={{
-                                fontSize:16,
-                                fontWeight:'700'
+                                fontSize: 16,
+                                fontWeight: '700'
                             }}
                             containerStyle={{
-                                padding:12
+                                padding: 12
                             }}
-                           
+
                         />
-                        
+
                     }
 
                     {
@@ -428,15 +435,34 @@ const F_FLashCardPracticeScreen = (props) => {
                             onItemPress={_onNextCard}
                             label={`Tiếp tục`}
                             labelStyle={{
-                                fontSize:16,
-                                fontWeight:'700'
+                                fontSize: 16,
+                                fontWeight: '700'
                             }}
                             containerStyle={{
-                                padding:12
+                                padding: 12
                             }}
                         />
                     }
                 </View>
+
+
+
+
+            </SafeAreaView>
+            <View
+                style={{
+                    display: 'flex',
+                    alignSelf: 'center',
+                }}
+            >
+                <BannerAd
+                    unitId={adUnitId}
+                    size={BannerAdSize.BANNER}
+                    requestOptions={{
+                        requestNonPersonalizedAdsOnly: true,
+                    }}
+                />
+
             </View>
         </Provider>
 

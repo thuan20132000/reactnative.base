@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Badge, IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonColor from '../../utils/CommonColor'
@@ -16,6 +16,11 @@ import Sound from 'react-native-sound'
 import { url_absolute } from '../../config/api_config.json'
 import ButtonText from '../../components/Button/BottonText'
 import { config } from '../../app/constants'
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+
+const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
+
+
 const F_FlashCardChoiceScreen = (props) => {
 
     const _refCardFlip = useRef();
@@ -31,10 +36,10 @@ const F_FlashCardChoiceScreen = (props) => {
     const [isPlaySound, setIsPlaySound] = useState(false);
     const _onPlayVocabularySound = async () => {
         setIsPlaySound(true);
-      
+
         let str = vocabulary.sound_us.slice(7);
         let encode = encodeURIComponent(str)
-        let path = config.audio_url+encode;
+        let path = config.audio_url + encode;
 
 
         setTimeout(() => {
@@ -121,14 +126,14 @@ const F_FlashCardChoiceScreen = (props) => {
             headerRight: () => (
                 <View
                     style={{
-                        padding:12
+                        padding: 12
                     }}
                 >
                     <Text
                         style={{
-                            fontSize:22,
-                            fontWeight:'700',
-                            color:'red'
+                            fontSize: 22,
+                            fontWeight: '700',
+                            color: 'red'
                         }}
                     >
                         {flashcard.practice_vocabulary_list.length}/7
@@ -142,187 +147,191 @@ const F_FlashCardChoiceScreen = (props) => {
 
 
     return (
-        <ScrollView>
+        <SafeAreaView
+            style={{
+                backgroundColor:'white',
+                flex:1
+            }}
+        >
 
-
-
-            <CardFlip
-                ref={_refCardFlip}
-                style={{
-                    height: 140
-                }}
-            >
-                <CardVocabulary
-                    onItemPress={() => _refCardFlip.current.flip()}
-                    containerStyle={{
-                        height: 140,
-                        alignItems: 'center'
-                    }}
-                    name={vocabulary?.name}
-                    type={vocabulary?.word_type}
-                    phon={vocabulary?.phon_us}
-                    children={
-                        <IconButton
-                            icon={CommonIcons.rotateCircle}
-                            color={CommonColor.primary}
-                            size={18}
-                            style={{
-                                position: 'absolute',
-                                bottom: 10,
-                                right: 10
-                            }}
-                            onPress={() => _refCardFlip.current.flip()}
-                        />
-                    }
-                    onSoundPress={_onPlayVocabularySound}
-                    isPlayingSound={isPlaySound}
-
-                />
-                <CardMeaning
-                    onItemPress={() => _refCardFlip.current.flip()}
-                    containerStyle={{
+            <ScrollView>
+                <CardFlip
+                    ref={_refCardFlip}
+                    style={{
                         height: 140
                     }}
-                    meaning={vocabulary?.meaning}
-
-                    children={
-                        <IconButton
-                            icon={CommonIcons.rotateCircle}
-                            color={CommonColor.primary}
-                            size={18}
-                            style={{
-                                position: 'absolute',
-                                bottom: 10,
-                                right: 10
-                            }}
-
-                            onPress={() => _refCardFlip.current.flip()}
-
-                        />
-                    }
-                />
-
-            </CardFlip>
-
-
-
-            {/* Word Meaning and Example */}
-            <View
-                style={[styles.exampleBox, {
-                    marginTop: 32
-                }]}
-            >
-                <Text
-                    style={{
-                        fontWeight: '700'
-                    }}
                 >
-                    Definition
-                </Text>
-                <Text
-                    style={{
-                        fontSize: 18,
-                        fontStyle: 'italic',
-                        color: 'grey'
-                    }}
-                >
-                    {vocabulary?.definition}
-
-                </Text>
-
-                {/* User Chating Card */}
-                <Text
-                    style={{
-                        fontWeight: '700',
-                        marginTop: 32
-                    }}
-                >
-                    Example
-                </Text>
-                <View
-                    style={[
-                        styles.row,
-                        {
-                            justifyContent: 'flex-start',
-                            alignItems: 'flex-end',
+                    <CardVocabulary
+                        onItemPress={() => _refCardFlip.current.flip()}
+                        containerStyle={{
+                            height: 140,
+                            alignItems: 'center'
+                        }}
+                        name={vocabulary?.name}
+                        type={vocabulary?.word_type}
+                        phon={vocabulary?.phon_us}
+                        children={
+                            <IconButton
+                                icon={CommonIcons.rotateCircle}
+                                color={CommonColor.primary}
+                                size={18}
+                                style={{
+                                    position: 'absolute',
+                                    bottom: 10,
+                                    right: 10
+                                }}
+                                onPress={() => _refCardFlip.current.flip()}
+                            />
                         }
-                    ]}
+                        onSoundPress={_onPlayVocabularySound}
+                        isPlayingSound={isPlaySound}
+
+                    />
+                    <CardMeaning
+                        onItemPress={() => _refCardFlip.current.flip()}
+                        containerStyle={{
+                            height: 140
+                        }}
+                        meaning={vocabulary?.meaning}
+
+                        children={
+                            <IconButton
+                                icon={CommonIcons.rotateCircle}
+                                color={CommonColor.primary}
+                                size={18}
+                                style={{
+                                    position: 'absolute',
+                                    bottom: 10,
+                                    right: 10
+                                }}
+
+                                onPress={() => _refCardFlip.current.flip()}
+
+                            />
+                        }
+                    />
+
+                </CardFlip>
+
+
+
+                {/* Word Meaning and Example */}
+                <View
+                    style={[styles.exampleBox, {
+                        marginTop: 32
+                    }]}
                 >
-
-                    <View
+                    <Text
                         style={{
-                            width: '10%'
+                            fontWeight: '700'
                         }}
                     >
-                        <Image
-                            source={{
-                                uri: CommonImages.avatar
-                            }}
-                            style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 25,
-                            }}
-                        />
-
-                    </View>
-                    <View
+                        Definition
+                </Text>
+                    <Text
                         style={{
-                            width: '80%',
-                            marginHorizontal: 8,
-                            backgroundColor: CommonColor.primary,
-                            padding: 18,
-                            borderBottomLeftRadius: 2,
-                            borderTopLeftRadius: 32,
-                            borderTopRightRadius: 22,
-                            borderBottomRightRadius: 22
+                            fontSize: 18,
+                            fontStyle: 'italic',
+                            color: 'grey'
                         }}
                     >
-                        <Text
+                        {vocabulary?.definition}
+
+                    </Text>
+
+                    {/* User Chating Card */}
+                    <Text
+                        style={{
+                            fontWeight: '700',
+                            marginTop: 32
+                        }}
+                    >
+                        Example
+                </Text>
+                    <View
+                        style={[
+                            styles.row,
+                            {
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-end',
+                            }
+                        ]}
+                    >
+
+                        <View
                             style={{
-                                color: 'white',
-                                fontSize: 16
+                                width: '10%'
                             }}
                         >
-                            {vocabulary?.example}
-                        </Text>
+                            <Image
+                                source={{
+                                    uri: CommonImages.avatar
+                                }}
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: 25,
+                                }}
+                            />
+
+                        </View>
+                        <View
+                            style={{
+                                width: '80%',
+                                marginHorizontal: 8,
+                                backgroundColor: CommonColor.primary,
+                                padding: 18,
+                                borderBottomLeftRadius: 2,
+                                borderTopLeftRadius: 32,
+                                borderTopRightRadius: 22,
+                                borderBottomRightRadius: 22
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    fontSize: 16
+                                }}
+                            >
+                                {vocabulary?.example}
+                            </Text>
+                        </View>
                     </View>
                 </View>
-            </View>
 
 
 
-            {/* Vocabulary Options */}
-            <View
-                style={[styles.row, {
-                    justifyContent: 'space-around',
-                    marginVertical: 22
-                }]}
-            >
+                {/* Vocabulary Options */}
+                <View
+                    style={[styles.row, {
+                        justifyContent: 'space-around',
+                        marginVertical: 22
+                    }]}
+                >
 
-                <ButtonText
-                    onItemPress={_onSkipVocabulary}
-                    label={"Bỏ qua"}
-                    labelStyle={{
-                        fontWeight: '700',
-                        fontSize: 16
-                    }}
-                    containerStyle={{
-                        padding: 12
-                    }}
-                />
-                <ButtonText
-                    onItemPress={_onSelectVocabulary}
-                    label={"Chọn"}
-                    labelStyle={{
-                        fontWeight: '700',
-                        fontSize: 16
-                    }}
-                    containerStyle={{
-                        padding: 12
-                    }}
-                />
-                {/* <TouchableOpacity
+                    <ButtonText
+                        onItemPress={_onSkipVocabulary}
+                        label={"Bỏ qua"}
+                        labelStyle={{
+                            fontWeight: '700',
+                            fontSize: 16
+                        }}
+                        containerStyle={{
+                            padding: 12
+                        }}
+                    />
+                    <ButtonText
+                        onItemPress={_onSelectVocabulary}
+                        label={"Chọn"}
+                        labelStyle={{
+                            fontWeight: '700',
+                            fontSize: 16
+                        }}
+                        containerStyle={{
+                            padding: 12
+                        }}
+                    />
+                    {/* <TouchableOpacity
                     style={[
                         styles.buttonSelect
                     ]}
@@ -359,8 +368,27 @@ const F_FlashCardChoiceScreen = (props) => {
                         LEARN
                     </Text>
                 </TouchableOpacity> */}
+                </View>
+
+
+            </ScrollView>
+            <View
+                style={{
+                    display: 'flex',
+                    alignSelf: 'center',
+                }}
+            >
+                <BannerAd
+                    unitId={adUnitId}
+                    size={BannerAdSize.BANNER}
+                    requestOptions={{
+                        requestNonPersonalizedAdsOnly: true,
+                    }}
+                />
+
             </View>
-        </ScrollView>
+        </SafeAreaView>
+
     )
 }
 

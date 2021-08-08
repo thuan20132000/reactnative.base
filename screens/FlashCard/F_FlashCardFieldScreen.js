@@ -6,7 +6,7 @@ import CardField from './components/CardField'
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import config from '../../app/constants/config';
 import FieldModel from '../../app/models/fieldModel'
-const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_app_id;
+const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
 
 import QuizAPI from '../../app/API/QuizAPI'
 import Quiz from '../../app/DB/Quiz'

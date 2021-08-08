@@ -40,6 +40,8 @@ import { getUserAuth } from './app/StorageManager';
 import AppManager from './app/AppManager';
 import ConversationGroupScreen from './screens/Conversation/ConversationGroupScreen';
 import ConversationPracticeScreen from './screens/Conversation/ConversationPracticeScreen';
+import LearnerHomeScreen from './screens/Learner/LearnerHomeScreen';
+import LearnerProfileScreen from './screens/Learner/LearnerProfileScreen';
 
 
 
@@ -301,7 +303,7 @@ const TabBottom = () => {
             /> */}
             <TabBottomNavigator.Screen
                 name="VideoCall"
-                component={VideoStack}
+                component={PracticeStack}
                 options={{
                     title: "READING & SPEAKING"
                 }}
@@ -326,15 +328,15 @@ const TabBottom = () => {
     )
 }
 
-const VideoStackNavigator = createStackNavigator();
-const VideoStack = () => {
+const PracticeStackNavigator = createStackNavigator();
+const PracticeStack = () => {
 
-   
+
     const [isAuth, setIsAuth] = React.useState(false);
     const { userInformation } = useSelector(state => state.authentication);
 
     React.useEffect(() => {
-      
+
         if (userInformation.toString()) {
             setIsAuth(true)
         } else {
@@ -344,16 +346,16 @@ const VideoStack = () => {
     }, [userInformation])
 
     return (
-        <VideoStackNavigator.Navigator>
+        <PracticeStackNavigator.Navigator>
 
             {
                 !isAuth &&
-                <VideoStackNavigator.Screen
+                <PracticeStackNavigator.Screen
                     name={"Signin"}
                     component={SignIn}
                     options={{
                         title: "Sign In",
-                        headerShown:false
+                        headerShown: false
                     }}
                 />
 
@@ -362,21 +364,21 @@ const VideoStack = () => {
             {
                 isAuth &&
                 <>
-                    <VideoStackNavigator.Screen
+                    <PracticeStackNavigator.Screen
                         name={"ConversationList"}
                         component={ConversationListScreen}
                         options={{
                             title: "Practice List"
                         }}
                     />
-                    <VideoStackNavigator.Screen
+                    <PracticeStackNavigator.Screen
                         name={"ConversationPractice"}
                         component={ConversationPracticeScreen}
                         options={{
                             title: "Practice"
                         }}
                     />
-                    <VideoStackNavigator.Screen
+                    <PracticeStackNavigator.Screen
                         name={"ConversationDetail"}
                         component={ConversationDetailScreen}
                         options={{
@@ -384,7 +386,7 @@ const VideoStack = () => {
                         }}
 
                     />
-                    <VideoStackNavigator.Screen
+                    <PracticeStackNavigator.Screen
                         name={"ConversationGroup"}
                         options={{
                             title: "Groups"
@@ -392,11 +394,27 @@ const VideoStack = () => {
                         component={ConversationGroupScreen}
 
                     />
+                    <PracticeStackNavigator.Screen
+                        name={"LearnerHome"}
+                        options={{
+                            title: ""
+                        }}
+                        component={LearnerHomeScreen}
+
+                    />
+                    <PracticeStackNavigator.Screen
+                        name={"LearnerProfile"}
+                        options={{
+                            title: "Profile"
+                        }}
+                        component={LearnerProfileScreen}
+
+                    />
                 </>
             }
 
 
-        </VideoStackNavigator.Navigator>
+        </PracticeStackNavigator.Navigator>
     )
 }
 

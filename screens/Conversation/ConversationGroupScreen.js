@@ -13,7 +13,7 @@ import { config } from '../../app/constants';
 
 import { BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
 
-const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_app_id;
+const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
 
 const ConversationGroupScreen = (props) => {
     const navigation = useNavigation();

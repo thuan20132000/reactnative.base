@@ -18,10 +18,15 @@ import ReadingTextPractice from './components/ReadingTextPractice';
 
 
 
-import { BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
+import { BannerAd, TestIds, BannerAdSize, InterstitialAd, AdEventType } from '@react-native-firebase/admob';
 
-const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_app_id;
+const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
+const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_android_fullpage;
 
+const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial, {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing','books','travel','medicine','fitness'],
+});
 
 
 
@@ -37,6 +42,7 @@ const ConversationPracticeScreen = (props) => {
     const user_id = AppManager.shared.user?.id;
 
 
+    const [loaded, setLoaded] = useState(false);
 
     useLayoutEffect(() => {
         RNProgressHud.show();
@@ -46,9 +52,7 @@ const ConversationPracticeScreen = (props) => {
                     setConversation(new ConversationPostModel(res?.data))
                 }
             }).finally(() => {
-
-
-                RNProgressHud.dismiss()
+                RNProgressHud.dismissWithDelay(1.6)
             })
 
         props.navigation.setOptions({
@@ -60,7 +64,31 @@ const ConversationPracticeScreen = (props) => {
         });
 
 
+        // Adv
+        const eventListener = interstitial.onAdEvent(type => {
+            if (type === AdEventType.LOADED) {
+                setLoaded(true);
+                RNProgressHud.dismiss()
+            }
+        });
+        interstitial.load();
+
+        // Start loading the interstitial straight away
+        const unsubscribe = props.navigation.addListener('beforeRemove', () => {
+            interstitial.show()
+        });
+        // Unsubscribe from events on unmount
+        return () => {
+            unsubscribe()
+            eventListener()
+        };
+
+
     }, [])
+    // No advert ready to show yet
+    if (!loaded) {
+        return <View />;
+    }
 
     return (
         <SafeAreaView

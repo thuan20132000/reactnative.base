@@ -156,7 +156,41 @@ class ConversationAPI {
         try {
             let token = await getStorageData('access_token')
             let path = `/conversation/v1/conversation-group/${groupId}`;
-            let res = await this.axios.post(this.api_url + path,{}, {
+            let res = await this.axios.post(this.api_url + path, {}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getAllLearners() {
+        try {
+            let token = await getStorageData('access_token')
+            let path = `/conversation/v1/users`;
+            let res = await this.axios.get(this.api_url + path, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getUserGroups(user_id) {
+        try {
+            let token = await getStorageData('access_token')
+            let path = `/conversation/v1/user-groups/${user_id}`;
+            let res = await this.axios.get(this.api_url + path, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

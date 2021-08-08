@@ -65,6 +65,8 @@ export default {
     checkboxMarked:'checkbox-marked',
     phoneSetting:"cellphone-settings",
     bookOpen:'book-open',
+    schoolGraduateHat:'school',
+    videoCall:'video-account',
 
 
 }

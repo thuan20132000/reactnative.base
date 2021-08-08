@@ -15,8 +15,16 @@ import AppManager from '../../app/AppManager';
 import { config } from '../../app/constants';
 import CommonImages from '../../utils/CommonImages';
 
+import { BannerAd, TestIds, BannerAdSize, InterstitialAd, AdEventType } from '@react-native-firebase/admob';
+
+const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
+const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_android_fullpage;
 
 
+const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial, {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing', 'books', 'travel', 'medicine', 'fitness'],
+});
 
 
 
@@ -28,10 +36,11 @@ const ConversationDetail = (props) => {
     const [memberList, setMemberList] = useState([]);
     const [isRunTextScroll, setIsRunTextScroll] = useState(false);
     const [connectCode, setConnectCode] = useState('');
+    const [loaded, setLoaded] = useState(false);
 
     const user_id = AppManager.shared.user?.id;
 
-    const _refSocket = React.useMemo(() => new WebSocket(`ws://${config.IP_ADDRESS}:8001/ws/conversation/${group?.id}/user/${user_id}/`), [])
+    const _refSocket = React.useMemo(() => new WebSocket(`ws://${config.IP_ADDRESS}:${config.PORT}/ws/conversation/${group?.id}/user/${user_id}/`), [])
 
     const _onCalling = () => {
         setIsCalling(true)
@@ -139,8 +148,7 @@ const ConversationDetail = (props) => {
             }).finally(() => {
 
                 _onGetGroupMembers()
-
-                RNProgressHud.dismiss()
+                RNProgressHud.dismissWithDelay(1.8)
             })
 
         props.navigation.setOptions({
@@ -151,11 +159,36 @@ const ConversationDetail = (props) => {
 
         });
 
+
+        // Adv
+        const eventListener = interstitial.onAdEvent(type => {
+            if (type === AdEventType.LOADED) {
+                setLoaded(true);
+            }
+        });
+        interstitial.load();
+
+        // Start loading the interstitial straight away
+        const unsubscribe = props.navigation.addListener('beforeRemove', () => {
+            interstitial.show()
+        });
+
+
+        // Unsubscribe from events on unmount
         return () => {
             _refSocket.close(user_id, 'left screen')
             _onEndCalling()
+            unsubscribe()
+            eventListener()
         };
     }, [])
+
+
+    // No advert ready to show yet
+    if (!loaded) {
+        return <View />;
+    }
+
 
     return (
         <SafeAreaView
@@ -163,7 +196,23 @@ const ConversationDetail = (props) => {
                 flex: 1
             }}
         >
+            <View
+                style={{
+                    display: 'flex',
+                    alignSelf: 'center',
+                    width: '50%',
+                    alignItems: 'center'
+                }}
+            >
+                <BannerAd
+                    unitId={adUnitId}
+                    size={BannerAdSize.BANNER}
+                    requestOptions={{
+                        requestNonPersonalizedAdsOnly: true,
+                    }}
+                />
 
+            </View>
             {/* header */}
             {
                 group &&
@@ -215,8 +264,6 @@ const ConversationDetail = (props) => {
                         }
 
                     </ScrollView>
-
-
 
                     <View
                         style={{
@@ -304,13 +351,14 @@ const ConversationDetail = (props) => {
                     alignSelf: 'center',
                 }}
             >
+
                 {
                     isCalling ?
                         <ButtonText
                             label={'ENDCALL'}
                             containerStyle={{
                                 backgroundColor: 'red',
-                                width:120
+                                width: 120
 
                             }}
                             onItemPress={_onEndCalling}
@@ -324,7 +372,7 @@ const ConversationDetail = (props) => {
                             rightIcon
                             containerStyle={{
                                 backgroundColor: 'green',
-                                width:120
+                                width: 120
                             }}
 
                         />
@@ -332,6 +380,8 @@ const ConversationDetail = (props) => {
 
                 }
             </View>
+
+
         </SafeAreaView>
 
 
