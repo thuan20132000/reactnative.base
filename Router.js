@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { View, Text } from 'react-native'
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer, StackActions, useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import messaging from '@react-native-firebase/messaging';
@@ -243,8 +243,19 @@ const GrammarStack = () => {
 // 
 const TabBottomNavigator = createBottomTabNavigator();
 const TabBottom = () => {
-    // const navigation = useNavigation();
+    const navigation = useNavigation();
     // console.warn('propsL: ',);
+
+    const _onCheckIsAuthenticated = () => {
+        getUserAuth()
+            .then(res => {
+                console.warn('au: ', res)
+                navigation.dispatch(
+                    StackActions.replace('Signin')
+                )
+
+            })
+    }
 
     return (
         <TabBottomNavigator.Navigator
@@ -303,7 +314,7 @@ const TabBottom = () => {
             /> */}
             <TabBottomNavigator.Screen
                 name="VideoCall"
-                component={PracticeStack}
+                component={ConversationListScreen}
                 options={{
                     title: "READING & SPEAKING"
                 }}
@@ -323,112 +334,173 @@ const TabBottom = () => {
                 options={{
                     title: "SETTING"
                 }}
+                listeners={(index) => {
+                    _onCheckIsAuthenticated()
+                }}
             />
         </TabBottomNavigator.Navigator>
     )
 }
 
 const PracticeStackNavigator = createStackNavigator();
-const PracticeStack = () => {
+// const PracticeStack = () => {
 
 
-    const [isAuth, setIsAuth] = React.useState(false);
-    const { userInformation } = useSelector(state => state.authentication);
+//     const [isAuth, setIsAuth] = React.useState(false);
+//     const { userInformation } = useSelector(state => state.authentication);
 
-    React.useEffect(() => {
+//     React.useEffect(() => {
 
-        if (userInformation.toString()) {
-            setIsAuth(true)
-        } else {
-            setIsAuth(false)
-        }
+//         if (userInformation.toString()) {
+//             setIsAuth(true)
+//         } else {
+//             setIsAuth(false)
+//         }
 
-    }, [userInformation])
+//     }, [userInformation])
 
+//     return (
+//         <PracticeStackNavigator.Navigator>
+
+
+//             <PracticeStackNavigator.Screen
+//                 name={"TabNavigation"}
+//                 component={TabBottom}
+//             />
+//             <PracticeStackNavigator.Screen
+//                 name={"ConversationList"}
+//                 component={ConversationListScreen}
+//                 options={{
+//                     title: "Practice List"
+//                 }}
+//             />
+//             <PracticeStackNavigator.Screen
+//                 name={"ConversationPractice"}
+//                 component={ConversationPracticeScreen}
+//                 options={{
+//                     title: "Practice"
+//                 }}
+//             />
+//             <PracticeStackNavigator.Screen
+//                 name={"ConversationDetail"}
+//                 component={ConversationDetailScreen}
+//                 options={{
+//                     title: "Practice Conversation"
+//                 }}
+
+//             />
+//             <PracticeStackNavigator.Screen
+//                 name={"ConversationGroup"}
+//                 options={{
+//                     title: "Groups"
+//                 }}
+//                 component={ConversationGroupScreen}
+
+//             />
+//             <PracticeStackNavigator.Screen
+//                 name={"LearnerHome"}
+//                 options={{
+//                     title: ""
+//                 }}
+//                 component={LearnerHomeScreen}
+
+//             />
+//             <PracticeStackNavigator.Screen
+//                 name={"LearnerProfile"}
+//                 options={{
+//                     title: "Profile"
+//                 }}
+//                 component={LearnerProfileScreen}
+
+//             />
+//             <PracticeStackNavigator.Screen
+//                 name={"Signin"}
+//                 component={SignIn}
+//                 options={{
+//                     title: "Sign In",
+//                     headerShown: false
+//                 }}
+//             />
+
+
+//         </PracticeStackNavigator.Navigator>
+//     )
+// }
+
+const HomeStack = () => {
     return (
         <PracticeStackNavigator.Navigator>
 
-            {
-                !isAuth &&
-                <PracticeStackNavigator.Screen
-                    name={"Signin"}
-                    component={SignIn}
-                    options={{
-                        title: "Sign In",
-                        headerShown: false
-                    }}
-                />
 
-            }
+            <PracticeStackNavigator.Screen
+                name={"TabNavigation"}
+                component={TabBottom}
+            />
+            <PracticeStackNavigator.Screen
+                name={"ConversationList"}
+                component={ConversationListScreen}
+                options={{
+                    title: "Practice List"
+                }}
+            />
+            <PracticeStackNavigator.Screen
+                name={"ConversationPractice"}
+                component={ConversationPracticeScreen}
+                options={{
+                    title: "Practice"
+                }}
+            />
+            <PracticeStackNavigator.Screen
+                name={"ConversationDetail"}
+                component={ConversationDetailScreen}
+                options={{
+                    title: "Practice Conversation"
+                }}
 
-            {
-                isAuth &&
-                <>
-                    <PracticeStackNavigator.Screen
-                        name={"ConversationList"}
-                        component={ConversationListScreen}
-                        options={{
-                            title: "Practice List"
-                        }}
-                    />
-                    <PracticeStackNavigator.Screen
-                        name={"ConversationPractice"}
-                        component={ConversationPracticeScreen}
-                        options={{
-                            title: "Practice"
-                        }}
-                    />
-                    <PracticeStackNavigator.Screen
-                        name={"ConversationDetail"}
-                        component={ConversationDetailScreen}
-                        options={{
-                            title: "Practice Conversation"
-                        }}
+            />
+            <PracticeStackNavigator.Screen
+                name={"ConversationGroup"}
+                options={{
+                    title: "Groups"
+                }}
+                component={ConversationGroupScreen}
 
-                    />
-                    <PracticeStackNavigator.Screen
-                        name={"ConversationGroup"}
-                        options={{
-                            title: "Groups"
-                        }}
-                        component={ConversationGroupScreen}
+            />
+            <PracticeStackNavigator.Screen
+                name={"LearnerHome"}
+                options={{
+                    title: ""
+                }}
+                component={LearnerHomeScreen}
 
-                    />
-                    <PracticeStackNavigator.Screen
-                        name={"LearnerHome"}
-                        options={{
-                            title: ""
-                        }}
-                        component={LearnerHomeScreen}
+            />
+            <PracticeStackNavigator.Screen
+                name={"LearnerProfile"}
+                options={{
+                    title: "Profile"
+                }}
+                component={LearnerProfileScreen}
 
-                    />
-                    <PracticeStackNavigator.Screen
-                        name={"LearnerProfile"}
-                        options={{
-                            title: "Profile"
-                        }}
-                        component={LearnerProfileScreen}
-
-                    />
-                </>
-            }
+            />
+            <PracticeStackNavigator.Screen
+                name={"Signin"}
+                component={SignIn}
+                options={{
+                    title: "Sign In",
+                    headerShown: false
+                }}
+            />
 
 
         </PracticeStackNavigator.Navigator>
     )
 }
 
-
-
 export default function Router(props) {
-
-
 
     return (
         <NavigationContainer>
-            <TabBottom
-
-            />
+            <HomeStack />
         </NavigationContainer>
     )
 }

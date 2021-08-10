@@ -78,14 +78,14 @@ const ConversationGroupScreen = (props) => {
 
 
     React.useLayoutEffect(() => {
-        navigation.dangerouslyGetParent().setOptions({
-            tabBarVisible: false,
+        // navigation.dangerouslyGetParent().setOptions({
+        //     tabBarVisible: false,
 
-        });
-        const unsubscribe = navigation.addListener('focus', () => {
-            _onGetConversationGroups()
-        });
-        return unsubscribe;
+        // });
+        // const unsubscribe = navigation.addListener('focus', () => {
+        //     _onGetConversationGroups()
+        // });
+        // return unsubscribe;
 
     }, [])
     return (

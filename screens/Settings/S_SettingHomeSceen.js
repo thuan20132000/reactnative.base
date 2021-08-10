@@ -13,10 +13,12 @@ import { setUserAuth } from '../../app/StorageManager';
 import AppManager from '../../app/AppManager'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../store/actions/authenticationActions'
+import { StackActions, useNavigation } from '@react-navigation/native'
 
 const S_SettingHomeSceen = (props) => {
 
     const dispatch = useDispatch();
+    const navigation = useNavigation()
 
     const _onOpenSharing = async () => {
         try {
@@ -54,13 +56,15 @@ const S_SettingHomeSceen = (props) => {
 
     }
 
-    const _onLogOut = async () => {
+    const _onLogOut =  () => {
         console.log('logout')
         setUserAuth(null)
         // props.navigation.replace('VideoHome')
         AppManager.shared.user = null
-        dispatch(logout())
-
+        // dispatch(logout())
+        navigation.dispatch(
+            StackActions.replace('Signin')
+        )
     }
 
     return (

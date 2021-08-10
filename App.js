@@ -41,6 +41,7 @@ import { Provider } from 'react-native-paper';
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 import { config } from './app/constants';
 import OneSignal from 'react-native-onesignal';
+import RootNavigation from './app/Router/RootNavigation';
 
 const rootReducer = combineReducers({
   flashcard: flashcard_list_reducer,
@@ -121,13 +122,12 @@ const App = () => {
 
 
 
-
   return (
     <StoreProvider
       store={store}
     >
       <Provider>
-        <Router />
+        <RootNavigation />
       </Provider>
 
     </StoreProvider>

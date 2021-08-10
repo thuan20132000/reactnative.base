@@ -28,7 +28,7 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial, {
 
 
 
-const ConversationDetail = (props) => {
+const ConversationDetailScreen = (props) => {
 
     const { groupConversation, group } = props?.route?.params ?? ''
     const [isCalling, setIsCalling] = useState(false);
@@ -154,10 +154,10 @@ const ConversationDetail = (props) => {
         props.navigation.setOptions({
             headerShown: false
         })
-        props.navigation.dangerouslyGetParent().setOptions({
-            tabBarVisible: false,
+        // props.navigation.dangerouslyGetParent().setOptions({
+        //     tabBarVisible: false,
 
-        });
+        // });
 
 
         // Adv
@@ -390,4 +390,4 @@ const ConversationDetail = (props) => {
     )
 }
 
-export default ConversationDetail
+export default ConversationDetailScreen

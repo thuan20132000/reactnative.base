@@ -15,3 +15,4 @@ if (Platform.OS === 'android') {
     AppRegistry.registerComponent(appNameIOS, () => App);
 
 }
+// AppRegistry.registerComponent(appNameANDROID, () => App);

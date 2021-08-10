@@ -25,7 +25,7 @@ const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_andro
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial, {
     requestNonPersonalizedAdsOnly: true,
-    keywords: ['fashion', 'clothing','books','travel','medicine','fitness'],
+    keywords: ['fashion', 'clothing', 'books', 'travel', 'medicine', 'fitness'],
 });
 
 
@@ -58,10 +58,10 @@ const ConversationPracticeScreen = (props) => {
         props.navigation.setOptions({
             headerShown: false
         })
-        props.navigation.dangerouslyGetParent().setOptions({
-            tabBarVisible: false,
+        // props.navigation.dangerouslyGetParent().setOptions({
+        //     tabBarVisible: false,
 
-        });
+        // });
 
 
         // Adv

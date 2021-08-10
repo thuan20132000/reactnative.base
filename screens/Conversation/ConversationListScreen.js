@@ -85,15 +85,15 @@ const ConversationList = (props) => {
     }
 
     React.useLayoutEffect(() => {
-        props.navigation.setOptions({
-            headerShown: false
-        })
-        const unsubscribe = props.navigation.addListener('focus', () => {
-            props.navigation.dangerouslyGetParent().setOptions({
-                tabBarVisible: true
-            });
-        });
-        return unsubscribe;
+        // props.navigation.setOptions({
+        //     headerShown: false
+        // })
+        // const unsubscribe = props.navigation.addListener('focus', () => {
+        //     props.navigation.dangerouslyGetParent().setOptions({
+        //         tabBarVisible: true
+        //     });
+        // });
+        // return unsubscribe;
 
     }, [])
     return (
