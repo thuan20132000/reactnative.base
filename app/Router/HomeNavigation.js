@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import CommonIcons from "../../utils/CommonIcons";
 import { getUserAuth } from "../StorageManager";
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FlashCardStack from "./FlashCardNavigation";
 import ConversationList from "../../screens/Conversation/ConversationListScreen";
 import ConversationPracticeScreen from "../../screens/Conversation/ConversationPracticeScreen";
@@ -16,6 +16,7 @@ import SignIn from "../../screens/Authentication/SignIn";
 import S_SettingHomeSceen from "../../screens/Settings/S_SettingHomeSceen";
 import { View } from "react-native";
 import AppManager from "../AppManager";
+import UserModel from "../models/userModel";
 
 
 
@@ -30,7 +31,6 @@ const TabBottom = () => {
 
     const _onCheckIsAuthenticated = () => {
         if (!AppManager.shared.user) {
-            console.warn(AppManager.shared.user)
             navigation.dispatch(
                 StackActions.replace('Signin')
             )
@@ -41,7 +41,7 @@ const TabBottom = () => {
 
 
     return (
-        <TabBottomNavigator.Navigator
+        <TabBottomNavigator.Navigator initialRouteName={'FlashCard'}
 
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
@@ -132,23 +132,50 @@ const TabBottom = () => {
 
 
 const HomeStack = () => {
+
+
+    const [isShown, setIsShown] = useState(false)
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        getUserAuth()
+            .then(res => {
+                if (res != null) {
+                    let user = new UserModel(res)
+                    AppManager.shared.user = user
+                    // navigation.dispatch(
+                    //     StackActions.replace('HomeStack')
+                    // )
+                }
+
+            })
+            .catch((err) => {
+                console.warn('errors: ', err)
+                // navigation.dispatch(
+                //     StackActions.replace('Signin')
+                // )
+            })
+            .finally(() => {
+                setIsShown(true)
+            })
+
+    }, [])
+
+
+    if (!isShown) {
+        return <View />
+    }
+
     return (
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName={'bottomTab'}>
             <Stack.Screen
                 name={'bottomTab'}
                 component={TabBottom}
                 options={{
                     headerShown: false,
-                    title:""
+                    title: ""
                 }}
             />
-            {/* <Stack.Screen
-                name={'ConversationStack'}
-                component={ConversationStack}
-                options={{
-                    headerShown: false
-                }}
-            /> */}
 
             <Stack.Screen
                 name={'ConversationPractice'}
@@ -175,6 +202,13 @@ const HomeStack = () => {
                     title: "Profile"
                 }}
                 component={LearnerProfileScreen}
+            />
+            <Stack.Screen
+                name={"Signin"}
+                component={SignIn}
+                options={{
+                    headerShown: false
+                }}
             />
 
         </Stack.Navigator>

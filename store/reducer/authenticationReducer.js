@@ -16,14 +16,12 @@ const initialState = {
 export default (state = initialState, action) => {
     switch (action.type) {
         case SIGNIN:
-            console.warn('login red')
             return {
                 ...state,
                 userInformation: action.data
             }
 
         case LOGOUT:
-            console.warn('dfds log')
             return {
                 ...state,
                 userInformation: action.data

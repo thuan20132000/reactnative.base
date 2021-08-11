@@ -38,7 +38,6 @@ const SignIn = (props) => {
         authenticationAPI.signinWithFacebook(access_token)
             .then((res) => {
                 if (res.access_token) {
-                    console.log('login : ', res)
                     AppManager.shared.access_token = res.access_token
                     dispatch(signin(res))
                     setUserAuth(res.toString())
@@ -58,7 +57,6 @@ const SignIn = (props) => {
     const _onLoginFacebook = () => {
         LoginManager.logInWithPermissions(["public_profile"]).then(
             function (result) {
-                console.warn('data :', result)
                 if (result.isCancelled) {
                     console.log("Login cancelled");
                 } else {

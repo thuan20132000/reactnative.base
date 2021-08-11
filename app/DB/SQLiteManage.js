@@ -120,7 +120,6 @@ class SQLiteManager {
 
     async createTable() {
         if (this.db != null) {
-            console.warn('db: ', this.db);
             this.db.transaction((tx) => {
                 tx.executeSql('CREATE TEMPORARY TABLE temp_table1( name TEXT )');
             })
