@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Image, ImageBackground, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, TouchableOpacity } from 'react-native'
 import { BOXSHADOW } from '../../app/constants/themes'
 import CommonImages from '../../utils/CommonImages'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -7,9 +7,18 @@ import CommonIcons from '../../utils/CommonIcons'
 // import GroupCard from './components/GroupCard'
 import ConversationAPI from '../../app/API/ConversationAPI'
 import ItemSetting from '../../components/shared/ItemSetting'
-
+import {
+    AccessToken,
+    AuthenticationToken,
+    LoginButton,
+    LoginManager
+} from 'react-native-fbsdk-next';
+import { setUserAuth } from '../../app/StorageManager'
+import { StackActions, useNavigation } from '@react-navigation/native'
+import AppManager from '../../app/AppManager'
 
 const ProfileScreen = (props) => {
+    const navigation = useNavigation()
 
     const { user } = props.route?.params || ''
 
@@ -22,25 +31,16 @@ const ProfileScreen = (props) => {
     }
 
 
-    // const getUserGroup = () => {
-    //     ConversationAPI.getUserGroups(user?.id)
-    //         .then((res) => {
-    //             if (res.status_code === 200) {
-    //                 setUserGroups(res?.data)
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             console.warn(err?.response?.data)
-    //         })
-    //         .then(() => {
-
-    //         })
-    // }
-
-    // useEffect(() => {
-    //     getUserGroup()
-    // }, [])
-
+    const _onLogOut = () => {
+        console.log('logout')
+        setUserAuth(null)
+        // props.navigation.replace('VideoHome')
+        AppManager.shared.user = null
+        // dispatch(logout())
+        navigation.dispatch(
+            StackActions.replace('Signin')
+        )
+    }
     return (
         <View
             style={{
@@ -48,7 +48,9 @@ const ProfileScreen = (props) => {
                 flex: 1
             }}
         >
-            <ScrollView>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+            >
 
                 <View
                     style={{
@@ -84,8 +86,8 @@ const ProfileScreen = (props) => {
                         <Text>4.5</Text>
                     </View> */}
                     </ImageBackground>
-                    <Text style={{ fontWeight: '700', fontSize: 18 }}>Beginner</Text>
-                    <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }}>Descriptions  Descriptions Descriptions</Text>
+                    <Text style={{ fontWeight: '700', fontSize: 18 }}>Thuan Truong</Text>
+                    <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }}>Beginner</Text>
                 </View>
 
 
@@ -153,7 +155,8 @@ const ProfileScreen = (props) => {
                                 margin: 12,
                                 borderRadius: 6,
                                 padding: 6,
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                ...BOXSHADOW.normal
                             }}
                         >
                             <MaterialCommunityIcons
@@ -161,9 +164,9 @@ const ProfileScreen = (props) => {
                                 size={24}
                                 color={'white'}
                             />
-                            <Text style={{ margin: 8, color: 'white', fontWeight: '700' }}>Qualification</Text>
+                            <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Partner</Text>
                         </View>
-                        <View
+                        <TouchableOpacity
                             style={{
                                 width: '40%',
                                 height: 70,
@@ -171,18 +174,18 @@ const ProfileScreen = (props) => {
                                 margin: 12,
                                 borderRadius: 6,
                                 padding: 6,
-                                alignItems: 'center'
-
-
+                                alignItems: 'center',
+                                ...BOXSHADOW.normal
                             }}
+                            onPress={() => navigation.navigate('UserGroup')}
                         >
                             <MaterialCommunityIcons
                                 name={CommonIcons.face_good}
                                 size={24}
                                 color={'white'}
                             />
-                            <Text style={{ margin: 8, color: 'white', fontWeight: '700' }}>Favourites</Text>
-                        </View>
+                            <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Groups</Text>
+                        </TouchableOpacity>
                         <View
                             style={{
                                 width: '40%',
@@ -191,7 +194,9 @@ const ProfileScreen = (props) => {
                                 margin: 12,
                                 borderRadius: 6,
                                 padding: 6,
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                ...BOXSHADOW.normal
+
 
 
                             }}
@@ -201,7 +206,7 @@ const ProfileScreen = (props) => {
                                 size={24}
                                 color={'white'}
                             />
-                            <Text style={{ margin: 8, color: 'white', fontWeight: '700' }}>Location</Text>
+                            <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Notification</Text>
                         </View>
                         <View
                             style={{
@@ -211,7 +216,9 @@ const ProfileScreen = (props) => {
                                 margin: 12,
                                 borderRadius: 6,
                                 padding: 6,
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                ...BOXSHADOW.normal
+
 
                             }}
                         >
@@ -220,7 +227,7 @@ const ProfileScreen = (props) => {
                                 size={24}
                                 color={'white'}
                             />
-                            <Text style={{ margin: 8, color: 'white', fontWeight: '700' }}>Star</Text>
+                            <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Progress</Text>
                         </View>
                     </View>
                 </View>
@@ -237,9 +244,17 @@ const ProfileScreen = (props) => {
 
                     }}
                 >
-                    <ItemSetting label={'Settings'} iconName={CommonIcons.plusThick} />
+                    {/* <ItemSetting 
+                        label={'Settings'} 
+                        iconName={CommonIcons.plusThick} 
+                    /> */}
                     <ItemSetting label={'Notifications'} iconName={CommonIcons.plusThick} />
-                    <ItemSetting label={'Policy'} iconName={CommonIcons.plusThick} />
+                    <ItemSetting
+                        label={'Policy'}
+                        iconName={CommonIcons.plusThick}
+                        onPress={() => navigation.navigate('PrivacyPolicy')}
+
+                    />
                     <ItemSetting label={'Sharing'} iconName={CommonIcons.plusThick} />
                     <ItemSetting label={'Supoport'} iconName={CommonIcons.plusThick} />
 
@@ -262,6 +277,36 @@ const ProfileScreen = (props) => {
                         ))
                     }
                 </View> */}
+                <View
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginVertical: 30
+                    }}
+                >
+                    <LoginButton
+                        onLoginFinished={(error, result) => {
+                            if (error) {
+                                console.log('login has error: ' + result);
+                            } else if (result.isCancelled) {
+                                console.log('login is cancelled.');
+                            } else {
+                                if (Platform.OS === 'ios') {
+                                    AuthenticationToken.getAuthenticationTokenIOS().then((data) => {
+                                        console.log(data?.authenticationToken);
+                                    });
+                                } else {
+                                    AccessToken.getCurrentAccessToken().then((data) => {
+                                        console.log(data?.accessToken.toString());
+                                    });
+                                }
+                            }
+                        }}
+                        onLogoutFinished={_onLogOut}
+                    />
+
+                </View>
             </ScrollView>
 
         </View>

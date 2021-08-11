@@ -19,6 +19,7 @@ import AppManager from "../AppManager";
 import UserModel from "../models/userModel";
 import S_PrivacyPolicyScreen from "../../screens/Settings/S_PrivacyPolicyScreen";
 import ProfileScreen from "../../screens/Settings/ProfileScreen";
+import UserGroupScreen from "../../screens/sharing/UserGroupScreen";
 
 
 
@@ -213,11 +214,18 @@ const HomeStack = () => {
                 }}
             />
             <Stack.Screen
-                  name={"PrivacyPolicy"}
-                  component={S_PrivacyPolicyScreen}
-                  options={{
-                      headerShown: false
-                  }}
+                name={"PrivacyPolicy"}
+                component={S_PrivacyPolicyScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name={"UserGroup"}
+                component={UserGroupScreen}
+                options={{
+                    headerShown: false
+                }}
             />
         </Stack.Navigator>
     )
