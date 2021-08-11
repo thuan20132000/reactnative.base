@@ -17,6 +17,8 @@ import S_SettingHomeSceen from "../../screens/Settings/S_SettingHomeSceen";
 import { View } from "react-native";
 import AppManager from "../AppManager";
 import UserModel from "../models/userModel";
+import S_PrivacyPolicyScreen from "../../screens/Settings/S_PrivacyPolicyScreen";
+import ProfileScreen from "../../screens/Settings/ProfileScreen";
 
 
 
@@ -116,7 +118,7 @@ const TabBottom = () => {
             /> */}
             <TabBottomNavigator.Screen
                 name="TabSetting"
-                component={S_SettingHomeSceen}
+                component={ProfileScreen}
                 options={{
                     title: "SETTING"
                 }}
@@ -210,7 +212,13 @@ const HomeStack = () => {
                     headerShown: false
                 }}
             />
-
+            <Stack.Screen
+                  name={"PrivacyPolicy"}
+                  component={S_PrivacyPolicyScreen}
+                  options={{
+                      headerShown: false
+                  }}
+            />
         </Stack.Navigator>
     )
 }

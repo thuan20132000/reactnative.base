@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View, Linking, Share } from 'react-native'
+import { Image, StyleSheet, Text, View, Linking, Share, ScrollView } from 'react-native'
 import CommonIcons from '../../utils/CommonIcons'
 import RowItem from '../Settings/components/RowItem'
 import LearningActivities from './components/LearningActivities'
@@ -14,6 +14,8 @@ import AppManager from '../../app/AppManager'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../store/actions/authenticationActions'
 import { StackActions, useNavigation } from '@react-navigation/native'
+import { BOXSHADOW, FONTS } from '../../app/constants/themes'
+import CommonImages from '../../utils/CommonImages'
 
 const S_SettingHomeSceen = (props) => {
 
@@ -56,7 +58,7 @@ const S_SettingHomeSceen = (props) => {
 
     }
 
-    const _onLogOut =  () => {
+    const _onLogOut = () => {
         console.log('logout')
         setUserAuth(null)
         // props.navigation.replace('VideoHome')
@@ -67,6 +69,7 @@ const S_SettingHomeSceen = (props) => {
         )
     }
 
+    console.log(AppManager.shared.user)
     return (
         <View
             style={{
@@ -75,46 +78,126 @@ const S_SettingHomeSceen = (props) => {
                 flex: 1
             }}
         >
+            <ScrollView>
 
 
-            {/* <View>
+
+
+                {/* <View>
                 <LearningActivities />
             </View> */}
 
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-
-                }}
-            >
-                <Image
-                    source={
-                        require('../../utils/photos/logo3.png')
-                    }
-                    resizeMode={'contain'}
+                <View
                     style={{
-                        width: 220,
-                        height: 220
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        paddingTop: 60
                     }}
-                />
-            </View>
-            <RowItem
-                label={"Nhắc nhở"}
-                leftIconName={CommonIcons.bell}
-                leftIconStyle={{
-                    color: 'coral'
-                }}
-                containerStyle={[styles.itemContainer]}
-                leftIconSize={26}
-                labelStyle={{
-                    marginLeft: 16,
-                    fontSize: 16
-                }}
-                onItemPress={() => props.navigation.navigate('VocabularyRemind')}
-            />
-            {/* <RowItem
+                >
+                    <Image
+                        // source={
+                        //     require('../../utils/photos/logo3.png')
+                        // }
+                        source={{
+                            uri: AppManager.shared.user.image_path || CommonImages.avatar
+                        }}
+                        resizeMode={'contain'}
+                        style={{
+                            width: 120,
+                            height: 120,
+                            borderRadius: 22
+                        }}
+                    />
+                </View>
+
+
+                <View>
+                    <View
+                        style={{
+                            padding: 22,
+                        }}
+                    >
+                        <Text style={FONTS.h2}>Thuan truong</Text>
+                        <Text>Da Nang, Viet Nam</Text>
+                        <Text>Beginner</Text>
+
+                    </View>
+                </View>
+
+
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexWrap: 'wrap'
+                    }}
+                >
+                    <View
+                        style={{
+                            backgroundColor: 'white',
+                            width: '40%',
+                            height: 90,
+                            margin: 8,
+                            ...BOXSHADOW.normal
+                        }}
+                    >
+
+                    </View>
+                    <View
+                        style={{
+                            backgroundColor: 'white',
+                            width: '40%',
+                            height: 90,
+                            margin: 8,
+                            ...BOXSHADOW.normal
+                        }}
+                    >
+
+                    </View>
+                    <View
+                        style={{
+                            backgroundColor: 'white',
+                            width: '40%',
+                            height: 90,
+                            margin: 8,
+                            ...BOXSHADOW.normal
+                        }}
+                    >
+
+                    </View>
+                    <View
+                        style={{
+                            backgroundColor: 'white',
+                            width: '40%',
+                            height: 90,
+                            margin: 8,
+                            ...BOXSHADOW.normal
+                        }}
+                    >
+
+                    </View>
+                </View>
+
+
+                {/* ROW ITEM */}
+                {/* <RowItem
+                    label={"Nhắc nhở"}
+                    leftIconName={CommonIcons.bell}
+                    leftIconStyle={{
+                        color: 'coral'
+                    }}
+                    containerStyle={[styles.itemContainer]}
+                    leftIconSize={26}
+                    labelStyle={{
+                        marginLeft: 16,
+                        fontSize: 16
+                    }}
+                    onItemPress={() => props.navigation.navigate('VocabularyRemind')}
+                /> */}
+                {/* <RowItem
                 label={"Lịch sử tìm kiếm"}
                 leftIconName={CommonIcons.search}
                 leftIconStyle={{
@@ -131,7 +214,7 @@ const S_SettingHomeSceen = (props) => {
                 onItemPress={() => props.navigation.navigate('SearchHistory')}
 
             /> */}
-            {/* <RowItem
+                {/* <RowItem
                 label={"Ngữ pháp tiếng anh"}
                 leftIconName={CommonIcons.account}
                 containerStyle={[styles.itemContainer]}
@@ -143,7 +226,7 @@ const S_SettingHomeSceen = (props) => {
 
                 }}
             /> */}
-            {/* <RowItem
+                {/* <RowItem
                 label={"Đóng góp cải thiện"}
                 leftIconName={CommonIcons.face_good}
                 leftIconStyle={{
@@ -160,113 +243,115 @@ const S_SettingHomeSceen = (props) => {
                 onItemPress={() => props.navigation.navigate('Contribution')}
 
             /> */}
-            <RowItem
-                label={"Đánh giá ủng hộ ứng dụng trên Google Play"}
-                leftIconName={CommonIcons.bookMarker}
-                leftIconStyle={{
-                    color: 'coral'
-                }}
-                containerStyle={[styles.itemContainer]}
-
-                leftIconSize={26}
-                labelStyle={{
-                    marginLeft: 16,
-                    fontSize: 16
-                }}
-                onItemPress={_onOpenAppReview}
-
-            />
-            <RowItem
-                label={"Chia sẻ ứng dụng với bạn bè"}
-                leftIconName={CommonIcons.shareVariant}
-                leftIconStyle={{
-                    color: 'coral'
-                }}
-                containerStyle={[styles.itemContainer]}
-
-                leftIconSize={26}
-                labelStyle={{
-                    marginLeft: 16,
-                    fontSize: 16
-
-                }}
-                onItemPress={_onOpenSharing}
-            />
-            <RowItem
-                label={"Privacy Policy"}
-                leftIconName={CommonIcons.checkProgress}
-                leftIconStyle={{
-                    color: 'coral'
-                }}
-                containerStyle={[styles.itemContainer]}
-
-                leftIconSize={26}
-                labelStyle={{
-                    marginLeft: 16,
-                    fontSize: 16
-
-                }}
-                onItemPress={() => props.navigation.navigate('PrivacyPolicy')}
-            />
-
-
-            <View
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginVertical: 30
-                }}
-            >
-                <LoginButton
-                    onLoginFinished={(error, result) => {
-                        if (error) {
-                            console.log('login has error: ' + result);
-                        } else if (result.isCancelled) {
-                            console.log('login is cancelled.');
-                        } else {
-                            if (Platform.OS === 'ios') {
-                                AuthenticationToken.getAuthenticationTokenIOS().then((data) => {
-                                    console.log(data?.authenticationToken);
-                                });
-                            } else {
-                                AccessToken.getCurrentAccessToken().then((data) => {
-                                    console.log(data?.accessToken.toString());
-                                });
-                            }
-                        }
+                <RowItem
+                    label={"Đánh giá ủng hộ ứng dụng trên Google Play"}
+                    leftIconName={CommonIcons.bookMarker}
+                    leftIconStyle={{
+                        color: 'coral'
                     }}
-                    onLogoutFinished={_onLogOut}
+                    containerStyle={[styles.itemContainer]}
+
+                    leftIconSize={26}
+                    labelStyle={{
+                        marginLeft: 16,
+                        fontSize: 16
+                    }}
+                    onItemPress={_onOpenAppReview}
+
+                />
+                <RowItem
+                    label={"Chia sẻ ứng dụng với bạn bè"}
+                    leftIconName={CommonIcons.shareVariant}
+                    leftIconStyle={{
+                        color: 'coral'
+                    }}
+                    containerStyle={[styles.itemContainer]}
+
+                    leftIconSize={26}
+                    labelStyle={{
+                        marginLeft: 16,
+                        fontSize: 16
+
+                    }}
+                    onItemPress={_onOpenSharing}
+                />
+                <RowItem
+                    label={"Privacy Policy"}
+                    leftIconName={CommonIcons.checkProgress}
+                    leftIconStyle={{
+                        color: 'coral'
+                    }}
+                    containerStyle={[styles.itemContainer]}
+
+                    leftIconSize={26}
+                    labelStyle={{
+                        marginLeft: 16,
+                        fontSize: 16
+
+                    }}
+                    onItemPress={() => navigation.navigate('PrivacyPolicy')}
                 />
 
-            </View>
 
-
-
-            <View
-                style={[
-                    {
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginVertical: 12
-                    }
-                ]}
-            >
-
-                <Text
+                <View
                     style={{
-                        color: 'grey',
-                        fontSize: 12,
-                        fontWeight: '100',
-                        fontStyle: 'italic'
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginVertical: 30
                     }}
                 >
-                    version 1.0
+                    <LoginButton
+                        onLoginFinished={(error, result) => {
+                            if (error) {
+                                console.log('login has error: ' + result);
+                            } else if (result.isCancelled) {
+                                console.log('login is cancelled.');
+                            } else {
+                                if (Platform.OS === 'ios') {
+                                    AuthenticationToken.getAuthenticationTokenIOS().then((data) => {
+                                        console.log(data?.authenticationToken);
+                                    });
+                                } else {
+                                    AccessToken.getCurrentAccessToken().then((data) => {
+                                        console.log(data?.accessToken.toString());
+                                    });
+                                }
+                            }
+                        }}
+                        onLogoutFinished={_onLogOut}
+                    />
+
+                </View>
+
+
+
+                <View
+                    style={[
+                        {
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginVertical: 12
+                        }
+                    ]}
+                >
+
+                    <Text
+                        style={{
+                            color: 'grey',
+                            fontSize: 12,
+                            fontWeight: '100',
+                            fontStyle: 'italic'
+                        }}
+                    >
+                        version 1.0
                 </Text>
-            </View>
+                </View>
+            </ScrollView>
         </View>
+
     )
 }
 
