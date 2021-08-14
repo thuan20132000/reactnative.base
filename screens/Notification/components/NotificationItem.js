@@ -1,6 +1,8 @@
 import React from 'react'
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CommonImages from '../../../utils/CommonImages'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import CommonIcons from '../../../utils/CommonIcons'
 
 const NotificationItem = ({
     title,
@@ -14,7 +16,9 @@ const NotificationItem = ({
                 styles.container,
                 {
                     marginHorizontal: 6,
-                    paddingHorizontal: 6
+                    paddingHorizontal: 6,
+                    alignItems: 'center',
+                    height:60
                 }
             ]}
             onPress={onItemPress}
@@ -25,7 +29,7 @@ const NotificationItem = ({
                     flex: 1
                 }}
             >
-                <Image
+                {/* <Image
                     source={{
                         uri: image || CommonImages.avatar
                     }}
@@ -34,6 +38,11 @@ const NotificationItem = ({
                         height: 60,
                         borderRadius: 30
                     }}
+                /> */}
+                <MaterialCommunityIcons
+                    name={CommonIcons.bell}
+                    size={22}
+                    color={'gold'}
                 />
             </View>
             <View
@@ -47,7 +56,9 @@ const NotificationItem = ({
             >
                 <Text
                     style={{
-                        textAlign: 'left'
+                        textAlign: 'left',
+                        fontWeight:"500",
+                        color:'gray'
                     }}
                 >
                     {title}
@@ -55,7 +66,8 @@ const NotificationItem = ({
                 <Text
                     numberOfLines={1}
                     style={{
-
+                        color:'gray',
+                        fontStyle:'italic'
                     }}
                     ellipsizeMode={'tail'}
                 >
@@ -63,6 +75,10 @@ const NotificationItem = ({
                 </Text>
 
             </View>
+            <MaterialCommunityIcons
+                name={CommonIcons.arrowRightChevron}
+                size={28}
+            />
         </TouchableOpacity>
     )
 }

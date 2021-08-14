@@ -24,6 +24,7 @@ import LoginItem from './components/LoginItem';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../utils/CommonIcons';
+import { App } from 'realm';
 
 // GoogleSignin.configure({
 //     iosClientId: '762174979149-d0nu6ershjiqm54t67k0o35dusaeg0hn.apps.googleusercontent.com',
@@ -37,8 +38,9 @@ const SignIn = (props) => {
         RNProgressHud.show()
         authenticationAPI.signinWithFacebook(access_token)
             .then((res) => {
-                if (res.access_token) {
-                    AppManager.shared.access_token = res.access_token
+                if (res) {
+
+                    AppManager.shared.user = res
                     dispatch(signin(res))
                     setUserAuth(res.toString())
                     navigation.dispatch(
@@ -62,7 +64,6 @@ const SignIn = (props) => {
                 } else {
                     AccessToken.getCurrentAccessToken()
                         .then((data) => {
-                            console.log('data :', data)
                             _onGetUserInfo(data.accessToken.toString())
                         })
                     console.log(

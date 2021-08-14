@@ -249,7 +249,6 @@ const TabBottom = () => {
     const _onCheckIsAuthenticated = () => {
         getUserAuth()
             .then(res => {
-                console.warn('au: ', res)
                 navigation.dispatch(
                     StackActions.replace('Signin')
                 )

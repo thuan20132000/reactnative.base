@@ -1,80 +1,40 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, TouchableOpacity } from 'react-native'
 import { BOXSHADOW } from '../../app/constants/themes'
 import CommonImages from '../../utils/CommonImages'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../utils/CommonIcons'
-import GroupCard from './components/GroupCard'
+// import GroupCard from './components/GroupCard'
 import ConversationAPI from '../../app/API/ConversationAPI'
-import RNProgressHud from 'progress-hud';
+import ItemSetting from '../../components/shared/ItemSetting'
+import {
+    AccessToken,
+    AuthenticationToken,
+    LoginButton,
+    LoginManager
+} from 'react-native-fbsdk-next';
+import { setUserAuth } from '../../app/StorageManager'
+import { StackActions, useNavigation } from '@react-navigation/native'
+import AppManager from '../../app/AppManager'
 
+const ProfileScreen = (props) => {
+    const navigation = useNavigation()
 
-const LearnerProfileScreen = (props) => {
-
-    const { user } = props.route?.params || ''
-
-    const [userGroups, setUserGroups] = useState([])
-    const [userProfile, setUserProfile] = useState('')
-    const _onOpenConversationGroup = (group) => {
-        props.navigation.push('ConversationDetail', {
-            groupConversation: group?.conversation,
-            group: group
-        })
+    const user = AppManager.shared.user
+    const _onLogOut = () => {
+        console.log('logout')
+        setUserAuth(null)
+        // props.navigation.replace('VideoHome')
+        AppManager.shared.user = null
+        // dispatch(logout())
+        navigation.dispatch(
+            StackActions.replace('Signin')
+        )
     }
 
 
-    const getUserGroup = () => {
-        ConversationAPI.getUserGroups(user?.id)
-            .then((res) => {
-                if (res.status_code === 200) {
-                    setUserGroups(res?.data)
-                }
-            })
-            .catch((err) => {
-                console.warn(err?.response?.data)
-            })
-            .then(() => {
-
-            })
-    }
-
-    const _onMakingFriendship = async () => {
-        RNProgressHud.show()
-        ConversationAPI.makeFriendship(user?.id)
-            .then(res => {
-                Alert.alert('Sent a friend request')
-            })
-            .catch((err) => {
-                console.warn('err: ', err)
-            })
-            .finally(() => {
-                RNProgressHud.dismiss()
-            })
-        console.warn(user.id)
-    }
 
 
-    const _onGetUserProfile = async () => {
-        RNProgressHud.show()
-        ConversationAPI.getUserProfile(user?.id)
-            .then(res => {
-                if (res.status_code == 200) {
-                    console.warn(res?.data)
-                    setUserProfile(res?.data)
-                    getUserGroup()
-                }
-            })
-            .catch(err => {
-                console.log('err: ', err)
-            })
-            .finally(() => {
-                RNProgressHud.dismiss()
-            })
-    }
-
-    useEffect(() => {
-        _onGetUserProfile()
-    }, [])
 
     return (
         <View
@@ -83,7 +43,9 @@ const LearnerProfileScreen = (props) => {
                 flex: 1
             }}
         >
-            <ScrollView>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+            >
 
                 <View
                     style={{
@@ -92,7 +54,7 @@ const LearnerProfileScreen = (props) => {
                 >
                     <Image
                         source={{
-                            uri: userProfile?.profile_pic ?? CommonImages.avatar
+                            uri: user.profile_pic ?? CommonImages.avatar
                         }}
                         style={{
                             width: 120,
@@ -106,20 +68,12 @@ const LearnerProfileScreen = (props) => {
                         resizeMode={'contain'}
                     />
 
-                        <Text
-                            style={{
-                                fontSize:18,
-                                fontWeight:'700'
-                            }}
-                        >
-                            {userProfile?.username}
-                        </Text>
+                    <Text style={{ fontWeight: '700', fontSize: 18 }}>{user?.name}</Text>
                 </View>
 
 
-
                 {/*  */}
-                <View
+                {/* <View
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -128,30 +82,23 @@ const LearnerProfileScreen = (props) => {
                         margin: 8
                     }}
                 >
-                    <TouchableOpacity
+                    <MaterialCommunityIcons
+                        name={CommonIcons.videoCall}
+                        size={34}
+                        color={'#64b7f4'}
                         style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            backgroundColor: '#64b7f4',
-                            padding: 8,
-                            borderRadius: 4
+                            margin: 12
                         }}
-                        onPress={_onMakingFriendship}
-                    >
-
-                        <Text style={{ fontWeight: '700', color: 'white' }}>Make Friend</Text>
-                        <MaterialCommunityIcons
-                            name={CommonIcons.person}
-                            size={22}
-                            color={'white'}
-                            style={{
-                                marginHorizontal: 4
-                            }}
-                        />
-                    </TouchableOpacity>
-
-                </View>
+                    />
+                    <MaterialCommunityIcons
+                        name={CommonIcons.chatMessage}
+                        size={34}
+                        color={'#64b7f4'}
+                        style={{
+                            margin: 12
+                        }}
+                    />
+                </View> */}
 
                 <View
                     style={{
@@ -163,9 +110,7 @@ const LearnerProfileScreen = (props) => {
                     }}
                 >
                     <Text style={{ color: '#64b7f4', fontWeight: '700', marginVertical: 8, fontSize: 18 }}>ABOUT ME</Text>
-                    <Text>
-                        {userProfile?.descriptions}
-                    </Text>
+                    <Text>{user?.descriptions}</Text>
                 </View>
 
                 <View
@@ -191,7 +136,8 @@ const LearnerProfileScreen = (props) => {
                                 margin: 12,
                                 borderRadius: 6,
                                 padding: 6,
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                ...BOXSHADOW.normal
                             }}
                         >
                             <MaterialCommunityIcons
@@ -199,9 +145,9 @@ const LearnerProfileScreen = (props) => {
                                 size={24}
                                 color={'white'}
                             />
-                            <Text style={{ margin: 8, color: 'white', fontWeight: '700' }}>Qualification</Text>
+                            <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Partner</Text>
                         </View>
-                        <View
+                        <TouchableOpacity
                             style={{
                                 width: '40%',
                                 height: 70,
@@ -209,19 +155,19 @@ const LearnerProfileScreen = (props) => {
                                 margin: 12,
                                 borderRadius: 6,
                                 padding: 6,
-                                alignItems: 'center'
-
-
+                                alignItems: 'center',
+                                ...BOXSHADOW.normal
                             }}
+                            onPress={() => navigation.navigate('UserGroup')}
                         >
                             <MaterialCommunityIcons
                                 name={CommonIcons.face_good}
                                 size={24}
                                 color={'white'}
                             />
-                            <Text style={{ margin: 8, color: 'white', fontWeight: '700' }}>Favourites</Text>
-                        </View>
-                        <View
+                            <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Groups</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                             style={{
                                 width: '40%',
                                 height: 70,
@@ -229,18 +175,22 @@ const LearnerProfileScreen = (props) => {
                                 margin: 12,
                                 borderRadius: 6,
                                 padding: 6,
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                ...BOXSHADOW.normal
+
 
 
                             }}
+                            onPress={() => navigation.navigate('Notification')}
+
                         >
                             <MaterialCommunityIcons
                                 name={CommonIcons.mapMarker}
                                 size={24}
                                 color={'white'}
                             />
-                            <Text style={{ margin: 8, color: 'white', fontWeight: '700' }}>Location</Text>
-                        </View>
+                            <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Notification</Text>
+                        </TouchableOpacity>
                         <View
                             style={{
                                 width: '40%',
@@ -249,7 +199,9 @@ const LearnerProfileScreen = (props) => {
                                 margin: 12,
                                 borderRadius: 6,
                                 padding: 6,
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                ...BOXSHADOW.normal
+
 
                             }}
                         >
@@ -258,15 +210,43 @@ const LearnerProfileScreen = (props) => {
                                 size={24}
                                 color={'white'}
                             />
-                            <Text style={{ margin: 8, color: 'white', fontWeight: '700' }}>Star</Text>
+                            <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Progress</Text>
                         </View>
                     </View>
                 </View>
 
 
+                {/*  */}
+                <View
+                    style={{
+                        backgroundColor: 'white',
+                        borderTopRightRadius: 26,
+                        borderTopLeftRadius: 26,
+                        ...BOXSHADOW.normal,
+                        padding: 12
+
+                    }}
+                >
+                    {/* <ItemSetting 
+                        label={'Settings'} 
+                        iconName={CommonIcons.plusThick} 
+                    /> */}
+                    <ItemSetting label={'Notifications'} iconName={CommonIcons.plusThick} />
+                    <ItemSetting
+                        label={'Policy'}
+                        iconName={CommonIcons.plusThick}
+                        onPress={() => navigation.navigate('PrivacyPolicy')}
+
+                    />
+                    <ItemSetting label={'Sharing'} iconName={CommonIcons.plusThick} />
+                    <ItemSetting label={'Supoport'} iconName={CommonIcons.plusThick} />
+
+                </View>
+
+
                 {/* Groups */}
 
-                <View style={{ marginHorizontal: 12 }}>
+                {/* <View style={{ marginHorizontal: 12 }}>
                     <Text style={{ fontWeight: '700', fontSize: 18 }}>Owner's groups</Text>
                     {
                         userGroups?.map((item, index) => (
@@ -279,6 +259,36 @@ const LearnerProfileScreen = (props) => {
 
                         ))
                     }
+                </View> */}
+                <View
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginVertical: 30
+                    }}
+                >
+                    <LoginButton
+                        onLoginFinished={(error, result) => {
+                            if (error) {
+                                console.log('login has error: ' + result);
+                            } else if (result.isCancelled) {
+                                console.log('login is cancelled.');
+                            } else {
+                                if (Platform.OS === 'ios') {
+                                    AuthenticationToken.getAuthenticationTokenIOS().then((data) => {
+                                        console.log(data?.authenticationToken);
+                                    });
+                                } else {
+                                    AccessToken.getCurrentAccessToken().then((data) => {
+                                        console.log(data?.accessToken.toString());
+                                    });
+                                }
+                            }
+                        }}
+                        onLogoutFinished={_onLogOut}
+                    />
+
                 </View>
             </ScrollView>
 
@@ -286,7 +296,7 @@ const LearnerProfileScreen = (props) => {
     )
 }
 
-export default LearnerProfileScreen
+export default ProfileScreen
 
 const styles = StyleSheet.create({
 
