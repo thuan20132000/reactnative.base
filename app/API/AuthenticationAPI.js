@@ -27,11 +27,17 @@ class AuthenticationAPI {
                 'facebook',
                 access_token
             )
-            console.log('signin data: ',signinData)
+            // console.log('signin data: ',signinData)
+            // user.descriptions = signinData?.data?.descriptions
+            // console.log('user:  ',user)
+            // setUserAuth(user.toString())
+            // AppManager.shared.user = user
+            // setStorageData('access_token',signinData.access)
+            // console.log('user modfel: ', user)
+            // console.log('user signin: ', signinData)
+            user.descriptions = signinData?.data?.descriptions
             user.access_token = signinData?.access
-            setUserAuth(user.toString())
-            AppManager.shared.user = user
-            setStorageData('access_token',signinData.access)
+            // AppManager.shared.user = signinData.data
 
             return user
         } catch (error) {
@@ -66,6 +72,26 @@ class AuthenticationAPI {
         }
 
     }
+
+
+    async updateNotificationId(notification_id){
+        let dataform = new FormData()
+        dataform.append('notification_id',notification_id)
+
+        let token = AppManager.shared.user.access_token
+        let res = await this.axios.put(`${this.api_url}/conversation/v1/user-notification`, dataform, {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+
+            }
+        });
+        let resData = await res.data
+        return resData
+
+    }
+
+
 
 
 }

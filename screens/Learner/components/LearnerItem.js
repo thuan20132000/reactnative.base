@@ -18,33 +18,31 @@ const LearnerItem = ({
             style={[styles.container]}
             onPress={onPress}
         >
-            <Image
-                source={{
-                    uri: imagePath || CommonImages.avatar
-                }}
-                style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius:10
-                }}
-            />
             <View
                 style={{
-                    margin: 4,
-                    alignItems:'center',
+                    width:'10%'
                 }}
             >
-                <Text style={{ fontWeight: '700', margin: 4 }}>{name}</Text>
-                <Text style={{ fontWeight: '500', margin: 4 }}>{address}</Text>
-                {/* <Image
+                <Image
                     source={{
-                        uri: 'https://i.pinimg.com/564x/59/c9/43/59c94375d4067654c998f29061a161b9.jpg'
+                        uri: imagePath || CommonImages.avatar
                     }}
                     style={{
                         width: 40,
-                        height: 40
+                        height: 40,
+                        borderRadius: 10
                     }}
-                /> */}
+                />
+
+            </View>
+            <View
+                style={{
+                    paddingHorizontal:22,
+                    width:'80%'
+                }}
+            >
+                <Text style={{ fontWeight: '700', margin: 4 }}>{name}</Text>
+                {/* <Text style={{ fontWeight: '500', margin: 4 }}>{address}</Text> */}
                 <Text numberOfLines={2} style={{ width: '60%' }}>{description}</Text>
             </View>
 
@@ -58,7 +56,7 @@ const LearnerItem = ({
                 }}
             >
                 {/* <Text style={{ fontWeight: '700' }}>4.5</Text> */}
-                <MaterialCommunityIcons name={CommonIcons.star} color={'gold'} size={22} />
+                {/* <MaterialCommunityIcons name={CommonIcons.star} color={'gold'} size={22} /> */}
             </View>
         </TouchableOpacity>
     )
@@ -74,6 +72,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        ...BOXSHADOW.normal
+        ...BOXSHADOW.normal,
+        height: 80
     }
 })

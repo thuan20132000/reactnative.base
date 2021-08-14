@@ -22,7 +22,7 @@ class ConversationAPI {
 
     async getAllConversationTopic() {
         let path = `/conversation/v1/conversations-topic`;
-        let token = await getStorageData('access_token')
+        let token = AppManager.shared.user.access_token
         return this.axios.get(this.api_url + path, {
             params: {},
             headers: {
@@ -41,7 +41,7 @@ class ConversationAPI {
     async getAllConversationPost(topic_id = null) {
         let path = `/conversation/v1/conversations-post`;
         path = topic_id == null ? path : `${path}?topic_id=${topic_id}`
-        let token = await getStorageData('access_token')
+        let token = AppManager.shared.user?.access_token
         return this.axios.get(this.api_url + path, {
             params: {},
             headers: {
@@ -58,7 +58,7 @@ class ConversationAPI {
 
     async getConversationTopicList(post_id = null) {
         let path = `/conversation/v1/conversations-topic`;
-        let token = await getStorageData('access_token')
+        let token = AppManager.shared.user.access_token
 
         return this.axios.get(this.api_url + path, {
             params: {},
@@ -76,7 +76,7 @@ class ConversationAPI {
 
     async getConversationPostDetail(conversation_id) {
         let path = `/conversation/v1/conversations-post/${conversation_id}`;
-        let token = await getStorageData('access_token')
+        let token = AppManager.shared.user.access_token
 
         return this.axios.get(this.api_url + path, {
             params: {},
@@ -94,7 +94,7 @@ class ConversationAPI {
 
     async getConversationGroup(conversation_id) {
         try {
-            let token = await getStorageData('access_token')
+            let token = AppManager.shared.user.access_token
 
             let path = `/conversation/v1/conversation-groups/${conversation_id}`;
             let res = await this.axios.get(this.api_url + path, {
@@ -113,7 +113,7 @@ class ConversationAPI {
 
     async createConversationGroup(groupName, conversation_id) {
         try {
-            let token = await getStorageData('access_token')
+            let token = AppManager.shared.user.access_token
 
             let path = `/conversation/v1/create-conversation-group`;
             let bodyData = new FormData()
@@ -135,7 +135,7 @@ class ConversationAPI {
 
     async getGroupMember(groupId) {
         try {
-            let token = await getStorageData('access_token')
+            let token = AppManager.shared.user.access_token
 
             let path = `/conversation/v1/conversation-group-member/${groupId}`;
             let res = await this.axios.get(this.api_url + path, {
@@ -154,7 +154,7 @@ class ConversationAPI {
 
     async removeGroup(groupId) {
         try {
-            let token = await getStorageData('access_token')
+            let token = AppManager.shared.user.access_token
             let path = `/conversation/v1/conversation-group/${groupId}`;
             let res = await this.axios.post(this.api_url + path, {}, {
                 headers: {
@@ -171,7 +171,7 @@ class ConversationAPI {
 
     async getAllLearners() {
         try {
-            let token = await getStorageData('access_token')
+            let token = AppManager.shared.user.access_token
             let path = `/conversation/v1/users`;
             let res = await this.axios.get(this.api_url + path, {
                 headers: {
@@ -188,7 +188,7 @@ class ConversationAPI {
 
     async getUserGroups(user_id) {
         try {
-            let token = await getStorageData('access_token')
+            let token = AppManager.shared.user.access_token
             let path = `/conversation/v1/user-groups/${user_id}`;
             let res = await this.axios.get(this.api_url + path, {
                 headers: {
@@ -204,6 +204,118 @@ class ConversationAPI {
     }
 
 
+    async getUserInformation(user_id) {
+        try {
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/user-groups/${user_id}`;
+            let res = await this.axios.get(this.api_url + path, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async makeFriendship(recipient_id) {
+        try {
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/friendship`;
+            let body = new FormData()
+            body.append('recipient_id', recipient_id)
+            // let body = {
+            //     recipient_id: recipient_id
+            // }
+            console.warn(body)
+            let res = await this.axios.post(this.api_url + path, body, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async handleFriendshipRequest(friendship_id, request_status) {
+        try {
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/friendship/${friendship_id}`;
+            let body = new FormData()
+            body.append('request_status', request_status)
+
+            console.warn(body)
+            let res = await this.axios.put(this.api_url + path, body, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getUserNotifications() {
+        try {
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/user-notifications`;
+            let res = await this.axios.get(this.api_url + path, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+
+    async getUserFriendRequests() {
+        try {
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/user-friend-request`;
+            let res = await this.axios.get(this.api_url + path, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getUserProfile(user_id) {
+        try {
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/user-profile/${user_id}`;
+            let res = await this.axios.get(this.api_url + path, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
 
 }
 

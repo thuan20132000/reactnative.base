@@ -5,10 +5,10 @@ export default {
 
 
     // Dev
-    // api_url:"http://192.168.1.3:8000",
-    // media_url:"http://192.168.1.3:8000/media",
-    // IP_ADDRESS:"192.168.1.3",
-    // PORT:8000,
+    api_url:"http://192.168.1.3:8000",
+    media_url:"http://192.168.1.:8000/media",
+    IP_ADDRESS:"192.168.1.3",
+    PORT:8000,
 
     // staging
     // api_url:"http://34.87.31.84:8000",
@@ -22,10 +22,10 @@ export default {
     // PORT: 8001,
 
     // production
-    api_url: "http://34.87.31.84",
-    media_url: "http://34.87.31.84/media",
-    IP_ADDRESS: "34.87.31.84",
-    PORT: 8001,
+    // api_url: "http://34.87.31.84",
+    // media_url: "http://34.87.31.84/media",
+    // IP_ADDRESS: "34.87.31.84",
+    // PORT: 8001,
 
     // Pro
     // "api_url":"https://askme-it.com/dictionary/api/v1",

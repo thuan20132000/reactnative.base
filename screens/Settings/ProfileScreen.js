@@ -20,17 +20,7 @@ import AppManager from '../../app/AppManager'
 const ProfileScreen = (props) => {
     const navigation = useNavigation()
 
-    const { user } = props.route?.params || ''
-
-    const [userGroups, setUserGroups] = useState([]);
-    const _onOpenConversationGroup = (group) => {
-        props.navigation.push('ConversationDetail', {
-            groupConversation: group?.conversation,
-            group: group
-        })
-    }
-
-
+    const user = AppManager.shared.user
     const _onLogOut = () => {
         console.log('logout')
         setUserAuth(null)
@@ -41,6 +31,11 @@ const ProfileScreen = (props) => {
             StackActions.replace('Signin')
         )
     }
+
+
+
+
+
     return (
         <View
             style={{
@@ -57,37 +52,23 @@ const ProfileScreen = (props) => {
                         alignItems: 'center'
                     }}
                 >
-                    <ImageBackground
+                    <Image
                         source={{
-                            uri: CommonImages.avatar
+                            uri: user.profile_pic ?? CommonImages.avatar
                         }}
                         style={{
                             width: 120,
                             height: 120,
-                            borderRadius: 16,
+                            borderRadius: 60,
                             alignItems: 'center',
                             marginVertical: 12,
                             ...BOXSHADOW.normal,
 
                         }}
-                    >
-                        {/* <View
-                        style={{
-                            bottom: -16,
-                            backgroundColor: 'white',
-                            padding: 4,
-                            width: 40,
-                            alignItems: 'center',
-                            position: 'absolute',
-                            borderRadius: 8,
-                            ...BOXSHADOW.normal
-                        }}
-                    >
-                        <Text>4.5</Text>
-                    </View> */}
-                    </ImageBackground>
-                    <Text style={{ fontWeight: '700', fontSize: 18 }}>Thuan Truong</Text>
-                    <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }}>Beginner</Text>
+                        resizeMode={'contain'}
+                    />
+
+                    <Text style={{ fontWeight: '700', fontSize: 18 }}>{user?.name}</Text>
                 </View>
 
 
@@ -129,7 +110,7 @@ const ProfileScreen = (props) => {
                     }}
                 >
                     <Text style={{ color: '#64b7f4', fontWeight: '700', marginVertical: 8, fontSize: 18 }}>ABOUT ME</Text>
-                    <Text>My name is practicer. I am a begginer at English so i want to find a person who can practise with me</Text>
+                    <Text>{user?.descriptions}</Text>
                 </View>
 
                 <View
@@ -186,7 +167,7 @@ const ProfileScreen = (props) => {
                             />
                             <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Groups</Text>
                         </TouchableOpacity>
-                        <View
+                        <TouchableOpacity
                             style={{
                                 width: '40%',
                                 height: 70,
@@ -200,6 +181,8 @@ const ProfileScreen = (props) => {
 
 
                             }}
+                            onPress={() => navigation.navigate('Notification')}
+
                         >
                             <MaterialCommunityIcons
                                 name={CommonIcons.mapMarker}
@@ -207,7 +190,7 @@ const ProfileScreen = (props) => {
                                 color={'white'}
                             />
                             <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Notification</Text>
-                        </View>
+                        </TouchableOpacity>
                         <View
                             style={{
                                 width: '40%',

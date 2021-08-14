@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Image, ImageBackground, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import { BOXSHADOW } from '../../app/constants/themes'
 import CommonImages from '../../utils/CommonImages'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../utils/CommonIcons'
 import GroupCard from './components/GroupCard'
 import ConversationAPI from '../../app/API/ConversationAPI'
+import RNProgressHud from 'progress-hud';
+
+
 const LearnerProfileScreen = (props) => {
 
     const { user } = props.route?.params || ''
 
-    const [userGroups, setUserGroups] = useState([]);
+    const [userGroups, setUserGroups] = useState([])
+    const [userProfile, setUserProfile] = useState('')
     const _onOpenConversationGroup = (group) => {
         props.navigation.push('ConversationDetail', {
             groupConversation: group?.conversation,
@@ -34,8 +38,42 @@ const LearnerProfileScreen = (props) => {
             })
     }
 
+    const _onMakingFriendship = async () => {
+        RNProgressHud.show()
+        ConversationAPI.makeFriendship(user?.id)
+            .then(res => {
+                Alert.alert('Sent a friend request')
+            })
+            .catch((err) => {
+                console.warn('err: ', err)
+            })
+            .finally(() => {
+                RNProgressHud.dismiss()
+            })
+        console.warn(user.id)
+    }
+
+
+    const _onGetUserProfile = async () => {
+        RNProgressHud.show()
+        ConversationAPI.getUserProfile(user?.id)
+            .then(res => {
+                if (res.status_code == 200) {
+                    console.warn(res?.data)
+                    setUserProfile(res?.data)
+                    getUserGroup()
+                }
+            })
+            .catch(err => {
+                console.log('err: ', err)
+            })
+            .finally(() => {
+                RNProgressHud.dismiss()
+            })
+    }
+
     useEffect(() => {
-        getUserGroup()
+        _onGetUserProfile()
     }, [])
 
     return (
@@ -52,42 +90,36 @@ const LearnerProfileScreen = (props) => {
                         alignItems: 'center'
                     }}
                 >
-                    <ImageBackground
+                    <Image
                         source={{
-                            uri: CommonImages.avatar
+                            uri: userProfile?.profile_pic ?? CommonImages.avatar
                         }}
                         style={{
                             width: 120,
                             height: 120,
-                            borderRadius: 16,
+                            borderRadius: 60,
                             alignItems: 'center',
                             marginVertical: 12,
                             ...BOXSHADOW.normal,
 
                         }}
-                    >
-                        {/* <View
-                        style={{
-                            bottom: -16,
-                            backgroundColor: 'white',
-                            padding: 4,
-                            width: 40,
-                            alignItems: 'center',
-                            position: 'absolute',
-                            borderRadius: 8,
-                            ...BOXSHADOW.normal
-                        }}
-                    >
-                        <Text>4.5</Text>
-                    </View> */}
-                    </ImageBackground>
-                    <Text style={{ fontWeight: '700', fontSize: 18 }}>Beginner</Text>
-                    <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }}>Descriptions  Descriptions Descriptions</Text>
+                        resizeMode={'contain'}
+                    />
+
+                        <Text
+                            style={{
+                                fontSize:18,
+                                fontWeight:'700'
+                            }}
+                        >
+                            {userProfile?.username}
+                        </Text>
                 </View>
 
 
+
                 {/*  */}
-                {/* <View
+                <View
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -96,23 +128,30 @@ const LearnerProfileScreen = (props) => {
                         margin: 8
                     }}
                 >
-                    <MaterialCommunityIcons
-                        name={CommonIcons.videoCall}
-                        size={34}
-                        color={'#64b7f4'}
+                    <TouchableOpacity
                         style={{
-                            margin: 12
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            backgroundColor: '#64b7f4',
+                            padding: 8,
+                            borderRadius: 4
                         }}
-                    />
-                    <MaterialCommunityIcons
-                        name={CommonIcons.chatMessage}
-                        size={34}
-                        color={'#64b7f4'}
-                        style={{
-                            margin: 12
-                        }}
-                    />
-                </View> */}
+                        onPress={_onMakingFriendship}
+                    >
+
+                        <Text style={{ fontWeight: '700', color: 'white' }}>Make Friend</Text>
+                        <MaterialCommunityIcons
+                            name={CommonIcons.person}
+                            size={22}
+                            color={'white'}
+                            style={{
+                                marginHorizontal: 4
+                            }}
+                        />
+                    </TouchableOpacity>
+
+                </View>
 
                 <View
                     style={{
@@ -124,7 +163,9 @@ const LearnerProfileScreen = (props) => {
                     }}
                 >
                     <Text style={{ color: '#64b7f4', fontWeight: '700', marginVertical: 8, fontSize: 18 }}>ABOUT ME</Text>
-                    <Text>My name is practicer. I am a begginer at English so i want to find a person who can practise with me</Text>
+                    <Text>
+                        {userProfile?.descriptions}
+                    </Text>
                 </View>
 
                 <View

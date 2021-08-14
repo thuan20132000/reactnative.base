@@ -127,3 +127,13 @@ export const getUserAuth = async () => {
         return null
     }
 }
+
+
+export const removeUserAuth = async () => {
+    try {
+        let data = await AsyncStorage.removeItem(`@user_auth`);
+        return data
+    } catch (error) {
+        return null
+    }
+}

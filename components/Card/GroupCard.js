@@ -30,7 +30,9 @@ const GroupCard = ({ onPress,authorName, authorImage, conversationName, groupNam
                         borderRadius: 20
                     }}
                 />
-                <Text style={{ color: 'white', fontWeight: '600' }}>{authorName}</Text>
+                <Text style={{ color: 'white', fontWeight: '600' }}>{authorName}</Text>               
+                <Text style={{ color: 'white', fontWeight: '600' }}>{conversationName}</Text>
+
             </View>
         </TouchableOpacity>
     )

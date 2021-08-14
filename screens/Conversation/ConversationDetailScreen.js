@@ -145,7 +145,11 @@ const ConversationDetailScreen = (props) => {
                 if (res.status_code == 200) {
                     setConversation(new ConversationPostModel(res?.data))
                 }
-            }).finally(() => {
+            })
+            .catch(err => {
+                console.log(err?.response?.data ?? err)
+            })
+            .finally(() => {
 
                 _onGetGroupMembers()
                 RNProgressHud.dismissWithDelay(1.8)

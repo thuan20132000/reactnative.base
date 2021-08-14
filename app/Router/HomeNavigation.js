@@ -20,6 +20,8 @@ import UserModel from "../models/userModel";
 import S_PrivacyPolicyScreen from "../../screens/Settings/S_PrivacyPolicyScreen";
 import ProfileScreen from "../../screens/Settings/ProfileScreen";
 import UserGroupScreen from "../../screens/sharing/UserGroupScreen";
+import NotificationListScreen from "../../screens/Notification/NotificationListScreen";
+import FriendRequestScreen from "../../screens/sharing/FriendRequestScreen";
 
 
 
@@ -33,6 +35,7 @@ const TabBottom = () => {
     const [isShown, setIsShown] = useState(false)
 
     const _onCheckIsAuthenticated = () => {
+        console.log(AppManager.shared.user)
         if (!AppManager.shared.user) {
             navigation.dispatch(
                 StackActions.replace('Signin')
@@ -144,9 +147,10 @@ const HomeStack = () => {
         getUserAuth()
             .then(res => {
                 if (res != null) {
-                    let user = new UserModel(res)
-                    AppManager.shared.user = user
-                    // navigation.dispatch(
+                    // let user = new UserModel(res)
+                    // console.warn('aas: ', user)
+                    AppManager.shared.user = res
+                    // navigation.dispatch( 
                     //     StackActions.replace('HomeStack')
                     // )
                 }
@@ -223,9 +227,17 @@ const HomeStack = () => {
             <Stack.Screen
                 name={"UserGroup"}
                 component={UserGroupScreen}
-                options={{
-                    headerShown: false
-                }}
+             
+            />
+            <Stack.Screen
+                name={"Notification"}
+                component={NotificationListScreen}
+            
+            />
+            <Stack.Screen
+                name={"FriendRequest"}
+                component={FriendRequestScreen}
+              
             />
         </Stack.Navigator>
     )

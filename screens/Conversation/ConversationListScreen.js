@@ -14,11 +14,15 @@ import { config } from '../../app/constants';
 import { BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
 import SearchBar from '../../components/shared/SearchBar';
 import SelectionItem from './components/SelectionItem';
+import { removeUserAuth, setStorageData } from '../../app/StorageManager';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import OneSignal from 'react-native-onesignal';
+import AuthenticationAPI from '../../app/API/AuthenticationAPI';
 
 const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
 
 const ConversationList = (props) => {
-
+    const navigation = useNavigation()
     const [readingPost, setReadingPosts] = useState([]);
     const [conversationTopic, setConversationTopic] = useState([]);
     const _refTopicItem = useRef();
@@ -35,20 +39,58 @@ const ConversationList = (props) => {
             })
             .catch((err) => {
                 console.warn('err" ', err)
+
             })
             .finally(() => { })
+
         ConversationAPI.getAllConversationPost()
             .then(res => {
                 if (res.status_code == 200) {
                     setReadingPosts(res.data)
+                    _onUpdateNotificationId()
                 }
             })
             .catch((err) => {
-                console.warn('err" ', err)
+                console.warn('err: ', err?.response?.data?.message ?? err)
+                removeUserAuth()
+                navigation.dispatch(
+                    StackActions.replace('Signin')
+                )
             })
-            .finally(() => RNProgressHud.dismiss())
+            .finally(() => {
+                RNProgressHud.dismiss()
+            })
+
+
+
+        //Method for handling notifications opened
+        OneSignal.setNotificationOpenedHandler(notification => {
+            console.log("OneSignal: notification opened:", notification);
+            navigation.navigate('Notification')
+        });
+
+        //Method for handling notifications received while app in foreground
+        OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+            console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+            let notification = notificationReceivedEvent.getNotification();
+            console.log("notification: ", notification);
+            const data = notification.additionalData
+            console.log("additionalData: ", data);
+
+            // Complete with null means don't show a notification.
+            notificationReceivedEvent.complete(notification);
+        });
+
+
+
 
     }, []);
+
+
+    const _onUpdateNotificationId = async () => {
+        let { userId } = await OneSignal.getDeviceState()
+        await AuthenticationAPI.updateNotificationId(userId)
+    }
 
 
 
