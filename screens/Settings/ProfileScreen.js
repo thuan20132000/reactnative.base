@@ -62,7 +62,6 @@ const ProfileScreen = (props) => {
                             borderRadius: 60,
                             alignItems: 'center',
                             marginVertical: 12,
-                            ...BOXSHADOW.normal,
 
                         }}
                         resizeMode={'contain'}
