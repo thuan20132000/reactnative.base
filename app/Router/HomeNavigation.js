@@ -187,14 +187,23 @@ const HomeStack = () => {
             <Stack.Screen
                 name={'ConversationPractice'}
                 component={ConversationPracticeScreen}
+                options={{
+                    title:"Practice"
+                }}
             />
             <Stack.Screen
                 name={'ConversationDetail'}
                 component={ConversationDetailScreen}
+                options={{
+                    title:"group"
+                }}
             />
             <Stack.Screen
                 name={'ConversationGroup'}
                 component={ConversationGroupScreen}
+                options={{
+                    title:"conversation's group"
+                }}
             />
             <Stack.Screen
                 name={"LearnerHome"}
@@ -227,16 +236,25 @@ const HomeStack = () => {
             <Stack.Screen
                 name={"UserGroup"}
                 component={UserGroupScreen}
+                options={{
+                    title:""
+                }}
              
             />
             <Stack.Screen
                 name={"Notification"}
                 component={NotificationListScreen}
+                options={{
+                    title:""
+                }}
             
             />
             <Stack.Screen
                 name={"FriendRequest"}
                 component={FriendRequestScreen}
+                options={{
+                    title:""
+                }}
               
             />
         </Stack.Navigator>

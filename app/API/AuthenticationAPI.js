@@ -67,6 +67,7 @@ class AuthenticationAPI {
             return resData
 
         } catch (error) {
+            console.warn('error : ',error.response?.data)
             throw error
 
         }

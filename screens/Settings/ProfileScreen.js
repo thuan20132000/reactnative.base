@@ -127,7 +127,7 @@ const ProfileScreen = (props) => {
 
                         }}
                     >
-                        <View
+                        {/* <View
                             style={{
                                 width: '40%',
                                 height: 70,
@@ -145,7 +145,7 @@ const ProfileScreen = (props) => {
                                 color={'white'}
                             />
                             <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Partner</Text>
-                        </View>
+                        </View> */}
                         <TouchableOpacity
                             style={{
                                 width: '40%',
@@ -160,7 +160,7 @@ const ProfileScreen = (props) => {
                             onPress={() => navigation.navigate('UserGroup')}
                         >
                             <MaterialCommunityIcons
-                                name={CommonIcons.face_good}
+                                name={CommonIcons.person}
                                 size={24}
                                 color={'white'}
                             />
@@ -170,7 +170,7 @@ const ProfileScreen = (props) => {
                             style={{
                                 width: '40%',
                                 height: 70,
-                                backgroundColor: '#64b7f4',
+                                backgroundColor: '#f8b427',
                                 margin: 12,
                                 borderRadius: 6,
                                 padding: 6,
@@ -184,13 +184,13 @@ const ProfileScreen = (props) => {
 
                         >
                             <MaterialCommunityIcons
-                                name={CommonIcons.mapMarker}
+                                name={CommonIcons.bell}
                                 size={24}
                                 color={'white'}
                             />
                             <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Notification</Text>
                         </TouchableOpacity>
-                        <View
+                        {/* <View
                             style={{
                                 width: '40%',
                                 height: 70,
@@ -210,7 +210,7 @@ const ProfileScreen = (props) => {
                                 color={'white'}
                             />
                             <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Progress</Text>
-                        </View>
+                        </View> */}
                     </View>
                 </View>
 
@@ -230,15 +230,15 @@ const ProfileScreen = (props) => {
                         label={'Settings'} 
                         iconName={CommonIcons.plusThick} 
                     /> */}
-                    <ItemSetting label={'Notifications'} iconName={CommonIcons.plusThick} />
+                    {/* <ItemSetting label={'Notifications'} iconName={CommonIcons.plusThick} /> */}
                     <ItemSetting
                         label={'Policy'}
                         iconName={CommonIcons.plusThick}
                         onPress={() => navigation.navigate('PrivacyPolicy')}
 
                     />
-                    <ItemSetting label={'Sharing'} iconName={CommonIcons.plusThick} />
-                    <ItemSetting label={'Supoport'} iconName={CommonIcons.plusThick} />
+                    {/* <ItemSetting label={'Sharing'} iconName={CommonIcons.plusThick} />
+                    <ItemSetting label={'Supoport'} iconName={CommonIcons.plusThick} /> */}
 
                 </View>
 

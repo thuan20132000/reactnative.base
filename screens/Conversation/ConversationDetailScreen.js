@@ -65,7 +65,9 @@ const ConversationDetailScreen = (props) => {
         JitsiMeet.endCall()
         setIsCalling(false)
     }
-
+    
+    // console.warn('gc: ',groupConversation)
+    // console.warn('gr: ',group)
 
     // _refSocket.onmessage = (e) => {
     //     // a message was received
@@ -95,7 +97,6 @@ const ConversationDetailScreen = (props) => {
     };
 
     _refSocket.onopen = (e) => {
-        // console.warn('open : ', e)
 
         let userInfo = {
             id: 1006,

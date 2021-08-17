@@ -48,6 +48,7 @@ const ConversationGroupScreen = (props) => {
 
 
     const _onOpenConversationGroup = (group) => {
+
         navigation.navigate('ConversationDetail', {
             group: group,
             groupConversation: group?.conversation
