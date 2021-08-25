@@ -16,11 +16,18 @@ import {
 import { setUserAuth } from '../../app/StorageManager'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import AppManager from '../../app/AppManager'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import AuthenticationAPI from '../../app/API/AuthenticationAPI'
+import UserModel from '../../app/models/userModel'
+import RNProgressHud from 'progress-hud';
 
 const ProfileScreen = (props) => {
     const navigation = useNavigation()
 
     const user = AppManager.shared.user
+
+    const [userProfile, setUserProfile] = useState(new UserModel(null))
+
     const _onLogOut = () => {
         console.log('logout')
         setUserAuth(null)
@@ -34,12 +41,51 @@ const ProfileScreen = (props) => {
 
 
 
+    const _onUpdateAvatar = () => {
+        launchImageLibrary({
+            mediaType: 'photo',
+            includeBase64: false,
+            quality: 0.5,
+            selectionLimit: 1,
+
+        }, (res) => {
+            console.log(res)
+            if (res?.assets) {
+                RNProgressHud.show()
+                AuthenticationAPI.upadteAvatar(res?.assets[0])
+                    .then((res) => {
+                        console.warn('re" ', res)
+                        if (res?.status_code === 200) {
+                            let user = new UserModel(res?.data)
+                            console.log(user)
+                            AppManager.shared.user?.setProfilePic(user?.profile_pic)
+                            setUserProfile({ ...userProfile, profile_pic: user?.profile_pic })
+                        }
+
+                    })
+                    .catch(err => {
+                        console.warn('err: ', err)
+                    })
+                    .finally(() => {
+                        RNProgressHud.dismiss()
+                    })
+
+            }
+        })
+
+    }
+
+
+    // useEffect(() => {
+    //     console.warn('change')
+    //     setUserProfile(user)
+    // }, [user.profile_pic])
 
 
     return (
         <View
             style={{
-                backgroundColor: 'white',
+                backgroundColor: 'lightgray',
                 flex: 1
             }}
         >
@@ -49,23 +95,37 @@ const ProfileScreen = (props) => {
 
                 <View
                     style={{
-                        alignItems: 'center'
+                        alignItems: 'center',
+
                     }}
                 >
-                    <Image
-                        source={{
-                            uri: user.profile_pic ?? CommonImages.avatar
-                        }}
+                    <TouchableOpacity
                         style={{
-                            width: 120,
-                            height: 120,
-                            borderRadius: 60,
-                            alignItems: 'center',
-                            marginVertical: 12,
 
+                            margin: 12,
+                            padding: 12,
                         }}
-                        resizeMode={'contain'}
-                    />
+                        onPress={_onUpdateAvatar}
+
+                    >
+                        <Image
+                            source={{
+                                uri: user?.profile_pic ?? CommonImages.avatar
+                            }}
+                            style={{
+                                width: 100,
+                                height: 100,
+                                borderRadius: 50,
+                                alignItems: 'center',
+                                borderWidth: 4,
+                                borderColor: 'white'
+
+                            }}
+                            resizeMode={'cover'}
+                        />
+
+
+                    </TouchableOpacity>
 
                     <Text style={{ fontWeight: '700', fontSize: 18 }}>{user?.name}</Text>
                 </View>
@@ -127,7 +187,7 @@ const ProfileScreen = (props) => {
 
                         }}
                     >
-                        {/* <View
+                        <TouchableOpacity
                             style={{
                                 width: '40%',
                                 height: 70,
@@ -138,14 +198,18 @@ const ProfileScreen = (props) => {
                                 alignItems: 'center',
                                 ...BOXSHADOW.normal
                             }}
+                            onPress={() => navigation.navigate('FriendList')}
+
                         >
                             <MaterialCommunityIcons
                                 name={CommonIcons.schoolGraduateHat}
                                 size={24}
                                 color={'white'}
                             />
-                            <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Partner</Text>
-                        </View> */}
+                            <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>
+                                My Friends
+                            </Text>
+                        </TouchableOpacity>
                         <TouchableOpacity
                             style={{
                                 width: '40%',
@@ -216,7 +280,7 @@ const ProfileScreen = (props) => {
 
 
                 {/*  */}
-                <View
+                {/* <View
                     style={{
                         backgroundColor: 'white',
                         borderTopRightRadius: 26,
@@ -226,21 +290,21 @@ const ProfileScreen = (props) => {
 
                     }}
                 >
-                    {/* <ItemSetting 
+                    <ItemSetting 
                         label={'Settings'} 
                         iconName={CommonIcons.plusThick} 
-                    /> */}
-                    {/* <ItemSetting label={'Notifications'} iconName={CommonIcons.plusThick} /> */}
+                    />
+                    <ItemSetting label={'Notifications'} iconName={CommonIcons.plusThick} />
                     <ItemSetting
                         label={'Policy'}
                         iconName={CommonIcons.plusThick}
                         onPress={() => navigation.navigate('PrivacyPolicy')}
 
                     />
-                    {/* <ItemSetting label={'Sharing'} iconName={CommonIcons.plusThick} />
-                    <ItemSetting label={'Supoport'} iconName={CommonIcons.plusThick} /> */}
+                    <ItemSetting label={'Sharing'} iconName={CommonIcons.plusThick} />
+                    <ItemSetting label={'Supoport'} iconName={CommonIcons.plusThick} />
 
-                </View>
+                </View> */}
 
 
                 {/* Groups */}

@@ -67,6 +67,8 @@ export default {
     bookOpen:'book-open',
     schoolGraduateHat:'school',
     videoCall:'video-account',
+    clockOutline:'clock-outline',
+
 
 
 }

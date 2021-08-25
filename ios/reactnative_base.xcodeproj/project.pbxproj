@@ -62,6 +62,7 @@
 		9C49472F268C60AD00386AB1 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		9C82120226A5783C001AA4E6 /* reactnative_base-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "reactnative_base-Bridging-Header.h"; sourceTree = "<group>"; };
 		9C82120326A5783C001AA4E6 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		9CAD5EB826D579B4005CBC7B /* reactnative_base.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = reactnative_base.entitlements; path = reactnative_base/reactnative_base.entitlements; sourceTree = "<group>"; };
 		B29B5B39CAEEB7A1BC3D43FF /* libPods-reactnative_base-reactnative_baseTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-reactnative_base-reactnative_baseTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D093DFB99C10A7031AD9C5AE /* Pods-reactnative_base-reactnative_baseTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-reactnative_base-reactnative_baseTests.release.xcconfig"; path = "Target Support Files/Pods-reactnative_base-reactnative_baseTests/Pods-reactnative_base-reactnative_baseTests.release.xcconfig"; sourceTree = "<group>"; };
 		E1728FE0267E884C3DBEAB2B /* Pods-reactnative_base.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-reactnative_base.release.xcconfig"; path = "Target Support Files/Pods-reactnative_base/Pods-reactnative_base.release.xcconfig"; sourceTree = "<group>"; };
@@ -109,6 +110,7 @@
 		13B07FAE1A68108700A75B9A /* reactnative_base */ = {
 			isa = PBXGroup;
 			children = (
+				9CAD5EB826D579B4005CBC7B /* reactnative_base.entitlements */,
 				9C49471F268C609000386AB1 /* Fonts */,
 				66E930F22660C69B0073DA55 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -500,6 +502,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				DEVELOPMENT_TEAM = 3BQUKLYP4W;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -528,7 +532,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 3BQUKLYP4W;
 				INFOPLIST_FILE = reactnative_baseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -553,8 +559,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BZ7677Z77D;
+				CODE_SIGN_ENTITLEMENTS = reactnative_base/reactnative_base.entitlements;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = 3BQUKLYP4W;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = reactnative_base/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -566,7 +573,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.practiceenglishapp;
 				PRODUCT_NAME = reactnative_base;
 				SWIFT_OBJC_BRIDGING_HEADER = "reactnative_base-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -581,8 +588,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BZ7677Z77D;
+				CODE_SIGN_ENTITLEMENTS = reactnative_base/reactnative_base.entitlements;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = 3BQUKLYP4W;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = reactnative_base/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -593,7 +602,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.practiceenglishapp;
 				PRODUCT_NAME = reactnative_base;
 				SWIFT_OBJC_BRIDGING_HEADER = "reactnative_base-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

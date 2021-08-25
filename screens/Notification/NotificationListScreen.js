@@ -4,6 +4,7 @@ import ConversationAPI from '../../app/API/ConversationAPI'
 import NotificationItem from './components/NotificationItem'
 import RNProgressHud from 'progress-hud';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { formatDistance } from 'date-fns'
 
 //  Notification type
 
@@ -11,7 +12,8 @@ const NOTIFICATION_TYPE = {
     MESSAGE: 'ME',
     POST: 'PO',
     INVITE: 'IN',
-    PROFILE: 'PR'
+    PROFILE: 'PR',
+    CONVERSATION: 'CO'
 }
 
 
@@ -49,7 +51,13 @@ const NotificationListScreen = () => {
                         id: item?.sender.id ?? item?.sender
                     }
                 })
-
+                break;
+            case NOTIFICATION_TYPE.CONVERSATION:
+                navigation.navigate('ConversationDetail', {
+                    group: {
+                        id: item.reference_id
+                    },
+                })
                 break;
 
             default:
@@ -76,10 +84,11 @@ const NotificationListScreen = () => {
 
                 {
                     notificationList?.map((item, index) =>
-                        <NotificationItem
+                        <NotificationItem key={item?.id?.toString()}
                             title={item?.title}
                             body={item?.body}
                             onItemPress={() => _onShowFriendRequestScreen(item)}
+                            notification={item}
                         />
                     )
                 }

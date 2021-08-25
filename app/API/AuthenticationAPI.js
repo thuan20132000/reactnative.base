@@ -37,6 +37,8 @@ class AuthenticationAPI {
             // console.log('user signin: ', signinData)
             user.descriptions = signinData?.data?.descriptions
             user.access_token = signinData?.access
+
+            user.setProfilePic(signinData?.data?.profile_pic)
             // AppManager.shared.user = signinData.data
 
             return user
@@ -67,7 +69,7 @@ class AuthenticationAPI {
             return resData
 
         } catch (error) {
-            console.warn('error : ',error.response?.data)
+            console.warn('error : ', error.response?.data)
             throw error
 
         }
@@ -75,9 +77,9 @@ class AuthenticationAPI {
     }
 
 
-    async updateNotificationId(notification_id){
+    async updateNotificationId(notification_id) {
         let dataform = new FormData()
-        dataform.append('notification_id',notification_id)
+        dataform.append('notification_id', notification_id)
 
         let token = AppManager.shared.user.access_token
         let res = await this.axios.put(`${this.api_url}/conversation/v1/user-notification`, dataform, {
@@ -93,6 +95,28 @@ class AuthenticationAPI {
     }
 
 
+    async upadteAvatar(avatar_file) {
+        const imageData = {
+            uri: avatar_file?.uri,
+            type: avatar_file?.type,
+            name: avatar_file?.filename || Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
+        }
+        const formData = new FormData()
+        formData.append('image_file', imageData)
+
+
+        let token = AppManager.shared.user.access_token
+        let res = await this.axios.put(`${this.api_url}/conversation/v1/update-avatar`, formData, {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+
+            }
+        });
+        let resData = await res.data
+        return resData
+
+    }
 
 
 }

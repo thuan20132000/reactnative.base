@@ -3,6 +3,7 @@ import { config } from "../constants/index";
 import axios from 'axios'
 import AppManager from "../AppManager";
 import { getStorageData, getUserAuth } from "../StorageManager";
+import FriendShipEnum from "../Enums/FriendShipEnum";
 
 
 
@@ -317,6 +318,62 @@ class ConversationAPI {
         }
     }
 
+
+    async getUserFriendShip(status = FriendShipEnum.ACCEPTED) {
+        try {
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/user-friendships/${status}`;
+            let res = await this.axios.get(this.api_url + path, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+
+    async getConversationGroupDetail(group_id) {
+        try {
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/conversation-group-detail/${group_id}`;
+            let res = await this.axios.get(this.api_url + path, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async inviteFriendShipToConversation(friendship_id, group_id) {
+        try {
+            let body = new FormData()
+            body.append('friendship_id', friendship_id)
+            body.append('group_id', group_id)
+
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/invite-friendship-conversation`;
+            let res = await this.axios.post(this.api_url + path, body, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 export default new ConversationAPI();

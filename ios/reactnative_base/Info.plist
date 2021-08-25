@@ -44,7 +44,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>566146441223542</string>
 	<key>FacebookClientToken</key>
@@ -53,6 +53,8 @@
 	<string>english_practice_askmeit</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-7783640686150605~6780496114</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -84,12 +86,16 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Calender is required to set match reminders</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires to access your photo library to show image on profile and send via chat</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Your location is required for searching friends for you</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to use your microphone. Your record wont be shared without your permission.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photos are required to access gallery</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

@@ -28,8 +28,8 @@ const CreateGroupModal = ({ isShow, setIsShow, onCreatePress }) => {
                         backgroundColor: 'white',
                         height: 40,
                         paddingHorizontal: 8,
-                        borderStartColor: 'gray',
-                        borderWidth: 0.2
+                        borderColor: '#dcdcdc',
+                        borderWidth: 1
                     }}
                     placeholder={'Group name'}
                 />

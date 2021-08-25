@@ -39,7 +39,6 @@ const SignIn = (props) => {
         authenticationAPI.signinWithFacebook(access_token)
             .then((res) => {
                 if (res) {
-
                     AppManager.shared.user = res
                     dispatch(signin(res))
                     setUserAuth(res.toString())

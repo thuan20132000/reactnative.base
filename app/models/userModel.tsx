@@ -10,15 +10,15 @@ class UserModel {
     created_at: Date;
     updated_at: Date;
     access_token: String;
-    descriptions :String;
+    descriptions: String;
 
-    constructor(data: { id: Number; name: String; picture: { data: { url: String; }; }; status: String; created_at: Date; updated_at: Date; access_token: String; device_id: String; descriptions: String; }) {
+    constructor(data: { id: Number; name: String; profile_pic: String; status: String; created_at: Date; updated_at: Date; access_token: String; device_id: String; descriptions: String; }) {
         if (data === null) {
             return;
         }
         this.id = data?.id;
         this.name = data?.name;
-        this.profile_pic = data?.picture?.data?.url;
+        this.profile_pic = data?.profile_pic;
         this.status = data?.status;
         this.created_at = data?.created_at;
         this.updated_at = data?.updated_at;
@@ -28,6 +28,11 @@ class UserModel {
     }
 
 
+
+    setProfilePic(imageUrl: String){
+        this.profile_pic = imageUrl ?? null
+    }
+
     toString() {
         return {
             id: this.id,
@@ -36,7 +41,7 @@ class UserModel {
             token: this.token,
             status: this.status,
             device_id: this.device_id,
-            descriptions:this.descriptions,
+            descriptions: this.descriptions,
             created_at: this.created_at,
             updated_at: this.updated_at,
             access_token: this.access_token

@@ -3,33 +3,68 @@ import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import CommonImages from '../../../utils/CommonImages'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../../utils/CommonIcons'
+import { formatDistance } from 'date-fns'
 
 const NotificationItem = ({
     title,
     body,
     image,
-    onItemPress
+    onItemPress,
+    notification
 }) => {
+
+
+    const getNotificationTime = () => {
+        const result = formatDistance(new Date(notification?.created_at), new Date(), {
+            addSuffix: true
+        })
+
+        return result
+    }
+
+
     return (
-        <TouchableOpacity
-            style={[
-                styles.container,
-                {
-                    marginHorizontal: 6,
-                    paddingHorizontal: 6,
-                    alignItems: 'center',
-                    height:60
-                }
-            ]}
-            onPress={onItemPress}
+        <View
+            style={{
+                display: 'flex',
+                backgroundColor: 'white',
+                display: 'flex',
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 4,
+                },
+                shadowOpacity: 0.36,
+                shadowRadius: 4.68,
+
+                elevation: 3,
+                marginHorizontal: 4,
+                marginVertical: 2,
+                borderRadius: 4,
+                paddingHorizontal: 6,
+                paddingVertical: 4
+
+            }}
         >
-            <View
-                style={{
-                    display: 'flex',
-                    flex: 1
-                }}
+            <TouchableOpacity
+                style={[
+                    styles.container,
+                    {
+                        marginHorizontal: 6,
+                        paddingHorizontal: 6,
+                        alignItems: 'center',
+                        height: 60
+                    }
+                ]}
+                onPress={onItemPress}
             >
-                {/* <Image
+                <View
+                    style={{
+                        display: 'flex',
+                        flex: 1
+                    }}
+                >
+                    {/* <Image
                     source={{
                         uri: image || CommonImages.avatar
                     }}
@@ -39,47 +74,85 @@ const NotificationItem = ({
                         borderRadius: 30
                     }}
                 /> */}
+                    <MaterialCommunityIcons
+                        name={CommonIcons.bell}
+                        size={22}
+                        color={'gold'}
+                    />
+                </View>
+                <View
+                    style={[
+                        styles.body,
+                        {
+                            paddingHorizontal: 6,
+                            flex: 5
+                        }
+                    ]}
+                >
+                    <Text
+                        style={{
+                            textAlign: 'left',
+                            fontWeight: "500",
+                            color: 'gray'
+                        }}
+                    >
+                        {notification?.title}
+                    </Text>
+                    <Text
+                        numberOfLines={1}
+                        style={{
+                            color: 'gray',
+                            fontStyle: 'italic'
+                        }}
+                        ellipsizeMode={'tail'}
+                    >
+                        {notification?.body}
+                    </Text>
+
+                </View>
                 <MaterialCommunityIcons
-                    name={CommonIcons.bell}
-                    size={22}
-                    color={'gold'}
+                    name={CommonIcons.arrowRightChevron}
+                    size={28}
                 />
-            </View>
+
+
+            </TouchableOpacity>
+
             <View
                 style={[
                     styles.body,
                     {
                         paddingHorizontal: 6,
-                        flex: 5
+                        flex: 5,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end'
                     }
                 ]}
             >
+                <MaterialCommunityIcons
+                    name={CommonIcons.clockOutline}
+                    size={14}
+                    color={'black'}
+                />
                 <Text
                     style={{
                         textAlign: 'left',
-                        fontWeight:"500",
-                        color:'gray'
+                        fontWeight: "500",
+                        color: 'gray',
+                        fontSize: 12,
+                        fontStyle: 'italic',
+                        marginHorizontal: 6
                     }}
                 >
-                    {title}
-                </Text>
-                <Text
-                    numberOfLines={1}
-                    style={{
-                        color:'gray',
-                        fontStyle:'italic'
-                    }}
-                    ellipsizeMode={'tail'}
-                >
-                    {body}
+                    {
+                        getNotificationTime()
+                    }
                 </Text>
 
+
             </View>
-            <MaterialCommunityIcons
-                name={CommonIcons.arrowRightChevron}
-                size={28}
-            />
-        </TouchableOpacity>
+        </View>
     )
 }
 
@@ -90,23 +163,9 @@ export default NotificationItem
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
-        display: 'flex',
-        flexDirection: 'row',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.36,
-        shadowRadius: 4.68,
 
-        elevation: 3,
-        marginHorizontal: 4,
-        marginVertical: 2,
-        borderRadius: 4,
-        paddingHorizontal: 6,
-        paddingVertical: 4
+        flexDirection: 'row',
+
 
     },
     body: {

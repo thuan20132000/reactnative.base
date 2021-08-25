@@ -7,6 +7,7 @@ import CommonIcons from '../../utils/CommonIcons'
 import GroupCard from './components/GroupCard'
 import ConversationAPI from '../../app/API/ConversationAPI'
 import RNProgressHud from 'progress-hud';
+import UserModel from '../../app/models/userModel'
 
 
 const LearnerProfileScreen = (props) => {
@@ -14,7 +15,7 @@ const LearnerProfileScreen = (props) => {
     const { user } = props.route?.params || ''
 
     const [userGroups, setUserGroups] = useState([])
-    const [userProfile, setUserProfile] = useState('')
+    const [userProfile, setUserProfile] = useState(new UserModel(null))
     const _onOpenConversationGroup = (group) => {
         props.navigation.push('ConversationDetail', {
             groupConversation: group?.conversation,
@@ -56,11 +57,11 @@ const LearnerProfileScreen = (props) => {
 
     const _onGetUserProfile = async () => {
         RNProgressHud.show()
-        ConversationAPI.getUserProfile(user?.id)
+        ConversationAPI.getUserProfile(user?.recipient?.id)
             .then(res => {
                 if (res.status_code == 200) {
-                    console.warn(res?.data)
-                    setUserProfile(res?.data)
+                    let user = new UserModel(res?.data)
+                    setUserProfile(user)
                     getUserGroup()
                 }
             })

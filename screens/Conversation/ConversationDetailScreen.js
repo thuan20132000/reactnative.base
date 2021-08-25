@@ -30,7 +30,7 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial, {
 
 const ConversationDetailScreen = (props) => {
 
-    const { groupConversation, group } = props?.route?.params ?? ''
+    const { group } = props?.route?.params ?? ''
     const [isCalling, setIsCalling] = useState(false);
     const [conversation, setConversation] = useState(null);
     const [memberList, setMemberList] = useState([]);
@@ -65,7 +65,7 @@ const ConversationDetailScreen = (props) => {
         JitsiMeet.endCall()
         setIsCalling(false)
     }
-    
+
     // console.warn('gc: ',groupConversation)
     // console.warn('gr: ',group)
 
@@ -141,10 +141,10 @@ const ConversationDetailScreen = (props) => {
 
     useLayoutEffect(() => {
         RNProgressHud.show();
-        ConversationAPI.getConversationPostDetail(groupConversation?.id)
+        ConversationAPI.getConversationGroupDetail(group?.id)
             .then((res) => {
                 if (res.status_code == 200) {
-                    setConversation(new ConversationPostModel(res?.data))
+                    setConversation(new ConversationPostModel(res?.data?.conversation))
                 }
             })
             .catch(err => {
@@ -175,7 +175,9 @@ const ConversationDetailScreen = (props) => {
 
         // Start loading the interstitial straight away
         const unsubscribe = props.navigation.addListener('beforeRemove', () => {
-            interstitial.show()
+            if(loaded){
+                interstitial.show()
+            }
         });
 
 
@@ -190,9 +192,9 @@ const ConversationDetailScreen = (props) => {
 
 
     // No advert ready to show yet
-    if (!loaded) {
-        return <View />;
-    }
+    // if (!loaded) {
+    //     return <View />;
+    // }
 
 
     return (

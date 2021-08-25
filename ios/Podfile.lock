@@ -1,9 +1,4 @@
 PODS:
-  - AppAuth (1.4.0):
-    - AppAuth/Core (= 1.4.0)
-    - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
   - boost-for-react-native (1.63.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -145,10 +140,6 @@ PODS:
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (~> 1.2)
-  - GoogleSignIn (5.0.2):
-    - AppAuth (~> 1.2)
-    - GTMAppAuth (~> 1.0)
-    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleUserMessagingPlatform (1.4.0)
   - GoogleUtilities/AppDelegateSwizzler (7.5.0):
     - GoogleUtilities/Environment
@@ -169,10 +160,6 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.5.0):
     - GoogleUtilities/Logger
-  - GTMAppAuth (1.2.2):
-    - AppAuth/Core (~> 1.4)
-    - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.6.1)
   - JitsiMeetSDK (2.4.0)
   - libevent (2.1.12)
   - nanopb (2.30908.0):
@@ -393,6 +380,8 @@ PODS:
   - react-native-fbsdk-next/Share (4.3.0):
     - FBSDKShareKit (~> 9.3)
     - React-Core
+  - react-native-image-picker (4.0.6):
+    - React-Core
   - react-native-jitsi-meet (2.1.1):
     - JitsiMeetSDK (= 2.4.0)
     - React
@@ -498,9 +487,6 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNGoogleSignin (6.0.1):
-    - GoogleSignIn (~> 5.0.0)
-    - React-Core
   - RNProgressHud (1.2.0):
     - React
     - SVProgressHUD
@@ -586,6 +572,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-jitsi-meet (from `../node_modules/react-native-jitsi-meet`)
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - "react-native-progress-bar-android (from `../node_modules/@react-native-community/progress-bar-android`)"
@@ -614,7 +601,6 @@ DEPENDENCIES:
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNProgressHud (from `../node_modules/progress-hud/ios`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -624,7 +610,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AppAuth
     - boost-for-react-native
     - CocoaAsyncSocket
     - FBSDKCoreKit
@@ -647,11 +632,8 @@ SPEC REPOS:
     - Google-Mobile-Ads-SDK
     - GoogleAppMeasurement
     - GoogleDataTransport
-    - GoogleSignIn
     - GoogleUserMessagingPlatform
     - GoogleUtilities
-    - GTMAppAuth
-    - GTMSessionFetcher
     - JitsiMeetSDK
     - libevent
     - nanopb
@@ -697,6 +679,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cameraroll"
   react-native-fbsdk-next:
     :path: "../node_modules/react-native-fbsdk-next"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-jitsi-meet:
     :path: "../node_modules/react-native-jitsi-meet"
   react-native-onesignal:
@@ -753,8 +737,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNGoogleSignin:
-    :path: "../node_modules/@react-native-google-signin/google-signin"
   RNProgressHud:
     :path: "../node_modules/progress-hud/ios"
   RNReanimated:
@@ -769,7 +751,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
@@ -796,11 +777,8 @@ SPEC CHECKSUMS:
   Google-Mobile-Ads-SDK: 2f288748a42920d1c744946a460896a95b0e9110
   GoogleAppMeasurement: fd19169c3034975cb934e865e5667bfdce59df7f
   GoogleDataTransport: cd9db2180fcecd8da1b561aea31e3e56cf834aa7
-  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUserMessagingPlatform: b168e8c46cd8f92aa3e34b584c4ca78a411ce367
   GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
-  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
   JitsiMeetSDK: d4a3aeed1a75fd57e6a78e5d202b6051dfcb9320
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
@@ -821,6 +799,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
   react-native-cameraroll: 88f4e62d9ecd0e1f253abe4f685474f2ea14bfa2
   react-native-fbsdk-next: 19e974b071047b7ed1dad86a9dc3fe77dff76b8c
+  react-native-image-picker: a6e56460d34905c849ada551db30897dc7f3d535
   react-native-jitsi-meet: 29ed76cdc6142d9a6c013bb14dd6205df0b5452b
   react-native-onesignal: a7e433eec906c928954de4f124b6886418386bb4
   react-native-progress-bar-android: be43138ab7da30d51fc038bafa98e9ed594d0c40
@@ -849,7 +828,6 @@ SPEC CHECKSUMS:
   RNFBMessaging: c873e6c37f69d22de22cab134413030a9c6330a9
   RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNGoogleSignin: e64616a4080cf7d83f4b292fad82d174587444e2
   RNProgressHud: e0c0cecde5948339f31a1ce99efea08cafb1040f
   RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d

@@ -22,6 +22,7 @@ import ProfileScreen from "../../screens/Settings/ProfileScreen";
 import UserGroupScreen from "../../screens/sharing/UserGroupScreen";
 import NotificationListScreen from "../../screens/Notification/NotificationListScreen";
 import FriendRequestScreen from "../../screens/sharing/FriendRequestScreen";
+import FriendListScreen from "../../screens/Friends/FriendListScreen";
 
 
 
@@ -188,21 +189,21 @@ const HomeStack = () => {
                 name={'ConversationPractice'}
                 component={ConversationPracticeScreen}
                 options={{
-                    title:"Practice"
+                    title: "Practice"
                 }}
             />
             <Stack.Screen
                 name={'ConversationDetail'}
                 component={ConversationDetailScreen}
                 options={{
-                    title:"group"
+                    title: "group"
                 }}
             />
             <Stack.Screen
                 name={'ConversationGroup'}
                 component={ConversationGroupScreen}
                 options={{
-                    title:"conversation's group"
+                    title: "conversation's group"
                 }}
             />
             <Stack.Screen
@@ -237,25 +238,33 @@ const HomeStack = () => {
                 name={"UserGroup"}
                 component={UserGroupScreen}
                 options={{
-                    title:""
+                    title: ""
                 }}
-             
+
             />
             <Stack.Screen
                 name={"Notification"}
                 component={NotificationListScreen}
                 options={{
-                    title:""
+                    title: ""
                 }}
-            
+
             />
             <Stack.Screen
                 name={"FriendRequest"}
                 component={FriendRequestScreen}
                 options={{
-                    title:""
+                    title: ""
                 }}
-              
+
+            />
+            <Stack.Screen
+                name={"FriendList"}
+                component={FriendListScreen}
+                options={{
+                    title: ""
+                }}
+
             />
         </Stack.Navigator>
     )
