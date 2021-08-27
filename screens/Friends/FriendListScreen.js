@@ -4,6 +4,9 @@ import ConversationAPI from '../../app/API/ConversationAPI';
 import FriendItem from './components/FriendItem'
 import RNProgressHud from 'progress-hud';
 import { useNavigation, useRoute } from '@react-navigation/core';
+import FriendShipModel from '../../app/models/FriendShipModel';
+import AppManager from '../../app/AppManager';
+import UserModel from '../../app/models/userModel';
 
 const FriendListScreen = (props) => {
 
@@ -19,15 +22,25 @@ const FriendListScreen = (props) => {
             user: user
         })
     }
+    const author = AppManager.shared.user
 
     const getAllLearners = () => {
         RNProgressHud.show()
 
         ConversationAPI.getUserFriendShip()
             .then(res => {
+              
                 if (res.status_code === 200) {
-                    console.warn(res.data)
-                    setFriendShips(res.data)
+                    let userFriends = res?.data?.map(e => {
+                        let friendship = new FriendShipModel(e)
+                        console.warn('sasassa:',author.id)
+                        if (friendship.sender.id == author?.id) {
+                            return friendship.recipient
+                        } else {
+                            return friendship.sender
+                        }
+                    })
+                    setFriendShips(userFriends)
                 }
             })
             .catch((err) => {
@@ -41,10 +54,10 @@ const FriendListScreen = (props) => {
 
 
     const _onInviteToGroupConverastion = (friendship) => {
-     
+
         RNProgressHud.show()
 
-        ConversationAPI.inviteFriendShipToConversation(friendship?.recipient?.id, group?.id)
+        ConversationAPI.inviteFriendShipToConversation(friendship?.id, group?.id)
             .then((res) => {
                 console.warn('invited: ', res)
             })
@@ -74,10 +87,10 @@ const FriendListScreen = (props) => {
                         <FriendItem
                             key={item?.id?.toString()}
                             onPress={() => _onOpenLearnerProfile(item)}
-                            address={item?.recipient?.address}
-                            name={item?.recipient?.username}
-                            imagePath={item?.recipient?.profile_pic}
-                            description={item?.recipient?.descriptions}
+                            address={item?.address}
+                            name={item?.username}
+                            imagePath={item?.profile_pic}
+                            // description={item?.descriptions}
                             canInvite={group ? true : false}
                             onInvitePress={() => _onInviteToGroupConverastion(item)}
 

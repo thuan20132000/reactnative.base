@@ -17,11 +17,12 @@ class AuthenticationAPI {
         try {
             let res = await this.axios.get(this.facebook_graph + `fields=id,name,link,picture{url}&access_token=${access_token}`);
             let resData = await res.data;
+            console.log('sas: ',resData)
             let user = new UserModel(resData)
             user.device_id = getUniqueId()
             let signinData = await this.signin(
                 user.id,
-                user.name,
+                user.username,
                 user.image_path,
                 user.device_id,
                 'facebook',

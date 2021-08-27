@@ -43,6 +43,7 @@ const ConversationDetailScreen = (props) => {
     const _refSocket = React.useMemo(() => new WebSocket(`ws://${config.IP_ADDRESS}:${config.PORT}/ws/conversation/${group?.id}/user/${user_id}/`), [])
 
     const _onCalling = () => {
+        console.warn(group.id)
         setIsCalling(true)
         try {
 
@@ -52,7 +53,7 @@ const ConversationDetailScreen = (props) => {
                 email: 'user@example.com',
                 avatar: 'https:/gravatar.com/avatar/abc123',
             };
-            JitsiMeet.call(url, userInfo);
+            JitsiMeet.audioCall(url, userInfo);
         } catch (error) {
             console.log('call error: ', error)
         }
@@ -175,7 +176,7 @@ const ConversationDetailScreen = (props) => {
 
         // Start loading the interstitial straight away
         const unsubscribe = props.navigation.addListener('beforeRemove', () => {
-            if(loaded){
+            if (loaded) {
                 interstitial.show()
             }
         });
@@ -241,6 +242,10 @@ const ConversationDetailScreen = (props) => {
                     <ScrollView
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
+
+                        contentContainerStyle={{
+                            alignItems: 'center'
+                        }}
                     >
                         {
                             memberList.map((e, index) =>
@@ -282,6 +287,41 @@ const ConversationDetailScreen = (props) => {
                             backgroundColor: 'white'
                         }}
                     >
+                        {
+                            isCalling ?
+                                <ButtonText
+                                    // label={'Call'}
+                                    labelStyle={{
+                                        fontWeight: '700'
+                                    }}
+                                    onItemPress={_onEndCalling}
+                                    // rightIcon
+                                    containerStyle={{
+                                        backgroundColor: 'red',
+                                        width: 60,
+                                        height: 60,
+                                        borderRadius: 30
+                                    }}
+                                    icon={CommonIcons.phone}
+                                /> :
+                                <ButtonText
+                                    // label={'Call'}
+                                    labelStyle={{
+                                        fontWeight: '700'
+                                    }}
+                                    onItemPress={_onCalling}
+                                    // rightIcon
+                                    containerStyle={{
+                                        backgroundColor: 'green',
+                                        width: 60,
+                                        height: 60,
+                                        borderRadius: 30
+                                    }}
+                                    icon={CommonIcons.phone}
+                                />
+
+
+                        }
                         {
                             isCalling &&
                             <JitsiMeetView
@@ -340,50 +380,6 @@ const ConversationDetailScreen = (props) => {
                         connect_code={connectCode}
                         type={'group'}
                     />
-
-                }
-            </View>
-
-
-            {/* Bottom Buttons */}
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginVertical: 2,
-                    position: 'absolute',
-                    bottom: 0,
-                    alignSelf: 'center',
-                }}
-            >
-
-                {
-                    isCalling ?
-                        <ButtonText
-                            label={'ENDCALL'}
-                            containerStyle={{
-                                backgroundColor: 'red',
-                                width: 120
-
-                            }}
-                            onItemPress={_onEndCalling}
-                        /> :
-                        <ButtonText
-                            label={'Call'}
-                            labelStyle={{
-                                fontWeight: '700'
-                            }}
-                            onItemPress={_onCalling}
-                            rightIcon
-                            containerStyle={{
-                                backgroundColor: 'green',
-                                width: 120
-                            }}
-
-                        />
-
 
                 }
             </View>

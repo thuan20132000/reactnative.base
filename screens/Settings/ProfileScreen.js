@@ -27,7 +27,6 @@ const ProfileScreen = (props) => {
     const user = AppManager.shared.user
 
     const [userProfile, setUserProfile] = useState(new UserModel(null))
-
     const _onLogOut = () => {
         console.log('logout')
         setUserAuth(null)
@@ -54,7 +53,6 @@ const ProfileScreen = (props) => {
                 RNProgressHud.show()
                 AuthenticationAPI.upadteAvatar(res?.assets[0])
                     .then((res) => {
-                        console.warn('re" ', res)
                         if (res?.status_code === 200) {
                             let user = new UserModel(res?.data)
                             console.log(user)
@@ -85,12 +83,15 @@ const ProfileScreen = (props) => {
     return (
         <View
             style={{
-                backgroundColor: 'lightgray',
+                backgroundColor: 'white',
                 flex: 1
             }}
         >
             <ScrollView
                 showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingVertical: 22
+                }}
             >
 
                 <View
@@ -127,7 +128,7 @@ const ProfileScreen = (props) => {
 
                     </TouchableOpacity>
 
-                    <Text style={{ fontWeight: '700', fontSize: 18 }}>{user?.name}</Text>
+                    <Text style={{ fontWeight: '700', fontSize: 18 }}>{user?.username}</Text>
                 </View>
 
 
@@ -159,7 +160,7 @@ const ProfileScreen = (props) => {
                     />
                 </View> */}
 
-                <View
+                {/* <View
                     style={{
                         margin: 12,
                         ...BOXSHADOW.normal,
@@ -170,7 +171,7 @@ const ProfileScreen = (props) => {
                 >
                     <Text style={{ color: '#64b7f4', fontWeight: '700', marginVertical: 8, fontSize: 18 }}>ABOUT ME</Text>
                     <Text>{user?.descriptions}</Text>
-                </View>
+                </View> */}
 
                 <View
                     style={{

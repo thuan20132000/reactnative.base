@@ -44,6 +44,7 @@ const LearnerProfileScreen = (props) => {
         ConversationAPI.makeFriendship(user?.id)
             .then(res => {
                 Alert.alert('Sent a friend request')
+                console.warn('res: ',res)
             })
             .catch((err) => {
                 console.warn('err: ', err)
@@ -51,15 +52,15 @@ const LearnerProfileScreen = (props) => {
             .finally(() => {
                 RNProgressHud.dismiss()
             })
-        console.warn(user.id)
     }
 
 
     const _onGetUserProfile = async () => {
         RNProgressHud.show()
-        ConversationAPI.getUserProfile(user?.recipient?.id)
+        ConversationAPI.getUserProfile(user?.id)
             .then(res => {
                 if (res.status_code == 200) {
+                    console.log('ee: ',res)
                     let user = new UserModel(res?.data)
                     setUserProfile(user)
                     getUserGroup()
@@ -113,7 +114,7 @@ const LearnerProfileScreen = (props) => {
                                 fontWeight:'700'
                             }}
                         >
-                            {userProfile?.username}
+                            {userProfile?.name}
                         </Text>
                 </View>
 
@@ -154,7 +155,7 @@ const LearnerProfileScreen = (props) => {
 
                 </View>
 
-                <View
+                {/* <View
                     style={{
                         margin: 12,
                         ...BOXSHADOW.normal,
@@ -167,7 +168,7 @@ const LearnerProfileScreen = (props) => {
                     <Text>
                         {userProfile?.descriptions}
                     </Text>
-                </View>
+                </View> */}
 
                 <View
                     style={{

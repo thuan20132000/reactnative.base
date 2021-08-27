@@ -2,7 +2,7 @@
 
 class UserModel {
     id: Number;
-    name: String;
+    username: String;
     profile_pic: String;
     status: String;
     token: String;
@@ -12,12 +12,12 @@ class UserModel {
     access_token: String;
     descriptions: String;
 
-    constructor(data: { id: Number; name: String; profile_pic: String; status: String; created_at: Date; updated_at: Date; access_token: String; device_id: String; descriptions: String; }) {
+    constructor(data) {
         if (data === null) {
             return;
         }
         this.id = data?.id;
-        this.name = data?.name;
+        this.username = data?.username ?? data?.name;
         this.profile_pic = data?.profile_pic;
         this.status = data?.status;
         this.created_at = data?.created_at;
@@ -36,7 +36,7 @@ class UserModel {
     toString() {
         return {
             id: this.id,
-            name: this.name,
+            username: this.username,
             profile_pic: this.profile_pic,
             token: this.token,
             status: this.status,

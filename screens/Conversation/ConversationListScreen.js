@@ -90,6 +90,7 @@ const ConversationList = (props) => {
     const _onUpdateNotificationId = async () => {
         let { userId } = await OneSignal.getDeviceState()
         await AuthenticationAPI.updateNotificationId(userId)
+        console.warn(userId)
     }
 
 

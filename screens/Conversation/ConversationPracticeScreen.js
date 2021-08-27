@@ -19,6 +19,7 @@ import ReadingTextPractice from './components/ReadingTextPractice';
 
 
 import { BannerAd, TestIds, BannerAdSize, InterstitialAd, AdEventType } from '@react-native-firebase/admob';
+import BottomReadingControl from '../sharing/BottomReadingControl';
 
 const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
 const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_android_fullpage;
@@ -175,56 +176,7 @@ const ConversationPracticeScreen = (props) => {
 
                 }
             </View>
-            <View
-                style={{
-                    display: 'flex',
-                    alignSelf: 'flex-start'
-                }}
-            >
-                <BannerAd
-                    unitId={adUnitId}
-                    size={BannerAdSize.BANNER}
-                    requestOptions={{
-                        requestNonPersonalizedAdsOnly: true,
-                    }}
-                />
-
-            </View>
-
-            {/* Bottom Buttons */}
-            {/* <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginVertical: 2,
-                    position: 'absolute',
-                    bottom: 0,
-                    alignSelf: 'center',
-                }}
-            >
-                {
-                    isCalling ?
-                        <ButtonText
-                            label={'ENDCALL'}
-                            containerStyle={{
-                                backgroundColor: 'red'
-                            }}
-                            onItemPress={_onEndCalling}
-                        /> :
-                        <ButtonText
-                            label={'Call'}
-                            labelStyle={{
-                                fontWeight: '700'
-                            }}
-                            onItemPress={_onCalling}
-                            rightIcon
-                        />
-
-
-                }
-            </View> */}
+            
         </SafeAreaView>
 
 

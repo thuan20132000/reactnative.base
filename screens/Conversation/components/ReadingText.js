@@ -9,6 +9,7 @@ import AppManager from '../../../app/AppManager';
 import RNProgressHud from 'progress-hud';
 import ConversationAPI from '../../../app/API/ConversationAPI';
 import CommonIcons from '../../../utils/CommonIcons';
+import BottomReadingControl from '../../sharing/BottomReadingControl';
 
 
 
@@ -49,7 +50,10 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
     React.useEffect(() => {
         switch (connect_code) {
             case 'RUN_SCROLL':
-                _runScroll()
+
+                setTimeout(() => {
+                    _runScroll()
+                }, 2000);
                 break
             case 'RESET_SCROLL':
                 _onResetTextScroll()
@@ -123,6 +127,7 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
 
         } catch (error) {
             console.log('error: ', error);
+            audioRecorderPlayer.stopPlayer()
         }
 
 
@@ -146,7 +151,6 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
         setPadding(800)
         setScrollEnable(false)
         scrollAnimation.current.addListener((animation) => {
-            console.log(animation.value)
             if (animation.value >= contentHeight) {
                 setScrollEnable(true)
                 _onResetTextScroll()
@@ -227,8 +231,8 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
 
 
     const _onShowFriendsScreen = () => {
-        navigation.navigate('FriendList',{
-            group:group,
+        navigation.navigate('FriendList', {
+            group: group,
         })
         console.log(group)
     }
@@ -261,66 +265,6 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
     return (
         <>
 
-            {
-                (type == 'group' && AppManager.shared.user?.id == group?.author?.id) &&
-                <Portal>
-                    <FAB.Group
-                        open={fabState.open}
-                        icon={'plus'}
-
-
-                        actions={[
-                            {
-                                icon: CommonIcons.person,
-                                label: 'Friends',
-                                onPress: () => {
-                                    _onShowFriendsScreen()
-                                    // scrollAnimation.current.stopAnimation((val => console.warn('v: ', val))
-                                },
-
-                            },
-                            {
-                                icon: 'trash-can-outline',
-                                label: 'Remove',
-                                onPress: () => {
-                                    // scrollAnimation.current.stopAnimation((val => console.warn('v: ', val))
-                                    _onRemoveGroup()
-                                },
-
-                            },
-                            {
-                                icon: 'clock-start',
-                                label: 'Start',
-                                onPress: () => {
-                                    // scrollAnimation.current.stopAnimation((val => console.warn('v: ', val))
-                                    _onRunTextScroll()
-                                },
-
-                            },
-                            {
-                                icon: 'restart',
-                                label: 'Reset',
-                                onPress: () => _onResetTextScroll(),
-                            },
-                            {
-                                icon: 'volume-high',
-                                label: 'Audio',
-                                onPress: () => {
-                                    _onPlayAudio()
-                                },
-                            },
-
-                        ]}
-                        onStateChange={onStateChange}
-                        onPress={() => {
-
-                        }}
-
-                    />
-                </Portal>
-            }
-
-
 
             <Animated.ScrollView
                 ref={_refScrollView}
@@ -346,6 +290,16 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
                     }}
                 />
             </Animated.ScrollView>
+            {
+                (type == 'group' && AppManager.shared.user?.id == group?.author?.id) &&
+                <BottomReadingControl
+                    onPlayAudio={_onPlayAudio}
+                    onResetScroll={_onResetTextScroll}
+                    onRunScroll={_onRunTextScroll}
+                    onShowFriends={_onShowFriendsScreen}
+                />
+
+            }
         </>
     )
 }

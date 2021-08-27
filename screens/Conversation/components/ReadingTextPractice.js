@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import RenderHtml from "react-native-render-html";
 import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
 import AppManager from '../../../app/AppManager';
+import BottomReadingControl from '../../sharing/BottomReadingControl';
 
 
 
@@ -104,11 +105,14 @@ const ReadingTextPractice = ({ group, readingpost, postContent, setIsRunTextScro
                 setPadding(0)
 
             }
-            _refScrollView.current &&
-                _refScrollView.current.scrollTo({
-                    y: animation.value,
-                    animated: false,
-                })
+
+            setTimeout(() => {
+                _refScrollView.current &&
+                    _refScrollView.current.scrollTo({
+                        y: animation.value,
+                        animated: false,
+                    })
+            }, 2000);
         })
 
         if (contentHeight) {
@@ -160,44 +164,7 @@ const ReadingTextPractice = ({ group, readingpost, postContent, setIsRunTextScro
 
     return (
         <>
-            {
-                <Portal>
-                    <FAB.Group
-                        open={fabState.open}
-                        icon={'plus'}
 
-
-                        actions={[
-                            {
-                                icon: 'clock-start',
-                                label: 'Start',
-                                onPress: () => {
-                                    _runScroll()
-                                }
-
-                            },
-                            {
-                                icon: 'restart',
-                                label: 'Reset',
-                                onPress: () => _onResetTextScroll(),
-                            },
-                            {
-                                icon: 'volume-high',
-                                label: 'Audio',
-                                onPress: () => {
-                                    _onPlayAudio()
-                                },
-                            },
-
-                        ]}
-                        onStateChange={onStateChange}
-                        onPress={() => {
-
-                        }}
-
-                    />
-                </Portal>
-            }
 
             <Animated.ScrollView
                 ref={_refScrollView}
@@ -220,7 +187,7 @@ const ReadingTextPractice = ({ group, readingpost, postContent, setIsRunTextScro
                         marginVertical: 12
                     }}
                 >
-                    <Text style={{ fontSize: 26, fontWeight: '600',color:'red' }}>
+                    <Text style={{ fontSize: 26, fontWeight: '600', color: 'red' }}>
                         {readingpost?.title}
                     </Text>
                 </View>
@@ -234,6 +201,12 @@ const ReadingTextPractice = ({ group, readingpost, postContent, setIsRunTextScro
                     }}
                 />
             </Animated.ScrollView>
+            <BottomReadingControl
+                onPlayAudio={_onPlayAudio}
+                onResetScroll={_onResetTextScroll}
+                onRunScroll={_runScroll}
+            />
+
         </>
     )
 }

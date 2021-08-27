@@ -231,7 +231,6 @@ class ConversationAPI {
             // let body = {
             //     recipient_id: recipient_id
             // }
-            console.warn(body)
             let res = await this.axios.post(this.api_url + path, body, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -304,6 +303,7 @@ class ConversationAPI {
     async getUserProfile(user_id) {
         try {
             let token = AppManager.shared.user.access_token
+            console.warn(user_id)
             let path = `/conversation/v1/user-profile/${user_id}`;
             let res = await this.axios.get(this.api_url + path, {
                 headers: {
