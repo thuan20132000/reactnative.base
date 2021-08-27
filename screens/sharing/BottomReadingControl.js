@@ -56,22 +56,25 @@ const BottomReadingControl = ({
                     }}
                 />
             </TouchableOpacity>
+            {
+                onShowFriends &&
+                <TouchableOpacity
+                    style={[
+                        styles.buttonIcon
+                    ]}
+                    onPress={onShowFriends}
 
-            <TouchableOpacity
-                style={[
-                    styles.buttonIcon
-                ]}
-                onPress={onShowFriends}
+                >
+                    <MaterialCommunityIcons
+                        name={CommonIcons.person}
+                        size={32}
+                        style={{
+                            color: CommonColor.primary
+                        }}
+                    />
+                </TouchableOpacity>
 
-            >
-                <MaterialCommunityIcons
-                    name={CommonIcons.person}
-                    size={32}
-                    style={{
-                        color: CommonColor.primary
-                    }}
-                />
-            </TouchableOpacity>
+            }
         </View>
     )
 }
