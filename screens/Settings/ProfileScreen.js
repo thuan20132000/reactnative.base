@@ -13,13 +13,21 @@ import {
     LoginButton,
     LoginManager
 } from 'react-native-fbsdk-next';
-import { setUserAuth } from '../../app/StorageManager'
+import { getStorageData, setUserAuth } from '../../app/StorageManager'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import AppManager from '../../app/AppManager'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import AuthenticationAPI from '../../app/API/AuthenticationAPI'
 import UserModel from '../../app/models/userModel'
 import RNProgressHud from 'progress-hud';
+import LoginItem from '../Authentication/components/LoginItem'
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import CalendarProgress from './components/CalendarProgress'
+import GoalProgress from './components/GoalProgress'
+import PracticeProgressModel from '../../app/models/PracticeProgressModel'
+import PracticeProgress from '../../app/DB/PracticeProgress'
+import { format } from 'date-fns'
+
 
 const ProfileScreen = (props) => {
     const navigation = useNavigation()
@@ -27,17 +35,20 @@ const ProfileScreen = (props) => {
     const user = AppManager.shared.user
 
     const [userProfile, setUserProfile] = useState(new UserModel(null))
+    const [practiceProgress, setPracticeProgress] = useState(new PracticeProgressModel())
+    const [practiceDates, setPracticeDates] = useState([])
+
     const _onLogOut = () => {
         console.log('logout')
         setUserAuth(null)
         // props.navigation.replace('VideoHome')
         AppManager.shared.user = null
         // dispatch(logout())
+        LoginManager.logOut()
         navigation.dispatch(
             StackActions.replace('Signin')
         )
     }
-
 
 
     const _onUpdateAvatar = () => {
@@ -78,6 +89,38 @@ const ProfileScreen = (props) => {
     //     console.warn('change')
     //     setUserProfile(user)
     // }, [user.profile_pic])
+
+
+
+    React.useEffect(() => {
+        console.log('focused')
+
+        const unsubscribe = navigation.addListener('focus', () => {
+            // The screen is focused
+            // Call any action
+            PracticeProgress.getCurrentDatePractice()
+                .then(res => {
+                    setPracticeProgress(res)
+                    // practiceProgress.practice_minutes = res?.practice_minutes
+                })
+            PracticeProgress.getPracticeProgress()
+                .then(res => {
+                    console.warn('ssa: ', res)
+                    let dates = []
+                    res?.map(e => {
+                        if (e?.date != null && e?.practice_minutes >= e?.target_minutes) {
+                            dates.push(format(new Date(e?.date), 'yyyy-MM-dd'))
+                        }
+                    })
+                    setPracticeDates(dates)
+                    // console.warn('get all: ', dates)
+                })
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
+
 
 
     return (
@@ -131,47 +174,6 @@ const ProfileScreen = (props) => {
                     <Text style={{ fontWeight: '700', fontSize: 18 }}>{user?.username}</Text>
                 </View>
 
-
-                {/*  */}
-                {/* <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: 8
-                    }}
-                >
-                    <MaterialCommunityIcons
-                        name={CommonIcons.videoCall}
-                        size={34}
-                        color={'#64b7f4'}
-                        style={{
-                            margin: 12
-                        }}
-                    />
-                    <MaterialCommunityIcons
-                        name={CommonIcons.chatMessage}
-                        size={34}
-                        color={'#64b7f4'}
-                        style={{
-                            margin: 12
-                        }}
-                    />
-                </View> */}
-
-                {/* <View
-                    style={{
-                        margin: 12,
-                        ...BOXSHADOW.normal,
-                        backgroundColor: 'white',
-                        padding: 12,
-                        borderRadius: 8
-                    }}
-                >
-                    <Text style={{ color: '#64b7f4', fontWeight: '700', marginVertical: 8, fontSize: 18 }}>ABOUT ME</Text>
-                    <Text>{user?.descriptions}</Text>
-                </View> */}
 
                 <View
                     style={{
@@ -280,59 +282,31 @@ const ProfileScreen = (props) => {
                 </View>
 
 
-                {/*  */}
-                {/* <View
-                    style={{
-                        backgroundColor: 'white',
-                        borderTopRightRadius: 26,
-                        borderTopLeftRadius: 26,
-                        ...BOXSHADOW.normal,
-                        padding: 12
-
-                    }}
-                >
-                    <ItemSetting 
-                        label={'Settings'} 
-                        iconName={CommonIcons.plusThick} 
-                    />
-                    <ItemSetting label={'Notifications'} iconName={CommonIcons.plusThick} />
-                    <ItemSetting
-                        label={'Policy'}
-                        iconName={CommonIcons.plusThick}
-                        onPress={() => navigation.navigate('PrivacyPolicy')}
-
-                    />
-                    <ItemSetting label={'Sharing'} iconName={CommonIcons.plusThick} />
-                    <ItemSetting label={'Supoport'} iconName={CommonIcons.plusThick} />
-
-                </View> */}
-
-
-                {/* Groups */}
-
-                {/* <View style={{ marginHorizontal: 12 }}>
-                    <Text style={{ fontWeight: '700', fontSize: 18 }}>Owner's groups</Text>
-                    {
-                        userGroups?.map((item, index) => (
-                            <GroupCard
-                                key={item?.id?.toString()}
-                                onPress={() => _onOpenConversationGroup(item)}
-                                groupName={item?.name}
-                                conversationName={item?.conversation?.title}
-                            />
-
-                        ))
-                    }
-                </View> */}
                 <View
                     style={{
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        marginVertical: 30
+                        marginVertical: 30,
                     }}
                 >
-                    <LoginButton
+                    <Text>Today Goal</Text>
+                    <GoalProgress fill={(practiceProgress?.practice_minutes / practiceProgress.target_minutes) * 100} />
+
+                </View>
+
+                <CalendarProgress markedDates={practiceDates} />
+
+                <View
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginVertical: 30,
+
+                    }}
+                >
+                    {/* <LoginButton
                         onLoginFinished={(error, result) => {
                             if (error) {
                                 console.log('login has error: ' + result);
@@ -351,8 +325,13 @@ const ProfileScreen = (props) => {
                             }
                         }}
                         onLogoutFinished={_onLogOut}
-                    />
+                    /> */}
+                    <LoginItem
 
+                        label={'Logout'}
+                        onPress={_onLogOut}
+                        logoPath={require('../../app/assets/images/logo3.png')}
+                    />
                 </View>
             </ScrollView>
 

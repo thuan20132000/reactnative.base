@@ -1,6 +1,6 @@
 
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet'
 import ButtonText from '../../components/Button/BottonText';
 import ReadingText from './components/ReadingText';
@@ -16,6 +16,9 @@ import { config } from '../../app/constants';
 import CommonImages from '../../utils/CommonImages';
 
 import { BannerAd, TestIds, BannerAdSize, InterstitialAd, AdEventType } from '@react-native-firebase/admob';
+import CommonColor from '../../utils/CommonColor';
+import { useNavigation } from '@react-navigation/core';
+import PracticeProgressModel from '../../app/models/PracticeProgressModel';
 
 const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
 const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_android_fullpage;
@@ -29,7 +32,7 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial, {
 
 
 const ConversationDetailScreen = (props) => {
-
+    const navigation = useNavigation()
     const { group } = props?.route?.params ?? ''
     const [isCalling, setIsCalling] = useState(false);
     const [conversation, setConversation] = useState(null);
@@ -37,28 +40,33 @@ const ConversationDetailScreen = (props) => {
     const [isRunTextScroll, setIsRunTextScroll] = useState(false);
     const [connectCode, setConnectCode] = useState('');
     const [loaded, setLoaded] = useState(false);
+    const [todayPracticeProgress, setTodayPracticeProgress] = useState('')
 
     const user_id = AppManager.shared.user?.id;
 
     const _refSocket = React.useMemo(() => new WebSocket(`ws://${config.IP_ADDRESS}:${config.PORT}/ws/conversation/${group?.id}/user/${user_id}/`), [])
 
     const _onCalling = () => {
-        console.warn(group.id)
         setIsCalling(true)
-        try {
 
-            const url = `https://meet.jit.si/thuantruongtest${group?.id}`;
-            const userInfo = {
-                displayName: 'thuantruong',
-                email: 'user@example.com',
-                avatar: 'https:/gravatar.com/avatar/abc123',
-            };
-            JitsiMeet.audioCall(url, userInfo);
-        } catch (error) {
-            console.log('call error: ', error)
-        }
-        /* Você também pode usar o JitsiMeet.audioCall (url) para chamadas apenas de áudio */
-        /* Você pode terminar programaticamente a chamada com JitsiMeet.endCall () */
+
+        setTimeout(() => {
+            try {
+
+                const url = `https://meet.jit.si/thuantruongtest${group?.id}`;
+                const userInfo = {
+                    displayName: AppManager.shared.user?.username,
+                    email: 'user@example.com',
+                    avatar: AppManager.shared.user?.profile_pic,
+                };
+                JitsiMeet.audioCall(url, userInfo);
+            } catch (error) {
+                console.log('call error: ', error)
+            }
+            /* Você também pode usar o JitsiMeet.audioCall (url) para chamadas apenas de áudio */
+            /* Você pode terminar programaticamente a chamada com JitsiMeet.endCall () */
+
+        }, 1000);
 
     }
 
@@ -141,6 +149,22 @@ const ConversationDetailScreen = (props) => {
     }
 
     useLayoutEffect(() => {
+
+        let PracticeProgress = new PracticeProgressModel()
+        PracticeProgress.startPractice()
+
+        PracticeProgress.getCurrentPracticeDates()
+            .then(res => {
+                console.warn('cc: ', res)
+                if (res) {
+                    PracticeProgress.practice_minutes = res?.practice_minutes
+                    PracticeProgress.id = res?.id
+                    PracticeProgress.target_minutes = res?.target_minutes
+                    PracticeProgress.date = new Date(res?.date)
+                    setTodayPracticeProgress(res)
+                }
+            })
+
         RNProgressHud.show();
         ConversationAPI.getConversationGroupDetail(group?.id)
             .then((res) => {
@@ -156,6 +180,8 @@ const ConversationDetailScreen = (props) => {
                 _onGetGroupMembers()
                 RNProgressHud.dismissWithDelay(1.8)
             })
+
+
 
         props.navigation.setOptions({
             headerShown: false
@@ -188,6 +214,23 @@ const ConversationDetailScreen = (props) => {
             _onEndCalling()
             unsubscribe()
             eventListener()
+            PracticeProgress.endPractice()
+            // console.warn('todaty: ', todayPracticeProgress)
+
+
+
+            // if (todayPracticeProgress) {
+            //     PracticeProgress
+            //         .updateTodayProgress(todayPracticeProgress?.id, todayPracticeProgress?.practice_minutes)
+            //         .then(res => {
+            //             console.warn('updated: ', res)
+            //         })
+            // } else {
+            //     PracticeProgress.addProgress()
+            //         .then(res => {
+            //             console.warn('res: ', res)
+            //         })
+            // }
         };
     }, [])
 
@@ -196,6 +239,10 @@ const ConversationDetailScreen = (props) => {
     // if (!loaded) {
     //     return <View />;
     // }
+
+    const _onShowConversationVideo = () => {
+        navigation.navigate('ConversationVideo')
+    }
 
 
     return (
@@ -355,6 +402,25 @@ const ConversationDetailScreen = (props) => {
                             // </View>
                         }
                     </View>
+                    {
+                        !isCalling &&
+                        <ButtonText
+                            // label={'Call'}
+                            labelStyle={{
+                                fontWeight: '700'
+                            }}
+                            onItemPress={_onShowConversationVideo}
+                            // rightIcon
+                            containerStyle={{
+                                backgroundColor: 'green',
+                                width: 60,
+                                height: 60,
+                                borderRadius: 30
+                            }}
+                            icon={CommonIcons.videoCall}
+                        />
+                    }
+
                 </View>
 
             }
@@ -394,3 +460,4 @@ const ConversationDetailScreen = (props) => {
 }
 
 export default ConversationDetailScreen
+const styles = StyleSheet.create({})

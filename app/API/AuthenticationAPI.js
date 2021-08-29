@@ -17,9 +17,7 @@ class AuthenticationAPI {
         try {
             let res = await this.axios.get(this.facebook_graph + `fields=id,name,link,picture{url}&access_token=${access_token}`);
             let resData = await res.data;
-            console.log('sas: ',resData)
             let user = new UserModel(resData)
-            user.device_id = getUniqueId()
             let signinData = await this.signin(
                 user.id,
                 user.username,
@@ -28,18 +26,37 @@ class AuthenticationAPI {
                 'facebook',
                 access_token
             )
-            // console.log('signin data: ',signinData)
-            // user.descriptions = signinData?.data?.descriptions
-            // console.log('user:  ',user)
-            // setUserAuth(user.toString())
-            // AppManager.shared.user = user
-            // setStorageData('access_token',signinData.access)
-            // console.log('user modfel: ', user)
-            // console.log('user signin: ', signinData)
+
             user.descriptions = signinData?.data?.descriptions
             user.access_token = signinData?.access
 
             user.setProfilePic(signinData?.data?.profile_pic)
+            // AppManager.shared.user = signinData.data
+
+            return user
+        } catch (error) {
+            AppManager.shared.user = null
+
+            throw error
+        }
+
+    }
+
+    async signinWithApple(username, user_id, token) {
+        try {
+
+            let signinData = await this.signin(
+                user_id,
+                username,
+                "",
+                "",
+                'apple',
+                token
+            )
+            console.log(' sign in data',signinData)
+            let user = new UserModel(signinData?.data)
+            user.access_token = signinData?.access
+
             // AppManager.shared.user = signinData.data
 
             return user

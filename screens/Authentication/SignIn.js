@@ -24,7 +24,7 @@ import LoginItem from './components/LoginItem';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../utils/CommonIcons';
-import { App } from 'realm';
+import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
 
 // GoogleSignin.configure({
 //     iosClientId: '762174979149-d0nu6ershjiqm54t67k0o35dusaeg0hn.apps.googleusercontent.com',
@@ -39,7 +39,6 @@ const SignIn = (props) => {
         authenticationAPI.signinWithFacebook(access_token)
             .then((res) => {
                 if (res) {
-                    console.log('sa: ',res)
                     AppManager.shared.user = res
                     dispatch(signin(res))
                     setUserAuth(res.toString())
@@ -109,6 +108,60 @@ const SignIn = (props) => {
         )
     }
 
+    async function onAppleButtonPress(updateCredentialStateForUser) {
+        console.warn('Beginning Apple Authentication');
+        RNProgressHud.show()
+
+        // start a login request
+        try {
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                // requestedOperation: appleAuth.Operation.LOGIN,
+                requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+            });
+
+            console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+
+            const {
+                user,
+                email,
+                fullName,
+                nonce,
+                identityToken,
+                realUserStatus /* etc */,
+                authorizationCode
+            } = appleAuthRequestResponse;
+
+
+            authenticationAPI.signinWithApple(fullName?.givenName, user, authorizationCode)
+                .then(res => {
+                    console.log('sign in ress1: ', res)
+
+                    if (res.access_token) {
+                        console.log('sign in ress2: ', res)
+                        AppManager.shared.user = res
+                        dispatch(signin(res))
+                        setUserAuth(res.toString())
+                        navigation.dispatch(
+                            StackActions.replace('HomeStack')
+                        )
+
+                    }
+                })
+                .catch(err => {
+                    console.warn('error: ', err)
+                })
+
+            console.warn(`Apple Authentication Completed, ${user}, ${email}`);
+        } catch (error) {
+            if (error.code === appleAuth.Error.CANCELED) {
+                console.warn('User canceled Apple Sign in.');
+            } else {
+                console.error(error);
+            }
+        }
+        RNProgressHud.dismiss()
+    }
+
 
 
     return (
@@ -154,6 +207,16 @@ const SignIn = (props) => {
                 logoPath={require('../../app/assets/images/ic_fb.png')}
                 onPress={_onLoginFacebook}
             />
+
+            {
+                Platform.OS === 'ios' &&
+                <LoginItem
+                    label={'Apple'}
+                    logoPath={require('../../app/assets/images/ic_apple.png')}
+                    onPress={onAppleButtonPress}
+                />
+
+            }
             {/* <LoginItem
                 label={'Google'}
                 logoPath={require('../../app/assets/images/ic_gmail.png')}

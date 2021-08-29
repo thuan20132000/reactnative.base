@@ -23,6 +23,7 @@ import UserGroupScreen from "../../screens/sharing/UserGroupScreen";
 import NotificationListScreen from "../../screens/Notification/NotificationListScreen";
 import FriendRequestScreen from "../../screens/sharing/FriendRequestScreen";
 import FriendListScreen from "../../screens/Friends/FriendListScreen";
+import ConversationVideoScreen from "../../screens/Conversation/ConversationVideoScreen";
 
 
 
@@ -36,7 +37,8 @@ const TabBottom = () => {
     const [isShown, setIsShown] = useState(false)
 
     const _onCheckIsAuthenticated = () => {
-        console.log(AppManager.shared.user)
+
+        console.log('sasaasas: ',AppManager.shared.user)
         if (!AppManager.shared.user) {
             navigation.dispatch(
                 StackActions.replace('Signin')
@@ -266,6 +268,15 @@ const HomeStack = () => {
                 }}
 
             />
+              <Stack.Screen
+                name={"ConversationVideo"}
+                component={ConversationVideoScreen}
+                options={{
+                    title: ""
+                }}
+
+            />
+
         </Stack.Navigator>
     )
 }

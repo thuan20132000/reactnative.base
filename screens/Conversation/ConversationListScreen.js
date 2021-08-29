@@ -51,7 +51,7 @@ const ConversationList = (props) => {
                 }
             })
             .catch((err) => {
-                console.warn('err: ', err?.response?.data?.message ?? err)
+                console.warn('err all: ', err?.response?.data?.message ?? err)
                 removeUserAuth()
                 navigation.dispatch(
                     StackActions.replace('Signin')
