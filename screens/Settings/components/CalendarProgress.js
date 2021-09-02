@@ -8,10 +8,9 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 const CalendarProgress = ({
     markedDates = []
 }) => {
-    console.warn('aa: ',markedDates)
     const getMarkdates = () => {
 
-        let dates = []
+        let dates = {}
         markedDates?.map((e) => {
             let format = { endingDay: false, color: '#50cebb', textColor: 'white' }
             dates[e] = format

@@ -30,7 +30,6 @@ class PracticeProgress extends SQLiteManager {
             let query_string = `SELECT * FROM practice_progress`
             let results = await this.ExecuteQuery(query_string, []);
             let temp = [];
-            console.log('reee: ', results)
             if (results.rows.length > 0) {
                 for (let i = 0; i < results.rows.length; i++) {
                     let current_row = results.rows.item(i);
@@ -43,6 +42,7 @@ class PracticeProgress extends SQLiteManager {
             return temp
         } catch (error) {
             console.log('error: ', error)
+            throw error
         }
 
     }
@@ -57,7 +57,6 @@ class PracticeProgress extends SQLiteManager {
             this.openDB().then(() => {
                 this.db.transaction((tx) => {
                     tx.executeSql("CREATE TABLE IF NOT EXISTS practice_progress (id INTEGER PRIMARY KEY NOT NULL, datetime DATETIME, target_minutes INTEGER, practice_minutes INTEGER)", [], (tx, results) => {
-                        console.warn('create tbl: ', results)
                         resolve(results)
                     })
                 })
@@ -75,6 +74,7 @@ class PracticeProgress extends SQLiteManager {
             return singleInsert
         } catch (error) {
             console.log('error: ', error)
+            throw error
         }
 
     }
@@ -102,7 +102,6 @@ class PracticeProgress extends SQLiteManager {
             }else{
                 data = {}
             }
-            console.warn('daaa: ',results)
             return data
         } catch (error) {
             console.log('error: ', error)

@@ -29,7 +29,7 @@ const FriendListScreen = (props) => {
 
         ConversationAPI.getUserFriendShip()
             .then(res => {
-              
+              console.warn(res)
                 if (res.status_code === 200) {
                     let userFriends = res?.data?.map(e => {
                         let friendship = new FriendShipModel(e)

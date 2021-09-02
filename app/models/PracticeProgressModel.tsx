@@ -100,7 +100,7 @@ class PracticeProgressModel {
     }
 
 
-    public async updateTodayProgress(progress_id, practice_minutes) {
+    public async updateTodayProgress(progress_id: any, practice_minutes: any) {
         try {
 
             let res = await PracticeProgress.updateTodayProgress(progress_id, practice_minutes)

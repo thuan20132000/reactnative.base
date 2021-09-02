@@ -1,28 +1,26 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import ProgressCircle from 'react-native-progress-circle'
 
 const GoalProgress = ({
-    fill = 100
+    fill = 0
 }) => {
+    let progress_percent = fill ? fill?.toFixed(0):0
+
     return (
 
-        <AnimatedCircularProgress
-            size={120}
-            width={15}
-            fill={fill}
-            tintColor="#00e0ff"
-            onAnimationComplete={() => console.log('onAnimationComplete')}
-            backgroundColor="#3d5875"
+        <ProgressCircle
+            percent={Number(progress_percent)}
+            radius={80}
+            borderWidth={12}
+            color="#3399FF"
+            shadowColor="#999"
+            bgColor="#fff"
+           
         >
-            {
-                (fill) => (
-                    <Text style={{color:'red',fontWeight:'bold'}}>
-                        { fill?.toFixed(0)}%
-                    </Text>
-                )
-            }
-        </AnimatedCircularProgress>
+            <Text style={{ fontSize: 18 }}>{progress_percent}%</Text>
+            <Text style={{ fontSize: 12}}>Today's Progress</Text>
+        </ProgressCircle>
     )
 }
 

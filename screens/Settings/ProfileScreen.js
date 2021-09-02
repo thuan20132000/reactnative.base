@@ -105,7 +105,6 @@ const ProfileScreen = (props) => {
                 })
             PracticeProgress.getPracticeProgress()
                 .then(res => {
-                    console.warn('ssa: ', res)
                     let dates = []
                     res?.map(e => {
                         if (e?.date != null && e?.practice_minutes >= e?.target_minutes) {
@@ -122,6 +121,7 @@ const ProfileScreen = (props) => {
     }, [navigation]);
 
 
+    console.log(practiceProgress)
 
     return (
         <View
@@ -132,15 +132,20 @@ const ProfileScreen = (props) => {
         >
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                    paddingVertical: 22
-                }}
+                
             >
 
                 <View
                     style={{
                         alignItems: 'center',
+                        flexDirection:'row',
+                        backgroundColor:'white',
+                        ...BOXSHADOW.normal,
+                        borderBottomLeftRadius:32,
+                        borderBottomRightRadius:32,
+                        borderTopWidth:0
 
+                        
                     }}
                 >
                     <TouchableOpacity
@@ -162,7 +167,7 @@ const ProfileScreen = (props) => {
                                 borderRadius: 50,
                                 alignItems: 'center',
                                 borderWidth: 4,
-                                borderColor: 'white'
+                                borderColor: 'white',
 
                             }}
                             resizeMode={'cover'}
@@ -173,7 +178,17 @@ const ProfileScreen = (props) => {
 
                     <Text style={{ fontWeight: '700', fontSize: 18 }}>{user?.username}</Text>
                 </View>
+                <View
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginTop: 12
+                    }}
+                >
+                    <GoalProgress fill={(practiceProgress?.practice_minutes / practiceProgress?.target_minutes) * 100} />
 
+                </View>
 
                 <View
                     style={{
@@ -282,18 +297,7 @@ const ProfileScreen = (props) => {
                 </View>
 
 
-                <View
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginVertical: 30,
-                    }}
-                >
-                    <Text>Today Goal</Text>
-                    <GoalProgress fill={(practiceProgress?.practice_minutes / practiceProgress.target_minutes) * 100} />
 
-                </View>
 
                 <CalendarProgress markedDates={practiceDates} />
 

@@ -1,16 +1,9 @@
 
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
-import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet'
-import ButtonText from '../../components/Button/BottonText';
-import ReadingText from './components/ReadingText';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import CommonIcons from '../../utils/CommonIcons';
-import ConversationTopicModel from '../../app/models/conversationTopicModel';
 import ConversationAPI from '../../app/API/ConversationAPI';
 import ConversationPostModel from '../../app/models/conversationPostModel';
 import RNProgressHud from 'progress-hud';
-import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption } from 'react-native-audio-recorder-player';
 import AppManager from '../../app/AppManager';
 import { config } from '../../app/constants';
 import CommonImages from '../../utils/CommonImages';
@@ -19,7 +12,7 @@ import ReadingTextPractice from './components/ReadingTextPractice';
 
 
 import { BannerAd, TestIds, BannerAdSize, InterstitialAd, AdEventType } from '@react-native-firebase/admob';
-import BottomReadingControl from '../sharing/BottomReadingControl';
+import PracticeProgressModel from '../../app/models/PracticeProgressModel';
 
 const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
 const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_android_fullpage;
@@ -39,21 +32,35 @@ const ConversationPracticeScreen = (props) => {
     const [memberList, setMemberList] = useState([]);
     const [isRunTextScroll, setIsRunTextScroll] = useState(false);
     const [connectCode, setConnectCode] = useState('');
+    const [todayPracticeProgress, setTodayPracticeProgress] = useState('')
 
     const user_id = AppManager.shared.user?.id;
 
 
     const [loaded, setLoaded] = useState(false);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         RNProgressHud.show();
+        let PracticeProgress = new PracticeProgressModel()
+        PracticeProgress.startPractice()
+        PracticeProgress.getCurrentPracticeDates()
+            .then(res => {
+                if (res) {
+                    PracticeProgress.practice_minutes = res?.practice_minutes
+                    PracticeProgress.id = res?.id
+                    PracticeProgress.target_minutes = res?.target_minutes
+                    PracticeProgress.date = new Date(res?.date)
+                    setTodayPracticeProgress(res)
+                }
+            })
+
         ConversationAPI.getConversationPostDetail(groupConversation?.id)
             .then((res) => {
                 if (res.status_code == 200) {
                     setConversation(new ConversationPostModel(res?.data))
                 }
             }).finally(() => {
-                RNProgressHud.dismissWithDelay(1.6)
+                RNProgressHud.dismissWithDelay(0.6)
             })
 
         props.navigation.setOptions({
@@ -76,20 +83,24 @@ const ConversationPracticeScreen = (props) => {
 
         // Start loading the interstitial straight away
         const unsubscribe = props.navigation.addListener('beforeRemove', () => {
-            interstitial.show()
+            if (loaded) {
+                interstitial.show()
+            }
         });
         // Unsubscribe from events on unmount
         return () => {
             unsubscribe()
             eventListener()
+            PracticeProgress.endPractice()
+
         };
 
 
     }, [])
     // No advert ready to show yet
-    if (!loaded) {
-        return <View />;
-    }
+    // if (!loaded) {
+    //     return <View />;
+    // }
 
     return (
         <SafeAreaView
@@ -176,7 +187,7 @@ const ConversationPracticeScreen = (props) => {
 
                 }
             </View>
-            
+
         </SafeAreaView>
 
 

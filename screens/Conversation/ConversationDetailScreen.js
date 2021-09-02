@@ -148,14 +148,13 @@ const ConversationDetailScreen = (props) => {
             })
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
 
         let PracticeProgress = new PracticeProgressModel()
         PracticeProgress.startPractice()
 
         PracticeProgress.getCurrentPracticeDates()
             .then(res => {
-                console.warn('cc: ', res)
                 if (res) {
                     PracticeProgress.practice_minutes = res?.practice_minutes
                     PracticeProgress.id = res?.id
@@ -178,7 +177,7 @@ const ConversationDetailScreen = (props) => {
             .finally(() => {
 
                 _onGetGroupMembers()
-                RNProgressHud.dismissWithDelay(1.8)
+                RNProgressHud.dismissWithDelay(0.6)
             })
 
 
@@ -196,6 +195,7 @@ const ConversationDetailScreen = (props) => {
         const eventListener = interstitial.onAdEvent(type => {
             if (type === AdEventType.LOADED) {
                 setLoaded(true);
+                RNProgressHud.dismiss()
             }
         });
         interstitial.load();
@@ -241,7 +241,9 @@ const ConversationDetailScreen = (props) => {
     // }
 
     const _onShowConversationVideo = () => {
-        navigation.navigate('ConversationVideo')
+        navigation.navigate('ConversationVideo',
+            { group: group }
+        )
     }
 
 

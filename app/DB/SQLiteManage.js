@@ -82,7 +82,6 @@ class SQLiteManager {
         this.db.transaction((tx) => {
             tx.executeSql("SELECT * FROM quiz_field", [], (tx, results) => {
 
-                console.warn('data: ', results)
 
             })
         })

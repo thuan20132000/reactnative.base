@@ -4,7 +4,6 @@ import UserModel from '../models/userModel'
 import { getUniqueId, getManufacturer, getDeviceId } from 'react-native-device-info';
 import { getStorageData, setStorageData, setUserAuth } from "../StorageManager";
 import AppManager from "../AppManager";
-
 class AuthenticationAPI {
 
     constructor() {
@@ -44,7 +43,6 @@ class AuthenticationAPI {
 
     async signinWithApple(username, user_id, token) {
         try {
-
             let signinData = await this.signin(
                 user_id,
                 username,
@@ -53,7 +51,7 @@ class AuthenticationAPI {
                 'apple',
                 token
             )
-            console.log(' sign in data',signinData)
+            console.log(' sign in data', signinData)
             let user = new UserModel(signinData?.data)
             user.access_token = signinData?.access
 

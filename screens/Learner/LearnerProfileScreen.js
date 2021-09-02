@@ -44,7 +44,6 @@ const LearnerProfileScreen = (props) => {
         ConversationAPI.makeFriendship(user?.id)
             .then(res => {
                 Alert.alert('Sent a friend request')
-                console.warn('res: ',res)
             })
             .catch((err) => {
                 console.warn('err: ', err)

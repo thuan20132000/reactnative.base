@@ -14,7 +14,7 @@ import LearnerHomeScreen from "../../screens/Learner/LearnerHomeScreen";
 import LearnerProfileScreen from "../../screens/Learner/LearnerProfileScreen";
 import SignIn from "../../screens/Authentication/SignIn";
 import S_SettingHomeSceen from "../../screens/Settings/S_SettingHomeSceen";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import AppManager from "../AppManager";
 import UserModel from "../models/userModel";
 import S_PrivacyPolicyScreen from "../../screens/Settings/S_PrivacyPolicyScreen";
@@ -38,7 +38,6 @@ const TabBottom = () => {
 
     const _onCheckIsAuthenticated = () => {
 
-        console.log('sasaasas: ',AppManager.shared.user)
         if (!AppManager.shared.user) {
             navigation.dispatch(
                 StackActions.replace('Signin')
@@ -90,13 +89,17 @@ const TabBottom = () => {
 
         >
 
-            <TabBottomNavigator.Screen
-                name="FlashCard"
-                component={FlashCardStack}
-                options={{
-                    title: "FLASHCARD"
-                }}
-            />
+            {
+                Platform.OS === 'android' &&
+                <TabBottomNavigator.Screen
+                    name="FlashCard"
+                    component={FlashCardStack}
+                    options={{
+                        title: "FLASHCARD"
+                    }}
+                />
+
+            }
             {/* <TabBottomNavigator.Screen
                 name="ReadingPracticeStack"
                 component={ReadingPracticeStack}
@@ -268,7 +271,7 @@ const HomeStack = () => {
                 }}
 
             />
-              <Stack.Screen
+            <Stack.Screen
                 name={"ConversationVideo"}
                 component={ConversationVideoScreen}
                 options={{
