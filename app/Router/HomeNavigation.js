@@ -24,6 +24,8 @@ import NotificationListScreen from "../../screens/Notification/NotificationListS
 import FriendRequestScreen from "../../screens/sharing/FriendRequestScreen";
 import FriendListScreen from "../../screens/Friends/FriendListScreen";
 import ConversationVideoScreen from "../../screens/Conversation/ConversationVideoScreen";
+import ConversationCommentScreen from "../../screens/Conversation/ConversationCommentScreen";
+import WebviewScreen from "../../screens/sharing/WebviewScreen";
 
 
 
@@ -274,6 +276,23 @@ const HomeStack = () => {
             <Stack.Screen
                 name={"ConversationVideo"}
                 component={ConversationVideoScreen}
+                options={{
+                    title: ""
+                }}
+
+            />
+            <Stack.Screen
+                name={"ConversationComment"}
+                component={ConversationCommentScreen}
+                options={{
+                    title: ""
+                }}
+
+            />
+
+            <Stack.Screen
+                name={"Webview"}
+                component={WebviewScreen}
                 options={{
                     title: ""
                 }}

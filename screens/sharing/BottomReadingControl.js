@@ -7,74 +7,124 @@ const BottomReadingControl = ({
     onRunScroll,
     onResetScroll,
     onPlayAudio,
-    onShowFriends
+    onShowFriends,
+    onCommentPress,
+    onLikePress
 }) => {
     return (
         <View
             style={[styles.container]}
         >
-            <TouchableOpacity
-                style={[
-                    styles.buttonIcon
-                ]}
-                onPress={onRunScroll}
-            >
-                <MaterialCommunityIcons
-                    name={'clock-start'}
-                    size={32}
-                    style={{
-                        color: CommonColor.primary
-                    }}
-                />
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[
-                    styles.buttonIcon
-                ]}
-                onPress={onResetScroll}
-            >
-                <MaterialCommunityIcons
-                    name={'restart'}
-                    size={32}
-                    style={{
-                        color: CommonColor.primary
-                    }}
-                />
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[
-                    styles.buttonIcon
-                ]}
-                onPress={onPlayAudio}
-
-            >
-                <MaterialCommunityIcons
-                    name={'volume-high'}
-                    size={32}
-                    style={{
-                        color: CommonColor.primary
-                    }}
-                />
-            </TouchableOpacity>
             {
-                onShowFriends &&
+                onCommentPress &&
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row'
+                    }}
+                >
+                    <TouchableOpacity
+                        style={[
+                            styles.buttonIcon,
+                            {
+                                alignSelf: 'flex-start'
+                            }
+                        ]}
+                        onPress={onCommentPress}
+                    >
+                        <MaterialCommunityIcons
+                            name={'comment-alert-outline'}
+                            size={32}
+                            style={{
+                                color: 'red'
+                            }}
+                        />
+                    </TouchableOpacity>
+                    {/* <TouchableOpacity
+                    style={[
+                        styles.buttonIcon,
+                        {
+                            alignSelf: 'flex-start'
+                        }
+                    ]}
+                    onPress={onLikePress}
+                >
+                    <MaterialCommunityIcons
+                        name={CommonIcons.face_verygood}
+                        size={32}
+                        style={{
+                        }}
+                    />
+                </TouchableOpacity> */}
+
+                </View>
+
+            }
+            <View style={[styles.container, { flex: 1 }]}>
+
                 <TouchableOpacity
                     style={[
                         styles.buttonIcon
                     ]}
-                    onPress={onShowFriends}
-
+                    onPress={onRunScroll}
                 >
                     <MaterialCommunityIcons
-                        name={CommonIcons.person}
+                        name={'clock-start'}
                         size={32}
                         style={{
                             color: CommonColor.primary
                         }}
                     />
                 </TouchableOpacity>
+                <TouchableOpacity
+                    style={[
+                        styles.buttonIcon
+                    ]}
+                    onPress={onResetScroll}
+                >
+                    <MaterialCommunityIcons
+                        name={'restart'}
+                        size={32}
+                        style={{
+                            color: CommonColor.primary
+                        }}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[
+                        styles.buttonIcon
+                    ]}
+                    onPress={onPlayAudio}
 
-            }
+                >
+                    <MaterialCommunityIcons
+                        name={'volume-high'}
+                        size={32}
+                        style={{
+                            color: CommonColor.primary
+                        }}
+                    />
+                </TouchableOpacity>
+                {
+                    onShowFriends &&
+                    <TouchableOpacity
+                        style={[
+                            styles.buttonIcon
+                        ]}
+                        onPress={onShowFriends}
+
+                    >
+                        <MaterialCommunityIcons
+                            name={CommonIcons.person}
+                            size={32}
+                            style={{
+                                color: CommonColor.primary
+                            }}
+                        />
+                    </TouchableOpacity>
+
+                }
+            </View>
         </View>
     )
 }

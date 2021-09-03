@@ -210,7 +210,7 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
                 }
             })
             .catch((err) => {
-                console.warn('err: ', err)
+                console.log('err: ', err)
             })
             .finally(() => { RNProgressHud.dismiss() })
     }

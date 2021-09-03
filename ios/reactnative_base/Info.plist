@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>reactnative_base</string>
+	<string>English&amp;Practice</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -89,13 +89,13 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>Calender is required to set match reminders</string>
 	<key>NSCameraUsageDescription</key>
-	<string>This app requires to access your photo library to show image on profile and send via chat</string>
+	<string>Allow access camera to call video in speaking and reading together without collecting or saving data.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is required for searching friends for you</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Give $(PRODUCT_NAME) permission to use your microphone. Your record wont be shared without your permission.</string>
+	<string>Enhancing app experiences with call realtime audio in reading practices.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photos are required to access gallery</string>
+	<string>Allow access to Photos to use photo from your library to your profile image</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

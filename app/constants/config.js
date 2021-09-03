@@ -4,10 +4,10 @@ export default {
     audio_url: "https://practiceenglishv2.s3.ap-southeast-1.amazonaws.com/audio/",
 
 
-    // Dev
-    // api_url: "http://192.168.1.4:8000",
-    // media_url: "http://192.168.1.4:8000/media",
-    // IP_ADDRESS: "192.168.1.4",
+    // Dev local
+    // api_url: "http://192.168.1.6:8000",
+    // media_url: "http://192.168.1.6:8000/media",
+    // IP_ADDRESS: "192.168.1.6",
     // PORT: 8000,
 
     // staging

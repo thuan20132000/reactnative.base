@@ -4,6 +4,7 @@ import axios from 'axios'
 import AppManager from "../AppManager";
 import { getStorageData, getUserAuth } from "../StorageManager";
 import FriendShipEnum from "../Enums/FriendShipEnum";
+import CommentModel from "../models/CommentModel";
 
 
 
@@ -369,6 +370,44 @@ class ConversationAPI {
             return dataRes
 
         } catch (error) {
+            throw error
+        }
+    }
+
+    async addPostComment(content, conversation_id) {
+
+        try {
+            let body = new FormData()
+            body.append('content', content)
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/conversation-post/${conversation_id}/comment`;
+            let res = await this.axios.post(this.api_url + path, body, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return new CommentModel(dataRes?.data)
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async cancelFriendship(friend_id) {
+        try {
+            let body = new FormData()
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/friendship/${friend_id}/cancel`;
+            let res = await this.axios.post(this.api_url + path, body, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return true
+        } catch (error) {
+            console.log('error: ')
             throw error
         }
     }

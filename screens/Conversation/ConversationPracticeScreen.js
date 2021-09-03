@@ -40,6 +40,8 @@ const ConversationPracticeScreen = (props) => {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
+        interstitial.load();
+
         RNProgressHud.show();
         let PracticeProgress = new PracticeProgressModel()
         PracticeProgress.startPractice()
@@ -64,12 +66,9 @@ const ConversationPracticeScreen = (props) => {
             })
 
         props.navigation.setOptions({
-            headerShown: false
+            title: ""
         })
-        // props.navigation.dangerouslyGetParent().setOptions({
-        //     tabBarVisible: false,
 
-        // });
 
 
         // Adv
@@ -79,7 +78,6 @@ const ConversationPracticeScreen = (props) => {
                 RNProgressHud.dismiss()
             }
         });
-        interstitial.load();
 
         // Start loading the interstitial straight away
         const unsubscribe = props.navigation.addListener('beforeRemove', () => {
@@ -87,16 +85,19 @@ const ConversationPracticeScreen = (props) => {
                 interstitial.show()
             }
         });
+
+
         // Unsubscribe from events on unmount
         return () => {
             unsubscribe()
             eventListener()
             PracticeProgress.endPractice()
-
+           
         };
 
 
     }, [])
+
     // No advert ready to show yet
     // if (!loaded) {
     //     return <View />;
@@ -118,7 +119,6 @@ const ConversationPracticeScreen = (props) => {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         backgroundColor: 'white',
-                        margin: 6,
                         borderRadius: 8,
                         overflow: 'hidden'
                     }}

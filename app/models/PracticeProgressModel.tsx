@@ -32,7 +32,7 @@ class PracticeProgressModel {
         this.practice_minutes = Number(this.practice_minutes) + Number(during)
         // this.saveProgress()
         this.updateOrCreateProgress().then(res => {
-            console.warn('end res: ', res)
+          
         })
     }
 

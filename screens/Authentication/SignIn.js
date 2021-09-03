@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Platform, StyleSheet, Image } from 'react-native';
+import React, { useState } from 'react'
+import { View, Platform, StyleSheet, Image, Text, Pressable } from 'react-native';
 import {
     AccessToken,
     AuthenticationToken,
@@ -25,6 +25,8 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../utils/CommonIcons';
 import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
+import CommonColor from '../../utils/CommonColor';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 // GoogleSignin.configure({
 //     iosClientId: '762174979149-d0nu6ershjiqm54t67k0o35dusaeg0hn.apps.googleusercontent.com',
@@ -34,6 +36,9 @@ import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentica
 const SignIn = (props) => {
     const navigation = useNavigation()
     const dispatch = useDispatch();
+
+    const [isAgreePolicy, setAgreePolicy] = useState(true)
+
     const _onGetUserInfo = async (access_token) => {
         RNProgressHud.show()
         authenticationAPI.signinWithFacebook(access_token)
@@ -49,7 +54,7 @@ const SignIn = (props) => {
                 }
             })
             .catch((err) => {
-                console.warn('error: ', err)
+                console.log('error: ', err)
                 LoginManager.logOut()
             })
             .finally(() => RNProgressHud.dismiss())
@@ -108,6 +113,18 @@ const SignIn = (props) => {
         )
     }
 
+    const _onOpenPrivacy = () => {
+        navigation.navigate('Webview', {
+            url: 'https://english-practice.flycricket.io/privacy.html'
+        })
+    }
+
+    const _onOpenTerm = () => {
+        navigation.navigate('Webview', {
+            url: 'https://english-practice.flycricket.io/terms.html'
+        })
+    }
+
     async function onAppleButtonPress(updateCredentialStateForUser) {
         console.warn('Beginning Apple Authentication');
         RNProgressHud.show()
@@ -134,10 +151,8 @@ const SignIn = (props) => {
 
             authenticationAPI.signinWithApple(fullName?.givenName, user, authorizationCode)
                 .then(res => {
-                    console.log('sign in ress1: ', res)
 
                     if (res.access_token) {
-                        console.log('sign in ress2: ', res)
                         AppManager.shared.user = res
                         dispatch(signin(res))
                         setUserAuth(res.toString())
@@ -223,6 +238,67 @@ const SignIn = (props) => {
                 onPress={_onLoginGoogle}
             /> */}
 
+            <View
+                style={{
+                    marginVertical: 60,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginHorizontal: 12,
+                    paddingHorizontal: 14
+                }}
+            >
+
+                {
+                    isAgreePolicy ?
+                        <MaterialCommunityIcons
+                            name={CommonIcons.checkboxCircleMark}
+                            color={CommonColor.primary}
+                            size={26}
+                            onPress={() => setAgreePolicy(false)}
+                        /> :
+                        <MaterialCommunityIcons
+                            name={CommonIcons.checkboxCircleBlank}
+                            color={CommonColor.primary}
+                            size={26}
+                            onPress={() => setAgreePolicy(true)}
+
+                        />
+
+                }
+                {/* <TouchableOpacity
+                    style={{
+
+                    }}
+                    onPress={_onOpenPrivacy}
+
+                > */}
+                <View style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+
+                    width: '100%',
+                    flexWrap: 'wrap',
+                    marginLeft: 12
+                }}>
+                    <Text style={{ fontSize: 14 }}> By using our app you agree to our </Text>
+                    <Text
+                        onPress={_onOpenTerm}
+                        style={{ color: CommonColor.primary, fontSize: 14 }}
+                    >
+                        Terms and Conditions
+                    </Text>
+                    <Text style={{ fontSize: 14 }}> and </Text>
+                    <Text
+                        style={{ color: CommonColor.primary, fontSize: 14 }}
+                        onPress={_onOpenPrivacy}
+                    >
+                        Privacy Policy
+                    </Text>
+
+                </View>
+                {/* </TouchableOpacity> */}
+            </View>
             <View
                 style={{
                     position: 'absolute',

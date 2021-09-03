@@ -100,7 +100,6 @@ const FriendRequestScreen = () => {
         RNProgressHud.show()
         ConversationAPI.getUserFriendRequests()
             .then(res => {
-                console.warn('re: ', res)
                 if (res.status_code === 200 && res.data?.length > 0) {
                     setFriendRequest(res?.data)
                 } else {
@@ -156,7 +155,7 @@ const FriendRequestScreen = () => {
 
                 {
                     friendRequestList?.map((item, index) =>
-                        <RequestItem
+                        <RequestItem key={index.toString()}
                             image_path={item?.sender?.profile_pic}
                             title={item?.sender?.username}
                             onAcceptPress={() => _onAcceptReqquest(item)}

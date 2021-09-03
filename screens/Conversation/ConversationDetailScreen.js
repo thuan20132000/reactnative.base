@@ -182,9 +182,7 @@ const ConversationDetailScreen = (props) => {
 
 
 
-        props.navigation.setOptions({
-            headerShown: false
-        })
+      
         // props.navigation.dangerouslyGetParent().setOptions({
         //     tabBarVisible: false,
 
@@ -215,30 +213,10 @@ const ConversationDetailScreen = (props) => {
             unsubscribe()
             eventListener()
             PracticeProgress.endPractice()
-            // console.warn('todaty: ', todayPracticeProgress)
-
-
-
-            // if (todayPracticeProgress) {
-            //     PracticeProgress
-            //         .updateTodayProgress(todayPracticeProgress?.id, todayPracticeProgress?.practice_minutes)
-            //         .then(res => {
-            //             console.warn('updated: ', res)
-            //         })
-            // } else {
-            //     PracticeProgress.addProgress()
-            //         .then(res => {
-            //             console.warn('res: ', res)
-            //         })
-            // }
+         
         };
     }, [])
 
-
-    // No advert ready to show yet
-    // if (!loaded) {
-    //     return <View />;
-    // }
 
     const _onShowConversationVideo = () => {
         navigation.navigate('ConversationVideo',
@@ -253,7 +231,7 @@ const ConversationDetailScreen = (props) => {
                 flex: 1
             }}
         >
-            <View
+            {/* <View
                 style={{
                     display: 'flex',
                     alignSelf: 'center',
@@ -269,7 +247,7 @@ const ConversationDetailScreen = (props) => {
                     }}
                 />
 
-            </View>
+            </View> */}
             {/* header */}
             {
                 group &&

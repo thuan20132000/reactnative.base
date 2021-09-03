@@ -11,7 +11,7 @@ const GroupCard = ({ onPress, authorName, authorImage, conversationName, groupNa
             activeOpacity={0.5}
             onPress={onPress}
         >
-            <View>
+            <View style={{flex:1}}>
                 <Text style={{ color: 'white', fontWeight: '600' }}>{groupName}</Text>
                 <Text style={{ color: 'white', fontWeight: '300' }}>{conversationName}</Text>
 

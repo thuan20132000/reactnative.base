@@ -28,7 +28,7 @@ class SQLiteManager {
                 location: 'default',
                 createFromLocation: '~www/db2.sqlite3',
             }, () => {
-                console.warn('connect success')
+                console.log('connect success')
             }, (err) => {
                 console.warn(err)
             })
@@ -37,7 +37,7 @@ class SQLiteManager {
                 name: database_name,
                 createFromLocation: 1
             }, () => {
-                console.warn('connect success ios ', database_name)
+                console.log('connect success ios ', database_name)
             }, (err) => {
                 console.warn(err)
             })

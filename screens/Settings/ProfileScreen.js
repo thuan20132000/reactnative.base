@@ -27,6 +27,8 @@ import GoalProgress from './components/GoalProgress'
 import PracticeProgressModel from '../../app/models/PracticeProgressModel'
 import PracticeProgress from '../../app/DB/PracticeProgress'
 import { format } from 'date-fns'
+import CommonColor from '../../utils/CommonColor'
+import { Switch } from 'react-native-paper';
 
 
 const ProfileScreen = (props) => {
@@ -37,7 +39,7 @@ const ProfileScreen = (props) => {
     const [userProfile, setUserProfile] = useState(new UserModel(null))
     const [practiceProgress, setPracticeProgress] = useState(new PracticeProgressModel())
     const [practiceDates, setPracticeDates] = useState([])
-
+    const [isPublic, setIsPublic] = useState(user.status)
     const _onLogOut = () => {
         console.log('logout')
         setUserAuth(null)
@@ -59,16 +61,19 @@ const ProfileScreen = (props) => {
             selectionLimit: 1,
 
         }, (res) => {
-            console.log(res)
             if (res?.assets) {
                 RNProgressHud.show()
                 AuthenticationAPI.upadteAvatar(res?.assets[0])
                     .then((res) => {
                         if (res?.status_code === 200) {
                             let user = new UserModel(res?.data)
-                            console.log(user)
-                            AppManager.shared.user?.setProfilePic(user?.profile_pic)
-                            setUserProfile({ ...userProfile, profile_pic: user?.profile_pic })
+                            if (user?.profile_pic) {
+                                let newUser = new UserModel(AppManager.shared.user.toString())
+                                setUserAuth({ ...newUser, profile_pic: user.profile_pic })
+                                // setUserAuth(AppManager.shared.user.toString())
+                                setUserProfile(user)
+
+                            }
                         }
 
                     })
@@ -85,16 +90,34 @@ const ProfileScreen = (props) => {
     }
 
 
+    const _onUpdateUserStatus = () => {
+        setIsPublic(!isPublic)
+        let status = !isPublic ? 1 : 2
+        AuthenticationAPI.updateUserInfo(status)
+            .then(res => {
+                console.log('rr: ', res)
+                let user = AppManager.shared.user
+                user.status = !isPublic
+                setUserAuth(user.toString())
+
+            })
+            .catch(err => {
+                console.log('err: ', err)
+            })
+            .then(() => {
+
+            })
+    }
+
+
     // useEffect(() => {
     //     console.warn('change')
     //     setUserProfile(user)
     // }, [user.profile_pic])
 
 
-
     React.useEffect(() => {
-        console.log('focused')
-
+        setUserProfile(user)
         const unsubscribe = navigation.addListener('focus', () => {
             // The screen is focused
             // Call any action
@@ -121,7 +144,6 @@ const ProfileScreen = (props) => {
     }, [navigation]);
 
 
-    console.log(practiceProgress)
 
     return (
         <View
@@ -132,52 +154,67 @@ const ProfileScreen = (props) => {
         >
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                
+
             >
 
-                <View
-                    style={{
-                        alignItems: 'center',
-                        flexDirection:'row',
-                        backgroundColor:'white',
-                        ...BOXSHADOW.normal,
-                        borderBottomLeftRadius:32,
-                        borderBottomRightRadius:32,
-                        borderTopWidth:0
+                <View>
 
-                        
-                    }}
-                >
-                    <TouchableOpacity
+                    <View
                         style={{
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            backgroundColor: 'white',
+                            ...BOXSHADOW.normal,
+                            borderBottomLeftRadius: 32,
+                            borderBottomRightRadius: 32,
+                            borderTopWidth: 0,
+                            paddingTop: 30
 
-                            margin: 12,
-                            padding: 12,
+
                         }}
-                        onPress={_onUpdateAvatar}
-
                     >
-                        <Image
-                            source={{
-                                uri: user?.profile_pic ?? CommonImages.avatar
-                            }}
+                        <TouchableOpacity
                             style={{
-                                width: 100,
-                                height: 100,
-                                borderRadius: 50,
-                                alignItems: 'center',
-                                borderWidth: 4,
-                                borderColor: 'white',
 
+                                margin: 12,
+                                padding: 12,
                             }}
-                            resizeMode={'cover'}
-                        />
+                            onPress={_onUpdateAvatar}
+
+                        >
+                            <Image
+                                source={{
+                                    uri: userProfile?.profile_pic ?? CommonImages.avatar
+                                }}
+                                style={{
+                                    width: 100,
+                                    height: 100,
+                                    borderRadius: 50,
+                                    alignItems: 'center',
+                                    borderWidth: 2,
+                                    borderColor: CommonColor.primary,
 
 
-                    </TouchableOpacity>
+                                }}
+                                resizeMode={'cover'}
+                            />
 
-                    <Text style={{ fontWeight: '700', fontSize: 18 }}>{user?.username}</Text>
+
+                        </TouchableOpacity>
+                        <View>
+                            <Text style={{ fontWeight: '700', fontSize: 18 }}>{userProfile?.fullname}</Text>
+
+
+                        </View>
+
+                    </View>
+                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', margin: 12 }}>
+                        <Switch value={isPublic} onValueChange={_onUpdateUserStatus} />
+                        <Text style={{ marginHorizontal: 12 }}>Everybody can see me?</Text>
+                    </View>
                 </View>
+
+
                 <View
                     style={{
                         display: 'flex',

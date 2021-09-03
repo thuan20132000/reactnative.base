@@ -12,7 +12,8 @@ const ButtonText = ({
     containerStyle,
     rightIcon,
     width,
-    icon
+    icon,
+    iconSize=24
 }) => {
     return (
         <TouchableOpacity
@@ -22,7 +23,8 @@ const ButtonText = ({
                     backgroundColor: disabled ? 'gray' : CommonColor.btnSubmit,
                     flexDirection: 'row',
                     width,
-                    padding: 8
+                    padding: 8,
+                    height: 40
 
                 },
                 containerStyle
@@ -35,6 +37,7 @@ const ButtonText = ({
                 style={[
                     styles.text,
                     labelStyle,
+                   
                 ]}
             >
                 {label}
@@ -43,7 +46,7 @@ const ButtonText = ({
                 icon &&
                 <MaterialCommunityIcons
                     name={icon}
-                    size={24}
+                    size={iconSize}
                     color={'white'}
                 />
             }
@@ -51,7 +54,7 @@ const ButtonText = ({
                 rightIcon &&
                 <MaterialCommunityIcons
                     name={CommonIcons.arrowRightChevron}
-                    size={24}
+                    size={iconSize}
                     color={'white'}
                 />
             }
@@ -77,6 +80,6 @@ const styles = StyleSheet.create({
     text: {
         color: 'white',
         textAlign: 'center',
-        fontSize: 12
+        fontSize: 10
     }
 })
