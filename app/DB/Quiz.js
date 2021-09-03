@@ -23,7 +23,7 @@ class Quiz extends SQLiteManager {
             })
 
         }).catch((err) => {
-            console.warn(err)
+            // console.warn(err)
         })
 
     }

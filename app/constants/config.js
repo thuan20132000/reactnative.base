@@ -4,10 +4,10 @@ export default {
     audio_url: "https://practiceenglishv2.s3.ap-southeast-1.amazonaws.com/audio/",
 
 
-    // Dev
-    // api_url: "http://192.168.1.2:8000",
-    // media_url: "http://192.168.1.2:8000/media",
-    // IP_ADDRESS: "192.168.1.2",
+    // Dev local
+    // api_url: "http://192.168.1.6:8000",
+    // media_url: "http://192.168.1.6:8000/media",
+    // IP_ADDRESS: "192.168.1.6",
     // PORT: 8000,
 
     // staging
@@ -21,11 +21,7 @@ export default {
     // IP_ADDRESS: "34.87.31.84",
     // PORT: 8001,
 
-    // production
-    // api_url: "http://34.87.31.84",
-    // media_url: "http://34.87.31.84/media",
-    // IP_ADDRESS: "34.87.31.84",
-    // PORT: 8001,
+
 
     // // production linode
     api_url: "http://139.162.112.22",
@@ -49,7 +45,14 @@ export default {
     // "local_absolute":"http://192.168.5.42:8000",
 
     // Advertisiment
-    adbmod_android_app_id: "ca-app-pub-7783640686150605~6780496114",
-    adbmod_android_banner: 'ca-app-pub-7783640686150605/2939455462',
-    adbmod_android_fullpage: 'ca-app-pub-7783640686150605/2202116538',
+    // android
+    
+    // adbmod_android_app_id: "ca-app-pub-7783640686150605~6780496114",
+    // adbmod_android_banner: 'ca-app-pub-7783640686150605/2939455462',
+    // adbmod_android_fullpage: 'ca-app-pub-7783640686150605/2202116538',
+
+    // ios
+    adbmod_android_app_id: "ca-app-pub-7783640686150605~7080533923",
+    adbmod_android_banner: 'ca-app-pub-7783640686150605/1636635552',
+    adbmod_android_fullpage: 'ca-app-pub-7783640686150605/1921683340',
 }

@@ -162,6 +162,13 @@ const ReadingTextPractice = ({ group, readingpost, postContent, setIsRunTextScro
 
     const html = `${postContent}`;
 
+    const _onShowComment = () => {
+
+        navigation.navigate('ConversationComment', {
+            conversation_id: readingpost?.id
+        })
+    }
+
     return (
         <>
 
@@ -205,6 +212,7 @@ const ReadingTextPractice = ({ group, readingpost, postContent, setIsRunTextScro
                 onPlayAudio={_onPlayAudio}
                 onResetScroll={_onResetTextScroll}
                 onRunScroll={_runScroll}
+                onCommentPress={_onShowComment}
             />
 
         </>

@@ -60,7 +60,6 @@ const ConversationGroupScreen = (props) => {
     }
 
     const _onCreateGroup = async (groupName) => {
-        console.warn(groupName)
         setCreateGroupVisible(false)
         RNProgressHud.show()
         ConversationAPI.createConversationGroup(groupName, conversation?.id)
@@ -70,7 +69,6 @@ const ConversationGroupScreen = (props) => {
                 }
             })
             .catch((err) => {
-                console.warn('sd ', err)
                 RNProgressHud.dismiss()
 
             })

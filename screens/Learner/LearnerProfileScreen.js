@@ -8,12 +8,14 @@ import GroupCard from './components/GroupCard'
 import ConversationAPI from '../../app/API/ConversationAPI'
 import RNProgressHud from 'progress-hud';
 import UserModel from '../../app/models/userModel'
+import CommonColor from '../../utils/CommonColor'
+import { StackActions, useNavigation } from '@react-navigation/core'
 
 
 const LearnerProfileScreen = (props) => {
 
     const { user } = props.route?.params || ''
-
+    const navigation = useNavigation()
     const [userGroups, setUserGroups] = useState([])
     const [userProfile, setUserProfile] = useState(new UserModel(null))
     const _onOpenConversationGroup = (group) => {
@@ -44,10 +46,25 @@ const LearnerProfileScreen = (props) => {
         ConversationAPI.makeFriendship(user?.id)
             .then(res => {
                 Alert.alert('Sent a friend request')
-                console.warn('res: ',res)
             })
             .catch((err) => {
                 console.warn('err: ', err)
+            })
+            .finally(() => {
+                RNProgressHud.dismiss()
+            })
+    }
+
+    const _onCancelFriend = async () => {
+        RNProgressHud.show()
+        ConversationAPI.cancelFriendship(user?.id)
+            .then(res => {
+                navigation.dispatch(
+                    StackActions.popToTop()
+                )
+            })
+            .catch(err => {
+                    console.warn('err: ',err)
             })
             .finally(() => {
                 RNProgressHud.dismiss()
@@ -60,7 +77,6 @@ const LearnerProfileScreen = (props) => {
         ConversationAPI.getUserProfile(user?.id)
             .then(res => {
                 if (res.status_code == 200) {
-                    console.log('ee: ',res)
                     let user = new UserModel(res?.data)
                     setUserProfile(user)
                     getUserGroup()
@@ -78,6 +94,15 @@ const LearnerProfileScreen = (props) => {
         _onGetUserProfile()
     }, [])
 
+
+    const getUserAvatar = () => {
+        let avatar_path = CommonImages.avatar
+        if (userProfile?.profile_pic && userProfile?.profile_pic != 'null' && userProfile?.profile_pic != 'undefined') {
+            avatar_path = userProfile.profile_pic
+        }
+        return avatar_path
+    }
+
     return (
         <View
             style={{
@@ -92,9 +117,10 @@ const LearnerProfileScreen = (props) => {
                         alignItems: 'center'
                     }}
                 >
+
                     <Image
                         source={{
-                            uri: userProfile?.profile_pic ?? CommonImages.avatar
+                            uri: getUserAvatar()
                         }}
                         style={{
                             width: 120,
@@ -102,20 +128,21 @@ const LearnerProfileScreen = (props) => {
                             borderRadius: 60,
                             alignItems: 'center',
                             marginVertical: 12,
-                            ...BOXSHADOW.normal,
+                            borderWidth: 2,
+                            borderColor: 'white'
 
                         }}
-                        resizeMode={'contain'}
+                        resizeMode={'cover'}
                     />
 
-                        <Text
-                            style={{
-                                fontSize:18,
-                                fontWeight:'700'
-                            }}
-                        >
-                            {userProfile?.name}
-                        </Text>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            fontWeight: '700'
+                        }}
+                    >
+                        {userProfile?.name}
+                    </Text>
                 </View>
 
 
@@ -127,31 +154,61 @@ const LearnerProfileScreen = (props) => {
                         flexDirection: 'row',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        margin: 8
+
                     }}
                 >
-                    <TouchableOpacity
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            backgroundColor: '#64b7f4',
-                            padding: 8,
-                            borderRadius: 4
-                        }}
-                        onPress={_onMakingFriendship}
-                    >
+                    {
+                        userProfile?.is_friendship ?
+                            <TouchableOpacity
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    backgroundColor: 'coral',
+                                    padding: 8,
+                                    borderRadius: 4,
+                                    marginHorizontal: 6
 
-                        <Text style={{ fontWeight: '700', color: 'white' }}>Make Friend</Text>
-                        <MaterialCommunityIcons
-                            name={CommonIcons.person}
-                            size={22}
-                            color={'white'}
-                            style={{
-                                marginHorizontal: 4
-                            }}
-                        />
-                    </TouchableOpacity>
+                                }}
+                                onPress={_onCancelFriend}
+                            >
+
+                                <Text style={{ fontWeight: '700', color: 'white' }}>Cancel Friend</Text>
+                                <MaterialCommunityIcons
+                                    name={CommonIcons.person}
+                                    size={22}
+                                    color={'white'}
+                                    style={{
+                                        marginHorizontal: 4
+                                    }}
+                                />
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    backgroundColor: '#64b7f4',
+                                    padding: 8,
+                                    borderRadius: 4,
+                                    marginHorizontal: 6
+                                }}
+                                onPress={_onMakingFriendship}
+                            >
+
+                                <Text style={{ fontWeight: '700', color: 'white' }}>Make Friend</Text>
+                                <MaterialCommunityIcons
+                                    name={CommonIcons.person}
+                                    size={22}
+                                    color={'white'}
+                                    style={{
+                                        marginHorizontal: 4
+                                    }}
+                                />
+                            </TouchableOpacity>
+                    }
+
 
                 </View>
 

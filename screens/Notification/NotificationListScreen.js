@@ -26,7 +26,6 @@ const NotificationListScreen = () => {
         RNProgressHud.show()
         ConversationAPI.getUserNotifications()
             .then(res => {
-                console.warn('re: ', res)
                 if (res.status_code === 200 && res.data?.length > 0) {
                     setNotificationList(res.data)
                 }
@@ -40,7 +39,6 @@ const NotificationListScreen = () => {
     }
 
     const _onShowFriendRequestScreen = (item) => {
-        console.warn(item)
         switch (item?.notification_type) {
             case NOTIFICATION_TYPE.INVITE:
                 navigation.navigate('FriendRequest')
@@ -84,7 +82,7 @@ const NotificationListScreen = () => {
 
                 {
                     notificationList?.map((item, index) =>
-                        <NotificationItem key={item?.id?.toString()}
+                        <NotificationItem key={index.toString()}
                             title={item?.title}
                             body={item?.body}
                             onItemPress={() => _onShowFriendRequestScreen(item)}

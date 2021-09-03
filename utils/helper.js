@@ -214,7 +214,7 @@ export const saveLearntVocabularyByTopic = async (topic_slug, values) => {
         return true;
     } catch (e) {
         // saving error
-        console.warn('error: ', e);
+        console.log('error: ', e);
         return false
     }
 

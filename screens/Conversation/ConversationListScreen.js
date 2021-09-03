@@ -51,7 +51,7 @@ const ConversationList = (props) => {
                 }
             })
             .catch((err) => {
-                console.warn('err: ', err?.response?.data?.message ?? err)
+                console.warn('err all: ', err?.response?.data?.message ?? err)
                 removeUserAuth()
                 navigation.dispatch(
                     StackActions.replace('Signin')
@@ -90,7 +90,6 @@ const ConversationList = (props) => {
     const _onUpdateNotificationId = async () => {
         let { userId } = await OneSignal.getDeviceState()
         await AuthenticationAPI.updateNotificationId(userId)
-        console.warn(userId)
     }
 
 
@@ -167,11 +166,11 @@ const ConversationList = (props) => {
                         label={'LEARNER'}
                         onPress={_onNavigateLearner}
                     />
-                    <SelectionItem
+                    {/* <SelectionItem
                         imagePath={require('../../app/assets/images/ic_tutor.png')}
                         label={'TUTOR'}
 
-                    />
+                    /> */}
                 </View>
 
                 <View
@@ -216,7 +215,7 @@ const ConversationList = (props) => {
                                     containerStyle={selectedTopic == index ?
                                         {
                                             borderWidth: 1,
-                                            borderColor: 'red'
+                                            borderColor: 'coral'
                                         } : {}
                                     }
                                 />
@@ -238,7 +237,9 @@ const ConversationList = (props) => {
                     style={{
                         display: 'flex',
                         flexWrap: 'wrap',
-                        flexDirection: 'row'
+                        flexDirection: 'row',
+                        backgroundColor:'white',
+                        
                     }}
                 >
                     {

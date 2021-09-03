@@ -4,7 +4,6 @@ import UserModel from '../models/userModel'
 import { getUniqueId, getManufacturer, getDeviceId } from 'react-native-device-info';
 import { getStorageData, setStorageData, setUserAuth } from "../StorageManager";
 import AppManager from "../AppManager";
-
 class AuthenticationAPI {
 
     constructor() {
@@ -17,9 +16,7 @@ class AuthenticationAPI {
         try {
             let res = await this.axios.get(this.facebook_graph + `fields=id,name,link,picture{url}&access_token=${access_token}`);
             let resData = await res.data;
-            console.log('sas: ',resData)
             let user = new UserModel(resData)
-            user.device_id = getUniqueId()
             let signinData = await this.signin(
                 user.id,
                 user.username,
@@ -28,18 +25,35 @@ class AuthenticationAPI {
                 'facebook',
                 access_token
             )
-            // console.log('signin data: ',signinData)
-            // user.descriptions = signinData?.data?.descriptions
-            // console.log('user:  ',user)
-            // setUserAuth(user.toString())
-            // AppManager.shared.user = user
-            // setStorageData('access_token',signinData.access)
-            // console.log('user modfel: ', user)
-            // console.log('user signin: ', signinData)
+
             user.descriptions = signinData?.data?.descriptions
             user.access_token = signinData?.access
-
+            user.fullname = signinData?.data?.fullname
+            user.status = signinData?.data?.status == 1 ? true : false
             user.setProfilePic(signinData?.data?.profile_pic)
+            // AppManager.shared.user = signinData.data
+            return user
+        } catch (error) {
+            AppManager.shared.user = null
+
+            throw error
+        }
+
+    }
+
+    async signinWithApple(username, user_id, token) {
+        try {
+            let signinData = await this.signin(
+                user_id,
+                username,
+                "",
+                "",
+                'apple',
+                token
+            )
+            console.log(' sign in data', signinData)
+            let user = new UserModel(signinData?.data)
+            user.access_token = signinData?.access
             // AppManager.shared.user = signinData.data
 
             return user
@@ -56,7 +70,7 @@ class AuthenticationAPI {
 
             let dataform = new FormData()
             dataform.append('id', id)
-            dataform.append('username', username)
+            dataform.append('fullname', username)
             dataform.append('profile_pic', profile_pic)
             dataform.append('device_id', device_id)
             dataform.append('provider', provider)
@@ -66,11 +80,13 @@ class AuthenticationAPI {
                     "Content-Type": "application/json"
                 }
             });
+
             let resData = await res.data
+            console.log('user login: ', res.data)
             return resData
 
         } catch (error) {
-            console.warn('error : ', error.response?.data)
+            // console.warn('error : ', error.response?.data)
             throw error
 
         }
@@ -116,6 +132,22 @@ class AuthenticationAPI {
         });
         let resData = await res.data
         return resData
+
+    }
+
+    async updateUserInfo(status) {
+
+        const formData = new FormData()
+        formData.append('status', status)
+        let token = AppManager.shared.user.access_token
+        let res = await this.axios.put(`${this.api_url}/conversation/v1/update-info`, formData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+
+            }
+        });
+        let resData = await res.data
+        return new UserModel(resData?.data)
 
     }
 

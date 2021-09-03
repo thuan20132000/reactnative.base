@@ -24,16 +24,14 @@ const FriendListScreen = (props) => {
     }
     const author = AppManager.shared.user
 
-    const getAllLearners = () => {
+    const getFriends = () => {
         RNProgressHud.show()
 
         ConversationAPI.getUserFriendShip()
             .then(res => {
-              
                 if (res.status_code === 200) {
                     let userFriends = res?.data?.map(e => {
                         let friendship = new FriendShipModel(e)
-                        console.warn('sasassa:',author.id)
                         if (friendship.sender.id == author?.id) {
                             return friendship.recipient
                         } else {
@@ -71,7 +69,7 @@ const FriendListScreen = (props) => {
     }
 
     useEffect(() => {
-        getAllLearners()
+        getFriends()
     }, [])
 
     return (

@@ -5,7 +5,7 @@ import FieldModel from "../models/fieldModel";
 
 SQLite.DEBUG(true);
 SQLite.enablePromise(false);
-const database_name = 'db.sqlite3';
+const database_name = 'db2.sqlite3';
 const database_version = '3.3';
 const database_displayname = 'Bluezone database';
 const database_size = 20 * 1024 * 1024;
@@ -26,9 +26,9 @@ class SQLiteManager {
             this.db = SQLite.openDatabase({
                 name: database_name,
                 location: 'default',
-                createFromLocation: '~www/db.sqlite3',
+                createFromLocation: '~www/db2.sqlite3',
             }, () => {
-                console.warn('connect success')
+                console.log('connect success')
             }, (err) => {
                 console.warn(err)
             })
@@ -37,7 +37,7 @@ class SQLiteManager {
                 name: database_name,
                 createFromLocation: 1
             }, () => {
-                console.warn('connect success ios ',database_name)
+                console.log('connect success ios ', database_name)
             }, (err) => {
                 console.warn(err)
             })
@@ -82,7 +82,6 @@ class SQLiteManager {
         this.db.transaction((tx) => {
             tx.executeSql("SELECT * FROM quiz_field", [], (tx, results) => {
 
-                console.warn('data: ', results)
 
             })
         })
@@ -130,6 +129,60 @@ class SQLiteManager {
 
         }
     }
+
+    /**
+     * Execute sql queries
+     * 
+     * @param sql
+     * @param params
+     * 
+     * @returns {resolve} results
+     */
+    ExecuteQuery = (sql, params = []) => new Promise((resolve, reject) => {
+        console.log('sql: ', sql)
+        console.log('params: ', params)
+
+        if (!this.db) {
+            this.openDB().then(() => {
+                this.db.transaction((trans) => {
+                    trans.executeSql(sql, params, (trans, results) => {
+                        console.log('sql: ', sql)
+                        resolve(results);
+                    },
+                        (error) => {
+                            console.log('sql: ', sql)
+
+                            reject(error);
+                        });
+                });
+            })
+        } else {
+            this.db.transaction((trans) => {
+                trans.executeSql(sql, params, (trans, results) => {
+                    console.log('sql: ', sql)
+
+                    resolve(results);
+                },
+                    (error) => {
+                        console.log('sql: ', sql)
+
+                        reject(error);
+                    });
+            });
+        }
+        // if(this.db){
+        //     this.db.transaction((trans) => {
+        //         trans.executeSql(sql, params, (trans, results) => {
+        //             resolve(results);
+        //         },
+        //             (error) => {
+        //                 reject(error);
+        //             });
+        //     });
+        // }else{
+        //     console.warn('please open db')
+        // }
+    });
 
 
 }

@@ -14,7 +14,7 @@ import LearnerHomeScreen from "../../screens/Learner/LearnerHomeScreen";
 import LearnerProfileScreen from "../../screens/Learner/LearnerProfileScreen";
 import SignIn from "../../screens/Authentication/SignIn";
 import S_SettingHomeSceen from "../../screens/Settings/S_SettingHomeSceen";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import AppManager from "../AppManager";
 import UserModel from "../models/userModel";
 import S_PrivacyPolicyScreen from "../../screens/Settings/S_PrivacyPolicyScreen";
@@ -23,6 +23,9 @@ import UserGroupScreen from "../../screens/sharing/UserGroupScreen";
 import NotificationListScreen from "../../screens/Notification/NotificationListScreen";
 import FriendRequestScreen from "../../screens/sharing/FriendRequestScreen";
 import FriendListScreen from "../../screens/Friends/FriendListScreen";
+import ConversationVideoScreen from "../../screens/Conversation/ConversationVideoScreen";
+import ConversationCommentScreen from "../../screens/Conversation/ConversationCommentScreen";
+import WebviewScreen from "../../screens/sharing/WebviewScreen";
 
 
 
@@ -36,7 +39,7 @@ const TabBottom = () => {
     const [isShown, setIsShown] = useState(false)
 
     const _onCheckIsAuthenticated = () => {
-        console.log(AppManager.shared.user)
+
         if (!AppManager.shared.user) {
             navigation.dispatch(
                 StackActions.replace('Signin')
@@ -88,13 +91,17 @@ const TabBottom = () => {
 
         >
 
-            <TabBottomNavigator.Screen
-                name="FlashCard"
-                component={FlashCardStack}
-                options={{
-                    title: "FLASHCARD"
-                }}
-            />
+            {
+                Platform.OS === 'android' &&
+                <TabBottomNavigator.Screen
+                    name="FlashCard"
+                    component={FlashCardStack}
+                    options={{
+                        title: "FLASHCARD"
+                    }}
+                />
+
+            }
             {/* <TabBottomNavigator.Screen
                 name="ReadingPracticeStack"
                 component={ReadingPracticeStack}
@@ -266,6 +273,32 @@ const HomeStack = () => {
                 }}
 
             />
+            <Stack.Screen
+                name={"ConversationVideo"}
+                component={ConversationVideoScreen}
+                options={{
+                    title: ""
+                }}
+
+            />
+            <Stack.Screen
+                name={"ConversationComment"}
+                component={ConversationCommentScreen}
+                options={{
+                    title: ""
+                }}
+
+            />
+
+            <Stack.Screen
+                name={"Webview"}
+                component={WebviewScreen}
+                options={{
+                    title: ""
+                }}
+
+            />
+
         </Stack.Navigator>
     )
 }

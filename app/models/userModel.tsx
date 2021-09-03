@@ -4,13 +4,15 @@ class UserModel {
     id: Number;
     username: String;
     profile_pic: String;
-    status: String;
+    status: Boolean;
     token: String;
     device_id: String;
     created_at: Date;
     updated_at: Date;
     access_token: String;
     descriptions: String;
+    is_friendship: Boolean
+    fullname: String
 
     constructor(data) {
         if (data === null) {
@@ -25,11 +27,17 @@ class UserModel {
         this.token = data?.access_token;
         this.device_id = data?.device_id;
         this.descriptions = data?.descriptions;
+        this.is_friendship = data?.is_friendship;
+        this.fullname = data?.fullname
+        if (data?.status == 1) {
+            this.status = true
+        } else {
+            this.status = false
+        }
     }
 
 
-
-    setProfilePic(imageUrl: String){
+    setProfilePic(imageUrl: String) {
         this.profile_pic = imageUrl ?? null
     }
 
@@ -44,8 +52,9 @@ class UserModel {
             descriptions: this.descriptions,
             created_at: this.created_at,
             updated_at: this.updated_at,
-            access_token: this.access_token
-
+            access_token: this.access_token,
+            is_friendship: this.is_friendship,
+            fullname: this.fullname
         }
     }
 

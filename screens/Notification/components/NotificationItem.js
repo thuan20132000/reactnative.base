@@ -126,14 +126,14 @@ const NotificationItem = ({
                         flex: 5,
                         flexDirection: 'row',
                         alignItems: 'center',
-                        justifyContent: 'flex-end'
+                        justifyContent: 'flex-start'
                     }
                 ]}
             >
                 <MaterialCommunityIcons
                     name={CommonIcons.clockOutline}
                     size={14}
-                    color={'black'}
+                    color={'gray'}
                 />
                 <Text
                     style={{

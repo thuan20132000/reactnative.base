@@ -27,13 +27,13 @@ export default function RootNavigation() {
                     }}
 
                 />
-                <Stack.Screen
+                {/* <Stack.Screen
                     name={"Signin"}
                     component={SignIn}
                     options={{
                         headerShown: false
                     }}
-                />
+                /> */}
 
             </Stack.Navigator>
 

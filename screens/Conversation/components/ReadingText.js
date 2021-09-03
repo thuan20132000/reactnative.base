@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView, Linking, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing, Platform, TextInput, ActivityIndicator, Alert, useWindowDimensions } from 'react-native'
+import { ScrollView, Linking, StyleSheet, Text, View, PermissionsAndroid, Animated, Easing, Platform, TextInput, ActivityIndicator, Alert, useWindowDimensions, TouchableOpacity } from 'react-native'
 
 import { FAB, Portal, Provider } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -11,7 +11,8 @@ import ConversationAPI from '../../../app/API/ConversationAPI';
 import CommonIcons from '../../../utils/CommonIcons';
 import BottomReadingControl from '../../sharing/BottomReadingControl';
 
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import CommonColor from '../../../utils/CommonColor';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -209,7 +210,7 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
                 }
             })
             .catch((err) => {
-                console.warn('err: ', err)
+                console.log('err: ', err)
             })
             .finally(() => { RNProgressHud.dismiss() })
     }
@@ -290,6 +291,7 @@ const ReadingText = ({ group, readingpost, postContent, websocket, isRunTextScro
                     }}
                 />
             </Animated.ScrollView>
+         
             {
                 (type == 'group' && AppManager.shared.user?.id == group?.author?.id) &&
                 <BottomReadingControl
