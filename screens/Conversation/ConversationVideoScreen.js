@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/core';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet';
 import AppManager from '../../app/AppManager';
@@ -9,6 +9,7 @@ const ConversationVideoScreen = () => {
     const route = useRoute()
     const navigation = useNavigation()
     const { group } = route?.params ?? ''
+
 
     useEffect(() => {
         JitsiMeet.initialize();
@@ -24,13 +25,18 @@ const ConversationVideoScreen = () => {
             /* Você também pode usar o JitsiMeet.audioCall (url) para chamadas apenas de áudio */
             /* Você pode terminar programaticamente a chamada com JitsiMeet.endCall () */
         }, 1200);
+
+
+
+        return () => {
+            // subscription.remove();
+            JitsiMeet.endCall();
+
+        };
+
     }, [])
 
-    useEffect(() => {
-        return () => {
-            JitsiMeet.endCall();
-        };
-    });
+
 
     function onConferenceTerminated(nativeEvent) {
         /* Conference terminated event */
@@ -41,7 +47,7 @@ const ConversationVideoScreen = () => {
 
     function onConferenceJoined(nativeEvent) {
         /* Conference joined event */
-        
+
         console.log(nativeEvent)
     }
 

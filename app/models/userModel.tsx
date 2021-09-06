@@ -28,7 +28,7 @@ class UserModel {
         this.device_id = data?.device_id;
         this.descriptions = data?.descriptions;
         this.is_friendship = data?.is_friendship;
-        this.fullname = data?.fullname
+        this.fullname = data?.fullname ?? data?.username
         if (data?.status == 1) {
             this.status = true
         } else {

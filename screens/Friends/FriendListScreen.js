@@ -91,6 +91,7 @@ const FriendListScreen = (props) => {
                             // description={item?.descriptions}
                             canInvite={group ? true : false}
                             onInvitePress={() => _onInviteToGroupConverastion(item)}
+                            user={item}
 
                         />
                     ))

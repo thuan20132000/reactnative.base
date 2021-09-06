@@ -64,7 +64,7 @@ const LearnerProfileScreen = (props) => {
                 )
             })
             .catch(err => {
-                    console.warn('err: ',err)
+                console.warn('err: ', err)
             })
             .finally(() => {
                 RNProgressHud.dismiss()
@@ -73,21 +73,25 @@ const LearnerProfileScreen = (props) => {
 
 
     const _onGetUserProfile = async () => {
-        RNProgressHud.show()
-        ConversationAPI.getUserProfile(user?.id)
-            .then(res => {
-                if (res.status_code == 200) {
-                    let user = new UserModel(res?.data)
-                    setUserProfile(user)
-                    getUserGroup()
-                }
-            })
-            .catch(err => {
-                console.log('err: ', err)
-            })
-            .finally(() => {
-                RNProgressHud.dismiss()
-            })
+        setUserProfile(new UserModel(user))
+        getUserGroup()
+
+        // RNProgressHud.show()
+        // ConversationAPI.getUserProfile(user?.id)
+        //     .then(res => {
+
+        //         if (res.status_code == 200) {
+        //             let user = new UserModel(res?.data)
+        //             console.warn('s: ',user)
+        //             setUserProfile(user)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.warn('err: ', err?.response.data)
+        //     })
+        //     .finally(() => {
+        //         RNProgressHud.dismiss()
+        //     })
     }
 
     useEffect(() => {
@@ -141,7 +145,7 @@ const LearnerProfileScreen = (props) => {
                             fontWeight: '700'
                         }}
                     >
-                        {userProfile?.name}
+                        {userProfile?.fullname}
                     </Text>
                 </View>
 

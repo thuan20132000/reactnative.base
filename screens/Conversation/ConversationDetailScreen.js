@@ -182,11 +182,7 @@ const ConversationDetailScreen = (props) => {
 
 
 
-      
-        // props.navigation.dangerouslyGetParent().setOptions({
-        //     tabBarVisible: false,
 
-        // });
 
 
         // Adv
@@ -200,9 +196,7 @@ const ConversationDetailScreen = (props) => {
 
         // Start loading the interstitial straight away
         const unsubscribe = props.navigation.addListener('beforeRemove', () => {
-            if (loaded) {
-                interstitial.show()
-            }
+            interstitial.show()
         });
 
 
@@ -213,7 +207,7 @@ const ConversationDetailScreen = (props) => {
             unsubscribe()
             eventListener()
             PracticeProgress.endPractice()
-         
+
         };
     }, [])
 
@@ -224,14 +218,19 @@ const ConversationDetailScreen = (props) => {
         )
     }
 
+    // No advert ready to show yet
+    if (!loaded) {
+        return <View />;
+    }
 
     return (
         <SafeAreaView
             style={{
-                flex: 1
+                flex: 1,
+                backgroundColor: 'white'
             }}
         >
-            {/* <View
+            <View
                 style={{
                     display: 'flex',
                     alignSelf: 'center',
@@ -247,7 +246,7 @@ const ConversationDetailScreen = (props) => {
                     }}
                 />
 
-            </View> */}
+            </View>
             {/* header */}
             {
                 group &&
@@ -261,7 +260,9 @@ const ConversationDetailScreen = (props) => {
                         margin: 6,
                         borderRadius: 8,
                         overflow: 'hidden',
-                        height: 80
+                        height: 80,
+                        backgroundColor: 'white'
+
 
                     }}
                 >
@@ -271,7 +272,7 @@ const ConversationDetailScreen = (props) => {
                         showsHorizontalScrollIndicator={false}
 
                         contentContainerStyle={{
-                            alignItems: 'center'
+                            alignItems: 'center',
                         }}
                     >
                         {
@@ -293,7 +294,9 @@ const ConversationDetailScreen = (props) => {
                                         style={{
                                             width: 40,
                                             height: 40,
-                                            borderRadius: 20
+                                            borderRadius: 20,
+                                            borderWidth: 1,
+                                            borderColor: 'white'
                                         }}
                                     />
                                     <Text style={{ fontWeight: '700', fontSize: 12 }}>{e.username}</Text>
@@ -311,7 +314,6 @@ const ConversationDetailScreen = (props) => {
                             alignItems: 'center',
                             justifyContent: 'center',
                             flexDirection: 'row',
-                            backgroundColor: 'white'
                         }}
                     >
                         {
@@ -327,7 +329,9 @@ const ConversationDetailScreen = (props) => {
                                         backgroundColor: 'red',
                                         width: 60,
                                         height: 60,
-                                        borderRadius: 30
+                                        borderRadius: 30,
+                                        borderWidth: 1,
+                                        borderColor: 'white'
                                     }}
                                     icon={CommonIcons.phone}
                                 /> :
@@ -339,10 +343,12 @@ const ConversationDetailScreen = (props) => {
                                     onItemPress={_onCalling}
                                     // rightIcon
                                     containerStyle={{
-                                        backgroundColor: 'green',
+                                        backgroundColor: CommonColor.primary,
                                         width: 60,
                                         height: 60,
-                                        borderRadius: 30
+                                        borderRadius: 30,
+                                        borderWidth: 1,
+                                        borderColor: 'white'
                                     }}
                                     icon={CommonIcons.phone}
                                 />
@@ -392,10 +398,12 @@ const ConversationDetailScreen = (props) => {
                             onItemPress={_onShowConversationVideo}
                             // rightIcon
                             containerStyle={{
-                                backgroundColor: 'green',
+                                backgroundColor: CommonColor.primary,
                                 width: 60,
                                 height: 60,
-                                borderRadius: 30
+                                borderRadius: 30,
+                                borderWidth: 1,
+                                borderColor: 'white'
                             }}
                             icon={CommonIcons.videoCall}
                         />

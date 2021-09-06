@@ -238,8 +238,8 @@ const ConversationList = (props) => {
                         display: 'flex',
                         flexWrap: 'wrap',
                         flexDirection: 'row',
-                        backgroundColor:'white',
-                        
+                        backgroundColor: 'white',
+
                     }}
                 >
                     {

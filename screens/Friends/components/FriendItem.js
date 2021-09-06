@@ -5,6 +5,7 @@ import CommonImages from '../../../utils/CommonImages'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../../utils/CommonIcons'
 import CommonColor from '../../../utils/CommonColor'
+import UserModel from '../../../app/models/userModel'
 
 const FriendItem = ({
     onPress,
@@ -14,7 +15,8 @@ const FriendItem = ({
     star,
     imagePath,
     onInvitePress,
-    canInvite
+    canInvite,
+    user = new UserModel(null)
 }) => {
     return (
         <TouchableOpacity

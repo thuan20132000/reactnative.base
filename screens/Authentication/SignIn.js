@@ -61,6 +61,11 @@ const SignIn = (props) => {
     }
 
     const _onLoginFacebook = () => {
+
+        if(!isAgreePolicy){
+            return
+        }
+
         LoginManager.logInWithPermissions(["public_profile"]).then(
             function (result) {
                 if (result.isCancelled) {
@@ -127,6 +132,9 @@ const SignIn = (props) => {
 
     async function onAppleButtonPress(updateCredentialStateForUser) {
         console.warn('Beginning Apple Authentication');
+        if(!isAgreePolicy){
+            return
+        }
         RNProgressHud.show()
 
         // start a login request

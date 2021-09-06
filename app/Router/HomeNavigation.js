@@ -58,14 +58,14 @@ const TabBottom = () => {
                     let iconName;
 
                     if (route.name === 'HomeStack') {
-                        iconName = CommonIcons.homeCircle
+                        iconName = 'format-list-bulleted'
 
                     } else if (route.name === 'FlashCard') {
                         iconName = CommonIcons.checkboxMarked
                     } else if (route.name === 'ReadingPracticeStack') {
                         iconName = CommonIcons.bookOpen
                     } else if (route.name === 'VideoCall') {
-                        iconName = 'account-multiple-check'
+                        iconName = 'format-list-bulleted'
                     }
                     else if (route.name === 'Notification') {
                         iconName = CommonIcons.bell
@@ -78,7 +78,7 @@ const TabBottom = () => {
                         iconName = CommonIcons.bookMarker
                     }
                     else {
-                        iconName = CommonIcons.phoneSetting
+                        iconName = 'account-details'
                     }
 
                     // You can return any component that you like here!
@@ -113,7 +113,7 @@ const TabBottom = () => {
                 name="VideoCall"
                 component={ConversationList}
                 options={{
-                    title: "READING & SPEAKING"
+                    title: "Reading & Speaking"
                 }}
                 listeners={{
                     tabPress: _onCheckIsAuthenticated
@@ -132,7 +132,7 @@ const TabBottom = () => {
                 name="TabSetting"
                 component={ProfileScreen}
                 options={{
-                    title: "SETTING"
+                    title: "My Learning"
                 }}
                 listeners={{
                     tabPress: _onCheckIsAuthenticated
@@ -203,14 +203,14 @@ const HomeStack = () => {
                 name={'ConversationDetail'}
                 component={ConversationDetailScreen}
                 options={{
-                    title: "group"
+                    title: ""
                 }}
             />
             <Stack.Screen
                 name={'ConversationGroup'}
                 component={ConversationGroupScreen}
                 options={{
-                    title: "conversation's group"
+                    title: ""
                 }}
             />
             <Stack.Screen

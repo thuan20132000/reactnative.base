@@ -81,9 +81,8 @@ const ConversationPracticeScreen = (props) => {
 
         // Start loading the interstitial straight away
         const unsubscribe = props.navigation.addListener('beforeRemove', () => {
-            if (loaded) {
-                interstitial.show()
-            }
+            interstitial.show()
+
         });
 
 
@@ -92,16 +91,16 @@ const ConversationPracticeScreen = (props) => {
             unsubscribe()
             eventListener()
             PracticeProgress.endPractice()
-           
+
         };
 
 
     }, [])
 
     // No advert ready to show yet
-    // if (!loaded) {
-    //     return <View />;
-    // }
+    if (!loaded) {
+        return <View />;
+    }
 
     return (
         <SafeAreaView
