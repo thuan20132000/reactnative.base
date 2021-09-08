@@ -177,13 +177,14 @@ const ConversationDetailScreen = (props) => {
             .finally(() => {
 
                 _onGetGroupMembers()
-                RNProgressHud.dismissWithDelay(0.6)
+                RNProgressHud.dismiss()
             })
 
 
 
 
 
+        interstitial.load();
 
         // Adv
         const eventListener = interstitial.onAdEvent(type => {
@@ -192,11 +193,15 @@ const ConversationDetailScreen = (props) => {
                 RNProgressHud.dismiss()
             }
         });
-        interstitial.load();
 
         // Start loading the interstitial straight away
         const unsubscribe = props.navigation.addListener('beforeRemove', () => {
-            interstitial.show()
+            try {
+                interstitial.show()
+
+            } catch (error) {
+                console.log('error: adv has not loaded')
+            }
         });
 
 
