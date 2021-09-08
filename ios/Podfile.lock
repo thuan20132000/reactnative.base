@@ -481,7 +481,7 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
-  - RNDeviceInfo (8.1.6):
+  - RNDeviceInfo (8.1.7):
     - React-Core
   - RNFastImage (8.3.7):
     - React-Core
@@ -837,15 +837,15 @@ SPEC CHECKSUMS:
   React-jsi: 74341196d9547cbcbcfa4b3bbbf03af56431d5a1
   React-jsiexecutor: 06a9c77b56902ae7ffcdd7a4905f664adc5d237b
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
-  react-native-cameraroll: 7c6c7ca84844f93b3dac9a87670bbad6541684ec
+  react-native-cameraroll: 88f4e62d9ecd0e1f253abe4f685474f2ea14bfa2
   react-native-fbsdk-next: 19e974b071047b7ed1dad86a9dc3fe77dff76b8c
-  react-native-image-picker: 7bda3c7297c3ea16f4f504ad6174aa7e548192ef
+  react-native-image-picker: a6e56460d34905c849ada551db30897dc7f3d535
   react-native-jitsi-meet: 29ed76cdc6142d9a6c013bb14dd6205df0b5452b
-  react-native-onesignal: e4b06931221ed13e85823849daa3ef7d768e869f
-  react-native-progress-bar-android: ce95a69f11ac580799021633071368d08aaf9ad8
-  react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
-  react-native-sqlite-storage: ce71689c5a73b79390a1ab213555ae80979a5dc7
-  react-native-webview: d5c9d6c72ed1afc66511d9109a8740458b18aaf0
+  react-native-onesignal: a7e433eec906c928954de4f124b6886418386bb4
+  react-native-progress-bar-android: be43138ab7da30d51fc038bafa98e9ed594d0c40
+  react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
+  react-native-sqlite-storage: 418ef4afc5e6df6ce3574c4617e5f0b65cffde55
+  react-native-webview: e6eddf2722f5e7220eae7229b516efabb1ed0acd
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af
   React-RCTActionSheet: 3080b6e12e0e1a5b313c8c0050699b5c794a1b11
   React-RCTAnimation: 3f96f21a497ae7dabf4d2f150ee43f906aaf516f
@@ -860,10 +860,10 @@ SPEC CHECKSUMS:
   ReactCommon: cfe2b7fd20e0dbd2d1185cd7d8f99633fbc5ff05
   RealmJS: 550ecbe8a0d55bd0e2abb79a63313d4da08bcf25
   RNAppleAuthentication: e95bcfbd044013667f35c5ca20ae17d39500c009
-  RNAudioRecorderPlayer: e853094a33b52a5847e02b1ad47244124062065e
-  RNCAsyncStorage: 8324611026e8dc3706f829953aa6e3899f581589
-  RNCMaskedView: f127cd9652acfa31b91dcff613e07ba18b774db6
-  RNDeviceInfo: 4734b705e02715f2c3236effdc123bfbc2fbe04c
+  RNAudioRecorderPlayer: 9b72e27398574210e3e9070358c83c6b1b215742
+  RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885
+  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
+  RNDeviceInfo: ace1442cd0f7d01292a39a3b587666177eaf8cb0
   RNFastImage: a7384db75df352500261e8e8f1ac2026def26102
   RNFBAdMob: a2b5f148468b16d02543707d4627bc9a19016bf3
   RNFBApp: 9c90f9d576861947ba75fe0830567c570bcbcf6d
@@ -873,7 +873,7 @@ SPEC CHECKSUMS:
   RNProgressHud: e0c0cecde5948339f31a1ce99efea08cafb1040f
   RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  RNSound: c980916b596cc15c8dcd2f6ecd3b13c4881dbe20
+  RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d

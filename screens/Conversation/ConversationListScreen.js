@@ -19,7 +19,8 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import OneSignal from 'react-native-onesignal';
 import AuthenticationAPI from '../../app/API/AuthenticationAPI';
 
-const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
+// const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
+const adUnitId = config.adbmod_android_banner;
 
 const ConversationList = (props) => {
     const navigation = useNavigation()

@@ -61,8 +61,12 @@ const ConversationPracticeScreen = (props) => {
                 if (res.status_code == 200) {
                     setConversation(new ConversationPostModel(res?.data))
                 }
-            }).finally(() => {
-                RNProgressHud.dismissWithDelay(0.6)
+            })
+            .catch(err => {
+                console.warn('err: ',err)
+            })
+            .finally(() => {
+                RNProgressHud.dismiss()
             })
 
         props.navigation.setOptions({
@@ -81,7 +85,11 @@ const ConversationPracticeScreen = (props) => {
 
         // Start loading the interstitial straight away
         const unsubscribe = props.navigation.addListener('beforeRemove', () => {
-            interstitial.show()
+            try {
+                interstitial.show()
+            } catch (error) {
+                console.warn('error: adv has not loaded yet', error)
+            }
 
         });
 
