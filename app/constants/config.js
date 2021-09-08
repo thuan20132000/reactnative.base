@@ -5,9 +5,9 @@ export default {
 
 
     // Dev local
-    // api_url: "http://192.168.1.6:8000",
-    // media_url: "http://192.168.1.6:8000/media",
-    // IP_ADDRESS: "192.168.1.6",
+    // api_url: "http://192.168.1.4:8000",
+    // media_url: "http://192.168.1.4:8000/media",
+    // IP_ADDRESS: "192.168.1.4",
     // PORT: 8000,
 
     // staging
@@ -47,12 +47,12 @@ export default {
     // Advertisiment
     // android
     
-    adbmod_android_app_id: "ca-app-pub-7783640686150605~6780496114",
-    adbmod_android_banner: 'ca-app-pub-7783640686150605/2939455462',
-    adbmod_android_fullpage: 'ca-app-pub-7783640686150605/2202116538',
+    // adbmod_android_app_id: "ca-app-pub-7783640686150605~6780496114",
+    // adbmod_android_banner: 'ca-app-pub-7783640686150605/2939455462',
+    // adbmod_android_fullpage: 'ca-app-pub-7783640686150605/2202116538',
 
     // ios
-    // adbmod_android_app_id: "ca-app-pub-7783640686150605~7080533923",
-    // adbmod_android_banner: 'ca-app-pub-7783640686150605/1636635552',
-    // adbmod_android_fullpage: 'ca-app-pub-7783640686150605/1921683340',
+    adbmod_android_app_id: "ca-app-pub-7783640686150605~7080533923",
+    adbmod_android_banner: 'ca-app-pub-7783640686150605/1636635552',
+    adbmod_android_fullpage: 'ca-app-pub-7783640686150605/1921683340',
 }

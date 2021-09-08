@@ -26,6 +26,10 @@ import FriendListScreen from "../../screens/Friends/FriendListScreen";
 import ConversationVideoScreen from "../../screens/Conversation/ConversationVideoScreen";
 import ConversationCommentScreen from "../../screens/Conversation/ConversationCommentScreen";
 import WebviewScreen from "../../screens/sharing/WebviewScreen";
+import UpdateUserInfoScreen from "../../screens/Settings/UpdateUserInfoScreen";
+import { checkVersion } from "react-native-check-version";
+import { Alert } from "react-native";
+import { Linking } from "react-native";
 
 
 
@@ -152,27 +156,47 @@ const HomeStack = () => {
     const navigation = useNavigation()
 
     useEffect(() => {
-        getUserAuth()
-            .then(res => {
-                if (res != null) {
-                    // let user = new UserModel(res)
-                    // console.warn('aas: ', user)
-                    AppManager.shared.user = res
-                    // navigation.dispatch( 
-                    //     StackActions.replace('HomeStack')
-                    // )
-                }
 
-            })
-            .catch((err) => {
-                console.warn('errors: ', err)
-                // navigation.dispatch(
-                //     StackActions.replace('Signin')
-                // )
-            })
-            .finally(() => {
-                setIsShown(true)
-            })
+        checkVersion().then(res => {
+            console.log("Got version info:", res.url);
+            if (res.needsUpdate) {
+                Alert.alert('You need to update the new version!', '',
+                    [
+                        {
+                            text: 'Cập nhật',
+                            onPress: () => {
+                                Linking.openURL(res.url)
+                            }
+                        }
+                    ]
+                )
+            } else {
+                getUserAuth()
+                    .then(res => {
+                        if (res != null) {
+                            // let user = new UserModel(res)
+                            // console.warn('aas: ', user)
+                            AppManager.shared.user = res
+                            // navigation.dispatch( 
+                            //     StackActions.replace('HomeStack')
+                            // )
+                        }
+
+                    })
+                    .catch((err) => {
+                        console.warn('errors: ', err)
+                        // navigation.dispatch(
+                        //     StackActions.replace('Signin')
+                        // )
+                    })
+                    .finally(() => {
+                        setIsShown(true)
+                    })
+
+            }
+
+        })
+
 
     }, [])
 
@@ -293,6 +317,14 @@ const HomeStack = () => {
             <Stack.Screen
                 name={"Webview"}
                 component={WebviewScreen}
+                options={{
+                    title: ""
+                }}
+
+            />
+            <Stack.Screen
+                name={"UpdateInfo"}
+                component={UpdateUserInfoScreen}
                 options={{
                     title: ""
                 }}

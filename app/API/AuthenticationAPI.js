@@ -135,19 +135,24 @@ class AuthenticationAPI {
 
     }
 
-    async updateUserInfo(status) {
+    async updateUserInfo({ status = '', username = '' }) {
+        try {
+            const formData = new FormData()
+            formData.append('status', status)
+            formData.append('username', username)
+            let token = AppManager.shared.user.access_token
+            let res = await this.axios.put(`${this.api_url}/conversation/v1/update-info`, formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
 
-        const formData = new FormData()
-        formData.append('status', status)
-        let token = AppManager.shared.user.access_token
-        let res = await this.axios.put(`${this.api_url}/conversation/v1/update-info`, formData, {
-            headers: {
-                'Authorization': `Bearer ${token}`
+                }
+            });
+            let resData = await res.data
+            return new UserModel(resData?.data)
 
-            }
-        });
-        let resData = await res.data
-        return new UserModel(resData?.data)
+        } catch (error) {
+            throw error
+        }
 
     }
 

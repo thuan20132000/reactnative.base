@@ -48,7 +48,8 @@ class ConversationAPI {
             params: {},
             headers: {
                 'Authorization': `Bearer ${token}`
-            }
+            },
+            timeout:10000
         })
             .then(function (response) {
                 return response.data

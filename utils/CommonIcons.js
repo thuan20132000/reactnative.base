@@ -68,6 +68,7 @@ export default {
     schoolGraduateHat:'school',
     videoCall:'video-account',
     clockOutline:'clock-outline',
+    accountEdit:'account-edit',
 
 
 

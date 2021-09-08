@@ -30,6 +30,14 @@ import { format } from 'date-fns'
 import CommonColor from '../../utils/CommonColor'
 import { Switch } from 'react-native-paper';
 
+const UPDATE_KEY = {
+    ADDRESS: 'userAddress',
+    NAME: 'userName',
+    PASSWORD: 'userPassword',
+    PHONE: 'phoneNumber',
+    REFCODE: 'refCode'
+}
+
 
 const ProfileScreen = (props) => {
     const navigation = useNavigation()
@@ -107,6 +115,12 @@ const ProfileScreen = (props) => {
             .then(() => {
 
             })
+    }
+
+    const _onShowUpdateScreen = () => {
+        navigation.navigate('UpdateInfo',{
+            key:UPDATE_KEY.NAME
+        })
     }
 
 
@@ -201,9 +215,19 @@ const ProfileScreen = (props) => {
 
 
                         </TouchableOpacity>
-                        <View>
-                            <Text style={{ fontWeight: '700', fontSize: 18 }}>{userProfile?.fullname}</Text>
-
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row'
+                            }}
+                        >
+                            <Text style={{ fontWeight: '700', fontSize: 18, marginRight: 12 }}>{userProfile?.fullname}</Text>
+                            <MaterialCommunityIcons
+                                name={CommonIcons.accountEdit}
+                                size={24}
+                                color={CommonColor.primary}
+                                onPress={_onShowUpdateScreen}
+                            />
 
                         </View>
 
