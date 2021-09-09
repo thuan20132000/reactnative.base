@@ -9,6 +9,8 @@ import RNProgressHud from 'progress-hud'
 import AuthenticationAPI from '../../app/API/AuthenticationAPI'
 import AppManager from '../../app/AppManager'
 import { setUserAuth } from '../../app/StorageManager'
+import { TouchableWithoutFeedback } from 'react-native'
+import { Keyboard } from 'react-native'
 
 
 const UPDATE_KEY = {
@@ -69,42 +71,45 @@ const UpdateUserInfoScreen = () => {
                 flex: 1
             }}
         >
+            <TouchableWithoutFeedback
+                onPress={()=>{
+                    Keyboard.dismiss()
+                }}
+            >
 
-
-            {
-                route?.params?.key == UPDATE_KEY.NAME &&
-                <View style={{
-                    flex: 1,
-                }}>
-                    <Input
-                        label={label}
-                        containerStyle={{
-                            marginTop: 16
-                        }}
-                        multiline
-                        autoFocus
-                        onChangeText={text => setUsername(text)}
-                        autoCapitalize='none'
-                        value={username}
-                    />
-                    <View style={{ flex: 1 }} />
-                    <View>
-                        <ButtonText
-                            label={'UPDATE'}
-                            containerStyle={styles.button}
-                            labelStyle={{
-                                color: COLORS.secondary,
-                                fontSize: 16,
-                                fontWeight: '700'
+                {
+                    route?.params?.key == UPDATE_KEY.NAME &&
+                    <View style={{
+                        flex: 1,
+                    }}>
+                        <Input
+                            label={label}
+                            containerStyle={{
+                                marginTop: 16
                             }}
-                            onItemPress={_onUpdateUserName}
-
+                            autoFocus
+                            onChangeText={text => setUsername(text)}
+                            autoCapitalize='none'
+                            value={username}
+                            
                         />
+                        <View style={{ flex: 1 }} />
+                        <View>
+                            <ButtonText
+                                label={'UPDATE'}
+                                containerStyle={styles.button}
+                                labelStyle={{
+                                    color: COLORS.secondary,
+                                    fontSize: 16,
+                                    fontWeight: '700'
+                                }}
+                                onItemPress={_onUpdateUserName}
+
+                            />
+                        </View>
                     </View>
-                </View>
-            }
-
-
+                }
+            </TouchableWithoutFeedback>
         </SafeAreaView>
     )
 }
