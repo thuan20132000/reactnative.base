@@ -49,7 +49,7 @@ class ConversationAPI {
             headers: {
                 'Authorization': `Bearer ${token}`
             },
-            timeout:10000
+            timeout: 10000
         })
             .then(function (response) {
                 return response.data
@@ -409,6 +409,23 @@ class ConversationAPI {
             return true
         } catch (error) {
             console.log('error: ')
+            throw error
+        }
+    }
+
+    async getPractisingGroups() {
+        try {
+            let token = AppManager.shared.user.access_token
+            let path = `/conversation/v1/practising-groups`;
+            let res = await this.axios.get(this.api_url + path, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
             throw error
         }
     }

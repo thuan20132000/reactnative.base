@@ -115,7 +115,7 @@ const ConversationList = (props) => {
                 if (res.status_code == 200) {
                     setReadingPosts(res.data)
                 }
-                console.log('sasa:',res)
+                console.log('sasa:', res)
             })
             .catch((err) => {
                 console.warn('err" ', err)
@@ -125,6 +125,10 @@ const ConversationList = (props) => {
 
     const _onNavigateLearner = () => {
         props.navigation.navigate('LearnerHome')
+    }
+
+    const _onShowPractising = () => {
+        navigation.navigate('ConversationPractising')
     }
 
     React.useLayoutEffect(() => {
@@ -149,7 +153,9 @@ const ConversationList = (props) => {
 
             <ScrollView
                 stickyHeaderIndices={[2]}
+                showsVerticalScrollIndicator={false}
             >
+
                 <View
                     style={[{
                         display: 'flex',
@@ -158,21 +164,23 @@ const ConversationList = (props) => {
                         alignItems: 'center',
                         // borderBottomWidth:0.4,
                         // borderBottomColor:"gray",
-                        width: '80%',
                         alignSelf: 'center'
                     }]}
                 >
                     <SelectionItem
                         imagePath={require('../../app/assets/images/ic_friends.png')}
-                        label={'LEARNER'}
-                        onPress={_onNavigateLearner}
+                        label={'Practising Groups'}
+                        onPress={_onShowPractising}
                     />
-                    {/* <SelectionItem
+                    <SelectionItem
                         imagePath={require('../../app/assets/images/ic_tutor.png')}
-                        label={'TUTOR'}
+                        label={'Learners'}
+                        onPress={_onNavigateLearner}
 
-                    /> */}
+
+                    />
                 </View>
+
 
                 <View
                     style={{
@@ -234,27 +242,32 @@ const ConversationList = (props) => {
                 </View>
 
                 {/* body */}
-                <View
-                    style={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        flexDirection: 'row',
-                        backgroundColor: 'white',
+                <FlatList
 
-                    }}
-                >
-                    {
-                        readingPost?.map((item, index) => (
+                    showsVerticalScrollIndicator={false}
+                    data={readingPost}
+                    renderItem={({ item, index }) => {
+                        return (
                             <ConversationItem
                                 key={item?.id?.toString()}
                                 title={item.title}
                                 image_path={item.image}
                                 onPracticePress={() => _onOpenPostPractice(item)}
                                 onGroupPress={() => _onOpenConversationgroups(item)}
+                                conversation={item}
+                            
                             />
-                        ))
-                    }
-                </View>
+
+                        )
+                    }}
+                    keyExtractor={(item) => item?.id}
+                    contentContainerStyle={{
+                        paddingVertical: 12,
+
+                    }}
+                    numColumns={2}
+
+                />
 
 
             </ScrollView>

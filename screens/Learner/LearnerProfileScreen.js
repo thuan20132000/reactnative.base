@@ -96,6 +96,10 @@ const LearnerProfileScreen = (props) => {
 
     useEffect(() => {
         _onGetUserProfile()
+
+        navigation.setOptions({
+            title:user?.fullname
+        })
     }, [])
 
 
@@ -139,14 +143,6 @@ const LearnerProfileScreen = (props) => {
                         resizeMode={'cover'}
                     />
 
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            fontWeight: '700'
-                        }}
-                    >
-                        {userProfile?.fullname}
-                    </Text>
                 </View>
 
 

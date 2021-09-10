@@ -1,3 +1,4 @@
+import CommonImages from "../../utils/CommonImages";
 
 
 class UserModel {
@@ -33,6 +34,11 @@ class UserModel {
             this.status = true
         } else {
             this.status = false
+        }
+        if (data?.profile_pic && data?.profile_pic != 'undefined') {
+            this.profile_pic = data?.profile_pic
+        } else {
+            this.profile_pic = null
         }
     }
 

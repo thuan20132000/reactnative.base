@@ -31,6 +31,7 @@ import { checkVersion } from "react-native-check-version";
 import { Alert } from "react-native";
 import { Linking } from "react-native";
 import GrammarExcerciseScreen from "../../screens/Grammar/GrammarExcerciseScreen";
+import ConversationPractisingScreen from "../../screens/Conversation/ConversationPractisingScreen";
 
 
 
@@ -231,7 +232,8 @@ const HomeStack = () => {
                 name={'ConversationDetail'}
                 component={ConversationDetailScreen}
                 options={{
-                    title: ""
+                    title: "",
+                    headerShown: false
                 }}
             />
             <Stack.Screen
@@ -337,6 +339,14 @@ const HomeStack = () => {
             <Stack.Screen
                 name={"ConversationQuiz"}
                 component={GrammarExcerciseScreen}
+                options={{
+                    title: ""
+                }}
+
+            />
+            <Stack.Screen
+                name={"ConversationPractising"}
+                component={ConversationPractisingScreen}
                 options={{
                     title: ""
                 }}

@@ -3,6 +3,8 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import ConversationAPI from '../../app/API/ConversationAPI';
 import LearnerItem from './components/LearnerItem'
 import RNProgressHud from 'progress-hud';
+import { FlatList } from 'react-native';
+import UserModel from '../../app/models/userModel';
 
 const LearnerHomeScreen = (props) => {
 
@@ -20,7 +22,8 @@ const LearnerHomeScreen = (props) => {
         ConversationAPI.getAllLearners()
             .then(res => {
                 if (res.status_code === 200) {
-                    setLearners(res.data)
+                    let learners = res?.data?.map(e => new UserModel(e))
+                    setLearners(learners)
                 }
             })
             .catch((err) => {
@@ -43,22 +46,26 @@ const LearnerHomeScreen = (props) => {
                 flex: 1
             }}
         >
-            <ScrollView>
-                {
-                    learners?.map((item, index) => (
+
+            <FlatList
+                data={learners}
+                renderItem={({ item, index }) => {
+                    return (
                         <LearnerItem
                             key={item?.id?.toString()}
                             onPress={() => _onOpenLearnerProfile(item)}
-                            address={item?.address}
-                            name={item?.username}
-                            imagePath={item?.profile_pic}
-                            description={item?.descriptions}
+                            user={item}
 
                         />
-                    ))
-                }
 
-            </ScrollView>
+                    )
+                }}
+                keyExtractor={(item) => item?.id}
+                contentContainerStyle={{
+                    paddingVertical: 12,
+
+                }}
+            />
         </View>
     )
 }

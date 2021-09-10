@@ -4,14 +4,11 @@ import { BOXSHADOW } from '../../../app/constants/themes'
 import CommonImages from '../../../utils/CommonImages'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonIcons from '../../../utils/CommonIcons'
+import UserModel from '../../../app/models/userModel'
 
 const LearnerItem = ({
     onPress,
-    name,
-    address,
-    description,
-    star,
-    imagePath
+    user = new UserModel(null)
 }) => {
     return (
         <TouchableOpacity
@@ -24,9 +21,18 @@ const LearnerItem = ({
                 }}
             >
                 <Image
+
                     source={{
-                        uri: imagePath || CommonImages.avatar
+                        uri: user?.profile_pic || CommonImages.avatar
                     }}
+                    source={
+                        user?.profile_pic?
+                        {
+                            uri:user.profile_pic
+                        }:
+                        require('../../../app/assets/images/avatarDefault.png')
+                    }
+
                     style={{
                         width: 40,
                         height: 40,
@@ -41,9 +47,9 @@ const LearnerItem = ({
                     width:'80%'
                 }}
             >
-                <Text style={{ fontWeight: '700', margin: 4 }}>{name}</Text>
+                <Text style={{ fontWeight: '700', margin: 4 }}>{user?.fullname}</Text>
                 {/* <Text style={{ fontWeight: '500', margin: 4 }}>{address}</Text> */}
-                <Text numberOfLines={2} style={{ width: '60%' }}>{description}</Text>
+                <Text numberOfLines={2} style={{ width: '60%' }}>{user?.descriptions}</Text>
             </View>
 
             <View
