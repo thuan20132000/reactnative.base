@@ -10,6 +10,17 @@ const LearnerItem = ({
     onPress,
     user = new UserModel(null)
 }) => {
+
+    const getAvatar = () => {
+        if (user.profile_pic && user.profile_pic != 'undefined' && user.profile_pic != null) {
+            return {
+                uri: user.profile_pic
+            }
+        } else {
+            return require('../../../app/assets/images/avatarDefault.png')
+        }
+    }
+
     return (
         <TouchableOpacity
             style={[styles.container]}
@@ -17,21 +28,12 @@ const LearnerItem = ({
         >
             <View
                 style={{
-                    width:'10%'
+                    width: '10%'
                 }}
             >
                 <Image
 
-                    source={{
-                        uri: user?.profile_pic || CommonImages.avatar
-                    }}
-                    source={
-                        user?.profile_pic?
-                        {
-                            uri:user.profile_pic
-                        }:
-                        require('../../../app/assets/images/avatarDefault.png')
-                    }
+                    source={getAvatar()}
 
                     style={{
                         width: 40,
@@ -43,8 +45,8 @@ const LearnerItem = ({
             </View>
             <View
                 style={{
-                    paddingHorizontal:22,
-                    width:'80%'
+                    paddingHorizontal: 22,
+                    width: '80%'
                 }}
             >
                 <Text style={{ fontWeight: '700', margin: 4 }}>{user?.fullname}</Text>

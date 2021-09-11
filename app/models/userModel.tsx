@@ -42,6 +42,13 @@ class UserModel {
         }
     }
 
+    // getAvatar() {
+    //     if (this.profile_pic && this.profile_pic != null && this.profile_pic != 'undefined') {
+    //         return this.profile_pic
+    //     } else {
+    //         return undefined
+    //     }
+    // }
 
     setProfilePic(imageUrl: String) {
         this.profile_pic = imageUrl ?? null

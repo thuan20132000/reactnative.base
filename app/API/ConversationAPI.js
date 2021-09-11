@@ -5,6 +5,7 @@ import AppManager from "../AppManager";
 import { getStorageData, getUserAuth } from "../StorageManager";
 import FriendShipEnum from "../Enums/FriendShipEnum";
 import CommentModel from "../models/CommentModel";
+import UserModel from "../models/userModel";
 
 
 
@@ -21,6 +22,23 @@ class ConversationAPI {
 
     }
 
+    async getDataByUrl(url) {
+        try {
+            let token = AppManager.shared.user.access_token
+
+            let res = await this.axios.get(url, {
+                params: {},
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            let dataRes = await res.data
+            return dataRes
+
+        } catch (error) {
+            throw error
+        }
+    }
 
     async getAllConversationTopic() {
         let path = `/conversation/v1/conversations-topic`;

@@ -5,21 +5,15 @@ export default {
 
 
     // Dev local
-    // api_url: "http://192.168.1.4:8000",
-    // media_url: "http://192.168.1.4:8000/media",
-    // IP_ADDRESS: "192.168.1.4",
+    // api_url: "http://192.168.1.9:8000",
+    // media_url: "http://192.168.1.9:8000/media",
+    // IP_ADDRESS: "192.168.1.9",
     // PORT: 8000,
 
     // staging
     // api_url:"http://34.87.31.84:8000",
     // media_url:"http://34.87.31.84:8000/media",
     // IP_ADDRESS:"34.87.31.84",
-
-    // production development
-    // api_url: "http://34.87.31.84:8005",
-    // media_url: "http://34.87.31.84:8005/media",
-    // IP_ADDRESS: "34.87.31.84",
-    // PORT: 8001,
 
 
 
