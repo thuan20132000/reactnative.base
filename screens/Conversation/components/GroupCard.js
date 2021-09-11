@@ -1,36 +1,67 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { BOXSHADOW, COLORS, SIZES } from '../../../app/constants/themes'
+import ConversationGroupModel from '../../../app/models/conversationGroupModel'
+import CommonColor from '../../../utils/CommonColor'
 
-const GroupCard = ({ onPress,authorName, authorImage, conversationName, groupName }) => {
+const GroupCard = ({
+    onPress,
+    authorName,
+    authorImage,
+    conversationName,
+    groupName,
+    group = new ConversationGroupModel(null)
+}) => {
+
+    const getAvatar = () => {
+        console.log(group?.author?.profile_pic)
+        if (group?.author?.profile_pic && group?.author?.profile_pic != 'undefined' && group?.author?.profile_pic != null) {
+            return {
+                uri: group?.author?.profile_pic
+            }
+        } else {
+            return require('../../../app/assets/images/avatarDefault.png')
+        }
+    }
+
     return (
         <TouchableOpacity
             style={[styles.container]}
             activeOpacity={0.5}
             onPress={onPress}
         >
-            <View>
-                <Text style={{ color: 'white', fontWeight: '600' }}>{groupName}</Text>
-            </View>
             <View
                 style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center'
+                    flex: 2,
+                    alignItems: 'center',
+                    justifyContent: 'center'
                 }}
             >
-
                 <Image
-                    source={{
-                        uri: authorImage
-                    }}
+
+                    source={getAvatar()}
                     style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20
+                        width: 80,
+                        height: 80,
+                        borderRadius: 40
                     }}
                 />
-                <Text style={{ color: 'white', fontWeight: '600' }}>{authorName}</Text>
+            </View>
+            <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center' }}>
+
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                    }}
+                >
+                    <Text style={{ fontWeight: '600' }}>{group?.name}</Text>
+
+
+                    <Text style={{ fontWeight: '400' }}>--{group?.author?.fullname}--</Text>
+                </View>
+
             </View>
         </TouchableOpacity>
     )
@@ -41,7 +72,8 @@ export default GroupCard
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        backgroundColor: 'deepskyblue',
+        flexDirection: 'row',
+        backgroundColor: CommonColor.secondary,
         alignSelf: 'center',
         margin: 4,
         height: 120,

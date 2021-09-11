@@ -133,6 +133,29 @@ const ConversationDetailScreen = (props) => {
         console.log('will join: ', nativeEvent)
     }
 
+    const getConversationDetail = () => {
+        RNProgressHud.show();
+        ConversationAPI.getConversationGroupDetail(group?.id)
+            .then((res) => {
+                if (res.status_code == 200) {
+                    setConversation(new ConversationPostModel(res?.data?.conversation))
+                }
+            })
+            .catch(err => {
+                console.log(err?.response?.data ?? err)
+            })
+            .finally(() => {
+                RNProgressHud.dismiss()
+                _onGetGroupMembers()
+            })
+    }
+
+    const _onShowMemberProfile = (user) => {
+        navigation.navigate('LearnerProfile', {
+            user: user
+        })
+    }
+
     const _onGetGroupMembers = () => {
         ConversationAPI.getGroupMember(group?.id)
             .then((res) => {
@@ -149,7 +172,8 @@ const ConversationDetailScreen = (props) => {
     }
 
     useEffect(() => {
-
+        interstitial.load();
+        getConversationDetail()
         let PracticeProgress = new PracticeProgressModel()
         PracticeProgress.startPractice()
 
@@ -164,39 +188,23 @@ const ConversationDetailScreen = (props) => {
                 }
             })
 
-        RNProgressHud.show();
-        ConversationAPI.getConversationGroupDetail(group?.id)
-            .then((res) => {
-                if (res.status_code == 200) {
-                    setConversation(new ConversationPostModel(res?.data?.conversation))
-                }
-            })
-            .catch(err => {
-                console.log(err?.response?.data ?? err)
-            })
-            .finally(() => {
-
-                _onGetGroupMembers()
-                RNProgressHud.dismissWithDelay(0.6)
-            })
-
-
-
-
-
 
         // Adv
         const eventListener = interstitial.onAdEvent(type => {
             if (type === AdEventType.LOADED) {
                 setLoaded(true);
-                RNProgressHud.dismiss()
+                // RNProgressHud.dismiss()
             }
         });
-        interstitial.load();
 
         // Start loading the interstitial straight away
         const unsubscribe = props.navigation.addListener('beforeRemove', () => {
-            interstitial.show()
+            try {
+                interstitial.show()
+
+            } catch (error) {
+                console.log('error: adv has not loaded')
+            }
         });
 
 
@@ -219,9 +227,9 @@ const ConversationDetailScreen = (props) => {
     }
 
     // No advert ready to show yet
-    if (!loaded) {
-        return <View />;
-    }
+    // if (!loaded) {
+    //     return <View />;
+    // }
 
     return (
         <SafeAreaView
@@ -233,11 +241,19 @@ const ConversationDetailScreen = (props) => {
             <View
                 style={{
                     display: 'flex',
-                    alignSelf: 'center',
-                    width: '50%',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
                     alignItems: 'center'
                 }}
             >
+                <MaterialCommunityIcons
+                    name={CommonIcons.arrowLeft}
+                    size={32}
+                    style={{
+                        marginHorizontal: 12
+                    }}
+                    onPress={() => navigation.goBack()}
+                />
                 <BannerAd
                     unitId={adUnitId}
                     size={BannerAdSize.BANNER}
@@ -276,8 +292,8 @@ const ConversationDetailScreen = (props) => {
                         }}
                     >
                         {
-                            memberList.map((e, index) =>
-                                <View key={e.id?.toString()}
+                            memberList?.map((e, index) =>
+                                <TouchableOpacity key={e.id?.toString()}
                                     style={{
                                         display: 'flex',
                                         flexDirection: 'column',
@@ -285,11 +301,15 @@ const ConversationDetailScreen = (props) => {
                                         marginHorizontal: 4,
 
                                     }}
+                                    onPress={() => _onShowMemberProfile(e)}
                                 >
                                     <Image
-                                        source={{
-                                            uri: e.profile_pic || CommonImages.avatar
-                                        }}
+                                        source={
+                                            e?.profile_pic ?
+                                                require('../../app/assets/images/avatarDefault.png') :
+                                                {
+                                                    uri: e.profile_pic || CommonImages.avatar
+                                                }}
                                         resizeMode="cover"
                                         style={{
                                             width: 40,
@@ -299,8 +319,8 @@ const ConversationDetailScreen = (props) => {
                                             borderColor: 'white'
                                         }}
                                     />
-                                    <Text style={{ fontWeight: '700', fontSize: 12 }}>{e.username}</Text>
-                                </View>
+                                    <Text style={{ fontWeight: '700', fontSize: 12 }}>{e.fullname}</Text>
+                                </TouchableOpacity>
 
                             )
                         }

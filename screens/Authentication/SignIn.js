@@ -27,6 +27,9 @@ import CommonIcons from '../../utils/CommonIcons';
 import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
 import CommonColor from '../../utils/CommonColor';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AuthenticationAPI from '../../app/API/AuthenticationAPI';
+import { Alert } from 'react-native';
+import ProviderEnums from '../../app/Enums/ProviderEnums';
 
 // GoogleSignin.configure({
 //     iosClientId: '762174979149-d0nu6ershjiqm54t67k0o35dusaeg0hn.apps.googleusercontent.com',
@@ -39,30 +42,26 @@ const SignIn = (props) => {
 
     const [isAgreePolicy, setAgreePolicy] = useState(true)
 
-    const _onGetUserInfo = async (access_token) => {
+    const _onSignIn = (provider, access_token) => {
         RNProgressHud.show()
-        authenticationAPI.signinWithFacebook(access_token)
-            .then((res) => {
-                if (res) {
-                    AppManager.shared.user = res
-                    dispatch(signin(res))
-                    setUserAuth(res.toString())
-                    navigation.dispatch(
-                        StackActions.replace('HomeStack')
-                    )
+        AuthenticationAPI.signin(provider, access_token)
+            .then(user => {
+                navigation.dispatch(
+                    StackActions.replace('HomeStack')
+                )
+            })
+            .catch(err => {
+                AppManager.shared.handleErrorMessage(err)
+            })
+            .finally(() => {
+                RNProgressHud.dismiss()
+            })
 
-                }
-            })
-            .catch((err) => {
-                console.log('error: ', err)
-                LoginManager.logOut()
-            })
-            .finally(() => RNProgressHud.dismiss())
     }
 
     const _onLoginFacebook = () => {
 
-        if(!isAgreePolicy){
+        if (!isAgreePolicy) {
             return
         }
 
@@ -73,7 +72,7 @@ const SignIn = (props) => {
                 } else {
                     AccessToken.getCurrentAccessToken()
                         .then((data) => {
-                            _onGetUserInfo(data.accessToken.toString())
+                            _onSignIn(ProviderEnums.FACEBOOK, data.accessToken.toString())
                         })
                     console.log(
                         "Login success with permissions: " +
@@ -85,30 +84,6 @@ const SignIn = (props) => {
                 console.log("Login fail with error: " + error);
             }
         );
-    }
-
-    // const _onLoginGoogle = async () => {
-    //     try {
-    //         await GoogleSignin.hasPlayServices();
-    //         const userInfo = await GoogleSignin.signIn();
-    //         console.log('sdasdsa ',userInfo)
-    //     } catch (error) {
-    //         console.log('err: ',error.message)
-    //         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-    //             // user cancelled the login flow
-    //         } else if (error.code === statusCodes.IN_PROGRESS) {
-    //             // operation (e.g. sign in) is in progress already
-    //         } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-    //             // play services not available or outdated
-    //         } else {
-    //             // some other error happened
-    //         }
-    //     }
-    // }
-
-    const _onLogOut = async () => {
-        console.log('logout')
-        setUserAuth(null)
     }
 
 
@@ -132,7 +107,10 @@ const SignIn = (props) => {
 
     async function onAppleButtonPress(updateCredentialStateForUser) {
         console.warn('Beginning Apple Authentication');
-        if(!isAgreePolicy){
+
+
+
+        if (!isAgreePolicy) {
             return
         }
         RNProgressHud.show()
@@ -155,24 +133,9 @@ const SignIn = (props) => {
                 realUserStatus /* etc */,
                 authorizationCode
             } = appleAuthRequestResponse;
+            console.log('data: ',authorizationCode)
+            _onSignIn(ProviderEnums.APPLE, authorizationCode)
 
-
-            authenticationAPI.signinWithApple(fullName?.givenName, user, authorizationCode)
-                .then(res => {
-
-                    if (res.access_token) {
-                        AppManager.shared.user = res
-                        dispatch(signin(res))
-                        setUserAuth(res.toString())
-                        navigation.dispatch(
-                            StackActions.replace('HomeStack')
-                        )
-
-                    }
-                })
-                .catch(err => {
-                    console.warn('error: ', err)
-                })
 
             console.warn(`Apple Authentication Completed, ${user}, ${email}`);
         } catch (error) {
@@ -234,7 +197,7 @@ const SignIn = (props) => {
             {
                 Platform.OS === 'ios' &&
                 <LoginItem
-                    label={'Apple'}
+                    label={'Sign In With Apple'}
                     logoPath={require('../../app/assets/images/ic_apple.png')}
                     onPress={onAppleButtonPress}
                 />

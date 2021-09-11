@@ -30,6 +30,8 @@ import UpdateUserInfoScreen from "../../screens/Settings/UpdateUserInfoScreen";
 import { checkVersion } from "react-native-check-version";
 import { Alert } from "react-native";
 import { Linking } from "react-native";
+import GrammarExcerciseScreen from "../../screens/Grammar/GrammarExcerciseScreen";
+import ConversationPractisingScreen from "../../screens/Conversation/ConversationPractisingScreen";
 
 
 
@@ -158,18 +160,21 @@ const HomeStack = () => {
     useEffect(() => {
 
         checkVersion().then(res => {
-            console.log("Got version info:", res.url);
+            // console.log("Got version info:", res.url);
             if (res.needsUpdate) {
                 Alert.alert('You need to update the new version!', '',
                     [
                         {
-                            text: 'Cập nhật',
+                            text: 'Update',
                             onPress: () => {
                                 Linking.openURL(res.url)
                             }
                         }
                     ]
                 )
+                setIsShown(false)
+
+
             } else {
                 getUserAuth()
                     .then(res => {
@@ -227,7 +232,8 @@ const HomeStack = () => {
                 name={'ConversationDetail'}
                 component={ConversationDetailScreen}
                 options={{
-                    title: ""
+                    title: "",
+                    headerShown: false
                 }}
             />
             <Stack.Screen
@@ -330,7 +336,22 @@ const HomeStack = () => {
                 }}
 
             />
+            <Stack.Screen
+                name={"ConversationQuiz"}
+                component={GrammarExcerciseScreen}
+                options={{
+                    title: ""
+                }}
 
+            />
+            <Stack.Screen
+                name={"ConversationPractising"}
+                component={ConversationPractisingScreen}
+                options={{
+                    title: ""
+                }}
+
+            />
         </Stack.Navigator>
     )
 }

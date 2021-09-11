@@ -60,6 +60,10 @@ const ConversationGroupScreen = (props) => {
     }
 
     const _onCreateGroup = async (groupName) => {
+        if (!groupName || groupName == '') {
+            return
+        }
+
         setCreateGroupVisible(false)
         RNProgressHud.show()
         ConversationAPI.createConversationGroup(groupName, conversation?.id)
@@ -111,6 +115,7 @@ const ConversationGroupScreen = (props) => {
                                 conversationName={item.conversation?.title}
                                 groupName={item.name}
                                 onPress={() => _onOpenConversationGroup(item)}
+                                group={item}
                             />
 
                         )

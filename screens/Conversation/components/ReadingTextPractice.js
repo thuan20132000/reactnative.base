@@ -169,6 +169,12 @@ const ReadingTextPractice = ({ group, readingpost, postContent, setIsRunTextScro
         })
     }
 
+    const _onShowQuizPress = () => {
+        navigation.navigate('ConversationQuiz', {
+            conversation_id: readingpost?.id
+        })
+    }
+
     return (
         <>
 
@@ -213,6 +219,7 @@ const ReadingTextPractice = ({ group, readingpost, postContent, setIsRunTextScro
                 onResetScroll={_onResetTextScroll}
                 onRunScroll={_runScroll}
                 onCommentPress={_onShowComment}
+                // onQuizPress={_onShowQuizPress}
             />
 
         </>
