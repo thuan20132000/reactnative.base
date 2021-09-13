@@ -32,6 +32,9 @@ import { Alert } from "react-native";
 import { Linking } from "react-native";
 import GrammarExcerciseScreen from "../../screens/Grammar/GrammarExcerciseScreen";
 import ConversationPractisingScreen from "../../screens/Conversation/ConversationPractisingScreen";
+import VocabularyPracticeHomeScreen from "../../screens/VocabularyPractice/VocabularyPracticeHomeScreen";
+import VocabularyCreateScreen from "../../screens/VocabularyPractice/VocabularyCreateScreen";
+import VocabularyPracticeScreen from "../../screens/VocabularyPractice/VocabularyPracticeScreen";
 
 
 
@@ -96,7 +99,16 @@ const TabBottom = () => {
 
 
         >
-
+            <TabBottomNavigator.Screen
+                name="VideoCall"
+                component={ConversationList}
+                options={{
+                    title: "Reading & Speaking"
+                }}
+                // listeners={{
+                //     tabPress: _onCheckIsAuthenticated
+                // }}
+            />
             {
                 Platform.OS === 'android' &&
                 <TabBottomNavigator.Screen
@@ -108,23 +120,14 @@ const TabBottom = () => {
                 />
 
             }
-            {/* <TabBottomNavigator.Screen
-                name="ReadingPracticeStack"
-                component={ReadingPracticeStack}
-                options={{
-                    title: "Luyện Đọc"
-                }}
-            /> */}
             <TabBottomNavigator.Screen
-                name="VideoCall"
-                component={ConversationList}
+                name="VocabularyPracticeHome"
+                component={VocabularyPracticeHomeScreen}
                 options={{
-                    title: "Reading & Speaking"
-                }}
-                listeners={{
-                    tabPress: _onCheckIsAuthenticated
+                    title: "Vocabulary"
                 }}
             />
+
             {/* <TabBottomNavigator.Screen
                 name="TabGrammar"
                 component={GrammarStack}
@@ -351,6 +354,14 @@ const HomeStack = () => {
                     title: ""
                 }}
 
+            />
+            <Stack.Screen
+                name={"VocabularyCreate"}
+                component={VocabularyCreateScreen}
+            />
+            <Stack.Screen
+                name={"VocabularyPractice"}
+                component={VocabularyPracticeScreen}
             />
         </Stack.Navigator>
     )
