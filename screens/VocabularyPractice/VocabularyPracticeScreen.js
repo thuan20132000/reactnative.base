@@ -10,7 +10,7 @@ import CommonColor from '../../utils/CommonColor';
 import CommonIcons from '../../utils/CommonIcons';
 import CardDefinition from '../FlashCard/components/CardDefinition';
 import VocabularyCard from '../sharing/VocabularyCard';
-import { StackActions, useNavigation } from '@react-navigation/core'
+import { StackActions, useNavigation, useRoute } from '@react-navigation/core'
 import { TouchableOpacity } from 'react-native';
 
 const OPTIONS = {
@@ -22,6 +22,8 @@ const OPTIONS = {
 const VocabularyPracticeScreen = () => {
 
     const navigation = useNavigation()
+    const route = useRoute()
+    const { data } = route?.params
     const [practiceVocabulary, setPracticeVocabulary] = useState(new PracticeVocabularyModel(null));
     const [isAnswered, setIsAnswered] = useState(false);
     const [currentVocabulary, setCurrentVocabulary] = useState()
@@ -30,24 +32,13 @@ const VocabularyPracticeScreen = () => {
     const [isDisabled, setIsDisabled] = useState(false)
     const [learningVocabularyNumber, setLearningVocabularyNumber] = useState(0)
 
-    const [vocabularyList, setVocabularyList] = useState([
-        new PracticeVocabularyModel({ name: 'Hello world', id: 1, word_type: 'prhase', native_name: "Xin chao" }),
-        new PracticeVocabularyModel({ name: 'Good bye', id: 2, word_type: 'prhase', native_name: "Tam biet" }),
-        new PracticeVocabularyModel({ name: 'Good morning', id: 3, word_type: 'prhase', native_name: "Chao buoi sang" }),
-        new PracticeVocabularyModel({ name: 'Fell', id: 4, word_type: 'prhase', native_name: "Cam thay" }),
-        new PracticeVocabularyModel({ name: 'Cure', id: 5, word_type: 'prhase', native_name: "Chữa, khắc phục" }),
-        new PracticeVocabularyModel({ name: 'Exercise', id: 6, word_type: 'prhase', native_name: "Bài tập, tập luyện" }),
-        new PracticeVocabularyModel({ name: 'Flu', id: 7, word_type: 'prhase', native_name: "bệnh cúm" }),
-        new PracticeVocabularyModel({ name: 'Infection', id: 8, word_type: 'prhase', native_name: "Sự nhiễm trùng" }),
-        new PracticeVocabularyModel({ name: 'Epidemic', id: 9, word_type: 'prhase', native_name: "Dịch bệnh" }),
-        new PracticeVocabularyModel({ name: 'Cut down', id: 10, word_type: 'prhase', native_name: "Cắt giảm" }),
-        new PracticeVocabularyModel({ name: 'Go off', id: 11, word_type: 'prhase', native_name: "bị hỏng" }),
-
-    ])
+    const [vocabularyList, setVocabularyList] = useState(data)
 
     useEffect(() => {
         setPracticeVocabulary(vocabularyList[vocabularyPosition])
         setLearningVocabularyNumber(vocabularyList.length)
+        // 
+        0.23
     }, [])
 
 
@@ -117,7 +108,7 @@ const VocabularyPracticeScreen = () => {
             style={{ flex: 1 }}
         >
             <ScrollView>
-                <View
+                {/* <View
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -131,7 +122,7 @@ const VocabularyPracticeScreen = () => {
                     >
                         <Text style={{ fontSize: 24 }}>Web</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
                 <View>
                     <CardFlip
                         ref={_refCardFlip}
@@ -188,7 +179,7 @@ const VocabularyPracticeScreen = () => {
                     >
                         <ButtonText
                             label={'Hard'}
-                            descriptions={'< 3 minutes'}
+                            descriptions={'< 3 Again'}
                             containerStyle={styles.buttonCreate}
                             labelStyle={{
                                 color: COLORS.secondary,
@@ -199,7 +190,7 @@ const VocabularyPracticeScreen = () => {
                         />
                         <ButtonText
                             label={'Again'}
-                            descriptions={'< 9 minutes'}
+                            descriptions={'< 6 Good'}
                             containerStyle={styles.buttonCreate}
                             labelStyle={{
                                 color: COLORS.secondary,
@@ -210,8 +201,7 @@ const VocabularyPracticeScreen = () => {
 
                         />
                         <ButtonText
-                            label={'Ignore'}
-
+                            label={'Easy'}
                             containerStyle={styles.buttonCreate}
                             labelStyle={{
                                 color: COLORS.secondary,

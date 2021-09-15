@@ -95,6 +95,7 @@ const F_FlashCardTopicScreen = (props) => {
 
             } else {
                 let topic_vocabulary_all_list = await Quiz.getTopicVocabularyList(topic.id);
+                // console.log('sasasa: ',topic_vocabulary_all_list)
 
                 topic_vocabulary_all_list = topic_vocabulary_all_list;
 

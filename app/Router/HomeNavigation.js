@@ -35,6 +35,8 @@ import ConversationPractisingScreen from "../../screens/Conversation/Conversatio
 import VocabularyPracticeHomeScreen from "../../screens/VocabularyPractice/VocabularyPracticeHomeScreen";
 import VocabularyCreateScreen from "../../screens/VocabularyPractice/VocabularyCreateScreen";
 import VocabularyPracticeScreen from "../../screens/VocabularyPractice/VocabularyPracticeScreen";
+import ListCreateScreen from "../../screens/VocabularyPractice/ListCreateScreen";
+import VocabularyListScreen from "../../screens/VocabularyPractice/VocabularyListScreen";
 
 
 
@@ -105,9 +107,9 @@ const TabBottom = () => {
                 options={{
                     title: "Reading & Speaking"
                 }}
-                // listeners={{
-                //     tabPress: _onCheckIsAuthenticated
-                // }}
+            // listeners={{
+            //     tabPress: _onCheckIsAuthenticated
+            // }}
             />
             {
                 Platform.OS === 'android' &&
@@ -358,10 +360,30 @@ const HomeStack = () => {
             <Stack.Screen
                 name={"VocabularyCreate"}
                 component={VocabularyCreateScreen}
+                options={{
+                    title: ""
+                }}
             />
             <Stack.Screen
                 name={"VocabularyPractice"}
                 component={VocabularyPracticeScreen}
+                options={{
+                    title: ""
+                }}
+            />
+            <Stack.Screen
+                name={"ListCreate"}
+                component={ListCreateScreen}
+                options={{
+                    title: ""
+                }}
+            />
+            <Stack.Screen
+                name={"VocabularyList"}
+                component={VocabularyListScreen}
+                options={{
+                    title: ""
+                }}
             />
         </Stack.Navigator>
     )
