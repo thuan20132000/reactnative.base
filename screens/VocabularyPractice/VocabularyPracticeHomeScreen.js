@@ -16,18 +16,20 @@ const VocabularyPracticeHomeScreen = () => {
     const navigation = useNavigation()
     const [deskList, setDeskList] = useState([])
 
-    const _onShowVocabularyCreate = () => {
+    const _onShowVocabularyCreate = (deskId) => {
         // navigation.dispatch(
         //     StackActions.replace('VocabularyCreate')
         // )
         navigation.navigate('ListCreate', {
-            key: 'DeskList'
+            desk_id: deskId
         })
     }
 
 
-    const _onShowVocabularyDetail = () => {
-        navigation.navigate('VocabularyList')
+    const _onShowVocabularyDetail = (desk) => {
+        navigation.navigate('VocabularyList', {
+            desk: desk
+        })
 
     }
 
@@ -66,7 +68,11 @@ const VocabularyPracticeHomeScreen = () => {
                 >
                     {
                         deskList?.map((item, index) =>
-                            <ListItem onItemPress={_onShowVocabularyDetail} desk={item} />
+                            <ListItem
+                                key={index.toString()}
+                                onItemPress={() => _onShowVocabularyDetail(item)}
+                                desk={item}
+                            />
 
                         )
                     }

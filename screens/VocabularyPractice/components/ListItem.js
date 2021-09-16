@@ -16,8 +16,8 @@ const ListItem = ({
             onPress={onItemPress}
         >
             <Text style={{ fontSize: 18 }}>{desk?.name}</Text>
-            <Text>32</Text>
-            <Text>60%</Text>
+            {/* <Text>32</Text>
+            <Text>60%</Text> */}
         </TouchableOpacity>
     )
 }
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         marginVertical: 2,
         alignItems: 'flex-start',
         justifyContent: 'space-around',
-        padding: 4,
+        paddingHorizontal: 8,
         marginHorizontal: 4,
         borderRadius: 6,
         ...BOXSHADOW.normal

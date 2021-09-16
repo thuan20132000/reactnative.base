@@ -37,8 +37,6 @@ const VocabularyPracticeScreen = () => {
     useEffect(() => {
         setPracticeVocabulary(vocabularyList[vocabularyPosition])
         setLearningVocabularyNumber(vocabularyList.length)
-        // 
-        0.23
     }, [])
 
 
@@ -179,7 +177,7 @@ const VocabularyPracticeScreen = () => {
                     >
                         <ButtonText
                             label={'Hard'}
-                            descriptions={'< 3 Again'}
+                            descriptions={'< 2 Minutes'}
                             containerStyle={styles.buttonCreate}
                             labelStyle={{
                                 color: COLORS.secondary,
@@ -190,7 +188,7 @@ const VocabularyPracticeScreen = () => {
                         />
                         <ButtonText
                             label={'Again'}
-                            descriptions={'< 6 Good'}
+                            descriptions={'< 6 Minutes'}
                             containerStyle={styles.buttonCreate}
                             labelStyle={{
                                 color: COLORS.secondary,

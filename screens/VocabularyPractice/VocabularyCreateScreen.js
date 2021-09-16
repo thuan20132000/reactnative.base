@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { StyleSheet, Text, View, Image } from 'react-native'
@@ -10,17 +10,109 @@ import CommonIcons from '../../utils/CommonIcons'
 import CommonImages from '../../utils/CommonImages'
 import SpeechToText from '../sharing/SpeechToText'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useRoute } from '@react-navigation/core'
+import { useRoute, useNavigation } from '@react-navigation/core'
+import FirebaseManager from '../../app/FirebaseManager'
+import PracticeVocabularyModel from '../../app/models/PracticeVocabularyModel'
+import { getUniqueId } from 'react-native-device-info'
+import { Alert } from 'react-native'
+import RNProgressHud from 'progress-hud'
 
 const VocabularyCreateScreen = () => {
 
     const route = useRoute()
+    const navigation = useNavigation()
     const [englishWord, setEnglishWord] = useState('')
     const [nativeWord, setNativeWord] = useState('')
+    const [vocabularyImage, setVocabularyImage] = useState('')
+
+    const { canRemove, vocabulary, desk } = route?.params ?? ''
+
+    const _isFormValidation = () => {
+        if (englishWord?.trim() == '') {
+            return false
+        }
+        if (nativeWord?.trim() == '') {
+            return false
+        }
+        return true
+    }
+    const _onAddDeskVocabulary = () => {
+
+        if (!_isFormValidation()) {
+            Alert.alert("", "Please enter full information!")
+            return
+        }
+        RNProgressHud.show()
+        let vocab = new PracticeVocabularyModel()
+        vocab.name = englishWord
+        vocab.native_name = nativeWord
+        vocab.image_url = vocabularyImage
+        FirebaseManager.addDeskVocabulary(vocab, desk?.id, getUniqueId())
+            .then(res => {
+                if (!vocabulary) {
+                    setEnglishWord('')
+                    setNativeWord('')
+                }
+
+            })
+            .catch(err => {
+                console.log('err: ', err)
+            })
+            .finally(() => {
+                RNProgressHud.dismiss()
+            })
+    }
 
 
-    const { canRemove, vocabulary } = route?.params ?? ''
+    const _onUpdateDeskVocabulary = () => {
 
+        if (!_isFormValidation()) {
+            Alert.alert("", "Please enter full information!")
+            return
+        }
+        RNProgressHud.show()
+        let vocab = new PracticeVocabularyModel()
+        vocab.id = vocabulary?.id
+        vocab.name = englishWord
+        vocab.native_name = nativeWord
+        vocab.image_url = vocabularyImage
+        FirebaseManager.updateDeskVocabulary(vocab, desk, getUniqueId())
+            .then(res => {
+                if (!vocabulary) {
+                    setEnglishWord('')
+                    setNativeWord('')
+                }
+                console.log(res)
+
+            })
+            .catch(err => {
+                console.log('err: ', err)
+            })
+            .finally(() => {
+                RNProgressHud.dismiss()
+            })
+    }
+
+    const _onRemoveDeskVocabulary = () => {
+        FirebaseManager.removeDeskVocabulary(getUniqueId(), desk, vocabulary)
+            .then(res => {
+                if (res) {
+                    navigation.goBack()
+                }
+            })
+            .catch(err => {
+                console.log('err: ', err)
+            })
+    }
+
+
+
+    useEffect(() => {
+        if (vocabulary) {
+            setEnglishWord(vocabulary?.name)
+            setNativeWord(vocabulary?.native_name)
+        }
+    }, [])
 
     return (
 
@@ -56,7 +148,7 @@ const VocabularyCreateScreen = () => {
                             onChangeText={(text) => setEnglishWord(text)}
                         />
 
-                        <View
+                        {/* <View
                             style={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -86,7 +178,7 @@ const VocabularyCreateScreen = () => {
 
                             </TouchableOpacity>
 
-                        </View>
+                        </View> */}
                     </View>
 
                     <View
@@ -102,36 +194,60 @@ const VocabularyCreateScreen = () => {
 
                             }}
                             onChangeText={(text) => setNativeWord(text)}
+                            value={nativeWord}
 
                         />
 
                     </View>
                 </View>
             </ScrollView>
-            <View>
-                <ButtonText
-                    label={'UPDATE'}
-                    containerStyle={styles.buttonCreate}
-                    labelStyle={{
-                        color: COLORS.secondary,
-                        fontSize: 16,
-                        fontWeight: '700'
-                    }}
-                />
-                {
-                    vocabulary &&
-                    <ButtonText
-                        label={'REMOVE'}
-                        containerStyle={[styles.buttonCreate, { borderColor: 'red' }]}
-                        labelStyle={{
-                            color: 'red',
-                            fontSize: 16,
-                            fontWeight: '700'
-                        }}
-                    />
 
-                }
-            </View>
+
+
+            {
+                vocabulary ?
+                    <View>
+                        <ButtonText
+                            label={'UPDATE'}
+                            containerStyle={styles.buttonCreate}
+                            labelStyle={{
+                                color: COLORS.secondary,
+                                fontSize: 16,
+                                fontWeight: '700'
+                            }}
+                            onItemPress={_onUpdateDeskVocabulary}
+                        />
+
+                        <ButtonText
+                            label={'REMOVE'}
+                            containerStyle={[styles.buttonCreate, { borderColor: 'red' }]}
+                            labelStyle={{
+                                color: 'red',
+                                fontSize: 16,
+                                fontWeight: '700'
+                            }}
+                            onItemPress={_onRemoveDeskVocabulary}
+                        />
+
+
+                    </View>
+                    :
+                    <View>
+                        <ButtonText
+                            label={'ADD'}
+                            containerStyle={styles.buttonCreate}
+                            labelStyle={{
+                                color: COLORS.secondary,
+                                fontSize: 16,
+                                fontWeight: '700'
+                            }}
+                            onItemPress={_onAddDeskVocabulary}
+                        />
+
+                    </View>
+
+
+            }
 
         </View >
 

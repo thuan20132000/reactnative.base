@@ -1,19 +1,12 @@
 import { useNavigation, useRoute } from '@react-navigation/core'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { Alert, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { Alert, SafeAreaView, StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { Input } from 'react-native-elements'
 import ButtonText from '../../components/Button/BottonText'
 import { COLORS } from '../../app/constants/themes'
 import RNProgressHud from 'progress-hud'
-import AuthenticationAPI from '../../app/API/AuthenticationAPI'
-import AppManager from '../../app/AppManager'
-import { setUserAuth } from '../../app/StorageManager'
-import { TouchableWithoutFeedback } from 'react-native'
-import { Keyboard } from 'react-native'
-import firestore from '@react-native-firebase/firestore';
 import FirebaseManager from '../../app/FirebaseManager'
-import { getAndroidId, getDevice, getDeviceId, getUniqueId } from 'react-native-device-info'
+import { getUniqueId } from 'react-native-device-info'
 
 
 const ListCreateScreen = () => {
@@ -55,7 +48,7 @@ const ListCreateScreen = () => {
                                 marginTop: 16
                             }}
                             autoFocus
-                            onChangeText={text => setListName(text)}
+                            onChangeText={(text) => setListName(text)}
                             autoCapitalize='none'
                             value={listName}
 
