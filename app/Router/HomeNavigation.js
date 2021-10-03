@@ -37,6 +37,7 @@ import VocabularyCreateScreen from "../../screens/VocabularyPractice/VocabularyC
 import VocabularyPracticeScreen from "../../screens/VocabularyPractice/VocabularyPracticeScreen";
 import ListCreateScreen from "../../screens/VocabularyPractice/ListCreateScreen";
 import VocabularyListScreen from "../../screens/VocabularyPractice/VocabularyListScreen";
+import VocabularySearchScreen from "../../screens/VocabularyPractice/VocabularySearchScreen";
 
 
 
@@ -383,6 +384,13 @@ const HomeStack = () => {
                 component={VocabularyListScreen}
                 options={{
                     title: ""
+                }}
+            />
+            <Stack.Screen
+                name={"VocabularySearch"}
+                component={VocabularySearchScreen}
+                options={{
+                    title: "",
                 }}
             />
         </Stack.Navigator>

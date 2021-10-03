@@ -7,18 +7,19 @@ import Voice, {
 
 
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CommonColor from '../../utils/CommonColor';
 import CommonIcons from '../../utils/CommonIcons';
 import { StackActions, useNavigation } from '@react-navigation/core'
 import { Dimensions } from 'react-native';
 import { Input } from 'react-native-elements';
-const SpeechToText = ({
+const SearchBar = ({
     onSelectVocabulary,
     label,
     value,
-    disabled = false
+    dataSearch,
+    setDataSearch
 }) => {
     // recognized: '',
     //         pitch: '',
@@ -45,12 +46,15 @@ const SpeechToText = ({
         Voice.onSpeechResults = onSpeechResults;
         Voice.onSpeechPartialResults = onSpeechPartialResults;
         Voice.onSpeechVolumeChanged = onSpeechVolumeChanged;
+
+
+
         return () => {
             setStarted(false)
-            setResults([])
             Voice.destroy().then(Voice.removeAllListeners)
                 .catch(err => console.log(err))
                 .finally(() => console.log('destroy'))
+            setResults([])
         }
     }, [])
 
@@ -173,56 +177,54 @@ const SpeechToText = ({
 
 
     return (
-        <View>
-            <View style={styles.container}>
+        <View style={styles.container}>
 
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-around',
-                        paddingHorizontal: 12,
-                    }}
-                >
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                    paddingHorizontal: 12,
+                }}
+            >
 
-                    {/* <Text style={{ flex: 3, color: 'gray', fontStyle: 'italic' }}>
+                {/* <Text style={{ flex: 3, color: 'gray', fontStyle: 'italic' }}>
                         {started ? "I am listening..." : "Say something..."}
                     </Text> */}
-                    <Input
-                        label={label}
-                        placeholder={started ? "I am listening..." : "Say something..."}
-                        multiline
-                        disabled={disabled}
-                        inputContainerStyle={{
-                            borderBottomColor: CommonColor.primary,
-                        }}
-                        containerStyle={{
-                            height: 80
-                        }}
-                        value={value ?? inputVocabulary}
-                        onChangeText={(text) => _onChangeInputVocabulary(text)}
-                        rightIcon={
-                            <TouchableOpacity
-                                onLongPress={_startRecognizing}
-                                onPress={_searchVocabulary}
-                            >
+                <Input
+                    label={label}
+                    placeholder={started ? "I am listening..." : "Say something..."}
+                    multiline
+                    inputContainerStyle={{
+                        borderBottomColor: CommonColor.primary,
+                    }}
+                    containerStyle={{
+                        height: 80
+                    }}
+                    value={value ?? inputVocabulary}
+                    onChangeText={(text) => _onChangeInputVocabulary(text)}
+                    rightIcon={
+                        <TouchableOpacity
+                            onLongPress={_startRecognizing}
+                            onPress={_searchVocabulary}
+                        >
 
-                                <MaterialCommunityIcons
-                                    name={inputVocabulary ? CommonIcons.search : CommonIcons.microphonePlus}
-                                    size={34}
-                                    color={started ? 'red' : CommonColor.primary}
-                                    style={{
-                                        flex: 1
-                                    }}
-                                />
-                            </TouchableOpacity>
+                            <MaterialCommunityIcons
+                                name={inputVocabulary ? CommonIcons.search : CommonIcons.microphonePlus}
+                                size={34}
+                                color={started ? 'red' : CommonColor.primary}
+                                style={{
+                                    flex: 1
+                                }}
+                            />
+                        </TouchableOpacity>
 
-                        }
-                    />
+                    }
+                />
 
-                </View>
-
+            </View>
+            <ScrollView>
                 {results?.map((result, index) => {
                     return (
                         <View key={`result-${index}`}
@@ -256,34 +258,12 @@ const SpeechToText = ({
                     );
                 })}
 
-
-                {/* <Text style={styles.stat}>Partial Results</Text>
-                {partialResults.map((result, index) => {
-                    return (
-                        <Text key={`partial-result-${index}`} style={styles.stat}>
-                            {result}
-                        </Text>
-                    );
-                })}
-                <Text style={styles.stat}>{`End: ${end}`}</Text>
-                <TouchableHighlight onPress={_startRecognizing}>
-                    <Text>Play</Text>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={_stopRecognizing}>
-                    <Text style={styles.action}>Stop Recognizing</Text>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={_cancelRecognizing}>
-                    <Text style={styles.action}>Cancel</Text>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={_destroyRecognizer}>
-                    <Text style={styles.action}>Destroy</Text>
-                </TouchableHighlight> */}
-            </View>
+            </ScrollView>
         </View>
     )
 }
 
-export default SpeechToText
+export default SearchBar
 
 
 const styles = StyleSheet.create({
@@ -293,8 +273,6 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: 'white',
     },
     welcome: {

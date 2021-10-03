@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { IconButton } from 'react-native-paper'
+import { Chip, IconButton } from 'react-native-paper'
 import CommonColor from '../../utils/CommonColor'
 import CommonIcons from '../../utils/CommonIcons'
 
@@ -8,10 +8,14 @@ const VocabularyCard = ({
     containerStyle,
     children,
     title,
+    wordTypes = '',
+    example,
     onFlipPress,
-    isAnswered
+    isAnswered,
+    onSearch
 
 }) => {
+
     return (
         <View
             style={[
@@ -19,17 +23,46 @@ const VocabularyCard = ({
                 containerStyle
             ]}
         >
-            {
+            <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
                 <Text
                     style={{
                         fontSize: 22,
                         fontWeight: '500',
-                        color: 'black'
+                        color: 'black',
+                        marginHorizontal: 6
                     }}
                     numberOfLines={4}
                 >
                     {title}
                 </Text>
+                {
+                    wordTypes?.length > 0 &&
+                    <Chip
+
+                        style={{ backgroundColor: CommonColor.primary }}
+                        textStyle={{ color: 'white', fontWeight: '700' }}
+
+                    >
+                        {wordTypes}
+                    </Chip>
+
+                }
+            </View>
+
+            {
+                example &&
+                <Text
+                    style={{
+                        fontSize: 18,
+                        fontWeight: '400',
+                        color: 'gray',
+                        fontStyle: 'italic'
+                    }}
+                    numberOfLines={4}
+                >
+                    {example}
+                </Text>
+
             }
             {
                 isAnswered &&
@@ -47,6 +80,23 @@ const VocabularyCard = ({
                 />
 
             }
+            {
+                onSearch &&
+                <IconButton
+                    icon={CommonIcons.search}
+                    color={CommonColor.primary}
+                    size={32}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 10
+                    }}
+                    onPress={onSearch}
+
+                />
+
+            }
+
 
         </View>
     )

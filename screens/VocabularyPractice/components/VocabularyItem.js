@@ -4,7 +4,7 @@ import { BOXSHADOW, COLORS } from '../../../app/constants/themes'
 
 const VocabularyItem = ({
     title,
-    status = 'hard',
+    status = '',
     onItemPress
 }) => {
     return (

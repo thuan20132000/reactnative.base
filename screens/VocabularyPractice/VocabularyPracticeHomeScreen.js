@@ -1,7 +1,6 @@
 import { StackActions, useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native'
-import { ScrollView } from 'react-native'
+import { SafeAreaView, ScrollView } from 'react-native'
 import { StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../../app/constants/themes'
 import FirebaseManager from '../../app/FirebaseManager'
@@ -10,6 +9,13 @@ import ListItem from './components/ListItem'
 
 import firestore from '@react-native-firebase/firestore';
 import { getUniqueId } from 'react-native-device-info'
+import SpeechToText from '../sharing/SpeechToText'
+import SearchBar from '../sharing/SearchBar'
+import { Input } from 'react-native-elements/dist/input/Input'
+import CommonColor from '../../utils/CommonColor'
+import CommonIcons from '../../utils/CommonIcons'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const VocabularyPracticeHomeScreen = () => {
 
@@ -44,6 +50,8 @@ const VocabularyPracticeHomeScreen = () => {
 
         });
 
+
+
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
 
@@ -57,42 +65,71 @@ const VocabularyPracticeHomeScreen = () => {
 
             }}
         >
-            <View
-                style={{ flex: 1 }}
 
+            <ScrollView
+                style={{
+                    backgroundColor: 'white',
+                    flex: 1
+                }}
             >
-                <ScrollView
+                <View
                     style={{
-                        backgroundColor: 'white',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-around',
+                        paddingHorizontal: 12,
+                        width: 60,
+                        height: 60,
+                        alignSelf: 'center',
+                        borderWidth: 1,
+                        borderRadius: 30,
+                        margin: 6,
+                        borderColor: CommonColor.primary
                     }}
                 >
-                    {
-                        deskList?.map((item, index) =>
-                            <ListItem
-                                key={index.toString()}
-                                onItemPress={() => _onShowVocabularyDetail(item)}
-                                desk={item}
-                            />
 
-                        )
-                    }
+                    {/* <Text style={{ flex: 3, color: 'gray', fontStyle: 'italic' }}>
+                        {started ? "I am listening..." : "Say something..."}
+                    </Text> */}
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('VocabularySearch')}
+                    >
 
-
-                </ScrollView>
-
-                <View>
-                    <ButtonText
-                        label={'ADD DESK'}
-                        containerStyle={styles.buttonCreate}
-                        labelStyle={{
-                            color: COLORS.secondary,
-                            fontSize: 16,
-                            fontWeight: '700'
-                        }}
-                        onItemPress={_onShowVocabularyCreate}
-                    />
+                        <MaterialCommunityIcons
+                            name={CommonIcons.search}
+                            size={32}
+                            color={'coral'}
+                        />
+                    </TouchableOpacity>
 
                 </View>
+                {
+                    deskList?.map((item, index) =>
+                        <ListItem
+                            key={index.toString()}
+                            onItemPress={() => _onShowVocabularyDetail(item)}
+                            desk={item}
+                        />
+
+                    )
+                }
+
+
+            </ScrollView>
+
+            <View>
+                <ButtonText
+                    label={'ADD DESK'}
+                    containerStyle={styles.buttonCreate}
+                    labelStyle={{
+                        color: COLORS.secondary,
+                        fontSize: 16,
+                        fontWeight: '700'
+                    }}
+                    onItemPress={_onShowVocabularyCreate}
+                />
+
             </View>
 
 

@@ -15,7 +15,11 @@ const ListItem = ({
 
             onPress={onItemPress}
         >
-            <Text style={{ fontSize: 18 }}>{desk?.name}</Text>
+            <Text style={{ color: CommonColor.primary, fontSize: 18, fontWeight: '700' }}
+                numberOfLines={2}
+            >
+                {desk?.name}
+            </Text>
             {/* <Text>32</Text>
             <Text>60%</Text> */}
         </TouchableOpacity>

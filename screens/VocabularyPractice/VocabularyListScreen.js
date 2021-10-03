@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native'
 import { BOXSHADOW, COLORS } from '../../app/constants/themes'
 import VocabularyItem from './components/VocabularyItem'
 import ProgressCircle from 'react-native-progress-circle'
@@ -9,13 +9,23 @@ import PracticeVocabularyModel from '../../app/models/PracticeVocabularyModel'
 import CommonColor from '../../utils/CommonColor'
 import FirebaseManager from '../../app/FirebaseManager'
 import { getUniqueId } from 'react-native-device-info'
-import { Alert } from 'react-native'
+import { FAB } from 'react-native-paper'
+import ActionSheet from 'react-native-actionsheet'
+import ButtonText from '../../components/Button/BottonText'
+import { Button, CheckBox, Icon, ListItem } from 'react-native-elements'
+
+
+
+
 const VocabularyListScreen = () => {
 
     const navigation = useNavigation()
     const route = useRoute()
     const { desk } = route?.params ?? ''
     const [vocabularyList, setVocabularyList] = useState([])
+    const _refActionSheet = useRef()
+
+
     useEffect(() => {
 
 
@@ -87,6 +97,23 @@ const VocabularyListScreen = () => {
 
     }
 
+    const _onShowActionSheet = () => {
+        _refActionSheet.current.show()
+    }
+
+    const _onActionSheetPress = (index) => {
+        switch (index) {
+            case 0:
+                _onCreateVocabulary()
+                break;
+            case 1:
+                _onRemoveDesk()
+                break;
+            default:
+                break;
+        }
+    }
+
     return (
         <View
             style={[
@@ -94,50 +121,7 @@ const VocabularyListScreen = () => {
             ]}
         >
 
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    padding: 12,
-                    justifyContent: 'center',
-                    backgroundColor: 'white'
-                }}
-            >
-                {/* <View style={{ flex: 1 }} >
-                    <ProgressCircle
-                        percent={Number(22)}
-                        radius={60}
-                        borderWidth={12}
-                        color="#3399FF"
-                        shadowColor="#999"
-                        bgColor="#fff"
 
-                    >
-                        <Text style={{ fontSize: 18, color: CommonColor.primary }}>{22}%</Text>
-                        <Text style={{ fontSize: 12, color: CommonColor.primary }}>Today's Progress</Text>
-                    </ProgressCircle>
-                </View> */}
-
-                <TouchableOpacity
-                    style={[styles.button]}
-                    onPress={_onShowPracticeScreen}
-                >
-                    <Text style={{ fontWeight: '700', color: 'white' }}>Practise</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.button]}
-                    onPress={_onCreateVocabulary}
-                >
-                    <Text style={{ fontWeight: '700', color: 'white' }}>New Word</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.button, { backgroundColor: 'red' }]}
-                    onPress={_onRemoveDesk}
-                >
-                    <Text style={{ fontWeight: '700', color: 'white' }}>Remove</Text>
-                </TouchableOpacity>
-            </View>
 
 
             <ScrollView
@@ -147,15 +131,64 @@ const VocabularyListScreen = () => {
             >
                 {
                     vocabularyList?.map((item, index) =>
-                        <VocabularyItem key={`${item?.name}-${index.toString()}`}
-                            title={item?.name}
-                            onItemPress={() => _onShowVocabularyDetail(item)}
-                        />
+                        <ListItem key={index.toString()} bottomDivider
+                            onPress={() => _onShowVocabularyDetail(item)}
+                        >
+                            <ListItem.Content>
+                                <ListItem.Title>{item?.name}</ListItem.Title>
+                            </ListItem.Content>
+                            <ListItem.Chevron size={34} />
+
+                        </ListItem>
                     )
                 }
 
             </ScrollView>
+          
 
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <Icon
+                    reverse
+                    name='trash-outline'
+                    type='ionicon'
+                    color='#ff4500'
+                    onPress={_onRemoveDesk}
+                />
+                <Icon
+                    reverse
+                    name='add-circle-outline'
+                    type='ionicon'
+                    color={'#4287f5'}
+                    onPress={_onCreateVocabulary}
+                />
+
+
+                <Button
+                    title="PRACTISE"
+                    type="solid"
+
+                    onPress={_onShowPracticeScreen}
+                    containerStyle={{
+                        marginHorizontal: 12,
+                        marginVertical: 12,
+                        flex: 1
+
+
+                    }}
+
+                    titleStyle={{
+                        fontSize: 12
+                    }}
+
+                />
+            </View>
         </View>
     )
 }
@@ -164,17 +197,20 @@ export default VocabularyListScreen
 
 const styles = StyleSheet.create({
     container: {
-
+        flex: 1,
+        backgroundColor: 'white'
     },
     button: {
-        backgroundColor: CommonColor.primary,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 6,
-        borderRadius: 6,
-        marginVertical: 2,
-        flex: 1,
-        marginHorizontal: 2,
-        ...BOXSHADOW.normal
-    }
+        backgroundColor: 'transparent',
+        borderWidth: 0.6,
+        borderColor: COLORS.secondary,
+        marginBottom: 32,
+        height: 50,
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 80,
+    },
 })

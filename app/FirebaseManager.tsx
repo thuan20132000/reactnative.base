@@ -65,6 +65,8 @@ class FirebaseManager {
                     name: vocabulary?.name,
                     native_name: vocabulary?.native_name,
                     image_url: vocabulary?.image_url,
+                    word_type:vocabulary?.word_type,
+                    example:vocabulary?.example,
                     created_at: firestore.FieldValue.serverTimestamp()
                 })
                 .then(() => {
@@ -91,6 +93,9 @@ class FirebaseManager {
                     name: vocabulary?.name,
                     native_name: vocabulary?.native_name,
                     image_url: vocabulary?.image_url,
+                    word_type:vocabulary?.word_type,
+                    example:vocabulary?.example,
+                    updated_at: firestore.FieldValue.serverTimestamp()
                 })
                 .then(() => {
                     console.log('User added!');

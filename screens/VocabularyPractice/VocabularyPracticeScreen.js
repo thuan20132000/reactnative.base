@@ -12,7 +12,7 @@ import CardDefinition from '../FlashCard/components/CardDefinition';
 import VocabularyCard from '../sharing/VocabularyCard';
 import { StackActions, useNavigation, useRoute } from '@react-navigation/core'
 import { TouchableOpacity } from 'react-native';
-
+import SpeechToText from '../sharing/SpeechToText'
 const OPTIONS = {
     HARD: 'hard',
     AGAIN: 'again',
@@ -94,8 +94,14 @@ const VocabularyPracticeScreen = () => {
 
     const _onShowWebView = () => {
 
-        let word = practiceVocabulary.name?.toLowerCase().replace(' ', '-')
-        console.warn('ww: ', word)
+        let countWord = practiceVocabulary?.name?.trim().split(' ')
+        let word
+        if (countWord.length > 1) {
+            word = practiceVocabulary.name?.toLowerCase().replace(' ', '-')
+        } else {
+            word = practiceVocabulary.name?.toLowerCase()
+        }
+
         navigation.navigate('Webview', {
             url: `https://www.oxfordlearnersdictionaries.com/definition/english/${word}`
         })
@@ -131,8 +137,12 @@ const VocabularyPracticeScreen = () => {
                         <VocabularyCard
 
                             title={practiceVocabulary?.name}
+                            wordTypes={practiceVocabulary?.word_type?.toLowerCase()}
+                            example={practiceVocabulary?.example}
                             isAnswered={isAnswered}
                             onFlipPress={() => _refCardFlip.current.flip()}
+                            onSearch={_onShowWebView}
+
                         />
 
                         <VocabularyCard
@@ -211,6 +221,8 @@ const VocabularyPracticeScreen = () => {
                         />
                     </View>
                 }
+
+                <SpeechToText disabled={true} />
             </ScrollView>
 
         </View>
