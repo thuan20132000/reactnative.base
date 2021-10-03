@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import androidx.annotation.Nullable; // <--- Add this line if not already existing
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.microsoft.codepush.react.CodePush;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -39,6 +40,10 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected @Nullable String getBundleAssetName() {
           return "app.bundle";
+        }
+        @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
         }
       };
 

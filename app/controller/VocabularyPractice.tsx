@@ -39,7 +39,6 @@ class VocabularyPracticeController {
         let now = new Date()
         let remind_time = addDays(now, 2)
         this.Vocabulary.remind_time = remind_time
-        console.log(this.VocabularyList)
         // if()
         this.VocabularyList = this.VocabularyList.filter(e => e != this.Vocabulary)
 
@@ -68,7 +67,6 @@ class VocabularyPracticeController {
 
 
     public getNextVocabulary(): VocabularyModel {
-        console.log(this.VocabularyList[0])
         if (this.getRemindVocabulary()) {
             return this.getRemindVocabulary()
         } else {

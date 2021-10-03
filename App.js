@@ -42,6 +42,8 @@ import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 import { config } from './app/constants';
 import OneSignal from 'react-native-onesignal';
 import RootNavigation from './app/Router/RootNavigation';
+import codePush from "react-native-code-push";
+
 
 const rootReducer = combineReducers({
   flashcard: flashcard_list_reducer,
@@ -53,6 +55,7 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 
 
+let codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -88,22 +91,13 @@ const App = () => {
 
     //END OneSignal Init Code
 
-    
 
-   
 
-    
+
+
+
 
   }, []);
-
-
-
-
-
-  // Unsubscribe from events on unmount
-
-
-
 
 
 
@@ -119,23 +113,5 @@ const App = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
-export default App;
+export default codePush(codePushOptions)(App);

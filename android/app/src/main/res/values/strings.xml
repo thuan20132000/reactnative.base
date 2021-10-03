@@ -2,5 +2,6 @@
     <string name="app_name">Luyện đọc tiếng Anh - Từ điển Oxford Anh-Anh </string>
     <string name="facebook_app_id">566146441223542</string>
     <string name="fb_login_protocol_scheme">fb566146441223542</string>
+     <string moduleConfig="true" name="CodePushDeploymentKey">qhMBfUht7AAElzUgN9YhkpWrrV2f_dVhZJFDd</string>
 
 </resources>

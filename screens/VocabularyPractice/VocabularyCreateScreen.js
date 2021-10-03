@@ -34,7 +34,9 @@ const VocabularyCreateScreen = () => {
         { type: 'Verb', selected: false },
         { type: 'Adjective', selected: false },
         { type: 'Adverb', selected: false },
-        { type: 'Prepositions', selected: false }
+        { type: 'Prepositions', selected: false },
+        { type: 'Phrasal Verbs', selected: false }
+
     ])
 
     const _isFormValidation = () => {
@@ -63,7 +65,7 @@ const VocabularyCreateScreen = () => {
     }
 
     const _onAddDeskVocabulary = () => {
-        
+
         if (!_isFormValidation()) {
             Alert.alert("", "Please enter full information!")
             return
@@ -246,9 +248,9 @@ const VocabularyCreateScreen = () => {
                         style={[styles.group]}
                     >
                         <Input
-                            label={'Native Language'}
+                            label={'Meaning'}
                             labelStyle={{ color: 'gray' }}
-                            placeholder='Write something here...'
+                            placeholder='Write meaning here...'
                             multiline
                             inputContainerStyle={{
                                 borderBottomColor: CommonColor.primary,
