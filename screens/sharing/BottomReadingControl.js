@@ -9,7 +9,8 @@ const BottomReadingControl = ({
     onPlayAudio,
     onShowFriends,
     onCommentPress,
-    onLikePress
+    onLikePress,
+    onQuizPress
 }) => {
     return (
         <View
@@ -40,6 +41,27 @@ const BottomReadingControl = ({
                             }}
                         />
                     </TouchableOpacity>
+                    {
+                        onQuizPress &&
+                        <TouchableOpacity
+                            style={[
+                                styles.buttonIcon,
+                                {
+                                    alignSelf: 'flex-start'
+                                }
+                            ]}
+                            onPress={onQuizPress}
+                        >
+                            <MaterialCommunityIcons
+                                name={'comment-alert-outline'}
+                                size={32}
+                                style={{
+                                    color: 'red'
+                                }}
+                            />
+                        </TouchableOpacity>
+
+                    }
                     {/* <TouchableOpacity
                     style={[
                         styles.buttonIcon,

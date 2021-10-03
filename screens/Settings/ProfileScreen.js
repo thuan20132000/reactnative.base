@@ -218,15 +218,19 @@ const ProfileScreen = (props) => {
                         <View
                             style={{
                                 display: 'flex',
-                                flexDirection: 'row'
+                                flexDirection: 'row',
+                                flex:1,
                             }}
                         >
-                            <Text style={{ fontWeight: '700', fontSize: 18, marginRight: 12 }}>{userProfile?.fullname}</Text>
+                            <Text numberOfLines={2} style={{ fontWeight: '700', flex:2,fontSize: 18, marginRight: 12 }}>{userProfile?.fullname}</Text>
                             <MaterialCommunityIcons
                                 name={CommonIcons.accountEdit}
                                 size={24}
                                 color={CommonColor.primary}
                                 onPress={_onShowUpdateScreen}
+                                style={{
+                                    flex:1
+                                }}
                             />
 
                         </View>

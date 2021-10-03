@@ -15,12 +15,12 @@ const SelectionItem = ({
             <Image
                 source={imagePath}
                 style={{
-                    width: 100,
-                    height: 60
+                    width: 60,
+                    height: 50
                 }}
                 resizeMode={'contain'}
             />
-            <Text style={{fontWeight:'700'}}>{label}</Text>
+            <Text style={{fontWeight:'700',fontSize:14}}>{label}</Text>
         </TouchableOpacity>
     )
 }
@@ -30,12 +30,12 @@ export default SelectionItem
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        width: 120,
         height: 80,
         margin: 8,
         borderRadius: 8,
         ...BOXSHADOW.normal,
         alignItems:'center',
-        padding:2
+        padding:2,
+        flex:1
     }
 })

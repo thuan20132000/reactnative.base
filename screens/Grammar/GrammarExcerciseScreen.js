@@ -454,15 +454,16 @@ const GrammarExcerciseScreen = (props) => {
 
 
     React.useEffect(() => {
-        GrammarAPI.getGrammarExcercise(item.id)
-            .then((res) => {
-                if (res.status_code === 200) {
-                    setExcerciseList(res?.data)
-                }
-            })
-            .catch((err) => {
-                console.warn('err: ', err)
-            })
+        setPractisedExcercise(excerciseList)
+        // GrammarAPI.getGrammarExcercise(item?.id)
+        //     .then((res) => {
+        //         if (res.status_code === 200) {
+        //             setExcerciseList(res?.data)
+        //         }
+        //     })
+        //     .catch((err) => {
+        //         console.warn('err: ', err)
+        //     })
     }, []);
 
     const _refFlatList = React.useRef();

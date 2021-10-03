@@ -30,6 +30,14 @@ import UpdateUserInfoScreen from "../../screens/Settings/UpdateUserInfoScreen";
 import { checkVersion } from "react-native-check-version";
 import { Alert } from "react-native";
 import { Linking } from "react-native";
+import GrammarExcerciseScreen from "../../screens/Grammar/GrammarExcerciseScreen";
+import ConversationPractisingScreen from "../../screens/Conversation/ConversationPractisingScreen";
+import VocabularyPracticeHomeScreen from "../../screens/VocabularyPractice/VocabularyPracticeHomeScreen";
+import VocabularyCreateScreen from "../../screens/VocabularyPractice/VocabularyCreateScreen";
+import VocabularyPracticeScreen from "../../screens/VocabularyPractice/VocabularyPracticeScreen";
+import ListCreateScreen from "../../screens/VocabularyPractice/ListCreateScreen";
+import VocabularyListScreen from "../../screens/VocabularyPractice/VocabularyListScreen";
+import VocabularySearchScreen from "../../screens/VocabularyPractice/VocabularySearchScreen";
 
 
 
@@ -94,7 +102,16 @@ const TabBottom = () => {
 
 
         >
-
+            <TabBottomNavigator.Screen
+                name="VideoCall"
+                component={ConversationList}
+                options={{
+                    title: "Reading & Speaking"
+                }}
+            // listeners={{
+            //     tabPress: _onCheckIsAuthenticated
+            // }}
+            />
             {
                 Platform.OS === 'android' &&
                 <TabBottomNavigator.Screen
@@ -106,23 +123,14 @@ const TabBottom = () => {
                 />
 
             }
-            {/* <TabBottomNavigator.Screen
-                name="ReadingPracticeStack"
-                component={ReadingPracticeStack}
-                options={{
-                    title: "Luyện Đọc"
-                }}
-            /> */}
             <TabBottomNavigator.Screen
-                name="VideoCall"
-                component={ConversationList}
+                name="VocabularyPracticeHome"
+                component={VocabularyPracticeHomeScreen}
                 options={{
-                    title: "Reading & Speaking"
-                }}
-                listeners={{
-                    tabPress: _onCheckIsAuthenticated
+                    title: "Vocabulary"
                 }}
             />
+
             {/* <TabBottomNavigator.Screen
                 name="TabGrammar"
                 component={GrammarStack}
@@ -158,18 +166,21 @@ const HomeStack = () => {
     useEffect(() => {
 
         checkVersion().then(res => {
-            console.log("Got version info:", res.url);
+            // console.log("Got version info:", res.url);
             if (res.needsUpdate) {
                 Alert.alert('You need to update the new version!', '',
                     [
                         {
-                            text: 'Cập nhật',
+                            text: 'Update',
                             onPress: () => {
                                 Linking.openURL(res.url)
                             }
                         }
                     ]
                 )
+                setIsShown(false)
+
+
             } else {
                 getUserAuth()
                     .then(res => {
@@ -227,7 +238,8 @@ const HomeStack = () => {
                 name={'ConversationDetail'}
                 component={ConversationDetailScreen}
                 options={{
-                    title: ""
+                    title: "",
+                    headerShown: false
                 }}
             />
             <Stack.Screen
@@ -330,7 +342,57 @@ const HomeStack = () => {
                 }}
 
             />
+            <Stack.Screen
+                name={"ConversationQuiz"}
+                component={GrammarExcerciseScreen}
+                options={{
+                    title: ""
+                }}
 
+            />
+            <Stack.Screen
+                name={"ConversationPractising"}
+                component={ConversationPractisingScreen}
+                options={{
+                    title: ""
+                }}
+
+            />
+            <Stack.Screen
+                name={"VocabularyCreate"}
+                component={VocabularyCreateScreen}
+                options={{
+                    title: ""
+                }}
+            />
+            <Stack.Screen
+                name={"VocabularyPractice"}
+                component={VocabularyPracticeScreen}
+                options={{
+                    title: ""
+                }}
+            />
+            <Stack.Screen
+                name={"ListCreate"}
+                component={ListCreateScreen}
+                options={{
+                    title: ""
+                }}
+            />
+            <Stack.Screen
+                name={"VocabularyList"}
+                component={VocabularyListScreen}
+                options={{
+                    title: ""
+                }}
+            />
+            <Stack.Screen
+                name={"VocabularySearch"}
+                component={VocabularySearchScreen}
+                options={{
+                    title: "",
+                }}
+            />
         </Stack.Navigator>
     )
 }

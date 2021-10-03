@@ -13,7 +13,8 @@ const ButtonText = ({
     rightIcon,
     width,
     icon,
-    iconSize=24
+    iconSize = 24,
+    descriptions
 }) => {
     return (
         <TouchableOpacity
@@ -33,15 +34,23 @@ const ButtonText = ({
             onPress={onItemPress}
             disabled={disabled}
         >
-            <Text
-                style={[
-                    styles.text,
-                    labelStyle,
-                   
-                ]}
-            >
-                {label}
-            </Text>
+            <View>
+                <Text
+                    style={[
+                        styles.text,
+                        labelStyle,
+
+                    ]}
+                >
+                    {label}
+                </Text>
+                {
+                    descriptions &&
+                    <Text style={{ color: CommonColor.border }}>{descriptions}</Text>
+
+                }
+
+            </View>
             {
                 icon &&
                 <MaterialCommunityIcons

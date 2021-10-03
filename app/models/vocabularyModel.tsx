@@ -19,11 +19,11 @@ class VocabularyModel {
     topics:Array<TopicModel>;
 
 
-    constructor(data: { ID: String; name: String; word_type: String; phon_us: String; phon_uk: String; sound_us: String; sound_uk: String; definition: String; meaning: String; example: String; status: String; created_at: Date; updated_at: Date; topics: Array<TopicModel>; }) {
+    constructor(data) {
         if (data === null) {
             return;
         }
-        this.id = data?.ID;
+        this.id = data?.ID ?? data?.id;
         this.name = data?.name;
         this.word_type = data?.word_type;
         this.phon_us = data?.phon_us;
