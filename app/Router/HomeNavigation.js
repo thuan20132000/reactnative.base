@@ -86,7 +86,7 @@ const TabBottom = () => {
                         iconName = CommonIcons.bookMarker
 
                     }
-                    else if (route.name === 'TabGrammar') {
+                    else if (route.name === 'VocabularyPracticeHome') {
                         iconName = CommonIcons.bookMarker
                     }
                     else {

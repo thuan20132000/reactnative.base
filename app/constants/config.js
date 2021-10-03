@@ -1,3 +1,5 @@
+import Admob from "../config/admob";
+
 export default {
 
     aws_url: "https://practiceenglishv2.s3.ap-southeast-1.amazonaws.com/",
@@ -48,4 +50,9 @@ export default {
     // adbmod_android_app_id: "ca-app-pub-7783640686150605~7080533923",
     // adbmod_android_banner: 'ca-app-pub-7783640686150605/1636635552',
     // adbmod_android_fullpage: 'ca-app-pub-7783640686150605/1921683340',
+
+    adbmod_app_id: Admob.adbmod_app_id,
+    adbmod_banner: Admob.adbmod_banner,
+    adbmod_fullpage: Admob.adbmod_fullpage
+
 }
