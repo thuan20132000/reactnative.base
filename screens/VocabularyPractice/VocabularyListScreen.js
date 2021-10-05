@@ -13,6 +13,8 @@ import { FAB } from 'react-native-paper'
 import ActionSheet from 'react-native-actionsheet'
 import ButtonText from '../../components/Button/BottonText'
 import { Button, CheckBox, Icon, ListItem } from 'react-native-elements'
+import { BannerAd, TestIds, BannerAdSize } from '@react-native-firebase/admob';
+import { config } from '../../app/constants'
 
 
 
@@ -123,7 +125,20 @@ const VocabularyListScreen = () => {
 
 
 
-
+            <View
+                style={{
+                    display: 'flex',
+                    alignSelf: 'center',
+                }}
+            >
+                <BannerAd
+                    unitId={__DEV__ ? TestIds.BANNER : config.adbmod_banner}
+                    size={BannerAdSize.BANNER}
+                    requestOptions={{
+                        requestNonPersonalizedAdsOnly: true,
+                    }}
+                />
+            </View>
             <ScrollView
                 style={{
                     backgroundColor: 'white'
@@ -144,7 +159,7 @@ const VocabularyListScreen = () => {
                 }
 
             </ScrollView>
-          
+
 
             <View
                 style={{

@@ -13,6 +13,16 @@ import VocabularyCard from '../sharing/VocabularyCard';
 import { StackActions, useNavigation, useRoute } from '@react-navigation/core'
 import { TouchableOpacity } from 'react-native';
 import SpeechToText from '../sharing/SpeechToText'
+import { BannerAd, TestIds, BannerAdSize, InterstitialAd, AdEventType } from '@react-native-firebase/admob';
+import { config } from '../../app/constants'
+
+const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_fullpage;
+const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial, {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing', 'books', 'travel', 'medicine', 'fitness'],
+});
+
+
 const OPTIONS = {
     HARD: 'hard',
     AGAIN: 'again',
@@ -33,10 +43,35 @@ const VocabularyPracticeScreen = () => {
     const [learningVocabularyNumber, setLearningVocabularyNumber] = useState(0)
 
     const [vocabularyList, setVocabularyList] = useState(data)
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         setPracticeVocabulary(vocabularyList[vocabularyPosition])
         setLearningVocabularyNumber(vocabularyList.length)
+
+        interstitial.load();
+        // Adv
+        const eventListener = interstitial.onAdEvent(type => {
+            if (type === AdEventType.LOADED) {
+                setLoaded(true);
+            }
+        });
+        // Start loading the interstitial straight away
+        const unsubscribe = navigation.addListener('beforeRemove', () => {
+            try {
+                interstitial.show()
+            } catch (error) {
+                console.warn('error: adv has not loaded yet')
+            }
+
+        });
+
+        // Unsubscribe from events on unmount
+        return () => {
+            unsubscribe()
+            eventListener()
+
+        };
     }, [])
 
 
@@ -111,6 +146,20 @@ const VocabularyPracticeScreen = () => {
         <View
             style={{ flex: 1 }}
         >
+            <View
+                style={{
+                    display: 'flex',
+                    alignSelf: 'center',
+                }}
+            >
+                <BannerAd
+                    unitId={__DEV__ ? TestIds.BANNER : config.adbmod_banner}
+                    size={BannerAdSize.BANNER}
+                    requestOptions={{
+                        requestNonPersonalizedAdsOnly: true,
+                    }}
+                />
+            </View>
             <ScrollView>
                 {/* <View
                     style={{

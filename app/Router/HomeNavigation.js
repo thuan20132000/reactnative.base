@@ -164,49 +164,70 @@ const HomeStack = () => {
     const navigation = useNavigation()
 
     useEffect(() => {
+        getUserAuth()
+            .then(res => {
+                if (res != null) {
+                    // let user = new UserModel(res)
+                    // console.warn('aas: ', user)
+                    AppManager.shared.user = res
+                    // navigation.dispatch( 
+                    //     StackActions.replace('HomeStack')
+                    // )
+                }
 
-        checkVersion().then(res => {
-            // console.log("Got version info:", res.url);
-            if (res.needsUpdate) {
-                Alert.alert('You need to update the new version!', '',
-                    [
-                        {
-                            text: 'Update',
-                            onPress: () => {
-                                Linking.openURL(res.url)
-                            }
-                        }
-                    ]
-                )
-                setIsShown(false)
+            })
+            .catch((err) => {
+                console.warn('errors: ', err)
+                // navigation.dispatch(
+                //     StackActions.replace('Signin')
+                // )
+            })
+            .finally(() => {
+                setIsShown(true)
+            })
+
+        // checkVersion().then(res => {
+        //     // console.log("Got version info:", res.url);
+        //     if (res.needsUpdate) {
+        //         Alert.alert('You need to update the new version!', '',
+        //             [
+        //                 {
+        //                     text: 'Update',
+        //                     onPress: () => {
+        //                         Linking.openURL(res.url)
+        //                     }
+        //                 }
+        //             ]
+        //         )
+        //         setIsShown(false)
 
 
-            } else {
-                getUserAuth()
-                    .then(res => {
-                        if (res != null) {
-                            // let user = new UserModel(res)
-                            // console.warn('aas: ', user)
-                            AppManager.shared.user = res
-                            // navigation.dispatch( 
-                            //     StackActions.replace('HomeStack')
-                            // )
-                        }
+        //     } else {
+        //         getUserAuth()
+        //             .then(res => {
+        //                 if (res != null) {
+        //                     // let user = new UserModel(res)
+        //                     // console.warn('aas: ', user)
+        //                     AppManager.shared.user = res
+        //                     // navigation.dispatch( 
+        //                     //     StackActions.replace('HomeStack')
+        //                     // )
+        //                 }
 
-                    })
-                    .catch((err) => {
-                        console.warn('errors: ', err)
-                        // navigation.dispatch(
-                        //     StackActions.replace('Signin')
-                        // )
-                    })
-                    .finally(() => {
-                        setIsShown(true)
-                    })
+        //             })
+        //             .catch((err) => {
+        //                 console.warn('errors: ', err)
+        //                 // navigation.dispatch(
+        //                 //     StackActions.replace('Signin')
+        //                 // )
+        //             })
+        //             .finally(() => {
+        //                 setIsShown(true)
+        //             })
 
-            }
+        //     }
 
-        })
+        // })
 
 
     }, [])
