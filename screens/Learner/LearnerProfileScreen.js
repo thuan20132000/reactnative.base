@@ -9,7 +9,7 @@ import ConversationAPI from '../../app/API/ConversationAPI'
 import RNProgressHud from 'progress-hud';
 import UserModel from '../../app/models/userModel'
 import CommonColor from '../../utils/CommonColor'
-import { StackActions, useNavigation } from '@react-navigation/core'
+import { StackActions, useNavigation } from '@react-navigation/native'
 
 
 const LearnerProfileScreen = (props) => {

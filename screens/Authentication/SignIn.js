@@ -47,7 +47,7 @@ const SignIn = (props) => {
         AuthenticationAPI.signin(provider, access_token)
             .then(user => {
                 navigation.dispatch(
-                    StackActions.replace('HomeStack')
+                    StackActions.replace('TabBar')
                 )
             })
             .catch(err => {
@@ -270,7 +270,7 @@ const SignIn = (props) => {
                 </View>
                 {/* </TouchableOpacity> */}
             </View>
-            <View
+            {/* <View
                 style={{
                     position: 'absolute',
                     bottom: 30,
@@ -285,7 +285,7 @@ const SignIn = (props) => {
 
                 />
 
-            </View>
+            </View> */}
         </View>
     )
 }

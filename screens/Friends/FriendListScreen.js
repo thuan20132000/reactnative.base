@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import ConversationAPI from '../../app/API/ConversationAPI';
 import FriendItem from './components/FriendItem'
 import RNProgressHud from 'progress-hud';
-import { useNavigation, useRoute } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import FriendShipModel from '../../app/models/FriendShipModel';
 import AppManager from '../../app/AppManager';
 import UserModel from '../../app/models/userModel';

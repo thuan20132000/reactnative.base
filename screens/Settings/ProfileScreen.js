@@ -236,10 +236,10 @@ const ProfileScreen = (props) => {
                         </View>
 
                     </View>
-                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', margin: 12 }}>
+                    {/* <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', margin: 12 }}>
                         <Switch value={isPublic} onValueChange={_onUpdateUserStatus} />
                         <Text style={{ marginHorizontal: 12 }}>Everybody can see me?</Text>
-                    </View>
+                    </View> */}
                 </View>
 
 
@@ -270,7 +270,7 @@ const ProfileScreen = (props) => {
 
                         }}
                     >
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             style={{
                                 width: '40%',
                                 height: 70,
@@ -336,7 +336,7 @@ const ProfileScreen = (props) => {
                                 color={'white'}
                             />
                             <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>My Notification</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         {/* <View
                             style={{
                                 width: '40%',

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import ConversationAPI from '../../app/API/ConversationAPI';
 import ConversationPostModel from '../../app/models/conversationPostModel';
 import RNProgressHud from 'progress-hud';
@@ -8,7 +8,7 @@ import AppManager from '../../app/AppManager';
 import { config } from '../../app/constants';
 import CommonImages from '../../utils/CommonImages';
 import ReadingTextPractice from './components/ReadingTextPractice';
-
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 import { BannerAd, TestIds, BannerAdSize, InterstitialAd, AdEventType } from '@react-native-firebase/admob';
@@ -63,7 +63,7 @@ const ConversationPracticeScreen = (props) => {
                 }
             })
             .catch(err => {
-                console.warn('err: ',err)
+                console.warn('err: ', err)
             })
             .finally(() => {
                 RNProgressHud.dismiss()
@@ -106,16 +106,12 @@ const ConversationPracticeScreen = (props) => {
     }, [])
 
     // No advert ready to show yet
-    if (!loaded) {
-        return <View />;
-    }
+    // if (!loaded) {
+    //     return <View />;
+    // }
 
     return (
-        <SafeAreaView
-            style={{
-                flex: 1
-            }}
-        >
+        <View style={{ flex: 1 }}>
 
             {/* header */}
             {
@@ -195,7 +191,7 @@ const ConversationPracticeScreen = (props) => {
                 }
             </View>
 
-        </SafeAreaView>
+        </View>
 
 
 

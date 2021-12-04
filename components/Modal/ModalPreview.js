@@ -1,6 +1,5 @@
 import React from 'react'
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
-import * as PropTypes from 'prop-types';
 
 const ModalPreview = ({ isShow = true, children }) => {
     const [modalVisible, setModalVisible] = React.useState(isShow);

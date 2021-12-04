@@ -4,15 +4,12 @@ import ReadingCard from './components/ReadingCard'
 
 import ConversationAPI from '../../app/API/ConversationAPI';
 import RNProgressHud from 'progress-hud';
-import AppManager from '../../app/AppManager';
 import TopicItem from './components/TopicItem';
 import ConversationItem from './components/ConversationItem';
-import { BOXSHADOW } from '../../app/constants/themes';
 
 import { config } from '../../app/constants';
 
 import { BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
-import SearchBar from '../../components/shared/SearchBar';
 import SelectionItem from './components/SelectionItem';
 import { removeUserAuth, setStorageData } from '../../app/StorageManager';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -127,9 +124,6 @@ const ConversationList = (props) => {
         props.navigation.navigate('LearnerHome')
     }
 
-    const _onShowPractising = () => {
-        navigation.navigate('ConversationPractising')
-    }
 
     React.useLayoutEffect(() => {
         // props.navigation.setOptions({
@@ -152,11 +146,11 @@ const ConversationList = (props) => {
         >
 
             <ScrollView
-                stickyHeaderIndices={[2]}
+                stickyHeaderIndices={[1]}
                 showsVerticalScrollIndicator={false}
             >
 
-                <View
+                {/* <View
                     style={[{
                         display: 'flex',
                         flexDirection: 'row',
@@ -164,14 +158,11 @@ const ConversationList = (props) => {
                         alignItems: 'center',
                         // borderBottomWidth:0.4,
                         // borderBottomColor:"gray",
-                        alignSelf: 'center'
+                        alignSelf: 'center',
+                        paddingVertical: 8
                     }]}
                 >
-                    <SelectionItem
-                        imagePath={require('../../app/assets/images/ic_friends.png')}
-                        label={'Practising Groups'}
-                        onPress={_onShowPractising}
-                    />
+
                     <SelectionItem
                         imagePath={require('../../app/assets/images/ic_tutor.png')}
                         label={'Learners'}
@@ -179,7 +170,7 @@ const ConversationList = (props) => {
 
 
                     />
-                </View>
+                </View> */}
 
 
                 <View
@@ -231,7 +222,7 @@ const ConversationList = (props) => {
 
                             )
                         }}
-                        keyExtractor={(item) => item?.id}
+                        keyExtractor={(item) => item?.id?.toString()}
                         contentContainerStyle={{
                             paddingVertical: 12,
 
@@ -253,14 +244,14 @@ const ConversationList = (props) => {
                                 title={item.title}
                                 image_path={item.image}
                                 onPracticePress={() => _onOpenPostPractice(item)}
-                                onGroupPress={() => _onOpenConversationgroups(item)}
+                                // onGroupPress={() => _onOpenConversationgroups(item)}
                                 conversation={item}
-                            
+
                             />
 
                         )
                     }}
-                    keyExtractor={(item) => item?.id}
+                    keyExtractor={(item) => item?.id?.toString()}
                     contentContainerStyle={{
                         paddingVertical: 12,
 

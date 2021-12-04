@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Alert, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'

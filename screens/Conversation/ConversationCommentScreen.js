@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, SafeAreaView, TouchableOpacity,Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
