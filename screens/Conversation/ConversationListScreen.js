@@ -35,7 +35,7 @@ const ConversationList = (props) => {
                 }
             })
             .catch((err) => {
-                console.warn('err" ', err)
+                console.log('err" ', err)
 
             })
             .finally(() => { })
@@ -48,7 +48,6 @@ const ConversationList = (props) => {
                 }
             })
             .catch((err) => {
-                console.warn('err all: ', err?.response?.data?.message ?? err)
                 removeUserAuth()
                 navigation.dispatch(
                     StackActions.replace('Signin')
@@ -115,7 +114,7 @@ const ConversationList = (props) => {
                 console.log('sasa:', res)
             })
             .catch((err) => {
-                console.warn('err" ', err)
+                console.log('err ', err)
             })
             .finally(() => RNProgressHud.dismiss())
     }
