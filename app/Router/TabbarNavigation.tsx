@@ -4,10 +4,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ConversationList from '../../screens/Conversation/ConversationListScreen';
 import ProfileScreen from '../../screens/Settings/ProfileScreen';
 import CommonIcons from '../../utils/CommonIcons';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AppManager from '../AppManager';
-
+import RecordingScreen from '../../screens/Recording/RecordingScreen';
+import Constants from '../constants/Constant';
+import CommunityHomeScreen from '../../screens/Community/CommunityHomeScreen';
 const TabbarNavigation = () => {
     const TabBottomNavigator = createBottomTabNavigator();
     const navigation = useNavigation();
@@ -74,7 +76,14 @@ const TabbarNavigation = () => {
                 }}
 
             />
+            <TabBottomNavigator.Screen
+                name={Constants.screen.communityHomeScreen}
+                component={CommunityHomeScreen}
+                options={{
+                    title: "Reading Practice"
+                }}
 
+            />
             <TabBottomNavigator.Screen
                 name="TabSetting"
                 component={ProfileScreen}

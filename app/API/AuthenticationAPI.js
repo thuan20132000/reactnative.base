@@ -1,16 +1,16 @@
-import { config } from "../constants/index";
 import axios from 'axios'
 import UserModel from '../models/userModel'
 import { getUniqueId, getManufacturer, getDeviceId } from 'react-native-device-info';
 import { getStorageData, setStorageData, setUserAuth } from "../StorageManager";
 import AppManager from "../AppManager";
 import ProviderEnums from "../Enums/ProviderEnums";
+import Constants from '../constants/Constant';
 class AuthenticationAPI {
 
     constructor() {
         this.axios = axios
         this.facebook_graph = `https://graph.facebook.com/v11.0/me?`
-        this.api_url = config.api_url
+        this.api_url = Constants.config.api_url
     }
 
 

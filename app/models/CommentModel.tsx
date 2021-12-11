@@ -11,7 +11,7 @@ class CommentModel {
     created_at: Date;
     updated_at: Date;
 
-    constructor(data) {
+    constructor(data: { id: Number; body: String; status: String; post: ConversationPostModel; created_at: Date; updated_at: Date; user: UserModel; }) {
         if (data === null) {
             return;
         }

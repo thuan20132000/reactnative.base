@@ -6,17 +6,15 @@ import ConversationAPI from '../../app/API/ConversationAPI';
 import RNProgressHud from 'progress-hud';
 import TopicItem from './components/TopicItem';
 import ConversationItem from './components/ConversationItem';
-
-import { config } from '../../app/constants';
-
 import { BannerAd, TestIds, BannerAdSize, Rewa, AdEventType } from '@react-native-firebase/admob';
 import SelectionItem from './components/SelectionItem';
 import { removeUserAuth, setStorageData } from '../../app/StorageManager';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import OneSignal from 'react-native-onesignal';
 import AuthenticationAPI from '../../app/API/AuthenticationAPI';
+import Constants from '../../app/constants/Constant';
 
-const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
+const adUnitId = __DEV__ ? TestIds.BANNER : Constants.config.adbmod_android_banner;
 
 const ConversationList = (props) => {
     const navigation = useNavigation()

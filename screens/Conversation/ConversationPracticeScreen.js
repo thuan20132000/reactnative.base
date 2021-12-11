@@ -5,7 +5,6 @@ import ConversationAPI from '../../app/API/ConversationAPI';
 import ConversationPostModel from '../../app/models/conversationPostModel';
 import RNProgressHud from 'progress-hud';
 import AppManager from '../../app/AppManager';
-import { config } from '../../app/constants';
 import CommonImages from '../../utils/CommonImages';
 import ReadingTextPractice from './components/ReadingTextPractice';
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -13,9 +12,10 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { BannerAd, TestIds, BannerAdSize, InterstitialAd, AdEventType } from '@react-native-firebase/admob';
 import PracticeProgressModel from '../../app/models/PracticeProgressModel';
+import Constants from '../../app/constants/Constant';
 
-const adUnitId = __DEV__ ? TestIds.BANNER : config.adbmod_android_banner;
-const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : config.adbmod_android_fullpage;
+const adUnitId = __DEV__ ? TestIds.BANNER : Constants.config.adbmod_android_banner;
+const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : Constants.config.adbmod_android_fullpage;
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial, {
     requestNonPersonalizedAdsOnly: true,

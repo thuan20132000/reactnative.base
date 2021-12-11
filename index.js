@@ -6,8 +6,7 @@ import { AppRegistry, Platform } from 'react-native';
 import App from './App';
 import { name as appNameIOS } from './app.json';
 import { name as appNameANDROID } from './app.android.json';
-
-
+import 'react-native-gesture-handler';
 
 if (Platform.OS === 'android') {
     AppRegistry.registerComponent(appNameANDROID, () => App);

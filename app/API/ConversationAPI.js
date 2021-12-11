@@ -1,11 +1,11 @@
 
-import { config } from "../constants/index";
 import axios from 'axios'
 import AppManager from "../AppManager";
 import { getStorageData, getUserAuth } from "../StorageManager";
 import FriendShipEnum from "../Enums/FriendShipEnum";
 import CommentModel from "../models/CommentModel";
 import UserModel from "../models/userModel";
+import Constants from "../constants/Constant";
 
 
 
@@ -16,7 +16,7 @@ function getUserAccessToken(resolve) {
 class ConversationAPI {
 
     constructor() {
-        this.api_url = config.api_url
+        this.api_url = Constants.config.api_url
         this.axios = axios
         this.headers = ''
 

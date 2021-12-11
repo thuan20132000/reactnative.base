@@ -93,7 +93,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is required for searching friends for you</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Enhancing app experiences with call realtime audio in reading practices.</string>
+	<string>Give $(PRODUCT_NAME) permission to use your microphone. Your record wont be shared without your permission.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow access to Photos to use photo from your library to your profile image</string>
 	<key>SKAdNetworkItems</key>
@@ -251,7 +251,7 @@
 	<array>
 		<string>FontAwesome.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
-		<string>IonIcons.ttf</string>
+		<string>Ionicons.ttf</string>
 		<string>AntDesign.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>

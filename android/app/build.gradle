@@ -95,7 +95,6 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
-apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -150,6 +149,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 31
         versionName "2.0"
+        vectorDrawables.useSupportLibrary = true
+
     }
     splits {
         abi {
@@ -177,12 +178,12 @@ android {
     }
     buildTypes {
         debug {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -225,21 +226,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0' // <-- add this; newer versions should work too
 
 
-    implementation(project(':react-native-jitsi-meet')){
-        exclude group: 'com.facebook.react',module:'react-native-locale-detector'
-        exclude group: 'com.facebook.react',module:'react-native-vector-icons'
-        // Un-comment below if using hermes
-        //exclude group: 'com.facebook',module:'hermes'
-        // Un-comment any packages below that you have added to your project to prevent `duplicate_classes` errors
-        exclude group: 'com.facebook.react',module:'react-native-community-async-storage'
-        //exclude group: 'com.facebook.react',module:'react-native-community_netinfo'
-        //exclude group: 'com.facebook.react',module:'react-native-svg'
-        //exclude group: 'com.facebook.react',module:'react-native-fetch-blob'
-        exclude group: 'com.facebook.react',module:'react-native-webview'
-        //exclude group: 'com.facebook.react',module:'react-native-linear-gradient'
-        exclude group: 'com.facebook.react',module:'react-native-sound'
-        exclude group: 'com.facebook.react',module:'react-native-svg'
-    }
+
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion

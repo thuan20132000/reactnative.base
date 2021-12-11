@@ -15,10 +15,13 @@ import NotificationListScreen from '../../screens/Notification/NotificationListS
 import ConversationCommentScreen from '../../screens/Conversation/ConversationCommentScreen';
 import WebviewScreen from '../../screens/sharing/WebviewScreen';
 import UpdateUserInfoScreen from '../../screens/Settings/UpdateUserInfoScreen';
+import Constants from '../constants/Constant';
+import RecordingScreen from '../../screens/Recording/RecordingScreen';
+import { RootStackParamList } from './RootStackScreenList';
+import CommunityPostDetailScreen from '../../screens/Community/CommunityPostDetailScreen';
 
-
-const Stack = createStackNavigator()
-export const _refRootNavigation = createNavigationContainerRef()
+const Stack = createStackNavigator<RootStackParamList>()
+export const _refRootNavigation = createNavigationContainerRef<RootStackParamList>()
 
 export default function RootNavigation() {
     const [screen, setScreen] = useState("Signin")
@@ -50,7 +53,7 @@ export default function RootNavigation() {
 
     return (
         <NavigationContainer ref={_refRootNavigation}>
-            <Stack.Navigator initialRouteName={screen}>
+            <Stack.Navigator initialRouteName={'TabBar'}>
                 <Stack.Screen
                     name={'TabBar'}
                     component={TabbarNavigation}
@@ -134,6 +137,22 @@ export default function RootNavigation() {
                 <Stack.Screen
                     name={"UpdateInfo"}
                     component={UpdateUserInfoScreen}
+                    options={{
+                        title: ""
+                    }}
+
+                />
+                <Stack.Screen
+                    name={"RecordingScreen"}
+                    component={RecordingScreen}
+                    options={{
+                        title: ""
+                    }}
+
+                />
+                <Stack.Screen
+                    name={"CommunityPostDetailScreen"}
+                    component={CommunityPostDetailScreen}
                     options={{
                         title: ""
                     }}
