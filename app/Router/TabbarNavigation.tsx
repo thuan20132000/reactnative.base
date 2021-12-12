@@ -5,7 +5,7 @@ import ConversationList from '../../screens/Conversation/ConversationListScreen'
 import ProfileScreen from '../../screens/Settings/ProfileScreen';
 import CommonIcons from '../../utils/CommonIcons';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Icon from 'react-native-vector-icons/Ionicons'
 import AppManager from '../AppManager';
 import RecordingScreen from '../../screens/Recording/RecordingScreen';
 import Constants from '../constants/Constant';
@@ -35,32 +35,18 @@ const TabbarNavigation = () => {
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
 
-                    if (route.name === 'HomeStack') {
-                        iconName = 'format-list-bulleted'
-
-                    } else if (route.name === 'FlashCard') {
-                        iconName = CommonIcons.checkboxMarked
-                    } else if (route.name === 'ReadingPracticeStack') {
-                        iconName = CommonIcons.bookOpen
-                    } else if (route.name === 'ReadingPractice') {
-                        iconName = 'format-list-bulleted'
+                    if (route.name === Constants.screen.communityHomeScreen) {
+                        iconName = Constants.ionicon.globalNetwork
                     }
-                    else if (route.name === 'Notification') {
-                        iconName = CommonIcons.bell
-                    }
-                    else if (route.name === 'TabDictionary') {
-                        iconName = CommonIcons.bookMarker
-
-                    }
-                    else if (route.name === 'VocabularyPracticeHome') {
-                        iconName = CommonIcons.bookMarker
+                    else if (route.name === "TabSetting") {
+                        iconName = Constants.ionicon.profile
                     }
                     else {
-                        iconName = 'account-details'
+                        iconName = Constants.ionicon.book
                     }
 
                     // You can return any component that you like here!
-                    return <MaterialCommunityIcon name={iconName} size={size} color={color} />;
+                    return <Icon name={iconName} size={size} color={color} />;
                 },
             })
 

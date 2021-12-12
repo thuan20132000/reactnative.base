@@ -204,7 +204,7 @@ const RecordingScreen = () => {
                 }}
             >
                 <Button
-                    title="Save"
+                    // title="Save"
                     type='clear'
                 />
 

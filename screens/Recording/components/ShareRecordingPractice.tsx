@@ -21,6 +21,11 @@ const ShareRecordingPractice = () => {
             />
             <Button
                 title="Share"
+                containerStyle={{
+                    marginHorizontal: 20,
+                    borderRadius: 20,
+                    marginVertical: 20
+                }}
 
             />
         </View>

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 40,
-        paddingHorizontal:8
+        paddingHorizontal:8,
     },
     label: {
 

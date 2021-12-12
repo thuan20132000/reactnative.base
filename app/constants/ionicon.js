@@ -5,9 +5,14 @@ export default IONICONS = {
     recordingStop: 'md-stop-circle-outline',
     audioPlay: 'md-play',
     audioPause: 'md-pause',
-    likeThumb: 'thumbs-up',
-    dislikeThumb: 'thumbs-down',
+    likeThumb: 'heart',
+    dislikeThumb: 'heart-outline',
     comment: 'create-outline',
     send: 'send',
-    personAdd:'person-add'
+    personAdd: 'person-add',
+    down: 'chevron-down',
+    globalNetwork: 'globe-outline',
+    home:'home-outline',
+    book:'book-outline',
+    profile:'person-circle-outline'
 }

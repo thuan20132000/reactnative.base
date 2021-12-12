@@ -1,4 +1,5 @@
 import CommentModel from "../models/CommentModel";
+import TopicModel from "../models/topicModel";
 
 
 export default {
@@ -72,6 +73,33 @@ export default {
             user: {
                 id: 1
             }
+        })
+    ],
+    communityTopics: [
+        new TopicModel({
+            id: 1,
+            name: "Speaking",
+
+        }),
+        new TopicModel({
+            id: 2,
+            name: "Reading",
+
+        }),
+        new TopicModel({
+            id: 3,
+            name: "Conversation",
+
+        }),
+        new TopicModel({
+            id: 4,
+            name: "Translation",
+
+        }),
+        new TopicModel({
+            id: 5,
+            name: "Grammar",
+
         })
     ]
 

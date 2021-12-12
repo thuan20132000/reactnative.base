@@ -1,31 +1,46 @@
-import React, { useRef, useState } from 'react'
-import { Dimensions, StyleSheet, Text, View, ScrollView, Image, ImageBackground } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import AudioRecorderPlayer, {
-    AVEncoderAudioQualityIOSType,
-    AVEncodingOption,
-    AudioEncoderAndroidType,
-    AudioSet,
-    AudioSourceAndroidType,
-} from 'react-native-audio-recorder-player';
+import React, { useEffect, useRef, useState } from 'react'
+import { Dimensions, StyleSheet, Text, View, ScrollView, Image, ImageBackground, SafeAreaView, Keyboard, KeyboardEvent } from 'react-native'
+
 import { Button } from 'react-native-elements';
-import RenderHtml from "react-native-render-html";
-import ImagePicker from 'react-native-image-crop-picker';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import Constants from '../../app/constants/Constant';
 import { LinearProgress } from 'react-native-elements';
 
 import ActionSheet from "react-native-actions-sheet";
 import CommunityCommentList from './components/CommunityCommentList';
+import SendingInput from '../../components/Input/SendingInput';
+import CommonTextInput from '../../components/Input/CommonTextInput';
 
-const CommunityPostDetailScreen = () => {
+interface PostDetailI {
+
+}
+
+const CommunityPostDetailScreen = (props: PostDetailI) => {
     const _refActionSheetCommentList = useRef<ActionSheet>()
     const [imagePath, setImagepath] = useState('')
     const [isPlaying, setIsPlaying] = useState(false)
     const [isRecording, setIsRecording] = useState(false)
 
+    const [isCommentFocussing, setIsCommentFocussing] = useState(false)
+
+    useEffect(() => {
+        const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+            setIsCommentFocussing(true);
+        });
+        const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+            setIsCommentFocussing(false);
+        });
+
+        return () => {
+            showSubscription.remove();
+            hideSubscription.remove();
+        };
+    }, [])
     return (
-        <View style={{}}>
+
+        <ScrollView style={{ flex: 1 }}>
+
             <View style={{ alignItems: 'center' }}>
                 <ImageBackground
                     source={{ uri: imagePath == '' || !imagePath ? 'https://upload.wikimedia.org/wikipedia/commons/7/75/Southern_Life_in_Southern_Literature_text_page_322.jpg' : imagePath }}
@@ -38,7 +53,6 @@ const CommunityPostDetailScreen = () => {
                 />
 
             </View>
-
 
             <View style={{ alignItems: 'center' }}>
                 <View style={{
@@ -62,21 +76,21 @@ const CommunityPostDetailScreen = () => {
                 <Button
                     type='clear'
                     icon={
-                        <Icon name={Constants.ionicon.likeThumb} size={22} color={Constants.COLORS.primary} />
+                        <Icon name={Constants.ionicon.likeThumb} size={18} color={Constants.COLORS.primary} />
                     }
                     title={'12'}
                 />
                 <Button
                     type='clear'
                     icon={
-                        <Icon name={Constants.ionicon.dislikeThumb} size={22} color={Constants.COLORS.primary} />
+                        <Icon name={Constants.ionicon.dislikeThumb} size={18} color={Constants.COLORS.primary} />
                     }
                     title={'6'}
                 />
                 <Button
                     type='clear'
                     icon={
-                        <Icon name={Constants.ionicon.comment} size={22} color={Constants.COLORS.primary} />
+                        <Icon name={Constants.ionicon.comment} size={18} color={Constants.COLORS.primary} />
                     }
                     title={'21'}
                     onPress={() => _refActionSheetCommentList.current?.setModalVisible()}
@@ -84,9 +98,37 @@ const CommunityPostDetailScreen = () => {
             </View>
 
             <ActionSheet ref={_refActionSheetCommentList} >
-                <CommunityCommentList containerStyle={{ height: Constants.device.height - 100 }} />
+                <Button
+                    type='clear'
+                    icon={
+                        <Icon name={Constants.ionicon.down} size={22} color={Constants.COLORS.primary} />
+                    }
+                    onPress={() => _refActionSheetCommentList.current?.setModalVisible(false)}
+                />
+                <View style={{
+                    height: Constants.device.height * (isCommentFocussing ? 0.6 : 0.9),
+                    justifyContent: 'flex-end',
+                    paddingTop: 4
+                }}>
+                    <CommunityCommentList />
+
+                    <SendingInput
+                        multiline
+                        placeholder='Add a comment to post...'
+                        style={{
+
+                        }}
+                        containerStyle={{
+                            borderTopWidth: 1,
+                            borderTopColor: Constants.COLORS.primary,
+                            paddingVertical: 4,
+                        }}
+                    />
+                </View>
+
             </ActionSheet>
-        </View>
+
+        </ScrollView>
     )
 }
 

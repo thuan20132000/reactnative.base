@@ -16,7 +16,6 @@ class AuthenticationAPI {
 
     async signin(provider = ProviderEnums.FACEBOOK, access_token) {
         try {
-            console.log('pro: ', provider)
             let dataform = new FormData()
             dataform.append('provider', provider)
             dataform.append('access_token', access_token)

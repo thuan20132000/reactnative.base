@@ -1,23 +1,61 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
 import { Button, LinearProgress } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import Constants from '../../../app/constants/Constant'
 import Icon from 'react-native-vector-icons/Ionicons';
+import ActionSheet from 'react-native-actions-sheet'
+import CommunityCommentList from './CommunityCommentList'
+import AudioRecorderPlayer, {
+    AVEncoderAudioQualityIOSType,
+    AVEncodingOption,
+    AudioEncoderAndroidType,
+    AudioSet,
+    AudioSourceAndroidType,
+} from 'react-native-audio-recorder-player';
+
+import RNFS from 'react-native-fs';
+import CommunityHandler from '../CommunityHandler'
+
 
 interface PostCardItemI {
-    onPress?: TouchableOpacityProps['onPress']
+    onPress?: TouchableOpacityProps['onPress'],
+    onPlayingPress?: TouchableOpacityProps['onPress']
 }
+
+const audioRecorderPlayer = new AudioRecorderPlayer();
+
 const CommunityPostCard = (props: PostCardItemI) => {
+    const _refActionSheetCommentList = useRef<ActionSheet>()
+    const [isPlaying, setIsPlaying] = useState(false)
+
+    const { startPlay, stopPlay, playingTime } = CommunityHandler()
+
+    const showPostCommentsList = () => {
+        onStopPlay()
+        _refActionSheetCommentList.current.setModalVisible(true)
+    }
+
+    const onStopPlay = () => {
+        stopPlay()
+    };
+
+    const onStartPlay = async () => {
+        startPlay()
+    };
     return (
         <View style={[styles.container]}>
+            <View>
+                <Text>{new Date().toISOString()}</Text>
+            </View>
             <TouchableOpacity onPress={props.onPress}>
                 <View style={[styles.header]}>
                     <FastImage
                         source={{ uri: Constants.masterData.communityData.avatarUrl }}
                         style={{
-                            width: 60,
-                            height: 60,
+                            width: 50,
+                            height: 50,
+                            borderRadius: 25,
                             marginRight: 12,
                             marginVertical: 12
                         }}
@@ -50,35 +88,51 @@ const CommunityPostCard = (props: PostCardItemI) => {
                 <Button
                     type='clear'
                     icon={
-                        <Icon name={Constants.ionicon.audioPlay} size={28} color={Constants.COLORS.primary} />
+                        <Icon name={isPlaying ? Constants.ionicon.audioPause : Constants.ionicon.audioPlay} size={28} color={Constants.COLORS.primary} />
                     }
+                    onPress={onStartPlay}
                 />
-                <LinearProgress variant='determinate' color="primary" style={{ marginHorizontal: 8 }} />
+                <LinearProgress variant='determinate' color="primary" style={{ marginHorizontal: 8, width: '90%' }} />
+                <Text>{playingTime}</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
                 <Button
                     type='clear'
                     icon={
-                        <Icon name={Constants.ionicon.likeThumb} size={22} color={Constants.COLORS.primary} />
+                        <Icon name={Constants.ionicon.likeThumb} size={18} color={Constants.COLORS.primary} />
                     }
                     title={'12'}
                 />
                 <Button
                     type='clear'
                     icon={
-                        <Icon name={Constants.ionicon.dislikeThumb} size={22} color={Constants.COLORS.primary} />
+                        <Icon name={Constants.ionicon.dislikeThumb} size={18} color={Constants.COLORS.primary} />
                     }
                     title={'6'}
                 />
                 <Button
                     type='clear'
                     icon={
-                        <Icon name={Constants.ionicon.comment} size={22} color={Constants.COLORS.primary} />
+                        <Icon name={Constants.ionicon.comment} size={18} color={Constants.COLORS.primary} />
                     }
                     title={'21'}
+                    onPress={showPostCommentsList}
                 />
             </View>
-        </View>
+
+            <ActionSheet ref={_refActionSheetCommentList} >
+                <Button
+                    type='clear'
+                    icon={
+                        <Icon name={Constants.ionicon.down} size={22} color={Constants.COLORS.primary} />
+                    }
+                    onPress={() => _refActionSheetCommentList.current?.setModalVisible(false)}
+                />
+
+                <CommunityCommentList />
+
+            </ActionSheet >
+        </View >
     )
 }
 
@@ -88,9 +142,8 @@ const styles = StyleSheet.create({
     container: {
         padding: 12,
         backgroundColor: '#ffffff',
-        borderRadius: 12,
+        marginVertical: 2,
         ...Constants.styles.boxshadow,
-        margin: 12
     },
     header: {
         flexDirection: 'row',

@@ -1,9 +1,9 @@
 import React from 'react'
 import { ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { ScrollableComponent } from 'react-native-keyboard-aware-scroll-view'
+import { FlatList } from 'react-native-gesture-handler'
 import Constants from '../../../app/constants/Constant'
-import CommonTextInput from '../../../components/Input/CommonTextInput'
 import SendingInput from '../../../components/Input/SendingInput'
+
 import UserComment from '../../../components/Input/UserComment'
 
 interface CommentListI {
@@ -12,17 +12,13 @@ interface CommentListI {
 
 const CommunityCommentList = (props: CommentListI) => {
     return (
-        <View style={[styles.container, props.containerStyle]}>
-            <ScrollView style={{ flex: 1, paddingHorizontal: 12 }}>
-                {
-                    Constants.masterData.comments.map((item, index) =>
-                        <UserComment />
-                    )
-                }
+            <FlatList
 
-            </ScrollView>
-            <SendingInput containerStyle={{ paddingBottom: 30 }} multiline placeholder='Add a comment to post...' />
-        </View>
+                data={Constants.masterData.comments}
+                renderItem={({ item }) => <UserComment />}
+            />
+
+
     )
 }
 

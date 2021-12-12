@@ -13,7 +13,8 @@ interface TextInputI {
     multiline?: TextInputProps['multiline'],
     onChangeText?: TextInputProps['onChangeText'],
     rightIcon?: String,
-    containerStyle?: ViewStyle
+    containerStyle?: ViewStyle,
+    onFocus?: TextInputProps['onFocus']
 
 }
 const SendingInput = (props: TextInputI) => {
@@ -27,6 +28,7 @@ const SendingInput = (props: TextInputI) => {
                     onChangeText={props.onChangeText}
                     multiline={props.multiline}
                     importantForAutofill='no'
+                    onFocus={props.onFocus}
                 />
 
                 <Button

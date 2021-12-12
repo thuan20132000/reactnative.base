@@ -9,10 +9,9 @@ class TopicModel {
     status: String;
     created_at: Date;
     updated_at: Date;
-    field:FieldModel;
-    vocabulary_total:0;
+    field: FieldModel;
 
-    constructor(data) {
+    constructor(data: { id: Number; name: String; slug: String; image: String; status: String; created_at: Date; updated_at: Date; field: FieldModel; vocabulary_total: number; }) {
         if (data === null) {
             return;
         }
@@ -24,9 +23,7 @@ class TopicModel {
         this.created_at = data?.created_at;
         this.updated_at = data?.updated_at;
         this.field = data?.field;
-        if(data?.vocabulary_total){
-            this.vocabulary_total = data?.vocabulary_total
-        }
+
     }
 
 
@@ -38,7 +35,7 @@ class TopicModel {
             status: this.status,
             created_at: this.created_at,
             updated_at: this.updated_at,
-            field:this.field,
+            field: this.field,
         }
     }
 
