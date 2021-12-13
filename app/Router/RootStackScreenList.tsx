@@ -1,6 +1,8 @@
 
 export type RootStackParamList = {
-    RecordingScreen: {},
+    RecordingScreen: {
+        post_id:number
+    },
     TabBar: {},
     ConversationPractice: {},
     Signin: {}
@@ -11,5 +13,7 @@ export type RootStackParamList = {
     ConversationComment: {},
     Webview: {},
     UpdateInfo: {},
-    CommunityPostDetailScreen: {}
+    CommunityPostDetailScreen: {
+        post_id:number
+    }
 }

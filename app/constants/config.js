@@ -7,10 +7,10 @@ export default {
 
 
     // Dev local
-    api_url: "http://192.168.1.3:8000",
-    media_url: "http://192.168.1.3:8000/media",
-    IP_ADDRESS: "192.168.1.3",
-    PORT: 8000,
+    // api_url: "http://192.168.1.3:8000",
+    // media_url: "http://192.168.1.3:8000/media",
+    // IP_ADDRESS: "192.168.1.3",
+    // PORT: 8000,
 
     // staging
     // api_url:"http://34.87.31.84:8000",
@@ -20,10 +20,10 @@ export default {
 
 
     // // production linode
-    // api_url: "http://139.162.112.22",
-    // media_url: "http://139.162.112.22/media",
-    // IP_ADDRESS: "139.162.112.22",
-    // PORT: 8001,
+    api_url: "http://139.162.112.22",
+    media_url: "http://139.162.112.22/media",
+    IP_ADDRESS: "139.162.112.22",
+    PORT: 8001,
 
     // dev linode
     // api_url: "http://139.162.112.22:8000",

@@ -3,17 +3,17 @@ import CommonImages from "../../utils/CommonImages";
 
 class UserModel {
     id: Number;
-    username: String;
-    profile_pic: String;
+    username: string;
+    profile_pic: string;
     status: Boolean;
-    token: String;
-    device_id: String;
+    token: string;
+    device_id: string;
     created_at: Date;
     updated_at: Date;
-    access_token: String;
-    descriptions: String;
+    access_token: string;
+    descriptions: string;
     is_friendship: Boolean
-    fullname: String
+    fullname: string
 
     constructor(data) {
         if (data === null) {
@@ -50,11 +50,11 @@ class UserModel {
     //     }
     // }
 
-    setProfilePic(imageUrl: String) {
+    setProfilePic(imageUrl: string) {
         this.profile_pic = imageUrl ?? null
     }
 
-    toString() {
+    tostring() {
         return {
             id: this.id,
             username: this.username,

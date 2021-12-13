@@ -3,41 +3,31 @@ import UserModel from "./userModel";
 
 
 class CommentModel {
-    id: Number;
-    body: String;
+    id: number;
+    body: string;
     user: UserModel;
     post: ConversationPostModel
-    status: String;
+    status: string;
     created_at: Date;
     updated_at: Date;
+    favorite_numbers: number
 
-    constructor(data: { id: Number; body: String; status: String; post: ConversationPostModel; created_at: Date; updated_at: Date; user: UserModel; }) {
+    constructor(data: { id: number; body: string; favorite_numbers: number, content: string; author: UserModel; status: string; post: ConversationPostModel; created_at: Date; updated_at: Date; user: UserModel; }) {
         if (data === null) {
             return;
         }
         this.id = data?.id;
-        this.body = data?.body;
+        this.body = data?.body ?? data?.content;
 
         this.status = data?.status;
         this.post = data?.post;
         this.created_at = data?.created_at;
         this.updated_at = data?.updated_at;
-        this.user = data?.user;
+        this.user = data?.user ?? data?.author;
+        this.favorite_numbers = data?.favorite_numbers
 
     }
 
-
-    toString() {
-        return {
-            id: this.id,
-            body: this.body,
-            status: this.status,
-            created_at: this.created_at,
-            updated_at: this.updated_at,
-            post: this.post,
-            user: this.user
-        }
-    }
 
 
 }

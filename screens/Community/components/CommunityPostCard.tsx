@@ -6,30 +6,22 @@ import Constants from '../../../app/constants/Constant'
 import Icon from 'react-native-vector-icons/Ionicons';
 import ActionSheet from 'react-native-actions-sheet'
 import CommunityCommentList from './CommunityCommentList'
-import AudioRecorderPlayer, {
-    AVEncoderAudioQualityIOSType,
-    AVEncodingOption,
-    AudioEncoderAndroidType,
-    AudioSet,
-    AudioSourceAndroidType,
-} from 'react-native-audio-recorder-player';
 
-import RNFS from 'react-native-fs';
 import CommunityHandler from '../CommunityHandler'
-
+import CommunityPostModel from '../../../app/models/CommunityPostModel'
 
 interface PostCardItemI {
     onPress?: TouchableOpacityProps['onPress'],
-    onPlayingPress?: TouchableOpacityProps['onPress']
+    onPlayingPress?: TouchableOpacityProps['onPress'],
+    onToggleFavoritePress?: TouchableOpacityProps['onPress']
+    post: CommunityPostModel
 }
-
-const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const CommunityPostCard = (props: PostCardItemI) => {
     const _refActionSheetCommentList = useRef<ActionSheet>()
-    const [isPlaying, setIsPlaying] = useState(false)
-
-    const { startPlay, stopPlay, playingTime } = CommunityHandler()
+    // const [post, setPost] = useState<CommunityPostModel>(props.post)
+    const post = props.post
+    const { startPlay, stopPlay, playingTime, setRecordPath, isPlaying } = CommunityHandler({})
 
     const showPostCommentsList = () => {
         onStopPlay()
@@ -41,17 +33,23 @@ const CommunityPostCard = (props: PostCardItemI) => {
     };
 
     const onStartPlay = async () => {
+        onStopPlay()
         startPlay()
     };
+
+
+    useEffect(() => {
+        setRecordPath(post?.record)
+    }, [])
     return (
         <View style={[styles.container]}>
             <View>
-                <Text>{new Date().toISOString()}</Text>
+                <Text style={{ fontSize: 12, color: 'gray', fontStyle: 'italic' }}>{new Date(post?.created_at).toDateString()}</Text>
             </View>
             <TouchableOpacity onPress={props.onPress}>
                 <View style={[styles.header]}>
                     <FastImage
-                        source={{ uri: Constants.masterData.communityData.avatarUrl }}
+                        source={{ uri: post?.author?.profile_pic ? post?.author?.profile_pic : Constants.masterData.communityData.avatarUrl }}
                         style={{
                             width: 50,
                             height: 50,
@@ -61,75 +59,82 @@ const CommunityPostCard = (props: PostCardItemI) => {
                         }}
                     />
                     <View>
-                        <Text>Dominique Palmer</Text>
-                        <Text>American</Text>
+                        <Text>{post?.author?.fullname}</Text>
+                        {/* <Text>American</Text> */}
                     </View>
                 </View>
                 <View>
                     <FastImage
-                        source={{ uri: Constants.masterData.communityData.pageReaderUrl }}
+                        source={{ uri: post?.image ?? Constants.masterData.communityData.pageReaderUrl }}
                         style={{
-                            width: '100%',
-                            height: 120,
-                            marginVertical: 12
+                            width: Constants.device.width,
+                            height: 160,
+                            marginVertical: 12,
+                            alignSelf: 'center'
                         }}
-                        resizeMode='center'
+                        resizeMode='cover'
                     />
-                    <Text numberOfLines={2}>{Constants.masterData.communityData.descriptions}</Text>
+                    <Text>{post?.title}</Text>
                 </View>
 
             </TouchableOpacity>
-            <View style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingHorizontal: 20
-            }}>
+            {
+                post?.record &&
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingHorizontal: 20
+                }}>
+                    <Button
+                        type='clear'
+                        icon={
+                            <Icon name={isPlaying ? Constants.ionicon.audioPause : Constants.ionicon.audioPlay} size={28} color={Constants.COLORS.primary} />
+                        }
+                        onPress={onStartPlay}
+                    />
+                    <LinearProgress variant='determinate' color="primary" style={{ marginHorizontal: 8, width: '90%' }} />
+                    <Text>{playingTime}</Text>
+                </View>
+
+            }
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Button
                     type='clear'
                     icon={
-                        <Icon name={isPlaying ? Constants.ionicon.audioPause : Constants.ionicon.audioPlay} size={28} color={Constants.COLORS.primary} />
+                        <Icon name={post.is_user_favorite ? Constants.ionicon.likeThumb : Constants.ionicon.dislikeThumb} size={18} color={Constants.COLORS.primary} />
                     }
-                    onPress={onStartPlay}
+                    title={post?.favorite_numbers.toString()}
+                    onPress={props.onToggleFavoritePress}
                 />
-                <LinearProgress variant='determinate' color="primary" style={{ marginHorizontal: 8, width: '90%' }} />
-                <Text>{playingTime}</Text>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-                <Button
-                    type='clear'
-                    icon={
-                        <Icon name={Constants.ionicon.likeThumb} size={18} color={Constants.COLORS.primary} />
-                    }
-                    title={'12'}
-                />
-                <Button
+                {/* <Button
                     type='clear'
                     icon={
                         <Icon name={Constants.ionicon.dislikeThumb} size={18} color={Constants.COLORS.primary} />
                     }
                     title={'6'}
-                />
+                /> */}
                 <Button
                     type='clear'
                     icon={
                         <Icon name={Constants.ionicon.comment} size={18} color={Constants.COLORS.primary} />
                     }
-                    title={'21'}
+                    title={post?.comment_numbers.toString()}
                     onPress={showPostCommentsList}
                 />
             </View>
 
             <ActionSheet ref={_refActionSheetCommentList} >
-                <Button
+                {/* <Button
                     type='clear'
                     icon={
                         <Icon name={Constants.ionicon.down} size={22} color={Constants.COLORS.primary} />
                     }
                     onPress={() => _refActionSheetCommentList.current?.setModalVisible(false)}
-                />
-
-                <CommunityCommentList />
+                /> */}
+                <View style={{ height: Constants.device.height * 0.65 }}>
+                    <CommunityCommentList post={post} />
+                </View>
 
             </ActionSheet >
         </View >

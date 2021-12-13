@@ -14,5 +14,6 @@ export default IONICONS = {
     globalNetwork: 'globe-outline',
     home:'home-outline',
     book:'book-outline',
-    profile:'person-circle-outline'
+    profile:'person-circle-outline',
+    addCircle:'add-circle'
 }

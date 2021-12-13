@@ -9,7 +9,6 @@ import AudioRecorderPlayer, {
     AudioSourceAndroidType,
 } from 'react-native-audio-recorder-player';
 import { Button } from 'react-native-elements';
-import RenderHtml from "react-native-render-html";
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Constants from '../../app/constants/Constant';
@@ -17,10 +16,12 @@ import { LinearProgress } from 'react-native-elements';
 
 import ActionSheet from "react-native-actions-sheet";
 import ShareRecordingPractice from './components/ShareRecordingPractice';
-
-
-
-const RNFS = require('react-native-fs');
+import CommunityAPI from '../../app/API/CommunityAPI';
+import 'react-native-get-random-values'
+import { v4 as uuidv4, v1 as uuidv1 } from 'uuid';
+import RNFS from 'react-native-fs';
+import AppManager from '../../app/AppManager';
+import RNProgressHud from 'progress-hud';
 
 interface recordingTime {
     recordSecs: string,
@@ -45,9 +46,8 @@ const RecordingScreen = () => {
     const [isRecording, setIsRecording] = useState(false)
     const [isPlaying, setIsPlaying] = useState(false)
     const [playingTime, setPlayingTime] = useState('')
-
     const dirMusic = `${RNFS.ExternalStorageDirectoryPath}/Music`;
-    const practice_audio_path = dirMusic + "/reading_practice.wav";
+    const practice_audio_path = dirMusic + `/practice_audio.wav`;
     const [imagePath, setImagepath] = useState('')
     const audioSet = {
         AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
@@ -57,6 +57,19 @@ const RecordingScreen = () => {
         AVFormatIDKeyIOS: AVEncodingOption.aac,
     };
     const meteringEnabled = false;
+    const [post, setPost] = useState({
+        image: {
+            uri: '',
+            type: 'image/jpeg',
+            name: 'photo.jpg',
+        },
+        title: '',
+        record: {
+            uri: `file://${practice_audio_path}`,
+            type: 'audio/wav',
+            name: '',
+        }
+    })
 
     const onStartRecord = async () => {
         // Start recording
@@ -65,7 +78,7 @@ const RecordingScreen = () => {
 
             setIsRecording(true)
             console.warn('start record...')
-            const result = await audioRecorderPlayer.startRecorder(practice_audio_path, audioSet);
+            const result = await audioRecorderPlayer.startRecorder();
             audioRecorderPlayer.addRecordBackListener((e) => {
                 let x = audioRecorderPlayer.mmss(Math.floor(e.currentPosition));
                 setRecordingtime({
@@ -86,9 +99,14 @@ const RecordingScreen = () => {
     };
 
     const onStopRecord = async () => {
-
         const result = await audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
+        let record = {
+            uri: result,
+            type: 'audio/wav',
+            name: `${uuidv4()}-${new Date().getTime()}.wav`,
+        }
+        setPost({ ...post, record: record })
         console.log(result);
         setIsRecording(false)
         setRecordingtime({ ...recordingTime, audioFile: practice_audio_path })
@@ -99,7 +117,7 @@ const RecordingScreen = () => {
 
         try {
             console.log('onStartPlay');
-            const msg = await audioRecorderPlayer.startPlayer(practice_audio_path);
+            const msg = await audioRecorderPlayer.startPlayer(post.record?.uri);
             // console.log(msg);
             setIsPlaying(true)
             audioRecorderPlayer.addPlayBackListener((e) => {
@@ -124,6 +142,8 @@ const RecordingScreen = () => {
 
         } catch (error) {
             setIsPlaying(false)
+            onStopPlay()
+
         }
     };
 
@@ -144,32 +164,91 @@ const RecordingScreen = () => {
             cropping: true,
 
         }).then(image => {
-            console.log(image);
+            let imageData = {
+                uri: image.path,
+                type: 'image/jpeg',
+                name: `${uuidv4()}-${new Date().getTime()}.jpg`,
+            };
             setImagepath(image.path)
-        });
+
+            setPost({ ...post, image: imageData })
+        })
+            .catch(err => console.log(err))
     }
 
-    const _onSharePress = () => {
+    const _onPickLibrary = () => {
+        ImagePicker.openPicker({
+
+            cropping: true,
+
+        }).then(image => {
+            let imageData = {
+                uri: image.path,
+                type: 'image/jpeg',
+                name: `${uuidv4()}-${new Date().getTime()}.jpg`,
+            };
+            setImagepath(image.path)
+
+            setPost({ ...post, image: imageData })
+        })
+            .catch(err => console.log(err))
+    }
+
+    const _onShowSharePress = () => {
+        // onStopRecord()
         _refActionSheetRecordingShare.current.setModalVisible(true)
+    }
+
+    const _onSharePress = async () => {
+
+        try {
+            RNProgressHud.show()
+            let data = {
+                title: post.title
+            }
+            if (post.image.uri != '') {
+                data['image'] = post.image
+            }
+            if (post.record.name != '') {
+                data['record'] = post.record
+            }
+            console.log('ss: ',data)
+            let response = await CommunityAPI.createPost(data)
+            console.log('succ: ', response)
+            _refActionSheetRecordingShare.current.setModalVisible(false)
+        } catch (error) {
+            AppManager.shared.handleErrorMessage("Something Went Wrong!!!")
+            console.log(error)
+        }
+        finally {
+            RNProgressHud.dismiss()
+        }
     }
     return (
         <View style={{}}>
             <View style={{ alignItems: 'center' }}>
                 <ImageBackground
-                    source={{ uri: imagePath == '' || !imagePath ? 'https://upload.wikimedia.org/wikipedia/commons/7/75/Southern_Life_in_Southern_Literature_text_page_322.jpg' : imagePath }}
+                    source={{ uri: post?.image?.uri ? post?.image?.uri : 'https://upload.wikimedia.org/wikipedia/commons/7/75/Southern_Life_in_Southern_Literature_text_page_322.jpg' }}
                     style={{
                         width: Constants.device.width * 0.9,
-                        height: Constants.device.height * 0.7,
+                        height: Constants.device.height * 0.65,
 
                     }}
                     resizeMode={'contain'}
                 />
-                <Button
-                    title="Open Camera"
-                    onPress={_onPickImage}
+                <View style={{ flexDirection: 'row', marginTop: 8 }}>
+                    <Button
+                        title=" Camera"
+                        onPress={_onPickImage}
+                        containerStyle={{ marginHorizontal: 4 }}
+                    />
+                    <Button
+                        title=" Library"
+                        onPress={_onPickLibrary}
+                        containerStyle={{ marginHorizontal: 4 }}
 
-
-                />
+                    />
+                </View>
             </View>
 
 
@@ -237,7 +316,7 @@ const RecordingScreen = () => {
 
                 <Button
                     title="Share"
-                    onPress={_onSharePress}
+                    onPress={_onShowSharePress}
                     type='clear'
 
                 />
@@ -247,7 +326,11 @@ const RecordingScreen = () => {
 
             <ActionSheet ref={_refActionSheetRecordingShare}>
                 <View style={{ height: Constants.device.height * 0.5 }}>
-                    <ShareRecordingPractice />
+                    <ShareRecordingPractice
+                        value={post.title}
+                        onChangeText={(text) => setPost({ ...post, title: text })}
+                        onSharePress={_onSharePress}
+                    />
                 </View>
             </ActionSheet>
         </View>

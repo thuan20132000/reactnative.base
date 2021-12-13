@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 
@@ -16,17 +16,20 @@ import RNFS from 'react-native-fs';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
-const CommunityHandler = () => {
+interface CommunityPostI {
+    record?: string
+}
+const CommunityHandler = (props: CommunityPostI) => {
     const dirMusic = `${RNFS.ExternalStorageDirectoryPath}/Music`;
-    const practice_audio_path = dirMusic + "/reading_practice.wav";
+    // const practice_audio_path = dirMusic + "/reading_practice.wav";
     const [isPlaying, setIsPlaying] = useState(false)
     const [playingTime, setPlayingTime] = useState('')
-
+    const [recordPath, setRecordPath] = useState('')
     const stopPlay = () => {
         console.log('onStopPlay');
+        setIsPlaying(false)
         audioRecorderPlayer.stopPlayer();
         audioRecorderPlayer.removePlayBackListener();
-        setIsPlaying(false)
     };
 
     const startPlay = async () => {
@@ -34,7 +37,7 @@ const CommunityHandler = () => {
         try {
             console.log('onStartPlay');
             stopPlay()
-            const msg = await audioRecorderPlayer.startPlayer(practice_audio_path);
+            const msg = await audioRecorderPlayer.startPlayer(recordPath);
             // console.log(msg);
             setIsPlaying(true)
             audioRecorderPlayer.addPlayBackListener((e) => {
@@ -55,9 +58,19 @@ const CommunityHandler = () => {
         }
     };
 
+
+    useEffect(() => {
+
+     
+    }, [])
+
+
     return {
         startPlay,
         stopPlay,
+        setRecordPath,
+        recordPath,
+        isPlaying,
         playingTime
     }
 }

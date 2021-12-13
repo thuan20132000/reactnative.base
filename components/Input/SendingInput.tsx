@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, TextInput, TextInputProps, StyleSheetProperties, TextPropTypes, TextProps, ViewStyle } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TextInputProps, StyleSheetProperties, TextPropTypes, TextProps, ViewStyle, ButtonProps } from 'react-native'
 import { Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Constants from '../../app/constants/Constant'
 
 interface TextInputI {
     style?: TextInputProps['style'],
-    label?: String,
+    label?: string,
     labelStyles?: TextProps['style'],
-    value?: String,
+    value?: string,
     placeholder?: TextInputProps['placeholder']
     multiline?: TextInputProps['multiline'],
     onChangeText?: TextInputProps['onChangeText'],
-    rightIcon?: String,
+    rightIcon?: string,
     containerStyle?: ViewStyle,
-    onFocus?: TextInputProps['onFocus']
+    onFocus?: TextInputProps['onFocus'],
+    onSendPress?: ButtonProps['onPress']
 
 }
 const SendingInput = (props: TextInputI) => {
@@ -29,6 +30,7 @@ const SendingInput = (props: TextInputI) => {
                     multiline={props.multiline}
                     importantForAutofill='no'
                     onFocus={props.onFocus}
+                    value={props.value}
                 />
 
                 <Button
@@ -36,6 +38,7 @@ const SendingInput = (props: TextInputI) => {
                     icon={
                         <Icon name={Constants.ionicon.send} size={22} color={Constants.COLORS.primary} />
                     }
+                    onPress={props.onSendPress}
                 />
 
 

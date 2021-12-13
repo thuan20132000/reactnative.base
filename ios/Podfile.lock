@@ -652,6 +652,8 @@ PODS:
   - react-native-fbsdk-next/Share (4.6.0):
     - FBSDKShareKit (~> 9.3)
     - React-Core
+  - react-native-get-random-values (1.7.1):
+    - React-Core
   - react-native-image-picker (4.4.2):
     - React-Core
   - react-native-onesignal (4.3.3):
@@ -876,6 +878,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
+  - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - "react-native-progress-bar-android (from `../node_modules/@react-native-community/progress-bar-android`)"
@@ -1000,6 +1003,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cameraroll"
   react-native-fbsdk-next:
     :path: "../node_modules/react-native-fbsdk-next"
+  react-native-get-random-values:
+    :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-onesignal:
@@ -1140,6 +1145,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
   react-native-fbsdk-next: a0dd8905af573ec4d21b7bc398423ccaa2ce2b07
+  react-native-get-random-values: 2c4ff6b44cb71291dabe9a8ae87d3877dcf387da
   react-native-image-picker: 6a18bc5c053ba096ec9b027bd497129cfda30e6b
   react-native-onesignal: 9a543af01c2359b7567919cd3b1490051c553e21
   react-native-progress-bar-android: be43138ab7da30d51fc038bafa98e9ed594d0c40

@@ -46,7 +46,7 @@ class AuthenticationAPI {
         let dataform = new FormData()
         dataform.append('notification_id', notification_id)
 
-        let token = AppManager.shared.user.access_token
+        let token = AppManager.shared.user?.access_token
         let res = await this.axios.put(`${this.api_url}/conversation/v1/user-notification`, dataform, {
             headers: {
                 "Content-Type": "application/json",

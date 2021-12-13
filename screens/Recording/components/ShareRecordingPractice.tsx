@@ -1,9 +1,17 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { Button } from 'react-native-elements'
+import { StyleSheet, Text, TextInputProps, View } from 'react-native'
+import { Button, ButtonProps } from 'react-native-elements'
 import CommonTextInput from '../../../components/Input/CommonTextInput'
 
-const ShareRecordingPractice = () => {
+
+interface ShareRecordingI {
+    value: string,
+    onChangeText: TextInputProps['onChangeText'],
+    onSharePress: ButtonProps['onPress']
+
+}
+
+const ShareRecordingPractice = (props: ShareRecordingI) => {
     return (
         <View style={{ ...styles.container }}>
             <CommonTextInput
@@ -18,6 +26,8 @@ const ShareRecordingPractice = () => {
                     padding: 6
                 }}
                 multiline={true}
+                value={props.value}
+                onChangeText={props.onChangeText}
             />
             <Button
                 title="Share"
@@ -26,7 +36,7 @@ const ShareRecordingPractice = () => {
                     borderRadius: 20,
                     marginVertical: 20
                 }}
-
+                onPress={props.onSharePress}
             />
         </View>
     )

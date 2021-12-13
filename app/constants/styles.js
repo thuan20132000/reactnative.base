@@ -16,5 +16,5 @@ export default StyleSheet.create({
 
 export const COLORS = {
     primary: '#277fc6',
-    white:'#ffffff'
+    white:'#ffffff',
 }

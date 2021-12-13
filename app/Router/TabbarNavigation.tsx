@@ -29,7 +29,7 @@ const TabbarNavigation = () => {
 
 
     return (
-        <TabBottomNavigator.Navigator initialRouteName={'FlashCard'}
+        <TabBottomNavigator.Navigator initialRouteName={Constants.screen.communityHomeScreen}
 
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
