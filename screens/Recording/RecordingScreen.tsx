@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Dimensions, StyleSheet, Text, View, ScrollView, Image, ImageBackground } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AudioRecorderPlayer, {
@@ -22,6 +22,8 @@ import { v4 as uuidv4, v1 as uuidv1 } from 'uuid';
 import RNFS from 'react-native-fs';
 import AppManager from '../../app/AppManager';
 import RNProgressHud from 'progress-hud';
+import { _refRootNavigation } from '../../app/Router/RootNavigation';
+import { StackActions } from '@react-navigation/native';
 
 interface recordingTime {
     recordSecs: string,
@@ -41,6 +43,8 @@ interface recordingTime {
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 const RecordingScreen = () => {
+
+
     const _refActionSheetRecordingShare = useRef<ActionSheet>()
     const [recordingTime, setRecordingtime] = useState<recordingTime>()
     const [isRecording, setIsRecording] = useState(false)
@@ -65,7 +69,7 @@ const RecordingScreen = () => {
         },
         title: '',
         record: {
-            uri: `file://${practice_audio_path}`,
+            uri: ``,
             type: 'audio/wav',
             name: '',
         }
@@ -116,7 +120,7 @@ const RecordingScreen = () => {
     const onStartPlay = async () => {
 
         try {
-            console.log('onStartPlay');
+            console.log('onStartPlay: ', post.record.uri);
             const msg = await audioRecorderPlayer.startPlayer(post.record?.uri);
             // console.log(msg);
             setIsPlaying(true)
@@ -212,115 +216,136 @@ const RecordingScreen = () => {
             if (post.record.name != '') {
                 data['record'] = post.record
             }
-            console.log('ss: ',data)
             let response = await CommunityAPI.createPost(data)
-            console.log('succ: ', response)
             _refActionSheetRecordingShare.current.setModalVisible(false)
+            _refRootNavigation.dispatch(
+                StackActions.popToTop()
+            )
         } catch (error) {
             AppManager.shared.handleErrorMessage("Something Went Wrong!!!")
-            console.log(error)
         }
         finally {
             RNProgressHud.dismiss()
         }
     }
+
     return (
         <View style={{}}>
-            <View style={{ alignItems: 'center' }}>
-                <ImageBackground
-                    source={{ uri: post?.image?.uri ? post?.image?.uri : 'https://upload.wikimedia.org/wikipedia/commons/7/75/Southern_Life_in_Southern_Literature_text_page_322.jpg' }}
+            <ScrollView>
+
+                <View style={{ alignItems: 'center' }}>
+                    <ImageBackground
+                        source={{ uri: post?.image?.uri ? post?.image?.uri : 'https://upload.wikimedia.org/wikipedia/commons/7/75/Southern_Life_in_Southern_Literature_text_page_322.jpg' }}
+                        style={{
+                            width: Constants.device.width * 0.9,
+                            height: Constants.device.height * 0.65,
+
+                        }}
+                        resizeMode={'contain'}
+                    />
+                    <View style={{ flexDirection: 'row', marginTop: 8 }}>
+                        <Button
+                            onPress={_onPickImage}
+                            containerStyle={{ marginHorizontal: 4 }}
+                            icon={
+                                <Icon name={Constants.ionicon.camera} color={Constants.COLORS.primary} size={22} />
+                            }
+                            type='clear'
+                        />
+                        <Button
+                            onPress={_onPickLibrary}
+                            containerStyle={{ marginHorizontal: 4 }}
+                            icon={
+                                <Icon name={Constants.ionicon.folder} color={Constants.COLORS.primary} size={22} />
+                            }
+                            type='clear'
+
+                        />
+                    </View>
+                </View>
+
+
+                <View style={{ alignItems: 'center' }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: Constants.device.width - 100,
+                    }}>
+                        {
+                            isPlaying ?
+                                <Button
+                                    onPress={onStopPlay}
+                                    type='clear'
+                                    icon={
+                                        <Icon name={Constants.ionicon.audioPause} color={Constants.COLORS.primary} size={28} />
+                                    }
+                                    disabled={isRecording}
+                                />
+                                :
+                                <Button
+                                    onPress={onStartPlay}
+                                    type='clear'
+                                    icon={
+                                        <Icon name={Constants.ionicon.audioPlay} color={Constants.COLORS.primary} size={28} />
+                                    }
+                                    disabled={isRecording}
+                                />
+
+                        }
+                        <LinearProgress color="primary" style={{ marginHorizontal: 8 }} />
+                        <Text>{recordingTime?.recordTime}</Text>
+                    </View>
+                </View>
+
+
+
+                <View
                     style={{
-                        width: Constants.device.width * 0.9,
-                        height: Constants.device.height * 0.65,
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        alignItems: 'flex-end',
 
                     }}
-                    resizeMode={'contain'}
-                />
-                <View style={{ flexDirection: 'row', marginTop: 8 }}>
-                    <Button
-                        title=" Camera"
-                        onPress={_onPickImage}
-                        containerStyle={{ marginHorizontal: 4 }}
-                    />
-                    <Button
-                        title=" Library"
-                        onPress={_onPickLibrary}
-                        containerStyle={{ marginHorizontal: 4 }}
+                >
+                  
 
-                    />
-                </View>
-            </View>
-
-
-            <View style={{ alignItems: 'center' }}>
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: Constants.device.width - 100,
-                }}>
-                    <Button
-                        onPress={onStartPlay}
-                        type='clear'
-                        icon={
-                            <Icon name={isPlaying ? Constants.ionicon.audioPause : Constants.ionicon.audioPlay} size={28} />
-                        }
-                        disabled={isRecording}
-                    />
-                    <LinearProgress color="primary" style={{ marginHorizontal: 8 }} />
-                    <Text>{recordingTime?.recordTime}</Text>
-                </View>
-            </View>
-
-
-
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    alignItems: 'flex-end',
-
-                }}
-            >
-                <Button
-                    // title="Save"
-                    type='clear'
-                />
-
-                <View>
-                    {
-                        !isRecording ?
-                            <Button
-                                // title="Start Record"
-                                onPress={onStartRecord}
-                                icon={
-                                    <Icon name={Constants.ionicon.micro} size={42} color={'#000000'} />
-                                }
-                                type={'clear'}
-                                disabled={isPlaying}
-                            />
-                            :
-                            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                {/* <Text>{recordingTime?.recordTime}</Text> */}
+                    <View>
+                        {
+                            !isRecording ?
                                 <Button
-                                    onPress={onStopRecord}
+                                    // title="Start Record"
+                                    onPress={onStartRecord}
                                     icon={
-                                        <Icon name={Constants.ionicon.recordingStop} size={42} color={'red'} />
+                                        <Icon name={Constants.ionicon.micro} size={42} color={Constants.COLORS.primary} />
                                     }
-                                    type='clear'
+                                    type={'clear'}
+                                    disabled={isPlaying}
                                 />
-                            </View>
+                                :
+                                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                    {/* <Text>{recordingTime?.recordTime}</Text> */}
+                                    <Button
+                                        onPress={onStopRecord}
+                                        icon={
+                                            <Icon name={Constants.ionicon.recordingStop} size={42} color={'red'} />
+                                        }
+                                        type='clear'
+                                    />
+                                </View>
 
-                    }
+                        }
+                    </View>
+
+                    <Button
+                        title="Share"
+                        onPress={_onShowSharePress}
+                        type='clear'
+                        containerStyle={{ position: 'absolute', right: 0 }}
+
+                    />
                 </View>
-
-                <Button
-                    title="Share"
-                    onPress={_onShowSharePress}
-                    type='clear'
-
-                />
-            </View>
+            </ScrollView>
 
 
 

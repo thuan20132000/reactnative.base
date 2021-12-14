@@ -12,6 +12,7 @@ import AudioRecorderPlayer, {
 } from 'react-native-audio-recorder-player';
 
 import RNFS from 'react-native-fs';
+import CommunityPostModel from '../../app/models/CommunityPostModel';
 
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -22,6 +23,7 @@ interface CommunityPostI {
 const CommunityHandler = (props: CommunityPostI) => {
     const dirMusic = `${RNFS.ExternalStorageDirectoryPath}/Music`;
     // const practice_audio_path = dirMusic + "/reading_practice.wav";
+    const [currentPost, setCurrentPost] = useState<CommunityPostModel>()
     const [isPlaying, setIsPlaying] = useState(false)
     const [playingTime, setPlayingTime] = useState('')
     const [recordPath, setRecordPath] = useState('')
@@ -30,14 +32,15 @@ const CommunityHandler = (props: CommunityPostI) => {
         setIsPlaying(false)
         audioRecorderPlayer.stopPlayer();
         audioRecorderPlayer.removePlayBackListener();
+        setPlayingTime('')
     };
 
-    const startPlay = async () => {
+    const startPlay = async (post: CommunityPostModel) => {
 
         try {
             console.log('onStartPlay');
             stopPlay()
-            const msg = await audioRecorderPlayer.startPlayer(recordPath);
+            const msg = await audioRecorderPlayer.startPlayer(post.record);
             // console.log(msg);
             setIsPlaying(true)
             audioRecorderPlayer.addPlayBackListener((e) => {
@@ -61,7 +64,7 @@ const CommunityHandler = (props: CommunityPostI) => {
 
     useEffect(() => {
 
-     
+
     }, [])
 
 
@@ -71,7 +74,9 @@ const CommunityHandler = (props: CommunityPostI) => {
         setRecordPath,
         recordPath,
         isPlaying,
-        playingTime
+        playingTime,
+        currentPost,
+        setCurrentPost
     }
 }
 

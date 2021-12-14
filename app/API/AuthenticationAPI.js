@@ -30,7 +30,7 @@ class AuthenticationAPI {
             user.access_token = resData?.access
             AppManager.shared.user = user
             setUserAuth(user.toString())
-
+            console.log(user)
             return user
 
         } catch (error) {

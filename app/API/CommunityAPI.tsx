@@ -2,12 +2,8 @@
 import axios from 'axios'
 import AppManager from "../AppManager";
 import { getStorageData, getUserAuth } from "../StorageManager";
-import FriendShipEnum from "../Enums/FriendShipEnum";
-import CommentModel from "../models/CommentModel";
-import UserModel from "../models/userModel";
-import Constants from "../constants/Constant";
+
 import BaseAPI from './BaseAPI';
-import CommunityPostModel from '../models/CommunityPostModel';
 
 
 
@@ -39,6 +35,37 @@ class CommunityAPI extends BaseAPI {
 
     }
 
+    public async getUserPostList() {
+        try {
+            let token = AppManager.shared.user.access_token
+            let endpoint = `user-posts`
+            let response = await this.axios.get(this.api_url + endpoint, {
+                params: {},
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            return this.success(response.data)
+        } catch (error) {
+            return this.failed(error)
+        }
+
+    }
+
+    public async deleteUserPost(id: number) {
+        try {
+            let token = AppManager.shared.user.access_token
+            let endpoint = `post-delete/${id}`
+            let response = await this.axios.post(this.api_url + endpoint, {}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            return this.success(response.data)
+        } catch (error) {
+            return this.failed(error)
+        }
+    }
     public async getPostDetail(id: number) {
         try {
             let token = AppManager.shared.user.access_token

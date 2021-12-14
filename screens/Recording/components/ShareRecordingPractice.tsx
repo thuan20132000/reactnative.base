@@ -48,6 +48,5 @@ const styles = StyleSheet.create({
     container: {
         paddingVertical: 20,
         paddingHorizontal: 12,
-        paddingTop: 60
     }
 })

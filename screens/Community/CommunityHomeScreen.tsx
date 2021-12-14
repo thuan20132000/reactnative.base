@@ -1,11 +1,9 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { FlatList, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Constants from '../../app/constants/Constant'
 import { _refRootNavigation } from '../../app/Router/RootNavigation'
-import CommunityPostList from './components/CommunityPostList'
 import CommunityHandler from './CommunityHandler'
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNProgressHud from 'progress-hud';
@@ -13,12 +11,15 @@ import CommunityPostModel from '../../app/models/CommunityPostModel'
 import CommunityAPI from '../../app/API/CommunityAPI'
 import CommunityPostCard from './components/CommunityPostCard'
 import { StackActions } from '@react-navigation/native'
+import ActionSheet from 'react-native-actions-sheet'
+import CommunityCommentList from './components/CommunityCommentList'
 
 
 
 const CommunityHomeScreen = () => {
+    const _refActionSheetCommentList = useRef<ActionSheet>()
 
-    const { stopPlay } = CommunityHandler({})
+    const { stopPlay, startPlay, isPlaying, playingTime, setRecordPath, currentPost, setCurrentPost } = CommunityHandler({})
     const _onShowAddCommunityPractice = () => {
         stopPlay()
         _refRootNavigation.navigate('RecordingScreen')
@@ -26,7 +27,7 @@ const CommunityHomeScreen = () => {
 
     const [postList, setPostList] = useState([])
     const [isRefreshing, setIsRefreshing] = useState(false)
-
+    const [selectedPost, setSelectedPost] = useState<CommunityPostModel>()
     const _onShowRecordingScreen = (post: CommunityPostModel) => {
         stopPlay()
         _refRootNavigation.navigate('CommunityPostDetailScreen', { post_id: post.id })
@@ -77,11 +78,30 @@ const CommunityHomeScreen = () => {
         }
     }
 
+    const _onStartPlayPost = (post: CommunityPostModel) => {
+        setCurrentPost(post)
+        startPlay(post)
+    }
+
+
+    const _onStopPlayPost = () => {
+        stopPlay()
+    }
+
+    const _onShowCommentActionSheet = (post: CommunityPostModel) => {
+        setSelectedPost(post)
+        _refActionSheetCommentList.current.setModalVisible(true)
+    }
+
+    const _onShowPostComments = (post: CommunityPostModel) => {
+        _refRootNavigation.navigate('CommunityPostCommentScreen', { post: post })
+    }
+
     useEffect(() => {
         getPostList()
     }, [])
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }} edges={['top']}>
 
 
             <Button
@@ -108,7 +128,11 @@ const CommunityHomeScreen = () => {
                         post={item}
                         onPress={() => _onShowRecordingScreen(item)}
                         onToggleFavoritePress={() => onTogglePostFavorite(item)}
-
+                        onStartPlayPress={() => _onStartPlayPost(item)}
+                        onStopPlayPress={_onStopPlayPost}
+                        isPlaying={(isPlaying && currentPost.id == item?.id) ? true : false}
+                        playingTime={currentPost?.id == item?.id && playingTime}
+                        onShowCommentPress={() => _onShowPostComments(item)}
                     />
                 }
                 keyExtractor={(item) => item?.id?.toString()}
@@ -122,7 +146,6 @@ const CommunityHomeScreen = () => {
                     />
                 }
             />
-            {/* <CommunityPostList /> */}
 
         </SafeAreaView>
     )

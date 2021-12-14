@@ -29,6 +29,7 @@ import PracticeProgress from '../../app/DB/PracticeProgress'
 import { format } from 'date-fns'
 import CommonColor from '../../utils/CommonColor'
 import { Switch } from 'react-native-paper';
+import { _refRootNavigation } from '../../app/Router/RootNavigation'
 
 const UPDATE_KEY = {
     ADDRESS: 'userAddress',
@@ -118,8 +119,8 @@ const ProfileScreen = (props) => {
     }
 
     const _onShowUpdateScreen = () => {
-        navigation.navigate('UpdateInfo',{
-            key:UPDATE_KEY.NAME
+        navigation.navigate('UpdateInfo', {
+            key: UPDATE_KEY.NAME
         })
     }
 
@@ -219,17 +220,17 @@ const ProfileScreen = (props) => {
                             style={{
                                 display: 'flex',
                                 flexDirection: 'row',
-                                flex:1,
+                                flex: 1,
                             }}
                         >
-                            <Text numberOfLines={2} style={{ fontWeight: '700', flex:2,fontSize: 18, marginRight: 12 }}>{userProfile?.fullname}</Text>
+                            <Text numberOfLines={2} style={{ fontWeight: '700', flex: 2, fontSize: 18, marginRight: 12 }}>{userProfile?.fullname}</Text>
                             <MaterialCommunityIcons
                                 name={CommonIcons.accountEdit}
                                 size={24}
                                 color={CommonColor.primary}
                                 onPress={_onShowUpdateScreen}
                                 style={{
-                                    flex:1
+                                    flex: 1
                                 }}
                             />
 
@@ -270,7 +271,7 @@ const ProfileScreen = (props) => {
 
                         }}
                     >
-                        {/* <TouchableOpacity
+                        <TouchableOpacity
                             style={{
                                 width: '40%',
                                 height: 70,
@@ -281,7 +282,7 @@ const ProfileScreen = (props) => {
                                 alignItems: 'center',
                                 ...BOXSHADOW.normal
                             }}
-                            onPress={() => navigation.navigate('FriendList')}
+                            onPress={() => _refRootNavigation.navigate('MyPracticePostScreen')}
 
                         >
                             <MaterialCommunityIcons
@@ -290,10 +291,10 @@ const ProfileScreen = (props) => {
                                 color={'white'}
                             />
                             <Text style={{ margin: 2, color: 'white', fontWeight: '700' }}>
-                                My Friends
+                                My Practices
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             style={{
                                 width: '40%',
                                 height: 70,

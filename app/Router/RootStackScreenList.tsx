@@ -1,7 +1,8 @@
+import CommunityPostModel from "../models/CommunityPostModel";
 
 export type RootStackParamList = {
     RecordingScreen: {
-        post_id:number
+        post_id: number
     },
     TabBar: {},
     ConversationPractice: {},
@@ -14,6 +15,12 @@ export type RootStackParamList = {
     Webview: {},
     UpdateInfo: {},
     CommunityPostDetailScreen: {
-        post_id:number
+        post_id: number
+    }
+    CommunityPostCommentScreen: {
+        post: CommunityPostModel
+    },
+    MyPracticePostScreen: {
+
     }
 }

@@ -19,6 +19,8 @@ import Constants from '../constants/Constant';
 import RecordingScreen from '../../screens/Recording/RecordingScreen';
 import { RootStackParamList } from './RootStackScreenList';
 import CommunityPostDetailScreen from '../../screens/Community/CommunityPostDetailScreen';
+import CommunityPostCommentScreen from '../../screens/Community/CommunityPostCommentScreen';
+import MyPracticePostScreen from '../../screens/Community/MyPracticePostScreen';
 
 const Stack = createStackNavigator<RootStackParamList>()
 export const _refRootNavigation = createNavigationContainerRef<RootStackParamList>()
@@ -158,7 +160,22 @@ export default function RootNavigation() {
                     }}
 
                 />
+                <Stack.Screen
+                    name={"CommunityPostCommentScreen"}
+                    component={CommunityPostCommentScreen}
+                    options={{
+                        title: ""
+                    }}
 
+                />
+                <Stack.Screen
+                    name={"MyPracticePostScreen"}
+                    component={MyPracticePostScreen}
+                    options={{
+                        title: ""
+                    }}
+
+                />
             </Stack.Navigator>
 
         </NavigationContainer>

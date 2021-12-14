@@ -5,63 +5,67 @@ import FastImage from 'react-native-fast-image'
 import Constants from '../../../app/constants/Constant'
 import Icon from 'react-native-vector-icons/Ionicons';
 import ActionSheet from 'react-native-actions-sheet'
-import CommunityCommentList from './CommunityCommentList'
 
 import CommunityHandler from '../CommunityHandler'
 import CommunityPostModel from '../../../app/models/CommunityPostModel'
 
 interface PostCardItemI {
     onPress?: TouchableOpacityProps['onPress'],
-    onPlayingPress?: TouchableOpacityProps['onPress'],
-    onToggleFavoritePress?: TouchableOpacityProps['onPress']
-    post: CommunityPostModel
+    onStartPlayPress?: TouchableOpacityProps['onPress'],
+    onStopPlayPress?: TouchableOpacityProps['onPress'],
+    onToggleFavoritePress?: TouchableOpacityProps['onPress'],
+    onShowCommentPress?: TouchableOpacityProps['onPress'],
+    isPlaying?: boolean,
+    playingTime?: string,
+    post: CommunityPostModel,
+    onRemovePress?: TouchableOpacityProps['onPress']
 }
 
 const CommunityPostCard = (props: PostCardItemI) => {
     const _refActionSheetCommentList = useRef<ActionSheet>()
     // const [post, setPost] = useState<CommunityPostModel>(props.post)
     const post = props.post
-    const { startPlay, stopPlay, playingTime, setRecordPath, isPlaying } = CommunityHandler({})
+    // const { startPlay, stopPlay, playingTime, setRecordPath, isPlaying } = CommunityHandler({})
 
     const showPostCommentsList = () => {
-        onStopPlay()
+        // onStopPlay()
         _refActionSheetCommentList.current.setModalVisible(true)
     }
 
-    const onStopPlay = () => {
-        stopPlay()
-    };
-
-    const onStartPlay = async () => {
-        onStopPlay()
-        startPlay()
-    };
-
-
-    useEffect(() => {
-        setRecordPath(post?.record)
-    }, [])
     return (
         <View style={[styles.container]}>
             <View>
                 <Text style={{ fontSize: 12, color: 'gray', fontStyle: 'italic' }}>{new Date(post?.created_at).toDateString()}</Text>
             </View>
             <TouchableOpacity onPress={props.onPress}>
-                <View style={[styles.header]}>
-                    <FastImage
-                        source={{ uri: post?.author?.profile_pic ? post?.author?.profile_pic : Constants.masterData.communityData.avatarUrl }}
-                        style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 25,
-                            marginRight: 12,
-                            marginVertical: 12
-                        }}
-                    />
-                    <View>
-                        <Text>{post?.author?.fullname}</Text>
-                        {/* <Text>American</Text> */}
+                <View style={[styles.header, { justifyContent: 'space-between' }]}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <FastImage
+                            source={{ uri: post?.author?.profile_pic ? post?.author?.profile_pic : Constants.masterData.communityData.avatarUrl }}
+                            style={{
+                                width: 50,
+                                height: 50,
+                                borderRadius: 25,
+                                marginRight: 12,
+                                marginVertical: 12
+                            }}
+                        />
+                        <View>
+                            <Text>{post?.author?.fullname}</Text>
+                            {/* <Text>American</Text> */}
+                        </View>
                     </View>
+                    {
+                        props.onRemovePress &&
+                        <Button
+                            type='clear'
+                            icon={
+                                <Icon name={Constants.ionicon.trash} size={18} color={'red'} />
+                            }
+                            onPress={props.onRemovePress}
+                        />
+
+                    }
                 </View>
                 <View>
                     <FastImage
@@ -86,15 +90,26 @@ const CommunityPostCard = (props: PostCardItemI) => {
                     justifyContent: 'center',
                     paddingHorizontal: 20
                 }}>
-                    <Button
-                        type='clear'
-                        icon={
-                            <Icon name={isPlaying ? Constants.ionicon.audioPause : Constants.ionicon.audioPlay} size={28} color={Constants.COLORS.primary} />
-                        }
-                        onPress={onStartPlay}
-                    />
-                    <LinearProgress variant='determinate' color="primary" style={{ marginHorizontal: 8, width: '90%' }} />
-                    <Text>{playingTime}</Text>
+                    {
+                        props.isPlaying ?
+                            <Button
+                                type='clear'
+                                icon={
+                                    <Icon name={Constants.ionicon.audioPause} size={28} color={Constants.COLORS.primary} />
+                                }
+                                onPress={props.onStopPlayPress}
+                            />
+                            :
+                            <Button
+                                type='clear'
+                                icon={
+                                    <Icon name={Constants.ionicon.audioPlay} size={28} color={Constants.COLORS.primary} />
+                                }
+                                onPress={props.onStartPlayPress}
+                            />
+                    }
+                    <LinearProgress variant={props?.isPlaying ? 'indeterminate' : 'determinate'} color="primary" style={{ marginHorizontal: 8, width: '90%' }} />
+                    <Text>{props.playingTime}</Text>
                 </View>
 
             }
@@ -120,23 +135,11 @@ const CommunityPostCard = (props: PostCardItemI) => {
                         <Icon name={Constants.ionicon.comment} size={18} color={Constants.COLORS.primary} />
                     }
                     title={post?.comment_numbers.toString()}
-                    onPress={showPostCommentsList}
+                    onPress={props.onShowCommentPress}
                 />
             </View>
 
-            <ActionSheet ref={_refActionSheetCommentList} >
-                {/* <Button
-                    type='clear'
-                    icon={
-                        <Icon name={Constants.ionicon.down} size={22} color={Constants.COLORS.primary} />
-                    }
-                    onPress={() => _refActionSheetCommentList.current?.setModalVisible(false)}
-                /> */}
-                <View style={{ height: Constants.device.height * 0.65 }}>
-                    <CommunityCommentList post={post} />
-                </View>
 
-            </ActionSheet >
         </View >
     )
 }

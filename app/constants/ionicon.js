@@ -12,8 +12,11 @@ export default IONICONS = {
     personAdd: 'person-add',
     down: 'chevron-down',
     globalNetwork: 'globe-outline',
-    home:'home-outline',
-    book:'book-outline',
-    profile:'person-circle-outline',
-    addCircle:'add-circle'
+    home: 'home-outline',
+    book: 'book-outline',
+    profile: 'person-circle-outline',
+    addCircle: 'add-circle',
+    trash: 'trash',
+    camera: 'camera',
+    folder: 'folder'
 }
