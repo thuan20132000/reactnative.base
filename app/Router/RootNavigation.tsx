@@ -27,7 +27,7 @@ export const _refRootNavigation = createNavigationContainerRef<RootStackParamLis
 
 export default function RootNavigation() {
     const [screen, setScreen] = useState("Signin")
-
+    
     useEffect(() => {
         getUserAuth()
             .then(res => {

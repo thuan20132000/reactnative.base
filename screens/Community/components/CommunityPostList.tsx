@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { RefreshControl, StyleSheet, Text, View } from 'react-native'
+import { RefreshControl, StyleSheet, Text, View, FlatList } from 'react-native'
 import CommunityPostCard from './CommunityPostCard'
 import { _refRootNavigation } from '../../../app/Router/RootNavigation';
 import CommunityHandler from '../CommunityHandler';
 import CommunityAPI from '../../../app/API/CommunityAPI';
 import CommunityPostModel from '../../../app/models/CommunityPostModel';
-import { FlatList } from 'react-native-gesture-handler';
 import RNProgressHud from 'progress-hud';
 
 interface PostListI {

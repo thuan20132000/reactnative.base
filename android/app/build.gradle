@@ -147,7 +147,7 @@ android {
         applicationId "com.english_practice_askmeit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 38
+        versionCode 39
         versionName "2.2"
         vectorDrawables.useSupportLibrary = true
 
