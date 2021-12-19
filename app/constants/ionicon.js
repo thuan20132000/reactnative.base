@@ -18,5 +18,6 @@ export default IONICONS = {
     addCircle: 'add-circle',
     trash: 'trash',
     camera: 'camera',
-    folder: 'folder'
+    folder: 'folder',
+    radio:'radio'
 }

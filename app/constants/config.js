@@ -7,9 +7,9 @@ export default {
 
 
     // Dev local
-    // api_url: "http://192.168.1.3:8000",
-    // media_url: "http://192.168.1.3:8000/media",
-    // IP_ADDRESS: "192.168.1.3",
+    // api_url: "http://192.168.1.2:8000",
+    // media_url: "http://192.168.1.2:8000/media",
+    // IP_ADDRESS: "192.168.1.2",
     // PORT: 8000,
 
     // staging

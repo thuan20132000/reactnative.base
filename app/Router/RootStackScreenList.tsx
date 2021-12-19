@@ -15,12 +15,16 @@ export type RootStackParamList = {
     Webview: {},
     UpdateInfo: {},
     CommunityPostDetailScreen: {
-        post_id: number
+        post_id: number,
+
     }
     CommunityPostCommentScreen: {
         post: CommunityPostModel
     },
     MyPracticePostScreen: {
+
+    },
+    CommunityAudioCommentScreen: {
 
     }
 }

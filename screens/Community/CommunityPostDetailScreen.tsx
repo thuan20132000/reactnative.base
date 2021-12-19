@@ -17,10 +17,19 @@ import { _refRootNavigation } from '../../app/Router/RootNavigation';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../app/Router/RootStackScreenList';
 import CommunityHandler from './CommunityHandler';
-import SendingInput from '../../components/Input/SendingInput';
+import { BannerAd, TestIds, BannerAdSize, InterstitialAd } from '@react-native-firebase/admob';
 
+
+const adUnitId = __DEV__ ? TestIds.BANNER : Constants.config.adbmod_banner;
+const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : Constants.config.adbmod_fullpage;
+
+
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial.toString(), {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing', 'books', 'travel', 'medicine', 'fitness'],
+});
 type Props = NativeStackScreenProps<RootStackParamList, 'CommunityPostDetailScreen'>;
-
 const CommunityPostDetailScreen = ({ route, navigation }: Props) => {
     const _refActionSheetCommentList = useRef<ActionSheet>()
     const [imagePath, setImagepath] = useState('')
@@ -62,6 +71,8 @@ const CommunityPostDetailScreen = ({ route, navigation }: Props) => {
 
 
     useEffect(() => {
+        interstitial.load();
+
         getPostDetail()
         const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
             setIsCommentFocussing(true);
@@ -71,11 +82,25 @@ const CommunityPostDetailScreen = ({ route, navigation }: Props) => {
         });
 
 
+        // Start loading the interstitial straight away
+        const unsubscribe = navigation.addListener('beforeRemove', () => {
+            try {
+                interstitial.show()
+            } catch (error) {
+                console.warn('error: adv has not loaded yet', error)
+            }
+
+        });
+
+
+        // Unsubscribe from events on unmount
         return () => {
+            unsubscribe()
             showSubscription.remove();
             hideSubscription.remove();
             stopPlay()
         };
+
     }, [])
 
     const onStartPlayRecord = () => {
@@ -88,15 +113,30 @@ const CommunityPostDetailScreen = ({ route, navigation }: Props) => {
         _refRootNavigation.navigate('CommunityPostCommentScreen', { post: post })
     }
     return (
-        <View >
-
+        <View>
             <ScrollView >
+                <View
+                    style={{
+                        display: 'flex',
+                        alignSelf: 'center',
+                        backgroundColor: 'transparent'
+                    }}
+                >
+                    <BannerAd
+                        unitId={adUnitId?.toString()}
+                        size={BannerAdSize.BANNER}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                    />
+
+                </View>
 
                 <View style={{ alignItems: 'center' }}>
                     <ImageBackground
                         source={{ uri: post?.image ? post?.image : 'https://upload.wikimedia.org/wikipedia/commons/7/75/Southern_Life_in_Southern_Literature_text_page_322.jpg' }}
                         style={{
-                            width: Constants.device.width * 0.9,
+                            width: Constants.device.width * 0.8,
                             height: Constants.device.height * 0.7,
 
                         }}

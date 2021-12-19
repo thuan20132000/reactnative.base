@@ -121,7 +121,7 @@ export const getCompleteGrammar = async (grammar_id: string) => {
  */
 export const getUserAuth = async () => {
     try {
-        let data = await AsyncStorage.getItem(`@user_auth`);
+        let data = await AsyncStorage.getItem(`@user_auth1`);
         return JSON.parse(data)
     } catch (error) {
         return null
@@ -131,7 +131,7 @@ export const getUserAuth = async () => {
 
 export const removeUserAuth = async () => {
     try {
-        let data = await AsyncStorage.removeItem(`@user_auth`);
+        let data = await AsyncStorage.removeItem(`@user_auth1`);
         return data
     } catch (error) {
         return null

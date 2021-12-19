@@ -1,6 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { Button, ButtonProps } from 'react-native-elements'
+import { StyleSheet, Text, TouchableOpacityProps, View } from 'react-native'
+import { Button, ButtonProps, LinearProgress } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import Constants from '../../app/constants/Constant'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -8,7 +8,15 @@ import CommentModel from '../../app/models/CommentModel'
 
 interface PostCommentI {
     comment: CommentModel,
-    onFavoritePress?: ButtonProps['onPress']
+    onFavoritePress?: ButtonProps['onPress'],
+    onPress?: TouchableOpacityProps['onPress'],
+    onStartPlayPress?: TouchableOpacityProps['onPress'],
+    onStopPlayPress?: TouchableOpacityProps['onPress'],
+    onToggleFavoritePress?: TouchableOpacityProps['onPress'],
+    onShowCommentPress?: TouchableOpacityProps['onPress'],
+    isPlaying?: boolean,
+    playingTime?: string,
+
 }
 const UserComment = (props: PostCommentI) => {
     return (
@@ -28,6 +36,8 @@ const UserComment = (props: PostCommentI) => {
                     <Text>{props.comment?.user?.fullname}</Text>
                     {/* <Text>American</Text> */}
                 </View>
+
+
                 <Button
                     type='clear'
                     icon={
@@ -58,6 +68,37 @@ const UserComment = (props: PostCommentI) => {
                 /> */}
 
             </View>
+            {
+                props.comment?.record &&
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingHorizontal: 20
+                }}>
+                    {
+                        props.isPlaying ?
+                            <Button
+                                type='clear'
+                                icon={
+                                    <Icon name={Constants.ionicon.audioPause} size={28} color={Constants.COLORS.primary} />
+                                }
+                                onPress={props.onStopPlayPress}
+                            />
+                            :
+                            <Button
+                                type='clear'
+                                icon={
+                                    <Icon name={Constants.ionicon.audioPlay} size={28} color={Constants.COLORS.primary} />
+                                }
+                                onPress={props.onStartPlayPress}
+                            />
+                    }
+                    <LinearProgress variant={props?.isPlaying ? 'indeterminate' : 'determinate'} color="primary" style={{ marginHorizontal: 8, width: '90%' }} />
+                    <Text>{props.playingTime}</Text>
+                </View>
+
+            }
             <Text style={{ marginTop: 6, color: 'gray', fontStyle: 'italic' }}>{new Date(props.comment?.created_at).toDateString()}</Text>
         </View>
     )

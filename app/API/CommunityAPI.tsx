@@ -115,13 +115,15 @@ class CommunityAPI extends BaseAPI {
     }
 
 
-    public async addPostComment(id: number, content: string) {
+    public async addPostComment(id: number, content: string, record: any) {
         try {
             let token = AppManager.shared.user.access_token
             let endpoint = `post/${id}/comment`
             let formdata = new FormData()
             formdata.append('content', content)
-            console.log('ss: ', content)
+            formdata.append('record', record)
+
+            console.log('ss: ', record)
 
             let response = await this.axios.post(this.api_url + endpoint, formdata, {
                 headers: {

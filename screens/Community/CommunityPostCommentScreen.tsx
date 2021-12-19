@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Keyboard, ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import CommunityAPI from '../../app/API/CommunityAPI'
@@ -10,6 +10,11 @@ import UserComment from '../../components/Input/UserComment'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../app/Router/RootStackScreenList'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import ActionSheet from 'react-native-actions-sheet'
+import CommunityAudioCommentScreen from './CommunityAudioComment'
+import AudioModel from '../../app/models/AudioModel'
+import CommentHandler from './CommentHandler'
+import AppManager from '../../app/AppManager'
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CommunityPostCommentScreen'>;
@@ -18,6 +23,9 @@ const CommunityPostCommentScreen = ({ route, navigation }: Props) => {
 
     const [comments, setComments] = useState([])
     const [inputComment, setInputComment] = useState('')
+    const [audioComment, setAudioComment] = useState<AudioModel>()
+    const _refActionSheetRecordingShare = useRef<ActionSheet>()
+    const { stopPlay, startPlay, isPlaying, playingTime, setRecordPath, currentComment, setCurrentComment } = CommentHandler({})
 
 
     const onGetPostComments = async () => {
@@ -52,12 +60,16 @@ const CommunityPostCommentScreen = ({ route, navigation }: Props) => {
 
     const onSendCommentPress = async () => {
         try {
+            if (inputComment?.trim().length <= 0) {
+                return
+            }
             Keyboard.dismiss()
             RNProgressHud.show()
-            let response = await CommunityAPI.addPostComment(route.params.post.id, inputComment)
+            let response = await CommunityAPI.addPostComment(route.params.post.id, inputComment, audioComment)
             setComments(comments => {
-                return [...comments, new CommentModel(response['data'])]
+                return [new CommentModel(response['data']), ...comments]
             })
+            setAudioComment(null)
             setInputComment('')
         } catch (error) {
 
@@ -66,8 +78,30 @@ const CommunityPostCommentScreen = ({ route, navigation }: Props) => {
         }
     }
 
+    const _onStartPlayComment = (comment: CommentModel) => {
+        setCurrentComment(comment)
+        startPlay(comment)
+    }
+
+
+    const _onStopPlayComment = () => {
+        stopPlay()
+    }
+
+    const onShowAudioCommentPress = async () => {
+        // navigation.navigate('CommunityAudioCommentScreen')
+        _refActionSheetRecordingShare.current.setModalVisible(true)
+    }
+
+    const _onSaveAudioComment = async () => {
+        _refActionSheetRecordingShare.current?.setModalVisible(false)
+    }
     useEffect(() => {
         onGetPostComments()
+
+        return () => {
+            _onStopPlayComment()
+        }
     }, [])
 
     return (
@@ -76,8 +110,18 @@ const CommunityPostCommentScreen = ({ route, navigation }: Props) => {
             <FlatList
 
                 data={comments}
-                renderItem={({ item }) => <UserComment comment={item} onFavoritePress={() => onToggleCommentFavorite(item)} />}
+                renderItem={({ item }) =>
+                    <UserComment
+                        comment={item}
+                        onFavoritePress={() => onToggleCommentFavorite(item)}
+                        onStartPlayPress={() => _onStartPlayComment(item)}
+                        onStopPlayPress={_onStopPlayComment}
+                        isPlaying={(isPlaying && currentComment.id == item?.id) ? true : false}
+                        playingTime={currentComment?.id == item?.id && playingTime}
+
+                    />}
             />
+
             {
                 <SendingInput
                     multiline
@@ -93,9 +137,23 @@ const CommunityPostCommentScreen = ({ route, navigation }: Props) => {
                     value={inputComment}
                     onChangeText={(text) => setInputComment(text)}
                     onSendPress={onSendCommentPress}
+                    onShowAudioCommentPress={onShowAudioCommentPress}
+                    audio={audioComment}
+
+
                 />
 
             }
+
+            <ActionSheet ref={_refActionSheetRecordingShare}>
+                <View style={{ height: Constants.device.height * 0.9 }}>
+                    <CommunityAudioCommentScreen
+                        post={route?.params?.post}
+                        setAudioComment={setAudioComment}
+                        onSaveRecording={_onSaveAudioComment}
+                    />
+                </View>
+            </ActionSheet>
         </View>
 
     )

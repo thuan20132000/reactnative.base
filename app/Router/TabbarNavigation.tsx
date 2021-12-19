@@ -58,7 +58,7 @@ const TabbarNavigation = () => {
                 name="ReadingPractice"
                 component={ConversationList}
                 options={{
-                    title: "Reading Practice"
+                    title: "Reading"
                 }}
 
             />
@@ -66,7 +66,7 @@ const TabbarNavigation = () => {
                 name={Constants.screen.communityHomeScreen}
                 component={CommunityHomeScreen}
                 options={{
-                    title: "Reading Practice"
+                    title: "Community"
                 }}
 
             />
@@ -74,7 +74,7 @@ const TabbarNavigation = () => {
                 name="TabSetting"
                 component={ProfileScreen}
                 options={{
-                    title: "My Learning"
+                    title: "Learning"
                 }}
                 listeners={{
                     tabPress: _onCheckIsAuthenticated

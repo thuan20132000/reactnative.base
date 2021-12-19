@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Dimensions, StyleSheet, Text, View, ScrollView, Image, ImageBackground } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, ScrollView, Image, ImageBackground, TouchableOpacityProps } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AudioRecorderPlayer, {
     AVEncoderAudioQualityIOSType,
@@ -8,25 +8,22 @@ import AudioRecorderPlayer, {
     AudioSet,
     AudioSourceAndroidType,
 } from 'react-native-audio-recorder-player';
-import { Button } from 'react-native-elements';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Constants from '../../app/constants/Constant';
-import { LinearProgress } from 'react-native-elements';
+import { LinearProgress, Button, ButtonProps } from 'react-native-elements';
 
 import ActionSheet from "react-native-actions-sheet";
-import ShareRecordingPractice from './components/ShareRecordingPractice';
-import CommunityAPI from '../../app/API/CommunityAPI';
 import 'react-native-get-random-values'
 import { v4 as uuidv4, v1 as uuidv1 } from 'uuid';
 import RNFS from 'react-native-fs';
 import AppManager from '../../app/AppManager';
 import RNProgressHud from 'progress-hud';
 import { _refRootNavigation } from '../../app/Router/RootNavigation';
-import { StackActions } from '@react-navigation/native';
 import { BannerAd, TestIds, BannerAdSize, InterstitialAd } from '@react-native-firebase/admob';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../app/Router/RootStackScreenList';
+
+import CommunityPostModel from '../../app/models/CommunityPostModel';
+import AudioModel from '../../app/models/AudioModel';
 
 
 const adUnitId = __DEV__ ? TestIds.BANNER : Constants.config.adbmod_banner;
@@ -34,15 +31,20 @@ const adUnitIdIntertitial = __DEV__ ? TestIds.INTERSTITIAL : Constants.config.ad
 
 
 interface recordingTime {
-    recordSecs: string,
-    recordTime: string,
-    currentPositionSec: string,
-    currentDurationSec: string,
-    playingTime: string,
-    duration: string,
-    isRecording: boolean,
-    isPlaying: boolean,
-    audioFile: string
+    recordSecs?: string,
+    recordTime?: string,
+    currentPositionSec?: string,
+    currentDurationSec?: string,
+    playingTime?: string,
+    duration?: string,
+    isRecording?: boolean,
+    isPlaying?: boolean,
+    audioFile?: string,
+    audioComment?: any,
+    setAudioComment?: any,
+    post: CommunityPostModel,
+    onSaveRecording?: ButtonProps['onPress'],
+    onSaveRecordingPress?: ButtonProps['onPress']
 
 }
 
@@ -51,10 +53,9 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial.toStr
     keywords: ['fashion', 'clothing', 'books', 'travel', 'medicine', 'fitness'],
 });
 
-type Props = NativeStackScreenProps<RootStackParamList, 'RecordingScreen'>;
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
-const RecordingScreen = ({ route, navigation }: Props) => {
+const CommunityAudioCommentScreen = (Props: recordingTime) => {
 
 
     const _refActionSheetRecordingShare = useRef<ActionSheet>()
@@ -64,7 +65,6 @@ const RecordingScreen = ({ route, navigation }: Props) => {
     const [playingTime, setPlayingTime] = useState('')
     const dirMusic = `${RNFS.ExternalStorageDirectoryPath}/Music`;
     const practice_audio_path = dirMusic + `/practice_audio.wav`;
-    const [imagePath, setImagepath] = useState('')
     const audioSet = {
         AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
         AudioSourceAndroid: AudioSourceAndroidType.MIC,
@@ -73,18 +73,10 @@ const RecordingScreen = ({ route, navigation }: Props) => {
         AVFormatIDKeyIOS: AVEncodingOption.aac,
     };
     const meteringEnabled = false;
-    const [post, setPost] = useState({
-        image: {
-            uri: '',
-            type: 'image/jpeg',
-            name: 'photo.jpg',
-        },
-        title: '',
-        record: {
-            uri: ``,
-            type: 'audio/wav',
-            name: '',
-        }
+    const [recordComment, setRecordComment] = useState<AudioModel>({
+        uri: ``,
+        type: 'audio/wav',
+        name: '',
     })
 
     const onStartRecord = async () => {
@@ -93,7 +85,6 @@ const RecordingScreen = ({ route, navigation }: Props) => {
         try {
 
             setIsRecording(true)
-            console.warn('start record...')
             const result = await audioRecorderPlayer.startRecorder();
             audioRecorderPlayer.addRecordBackListener((e) => {
                 let x = audioRecorderPlayer.mmss(Math.floor(e.currentPosition));
@@ -122,24 +113,23 @@ const RecordingScreen = ({ route, navigation }: Props) => {
             type: 'audio/wav',
             name: `${uuidv4()}-${new Date().getTime()}.wav`,
         }
-        setPost({ ...post, record: record })
+        setRecordComment(record)
+        Props.setAudioComment(record)
         console.log(result);
         setIsRecording(false)
         setRecordingtime({ ...recordingTime, audioFile: practice_audio_path })
 
     };
 
+
     const onStartPlay = async () => {
 
         try {
-            console.log('onStartPlay: ', post.record.uri);
-            const msg = await audioRecorderPlayer.startPlayer(post.record?.uri);
+            const msg = await audioRecorderPlayer.startPlayer(recordComment?.uri);
             // console.log(msg);
             setIsPlaying(true)
             audioRecorderPlayer.addPlayBackListener((e) => {
                 // console.log('dd :', Math.ceil(e.duration/1000))
-                console.log(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)))
-                console.log('ee: ', Math.ceil(e.currentPosition / 1000))
                 setPlayingTime((Math.ceil(e.duration / 1000) - Math.ceil(e.currentPosition / 1000)).toString())
                 setRecordingtime({
                     ...recordingTime,
@@ -149,7 +139,6 @@ const RecordingScreen = ({ route, navigation }: Props) => {
                     duration: Math.ceil(e.duration).toString(),
                     recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)).slice(1, 5)
                 });
-                console.log(e.currentPosition)
                 if (e.currentPosition >= e.duration) {
                     onStopPlay()
                 }
@@ -163,9 +152,6 @@ const RecordingScreen = ({ route, navigation }: Props) => {
         }
     };
 
-    const onPausePlay = async () => {
-        await audioRecorderPlayer.pausePlayer();
-    };
 
     const onStopPlay = () => {
         console.log('onStopPlay');
@@ -174,86 +160,12 @@ const RecordingScreen = ({ route, navigation }: Props) => {
         setIsPlaying(false)
     };
 
-    const _onPickImage = () => {
-        ImagePicker.openCamera({
 
-            cropping: true,
-
-        }).then(image => {
-            let imageData = {
-                uri: image.path,
-                type: 'image/jpeg',
-                name: `${uuidv4()}-${new Date().getTime()}.jpg`,
-            };
-            setImagepath(image.path)
-
-            setPost({ ...post, image: imageData })
-        })
-            .catch(err => console.log(err))
-    }
-
-    const _onPickLibrary = () => {
-        ImagePicker.openPicker({
-
-            cropping: true,
-
-        }).then(image => {
-            let imageData = {
-                uri: image.path,
-                type: 'image/jpeg',
-                name: `${uuidv4()}-${new Date().getTime()}.jpg`,
-            };
-            setImagepath(image.path)
-
-            setPost({ ...post, image: imageData })
-        })
-            .catch(err => console.log(err))
-    }
-
-    const _onShowSharePress = () => {
-        // onStopRecord()
-        _refActionSheetRecordingShare.current.setModalVisible(true)
-    }
-
-    const _onSharePress = async () => {
-
-        try {
-            RNProgressHud.show()
-            let data = {
-                title: post.title
-            }
-            if (post.image.uri != '') {
-                data['image'] = post.image
-            }
-            if (post.record.name != '') {
-                data['record'] = post.record
-            }
-            let response = await CommunityAPI.createPost(data)
-            _refActionSheetRecordingShare.current.setModalVisible(false)
-            _refRootNavigation.dispatch(
-                StackActions.popToTop()
-            )
-        } catch (error) {
-            AppManager.shared.handleErrorMessage("Something Went Wrong!!!")
-        }
-        finally {
-            RNProgressHud.dismiss()
-        }
-    }
 
     useEffect(() => {
-        interstitial.load();
-        // Start loading the interstitial straight away
-        const unsubscribe = navigation.addListener('beforeRemove', () => {
-            try {
-                interstitial.show()
-            } catch (error) {
-                console.warn('error: adv has not loaded yet', error)
-            }
 
-        });
         return () => {
-            unsubscribe()
+            onStopPlay()
         }
     }, [])
 
@@ -279,7 +191,7 @@ const RecordingScreen = ({ route, navigation }: Props) => {
 
                 <View style={{ alignItems: 'center' }}>
                     <ImageBackground
-                        source={{ uri: post?.image?.uri ? post?.image?.uri : 'https://upload.wikimedia.org/wikipedia/commons/7/75/Southern_Life_in_Southern_Literature_text_page_322.jpg' }}
+                        source={{ uri: Props.post?.image ?? 'https://upload.wikimedia.org/wikipedia/commons/7/75/Southern_Life_in_Southern_Literature_text_page_322.jpg' }}
                         style={{
                             width: Constants.device.width * 0.9,
                             height: Constants.device.height * 0.65,
@@ -287,7 +199,7 @@ const RecordingScreen = ({ route, navigation }: Props) => {
                         }}
                         resizeMode={'contain'}
                     />
-                    <View style={{ flexDirection: 'row', marginTop: 8 }}>
+                    {/* <View style={{ flexDirection: 'row', marginTop: 8 }}>
                         <Button
                             onPress={_onPickImage}
                             containerStyle={{ marginHorizontal: 4 }}
@@ -305,7 +217,7 @@ const RecordingScreen = ({ route, navigation }: Props) => {
                             type='clear'
 
                         />
-                    </View>
+                    </View> */}
                 </View>
 
 
@@ -382,30 +294,20 @@ const RecordingScreen = ({ route, navigation }: Props) => {
                     </View>
 
                     <Button
-                        title="Share"
-                        onPress={_onShowSharePress}
+                        title="Save"
                         type='clear'
                         containerStyle={{ position: 'absolute', right: 0 }}
+                        onPress={Props.onSaveRecording}
 
                     />
                 </View>
             </ScrollView>
 
 
-
-            <ActionSheet ref={_refActionSheetRecordingShare}>
-                <View style={{ height: Constants.device.height * 0.5 }}>
-                    <ShareRecordingPractice
-                        value={post.title}
-                        onChangeText={(text) => setPost({ ...post, title: text })}
-                        onSharePress={_onSharePress}
-                    />
-                </View>
-            </ActionSheet>
         </View>
     )
 }
 
-export default RecordingScreen
+export default CommunityAudioCommentScreen
 
 const styles = StyleSheet.create({})

@@ -53,7 +53,7 @@ const UpdateUserInfoScreen = () => {
             console.log(res)
             AppManager.shared.user.username = res.fullname
             AppManager.shared.user.fullname = res.fullname
-            setUserAuth(AppManager.shared.user.toString())
+            await setUserAuth(AppManager.shared.user.toString())
             navigation.goBack()
         } catch (error) {
             console.log('err: ', error?.response?.data)
@@ -72,7 +72,7 @@ const UpdateUserInfoScreen = () => {
             }}
         >
             <TouchableWithoutFeedback
-                onPress={()=>{
+                onPress={() => {
                     Keyboard.dismiss()
                 }}
             >
@@ -91,7 +91,7 @@ const UpdateUserInfoScreen = () => {
                             onChangeText={text => setUsername(text)}
                             autoCapitalize='none'
                             value={username}
-                            
+
                         />
                         <View style={{ flex: 1 }} />
                         <View>

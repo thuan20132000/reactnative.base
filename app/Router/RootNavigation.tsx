@@ -27,10 +27,11 @@ export const _refRootNavigation = createNavigationContainerRef<RootStackParamLis
 
 export default function RootNavigation() {
     const [screen, setScreen] = useState("Signin")
-    
+
     useEffect(() => {
         getUserAuth()
             .then(res => {
+                console.log('rr: ',res)
                 if (res != null) {
                     AppManager.shared.user = res
                     _refRootNavigation.dispatch(
@@ -176,6 +177,7 @@ export default function RootNavigation() {
                     }}
 
                 />
+             
             </Stack.Navigator>
 
         </NavigationContainer>

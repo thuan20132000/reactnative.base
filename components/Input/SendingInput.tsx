@@ -15,7 +15,9 @@ interface TextInputI {
     rightIcon?: string,
     containerStyle?: ViewStyle,
     onFocus?: TextInputProps['onFocus'],
-    onSendPress?: ButtonProps['onPress']
+    onSendPress?: ButtonProps['onPress'],
+    onShowAudioCommentPress?: ButtonProps['onPress'],
+    audio?: any
 
 }
 const SendingInput = (props: TextInputI) => {
@@ -23,6 +25,17 @@ const SendingInput = (props: TextInputI) => {
         <View style={[styles.container, Constants.styles.boxshadow, props.containerStyle]}>
 
             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 6, paddingVertical: 8 }}>
+                {
+                    props.audio &&
+                    <Button
+                        type='clear'
+                        icon={
+                            <Icon name={Constants.ionicon.radio} size={22} color={Constants.COLORS.primary} />
+                        }
+                        onPress={props.onShowAudioCommentPress}
+                    />
+
+                }
                 <TextInput
                     placeholder={props.placeholder}
                     style={[styles.input, props.style]}
@@ -33,6 +46,13 @@ const SendingInput = (props: TextInputI) => {
                     value={props.value}
                 />
 
+                <Button
+                    type='clear'
+                    icon={
+                        <Icon name={Constants.ionicon.micro} size={22} color={Constants.COLORS.primary} />
+                    }
+                    onPress={props.onShowAudioCommentPress}
+                />
                 <Button
                     type='clear'
                     icon={
