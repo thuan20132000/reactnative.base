@@ -215,30 +215,8 @@ const RecordingScreen = ({ route, navigation }: Props) => {
         _refActionSheetRecordingShare.current.setModalVisible(true)
     }
 
-    const _onSharePress = async () => {
-
-        try {
-            RNProgressHud.show()
-            let data = {
-                title: post.title
-            }
-            if (post.image.uri != '') {
-                data['image'] = post.image
-            }
-            if (post.record.name != '') {
-                data['record'] = post.record
-            }
-            let response = await CommunityAPI.createPost(data)
-            _refActionSheetRecordingShare.current.setModalVisible(false)
-            _refRootNavigation.dispatch(
-                StackActions.popToTop()
-            )
-        } catch (error) {
-            AppManager.shared.handleErrorMessage("Something Went Wrong!!!")
-        }
-        finally {
-            RNProgressHud.dismiss()
-        }
+    const _onShowShareRecordingScreen = async () => {
+        _refRootNavigation.navigate('RecordingCompleteScreen', { post: post })
     }
 
     useEffect(() => {
@@ -258,7 +236,7 @@ const RecordingScreen = ({ route, navigation }: Props) => {
     }, [])
 
     return (
-        <View style={{}}>
+        <SafeAreaView>
             <ScrollView>
                 <View
                     style={{
@@ -383,7 +361,7 @@ const RecordingScreen = ({ route, navigation }: Props) => {
 
                     <Button
                         title="Share"
-                        onPress={_onShowSharePress}
+                        onPress={_onShowShareRecordingScreen}
                         type='clear'
                         containerStyle={{ position: 'absolute', right: 0 }}
 
@@ -393,16 +371,8 @@ const RecordingScreen = ({ route, navigation }: Props) => {
 
 
 
-            <ActionSheet ref={_refActionSheetRecordingShare}>
-                <View style={{ height: Constants.device.height * 0.5 }}>
-                    <ShareRecordingPractice
-                        value={post.title}
-                        onChangeText={(text) => setPost({ ...post, title: text })}
-                        onSharePress={_onSharePress}
-                    />
-                </View>
-            </ActionSheet>
-        </View>
+
+        </SafeAreaView>
     )
 }
 

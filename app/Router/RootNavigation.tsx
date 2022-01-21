@@ -21,6 +21,7 @@ import { RootStackParamList } from './RootStackScreenList';
 import CommunityPostDetailScreen from '../../screens/Community/CommunityPostDetailScreen';
 import CommunityPostCommentScreen from '../../screens/Community/CommunityPostCommentScreen';
 import MyPracticePostScreen from '../../screens/Community/MyPracticePostScreen';
+import RecordingCompleteScreen from '../../screens/Recording/RecordingCompleteScreen';
 
 const Stack = createStackNavigator<RootStackParamList>()
 export const _refRootNavigation = createNavigationContainerRef<RootStackParamList>()
@@ -31,7 +32,7 @@ export default function RootNavigation() {
     useEffect(() => {
         getUserAuth()
             .then(res => {
-                console.log('rr: ',res)
+                console.log('rr: ', res)
                 if (res != null) {
                     AppManager.shared.user = res
                     _refRootNavigation.dispatch(
@@ -177,7 +178,14 @@ export default function RootNavigation() {
                     }}
 
                 />
-             
+                <Stack.Screen
+                    name={"RecordingCompleteScreen"}
+                    component={RecordingCompleteScreen}
+                    options={{
+                        title: ""
+                    }}
+
+                />
             </Stack.Navigator>
 
         </NavigationContainer>

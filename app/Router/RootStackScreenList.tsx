@@ -26,5 +26,8 @@ export type RootStackParamList = {
     },
     CommunityAudioCommentScreen: {
 
+    },
+    RecordingCompleteScreen: {
+        post: any
     }
 }
