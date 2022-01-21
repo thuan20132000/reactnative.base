@@ -1,4 +1,4 @@
-package com.english_practice_askmeit;
+package com.english_and_practice;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "english_practice_askmeit";
+    return "english_and_practice";
   }
 }

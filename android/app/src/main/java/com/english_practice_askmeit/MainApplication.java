@@ -1,4 +1,4 @@
-package com.english_practice_askmeit;
+package com.english_and_practice;
 
 import android.app.Application;
 import android.content.Context;

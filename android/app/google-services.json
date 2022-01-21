@@ -1,38 +1,90 @@
 {
   "project_info": {
-    "project_number": "647715357805",
-    "project_id": "english-practice-c069c",
-    "storage_bucket": "english-practice-c069c.appspot.com"
+    "project_number": "896930057524",
+    "project_id": "luyen-noi-tieng-anh",
+    "storage_bucket": "luyen-noi-tieng-anh.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:647715357805:android:fe28ca98fbe257cdfaeb64",
+        "mobilesdk_app_id": "1:896930057524:android:ddf2cb875cc5284dc52961",
         "android_client_info": {
-          "package_name": "com.english_practice_askmeit"
+          "package_name": "com.english_and_practice"
         }
       },
       "oauth_client": [
         {
-          "client_id": "647715357805-brk38ekm94rngb5kdqicdsucgcj79rat.apps.googleusercontent.com",
+          "client_id": "896930057524-4sbdcvonn8lrtsd197mthsns05363geu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAogk6nH42NpDH6E-s5owc7jtLjK9jzmxI"
+          "current_key": "AIzaSyC00xjWies-tQ7ZkaHtN4lbh2Sa8s__Dfg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "647715357805-brk38ekm94rngb5kdqicdsucgcj79rat.apps.googleusercontent.com",
+              "client_id": "896930057524-4sbdcvonn8lrtsd197mthsns05363geu.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "896930057524-4aitd98r08lhfrr1acmaq26cq17baurc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.practiceenglishapp"
+              }
             }
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896930057524:android:d836f7f80b04fab4c52961",
+        "android_client_info": {
+          "package_name": "com.reactnative_base"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896930057524-akbi2fog2nk9n5qdng2b8e7su6cj3i93.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reactnative_base",
+            "certificate_hash": "a9115a155dff435125f4fe2196b8a3f8881f3d6f"
+          }
+        },
+        {
+          "client_id": "896930057524-4sbdcvonn8lrtsd197mthsns05363geu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC00xjWies-tQ7ZkaHtN4lbh2Sa8s__Dfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896930057524-4sbdcvonn8lrtsd197mthsns05363geu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "896930057524-4aitd98r08lhfrr1acmaq26cq17baurc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.practiceenglishapp"
+              }
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-7783640686150605~6780496114"
     }
   ],
   "configuration_version": "1"

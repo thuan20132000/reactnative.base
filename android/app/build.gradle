@@ -144,11 +144,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.english_practice_askmeit"
+        applicationId "com.english_and_practice"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 42
-        versionName "2.2"
+        versionCode 1
+        versionName "1.0"
         vectorDrawables.useSupportLibrary = true
 
     }
@@ -178,7 +178,7 @@ android {
     }
     buildTypes {
         debug {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
         release {
             // Caution! In production, you need to generate your own keystore file.

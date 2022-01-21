@@ -700,7 +700,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.practiceenglishapp;
 				PRODUCT_NAME = reactnative_base;
-				PROVISIONING_PROFILE_SPECIFIER = "EnglishAndPractice Dev M1";
+				PROVISIONING_PROFILE_SPECIFIER = "english_and_practice Dev M1";
 				SWIFT_OBJC_BRIDGING_HEADER = "reactnative_base-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -734,7 +734,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.practiceenglishapp;
 				PRODUCT_NAME = reactnative_base;
-				PROVISIONING_PROFILE_SPECIFIER = "EnglishAndPractice Product M1";
+				PROVISIONING_PROFILE_SPECIFIER = "english_and_practice Product M1";
 				SWIFT_OBJC_BRIDGING_HEADER = "reactnative_base-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
