@@ -72,7 +72,6 @@ const RecordingScreen = ({ route, navigation }: Props) => {
         AVNumberOfChannelsKeyIOS: 2,
         AVFormatIDKeyIOS: AVEncodingOption.aac,
     };
-    const meteringEnabled = false;
     const [post, setPost] = useState({
         image: {
             uri: '',
@@ -236,7 +235,7 @@ const RecordingScreen = ({ route, navigation }: Props) => {
     }, [])
 
     return (
-        <SafeAreaView>
+        <View>
             <ScrollView>
                 <View
                     style={{
@@ -368,11 +367,7 @@ const RecordingScreen = ({ route, navigation }: Props) => {
                     />
                 </View>
             </ScrollView>
-
-
-
-
-        </SafeAreaView>
+        </View>
     )
 }
 

@@ -13,19 +13,6 @@ type Props = NativeStackScreenProps<RootStackParamList, 'RecordingCompleteScreen
 
 const RecordingCompleteScreen = ({ route, navigation }: Props) => {
     const { post } = route?.params
-    // const [post, setPost] = useState({
-    //     image: {
-    //         uri: '',
-    //         type: 'image/jpeg',
-    //         name: 'photo.jpg',
-    //     },
-    //     title: '',
-    //     record: {
-    //         uri: ``,
-    //         type: 'audio/wav',
-    //         name: '',
-    //     }
-    // })
     const [postContent, setPostContent] = useState('')
 
     const _onSharePress = async () => {
