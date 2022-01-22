@@ -197,7 +197,7 @@ const SignIn = (props) => {
             {
                 Platform.OS === 'ios' &&
                 <LoginItem
-                    label={'Sign In With Apple'}
+                    label={'Sign in with Apple'}
                     logoPath={require('../../app/assets/images/ic_apple.png')}
                     onPress={onAppleButtonPress}
                 />
