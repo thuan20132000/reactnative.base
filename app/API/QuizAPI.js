@@ -40,8 +40,6 @@ class QuizAPI {
             params: {}
         })
             .then(function (response) {
-                console.log('e: ',response)
-
                 return response.data
             })
             .catch(function (error) {

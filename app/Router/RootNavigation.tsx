@@ -32,7 +32,6 @@ export default function RootNavigation() {
     useEffect(() => {
         getUserAuth()
             .then(res => {
-                console.log('rr: ', res)
                 if (res != null) {
                     AppManager.shared.user = res
                     _refRootNavigation.dispatch(

@@ -91,7 +91,6 @@ export const getTopicList = async () => {
         }
 
         let dataRes = await fetchData.json();
-        console.log(dataRes);
         if (!dataRes.status) {
             return {
                 status: false,

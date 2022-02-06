@@ -19,7 +19,6 @@ class FirebaseManager {
                 .then(querySnapshot => {
                     let x = []
                     querySnapshot.forEach(documentSnapshot => {
-                        console.log(documentSnapshot.data())
                         let desk = new DeskModel(documentSnapshot.data())
                         desk.id = documentSnapshot.id
                       
@@ -44,7 +43,6 @@ class FirebaseManager {
                     created_at: firestore.FieldValue.serverTimestamp()
                 })
                 .then(() => {
-                    console.log('User added!');
                     resolve(true)
                 })
                 .catch(() => resolve(false))
@@ -70,7 +68,6 @@ class FirebaseManager {
                     created_at: firestore.FieldValue.serverTimestamp()
                 })
                 .then(() => {
-                    console.log('User added!');
                     resolve(true)
                 })
                 .catch((err) => resolve(false))
@@ -80,7 +77,6 @@ class FirebaseManager {
 
 
     public static updateDeskVocabulary(vocabulary: PracticeVocabularyModel, desk: DeskModel, userId: String) {
-        console.log(vocabulary)
         return new Promise(resolve => {
             firestore()
                 .collection('Users')
@@ -98,11 +94,9 @@ class FirebaseManager {
                     updated_at: firestore.FieldValue.serverTimestamp()
                 })
                 .then(() => {
-                    console.log('User added!');
                     resolve(true)
                 })
                 .catch((err) => {
-                    console.log(err)
                     resolve(false)
                 })
 
@@ -124,7 +118,6 @@ class FirebaseManager {
                     querySnapshot.forEach(documentSnapshot => {
                         let vocabulary = new PracticeVocabularyModel(documentSnapshot.data())
                         vocabulary.id = documentSnapshot.id
-                        console.log(vocabulary)
                         x.push(vocabulary)
                     });
                     resolve(x)

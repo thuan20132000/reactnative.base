@@ -29,10 +29,9 @@ class AuthenticationAPI {
             let user = new UserModel(resData?.data)
             user.access_token = resData?.access
             AppManager.shared.user = user
-            await setUserAuth(user.toString())
-            console.log(user)
+            console.log('userr: ',user)
+            await setUserAuth(user)
 
-            console.log(user.tostring())
             return user
 
         } catch (error) {

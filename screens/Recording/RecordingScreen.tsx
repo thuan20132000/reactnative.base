@@ -92,7 +92,6 @@ const RecordingScreen = ({ route, navigation }: Props) => {
         try {
 
             setIsRecording(true)
-            console.warn('start record...')
             const result = await audioRecorderPlayer.startRecorder();
             audioRecorderPlayer.addRecordBackListener((e) => {
                 let x = audioRecorderPlayer.mmss(Math.floor(e.currentPosition));
@@ -104,10 +103,8 @@ const RecordingScreen = ({ route, navigation }: Props) => {
                     ).slice(1, 5),
                 });
             });
-            console.log(result);
 
         } catch (error) {
-            console.log('error: ', error)
             setIsRecording(false)
 
         }
@@ -122,7 +119,6 @@ const RecordingScreen = ({ route, navigation }: Props) => {
             name: `${uuidv4()}-${new Date().getTime()}.wav`,
         }
         setPost({ ...post, record: record })
-        console.log(result);
         setIsRecording(false)
         setRecordingtime({ ...recordingTime, audioFile: practice_audio_path })
 
@@ -131,14 +127,13 @@ const RecordingScreen = ({ route, navigation }: Props) => {
     const onStartPlay = async () => {
 
         try {
-            console.log('onStartPlay: ', post.record.uri);
+            // console.log('onStartPlay: ', post.record.uri);
             const msg = await audioRecorderPlayer.startPlayer(post.record?.uri);
             // console.log(msg);
             setIsPlaying(true)
             audioRecorderPlayer.addPlayBackListener((e) => {
                 // console.log('dd :', Math.ceil(e.duration/1000))
-                console.log(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)))
-                console.log('ee: ', Math.ceil(e.currentPosition / 1000))
+                // console.log('ee: ', Math.ceil(e.currentPosition / 1000))
                 setPlayingTime((Math.ceil(e.duration / 1000) - Math.ceil(e.currentPosition / 1000)).toString())
                 setRecordingtime({
                     ...recordingTime,
@@ -148,7 +143,6 @@ const RecordingScreen = ({ route, navigation }: Props) => {
                     duration: Math.ceil(e.duration).toString(),
                     recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)).slice(1, 5)
                 });
-                console.log(e.currentPosition)
                 if (e.currentPosition >= e.duration) {
                     onStopPlay()
                 }
@@ -167,18 +161,13 @@ const RecordingScreen = ({ route, navigation }: Props) => {
     };
 
     const onStopPlay = () => {
-        console.log('onStopPlay');
         audioRecorderPlayer.stopPlayer();
         audioRecorderPlayer.removePlayBackListener();
         setIsPlaying(false)
     };
 
     const _onPickImage = () => {
-        ImagePicker.openCamera({
-
-            cropping: true,
-
-        }).then(image => {
+        ImagePicker.openCamera({}).then(image => {
             let imageData = {
                 uri: image.path,
                 type: 'image/jpeg',
@@ -192,11 +181,7 @@ const RecordingScreen = ({ route, navigation }: Props) => {
     }
 
     const _onPickLibrary = () => {
-        ImagePicker.openPicker({
-
-            cropping: true,
-
-        }).then(image => {
+        ImagePicker.openPicker({}).then(image => {
             let imageData = {
                 uri: image.path,
                 type: 'image/jpeg',

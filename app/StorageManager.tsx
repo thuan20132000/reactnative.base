@@ -106,7 +106,7 @@ export const getCompleteGrammar = async (grammar_id: string) => {
  */
  export const setUserAuth = async (user: any) => {
     try {
-        return await AsyncStorage.setItem(`@user_auth`, JSON.stringify(user))
+        return await AsyncStorage.setItem(`@user_auth1`, JSON.stringify(user))
     } catch (error) {
         throw error
     }

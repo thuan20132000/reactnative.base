@@ -122,9 +122,6 @@ class CommunityAPI extends BaseAPI {
             let formdata = new FormData()
             formdata.append('content', content)
             formdata.append('record', record)
-
-            console.log('ss: ', record)
-
             let response = await this.axios.post(this.api_url + endpoint, formdata, {
                 headers: {
                     'Authorization': `Bearer ${token}`
