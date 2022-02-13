@@ -26,7 +26,7 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial, {
 
 const ConversationPracticeScreen = (props) => {
 
-    const { groupConversation, group } = props?.route?.params ?? ''
+    const { groupConversation, group,conversationId } = props?.route?.params ?? ''
     const [isCalling, setIsCalling] = useState(false);
     const [conversation, setConversation] = useState(null);
     const [memberList, setMemberList] = useState([]);
@@ -56,7 +56,7 @@ const ConversationPracticeScreen = (props) => {
                 }
             })
 
-        ConversationAPI.getConversationPostDetail(groupConversation?.id)
+        ConversationAPI.getConversationPostDetail(conversationId)
             .then((res) => {
                 if (res.status_code == 200) {
                     setConversation(new ConversationPostModel(res?.data))

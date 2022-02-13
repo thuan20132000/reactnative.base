@@ -19,6 +19,7 @@ import authentication_reducer from './store/reducer/authenticationReducer';
 import { Provider } from 'react-native-paper';
 
 import RootNavigation from './app/Router/RootNavigation';
+import OneSignal from 'react-native-onesignal';
 
 
 const rootReducer = combineReducers({
@@ -50,6 +51,11 @@ const App = () => {
     // KeyboardManager.setShouldResignOnTouchOutside(true);
     KeyboardManager.resignFirstResponder();
   }
+
+  //OneSignal Init Code
+  OneSignal.setLogLevel(6, 0);
+  OneSignal.setAppId("11adcd6a-04d0-4080-853c-9ba3780fe5c2");
+  //END OneSignal Init Code
 
 
 

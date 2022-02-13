@@ -68,7 +68,7 @@ const SignIn = (props) => {
         LoginManager.logInWithPermissions(["public_profile"]).then(
             function (result) {
                 if (result.isCancelled) {
-                    console.log("Login cancelled");
+                    // console.log("Login cancelled");
                 } else {
                     AccessToken.getCurrentAccessToken()
                         .then((data) => {
@@ -81,7 +81,7 @@ const SignIn = (props) => {
                 }
             },
             function (error) {
-                console.log("Login fail with error: " + error);
+                // console.log("Login fail with error: " + error);
             }
         );
     }
@@ -133,7 +133,7 @@ const SignIn = (props) => {
                 realUserStatus /* etc */,
                 authorizationCode
             } = appleAuthRequestResponse;
-            console.log('data: ',authorizationCode)
+            console.log('data: ', authorizationCode)
             _onSignIn(ProviderEnums.APPLE, authorizationCode)
 
 

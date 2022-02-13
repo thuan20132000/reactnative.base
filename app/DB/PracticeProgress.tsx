@@ -21,7 +21,6 @@ class PracticeProgress extends SQLiteManager {
     // Create Table
     async createTable() {
         let Table = await this.ExecuteQuery("CREATE TABLE IF NOT EXISTS practice_progress (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, datetime DATETIME, target_minutes INTEGER, practice_minutes INTEGER)", []);
-        console.log('create table: ', Table);
         return Table
     }
 
@@ -41,7 +40,6 @@ class PracticeProgress extends SQLiteManager {
             }
             return temp
         } catch (error) {
-            console.log('error: ', error)
             throw error
         }
 
@@ -73,7 +71,6 @@ class PracticeProgress extends SQLiteManager {
             let singleInsert = await this.ExecuteQuery(query_string, [datetime, date, target_minutes, practice_minutes]);
             return singleInsert
         } catch (error) {
-            console.log('error: ', error)
             throw error
         }
 
@@ -87,7 +84,6 @@ class PracticeProgress extends SQLiteManager {
             let data = results.rows.item(0)
             return data
         } catch (error) {
-            console.log('error: ', error)
         }
     }
 
@@ -104,7 +100,6 @@ class PracticeProgress extends SQLiteManager {
             }
             return data
         } catch (error) {
-            console.log('error: ', error)
         }
     }
 
@@ -117,7 +112,6 @@ class PracticeProgress extends SQLiteManager {
             var rows = selectQuery.rows;
             for (let i = 0; i < rows.length; i++) {
                 var item = rows.item(i);
-                console.log(item);
             }
             return rows
 
