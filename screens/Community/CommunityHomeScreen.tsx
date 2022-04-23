@@ -52,12 +52,13 @@ const CommunityHomeScreen = () => {
 
     const refreshPostList = async () => {
         try {
+
             setIsRefreshing(true)
             let response = await CommunityAPI.getPostList()
             let postData = response['data'].map(e => new CommunityPostModel(e))
             setPostList(postData)
         } catch (error) {
-
+            console.log('err: ', error)
         }
         finally {
             setIsRefreshing(false)
