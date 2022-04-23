@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { BOXSHADOW } from '../../../app/constants/themes'
 import ButtonText from '../../../components/Button/BottonText'
 import ButtonGradient from '../../../components/shared/ButtonGradient'
@@ -17,21 +17,7 @@ const ConversationItem = ({
 
 }) => {
     return (
-        <View
-            style={{
-                width: '46%',
-                height: 260,
-                marginHorizontal: '2%',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginVertical: 12,
-                backgroundColor: 'white',
-                borderRadius: 12,
-                ...BOXSHADOW.normal
-
-
-            }}
-        >
+        <TouchableOpacity style={styles.container} onPress={onPracticePress}>
             <View
                 style={{
                     width: '100%',
@@ -48,37 +34,35 @@ const ConversationItem = ({
                         height: '100%',
                         borderTopRightRadius: 12,
                         borderTopLeftRadius: 12,
-
-
                     }}
 
                     resizeMode={FastImage.resizeMode.cover}
 
                 />
             </View>
-            <Text numberOfLines={2} style={{ fontSize: 12, fontWeight: '500', marginVertical: 12 }}>{conversation?.title}</Text>
+            <Text numberOfLines={3} style={styles.title}>{conversation?.title}</Text>
             <View
                 style={{
                     flexDirection: 'column',
                 }}
             >
                 {
-                    onPracticePress &&
-                    <ButtonText
-                        label={'PRACTICE'}
-                        width={100}
-                        rightIcon
-                        onItemPress={onPracticePress}
-                        labelStyle={{
-                            fontWeight: '700'
-                        }}
-                        containerStyle={{
-                            backgroundColor: 'coral',
-                            width: 120,
-                            height: 32
-                        }}
-                        iconSize={16}
-                    />
+                    // onPracticePress &&
+                    // <ButtonText
+                    //     label={'PRACTICE'}
+                    //     width={100}
+                    //     rightIcon
+                    //     onItemPress={onPracticePress}
+                    //     labelStyle={{
+                    //         fontWeight: '700'
+                    //     }}
+                    //     containerStyle={{
+                    //         backgroundColor: 'coral',
+                    //         width: 120,
+                    //         height: 32
+                    //     }}
+                    //     iconSize={16}
+                    // />
                 }
 
                 {
@@ -101,7 +85,7 @@ const ConversationItem = ({
 
                 }
 
-{
+                {
                     onJoinPress &&
                     <ButtonText
                         label={'Join'}
@@ -130,10 +114,31 @@ const ConversationItem = ({
                     backgroundColor: 'red'
                 }}
             />
-        </View>
+        </TouchableOpacity>
     )
 }
 
 export default ConversationItem
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        width: '46%',
+        height: 200,
+        marginHorizontal: '2%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginVertical: 12,
+        backgroundColor: 'white',
+        borderRadius: 12,
+        ...BOXSHADOW.normal
+
+
+    },
+    title: {
+        fontSize: 12,
+        fontWeight: '500',
+        marginVertical: 12,
+        marginHorizontal: 6,
+        textAlign: 'justify'
+    }
+})

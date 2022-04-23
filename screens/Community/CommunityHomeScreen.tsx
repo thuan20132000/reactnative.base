@@ -13,7 +13,8 @@ import CommunityPostCard from './components/CommunityPostCard'
 import { StackActions } from '@react-navigation/native'
 import ActionSheet from 'react-native-actions-sheet'
 import CommunityCommentList from './components/CommunityCommentList'
-
+import OneSignal from 'react-native-onesignal';
+import AuthenticationAPI from '../../app/API/AuthenticationAPI'
 
 
 const CommunityHomeScreen = () => {
@@ -98,8 +99,13 @@ const CommunityHomeScreen = () => {
         _refRootNavigation.navigate('CommunityPostCommentScreen', { post: post })
     }
 
+
+
+
+
     useEffect(() => {
         getPostList()
+       
     }, [])
     return (
         <SafeAreaView style={{ flex: 1 }} edges={['top']}>

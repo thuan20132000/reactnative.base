@@ -68,7 +68,6 @@ class PracticeProgressModel {
             let result = isToday(new Date(res?.datetime))
             console.warn(result)
         } catch (error) {
-            console.log('error at check practice progress time: ', error)
         }
 
     }

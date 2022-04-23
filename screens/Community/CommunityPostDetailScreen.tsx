@@ -57,10 +57,8 @@ const CommunityPostDetailScreen = ({ route, navigation }: Props) => {
     const onTogglePostFavorite = async () => {
         try {
             let reponse = await CommunityAPI.togglePostFavorite(post?.id)
-            // let Post = new CommunityPostModel({})
             let response = await CommunityAPI.getPostDetail(route.params.post_id)
             let newPost = new CommunityPostModel(response['data'])
-            console.log(newPost)
             setPost(newPost)
         } catch (error) {
 
@@ -84,11 +82,11 @@ const CommunityPostDetailScreen = ({ route, navigation }: Props) => {
 
         // Start loading the interstitial straight away
         const unsubscribe = navigation.addListener('beforeRemove', () => {
-            try {
-                interstitial.show()
-            } catch (error) {
-                console.warn('error: adv has not loaded yet', error)
-            }
+            // try {
+            //     interstitial.show()
+            // } catch (error) {
+            //     console.warn('error: adv has not loaded yet', error)
+            // }
 
         });
 

@@ -2,6 +2,7 @@ import React, { createRef, useEffect, useState } from 'react'
 
 import { NavigationContainer, useNavigation, StackActions, createNavigationContainerRef } from "@react-navigation/native";
 import { createStackNavigator, } from '@react-navigation/stack';
+import OneSignal from 'react-native-onesignal';
 
 import SignIn from '../../screens/Authentication/SignIn';
 import { getUserAuth } from '../StorageManager';
@@ -22,6 +23,8 @@ import CommunityPostDetailScreen from '../../screens/Community/CommunityPostDeta
 import CommunityPostCommentScreen from '../../screens/Community/CommunityPostCommentScreen';
 import MyPracticePostScreen from '../../screens/Community/MyPracticePostScreen';
 import RecordingCompleteScreen from '../../screens/Recording/RecordingCompleteScreen';
+import AuthenticationAPI from '../API/AuthenticationAPI';
+import NotificationEnum from '../Enums/NotificationEnum';
 
 const Stack = createStackNavigator<RootStackParamList>()
 export const _refRootNavigation = createNavigationContainerRef<RootStackParamList>()
@@ -29,10 +32,16 @@ export const _refRootNavigation = createNavigationContainerRef<RootStackParamLis
 export default function RootNavigation() {
     const [screen, setScreen] = useState("Signin")
 
+
+    const _onUpdateNotificationId = async () => {
+        let { userId } = await OneSignal.getDeviceState()
+        await AuthenticationAPI.updateNotificationId(userId)
+        console.log('userid: ', userId)
+
+    }
     useEffect(() => {
         getUserAuth()
             .then(res => {
-                console.log('rr: ', res)
                 if (res != null) {
                     AppManager.shared.user = res
                     _refRootNavigation.dispatch(
@@ -53,6 +62,44 @@ export default function RootNavigation() {
             })
             .finally(() => {
             })
+
+
+        _onUpdateNotificationId()
+        //Method for handling notifications opened
+        OneSignal.setNotificationOpenedHandler(notificationReceivedEvent => {
+            console.log("OneSignal: notification opened:", notificationReceivedEvent);
+            const data = notificationReceivedEvent.notification.additionalData
+            switch (data['notification_type']) {
+                case NotificationEnum.COMMUNITY:
+                    _refRootNavigation.navigate('CommunityPostDetailScreen', { post_id: data['id'] })
+                    break;
+                case NotificationEnum.CONVERSATION:
+                    _refRootNavigation.navigate('ConversationPractice', { conversationId: data['id'] })
+                    break;
+
+                default:
+                    break;
+            }
+
+            // navigation.navigate('Notification')
+        });
+
+        //Method for handling notifications received while app in foreground
+        OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+            console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+            let notification = notificationReceivedEvent.getNotification();
+            const data = notification.additionalData
+
+            // Complete with null means don't show a notification.
+            notificationReceivedEvent.complete(notification);
+        });
+
+
+        //Prompt for push on iOS
+        OneSignal.promptForPushNotificationsWithUserResponse(response => {
+            console.log("Prompt response:", response);
+        });
+
     }, [])
 
     return (

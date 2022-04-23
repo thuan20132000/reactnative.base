@@ -426,7 +426,6 @@ class ConversationAPI {
             let dataRes = await res.data
             return true
         } catch (error) {
-            console.log('error: ')
             throw error
         }
     }

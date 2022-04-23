@@ -9,8 +9,6 @@ import ConversationItem from './components/ConversationItem';
 import { BannerAd, TestIds, BannerAdSize, } from '@react-native-firebase/admob';
 import { removeUserAuth, setStorageData } from '../../app/StorageManager';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import OneSignal from 'react-native-onesignal';
-import AuthenticationAPI from '../../app/API/AuthenticationAPI';
 import Constants from '../../app/constants/Constant';
 
 const adUnitId = __DEV__ ? TestIds.BANNER : Constants.config.adbmod_banner;
@@ -41,7 +39,6 @@ const ConversationList = (props) => {
             .then(res => {
                 if (res.status_code == 200) {
                     setReadingPosts(res.data)
-                    _onUpdateNotificationId()
                 }
             })
             .catch((err) => {
@@ -56,40 +53,17 @@ const ConversationList = (props) => {
 
 
 
-        //Method for handling notifications opened
-        OneSignal.setNotificationOpenedHandler(notification => {
-            console.log("OneSignal: notification opened:", notification);
-            navigation.navigate('Notification')
-        });
-
-        //Method for handling notifications received while app in foreground
-        OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
-            console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
-            let notification = notificationReceivedEvent.getNotification();
-            console.log("notification: ", notification);
-            const data = notification.additionalData
-            console.log("additionalData: ", data);
-
-            // Complete with null means don't show a notification.
-            notificationReceivedEvent.complete(notification);
-        });
-
-
+       
 
 
     }, []);
 
 
-    const _onUpdateNotificationId = async () => {
-        let { userId } = await OneSignal.getDeviceState()
-        await AuthenticationAPI.updateNotificationId(userId)
-    }
-
 
 
     const _onOpenPostPractice = (post) => {
         props.navigation.navigate('ConversationPractice', {
-            groupConversation: post
+            conversationId: post?.id
         })
     }
 
@@ -108,10 +82,8 @@ const ConversationList = (props) => {
                 if (res.status_code == 200) {
                     setReadingPosts(res.data)
                 }
-                console.log('sasa:', res)
             })
             .catch((err) => {
-                console.log('err ', err)
             })
             .finally(() => RNProgressHud.dismiss())
     }

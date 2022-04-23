@@ -107,7 +107,6 @@ const FriendRequestScreen = () => {
                 }
             })
             .catch(err => {
-                console.log('err: ', err)
             })
             .finally(() => {
                 RNProgressHud.dismiss()
@@ -118,11 +117,9 @@ const FriendRequestScreen = () => {
         RNProgressHud.show()
         ConversationAPI.handleFriendshipRequest(item?.id, FRIENDSHIPENUM.ACCEPTED)
             .then(res => {
-                console.log('accept: ', res)
                 _onGetUserNotifications()
             })
             .catch(err => {
-                console.log('accepr err ', err)
             })
             .finally(() => {
                 RNProgressHud.dismiss()

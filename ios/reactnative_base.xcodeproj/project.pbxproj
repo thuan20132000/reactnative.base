@@ -68,6 +68,7 @@
 		61DB931AB77EDBA99A6B5988 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		66E930F22660C69B0073DA55 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		72CF03CD556100AECF2B43B1 /* Pods-reactnative_base-reactnative_baseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-reactnative_base-reactnative_baseTests.debug.xcconfig"; path = "Target Support Files/Pods-reactnative_base-reactnative_baseTests/Pods-reactnative_base-reactnative_baseTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7BBC6D4427B19DEC00518B8B /* OneSignalNotificationServiceExtensionRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtensionRelease.entitlements; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = reactnative_base/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C0AFC4026A5F1C500101C24 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = reactnative_base/www; sourceTree = "<group>"; };
 		9C494720268C60AD00386AB1 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -248,6 +249,7 @@
 		9CC4154626E0FD8E008A31E5 /* OneSignalNotificationServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
+				7BBC6D4427B19DEC00518B8B /* OneSignalNotificationServiceExtensionRelease.entitlements */,
 				9CC4155126E0FDB6008A31E5 /* OneSignalNotificationServiceExtensionDebug.entitlements */,
 				9CC4154726E0FD8E008A31E5 /* NotificationService.swift */,
 				9CC4154926E0FD8E008A31E5 /* Info.plist */,
@@ -684,7 +686,7 @@
 				CODE_SIGN_ENTITLEMENTS = reactnative_base/reactnative_base.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 24;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = 3BQUKLYP4W;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = reactnative_base/Info.plist;
@@ -692,7 +694,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -700,7 +702,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.practiceenglishapp;
 				PRODUCT_NAME = reactnative_base;
-				PROVISIONING_PROFILE_SPECIFIER = "english_and_practice Dev M1";
+				PROVISIONING_PROFILE_SPECIFIER = "EnglishAndPractice Dev M1";
 				SWIFT_OBJC_BRIDGING_HEADER = "reactnative_base-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -718,7 +720,7 @@
 				CODE_SIGN_ENTITLEMENTS = reactnative_base/reactnative_base.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 24;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = 3BQUKLYP4W;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = reactnative_base/Info.plist;
@@ -726,7 +728,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -734,7 +736,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.practiceenglishapp;
 				PRODUCT_NAME = reactnative_base;
-				PROVISIONING_PROFILE_SPECIFIER = "english_and_practice Product M1";
+				PROVISIONING_PROFILE_SPECIFIER = "EnglishAndPractice Product M1";
 				SWIFT_OBJC_BRIDGING_HEADER = "reactnative_base-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -877,7 +879,7 @@
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtensionDebug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 29;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 3BQUKLYP4W;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -888,7 +890,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.practiceenglishapp.OneSignalNotificationServiceExtension;
@@ -912,10 +914,11 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtensionRelease.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 29;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3BQUKLYP4W;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -926,11 +929,11 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.8;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.practiceenglishapp.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "EnglishPracticeOnesignal prod";
+				PROVISIONING_PROFILE_SPECIFIER = "EnglishPracticeOnesignal Prod";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";

@@ -28,7 +28,6 @@ const CommunityHandler = (props: CommunityPostI) => {
     const [playingTime, setPlayingTime] = useState('')
     const [recordPath, setRecordPath] = useState('')
     const stopPlay = () => {
-        console.log('onStopPlay');
         setIsPlaying(false)
         audioRecorderPlayer.stopPlayer();
         audioRecorderPlayer.removePlayBackListener();
@@ -38,18 +37,12 @@ const CommunityHandler = (props: CommunityPostI) => {
     const startPlay = async (post: CommunityPostModel) => {
 
         try {
-            console.log('onStartPlay');
             stopPlay()
             const msg = await audioRecorderPlayer.startPlayer(post.record);
-            // console.log(msg);
             setIsPlaying(true)
             audioRecorderPlayer.addPlayBackListener((e) => {
-                // console.log('dd :', Math.ceil(e.duration/1000))
-                // console.log(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)))
-                // console.log('ee: ', Math.ceil(e.currentPosition / 1000))
-                setPlayingTime((Math.ceil(e.duration / 1000) - Math.ceil(e.currentPosition / 1000)).toString())
-
-                console.log(e.currentPosition)
+                let pltime = (Math.ceil(e.duration / 1000) - Math.ceil(e.currentPosition / 1000)).toString()
+                setPlayingTime(pltime)
                 if (e.currentPosition >= e.duration) {
                     stopPlay()
                 }
@@ -60,13 +53,6 @@ const CommunityHandler = (props: CommunityPostI) => {
             setIsPlaying(false)
         }
     };
-
-
-    useEffect(() => {
-
-
-    }, [])
-
 
     return {
         startPlay,

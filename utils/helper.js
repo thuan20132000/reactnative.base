@@ -214,7 +214,6 @@ export const saveLearntVocabularyByTopic = async (topic_slug, values) => {
         return true;
     } catch (e) {
         // saving error
-        console.log('error: ', e);
         return false
     }
 
@@ -227,7 +226,6 @@ export const getSearchedvocabularyList = async () => {
         return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
         // error reading value
-        console.log('error: ', e);
         return false;
     }
 }
@@ -340,7 +338,6 @@ export const getLastActiveDate = async () => {
         const jsonValue = await AsyncStorage.getItem(`@lastaction_datetime`);
         return jsonValue != null ? JSON.parse(jsonValue) : today;
     } catch (error) {
-        console.log('error: ', error);
         return false;
     }
 }
@@ -352,7 +349,6 @@ export const getActionDays = async () => {
         const jsonValue = await AsyncStorage.getItem(`@action_days`);
         return jsonValue != null ? JSON.parse(jsonValue) : 1;
     } catch (error) {
-        console.log('error: ', error);
         return false;
     }
 }
@@ -380,7 +376,6 @@ export const saveDateActions = async () => {
         return true;
 
     } catch (error) {
-        console.log('error: ', error);
         return false;
     }
 }
