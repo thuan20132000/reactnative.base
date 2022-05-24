@@ -69,7 +69,6 @@ const CommunityPostDetailScreen = ({ route, navigation }: Props) => {
 
 
     useEffect(() => {
-        interstitial.load();
 
         getPostDetail()
         const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -80,20 +79,9 @@ const CommunityPostDetailScreen = ({ route, navigation }: Props) => {
         });
 
 
-        // Start loading the interstitial straight away
-        const unsubscribe = navigation.addListener('beforeRemove', () => {
-            // try {
-            //     interstitial.show()
-            // } catch (error) {
-            //     console.warn('error: adv has not loaded yet', error)
-            // }
-
-        });
-
 
         // Unsubscribe from events on unmount
         return () => {
-            unsubscribe()
             showSubscription.remove();
             hideSubscription.remove();
             stopPlay()
@@ -113,23 +101,6 @@ const CommunityPostDetailScreen = ({ route, navigation }: Props) => {
     return (
         <View>
             <ScrollView >
-                <View
-                    style={{
-                        display: 'flex',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}
-                >
-                    <BannerAd
-                        unitId={adUnitId?.toString()}
-                        size={BannerAdSize.BANNER}
-                        requestOptions={{
-                            requestNonPersonalizedAdsOnly: true,
-                        }}
-                    />
-
-                </View>
-
                 <View style={{ alignItems: 'center' }}>
                     <ImageBackground
                         source={{ uri: post?.image ? post?.image : 'https://upload.wikimedia.org/wikipedia/commons/7/75/Southern_Life_in_Southern_Literature_text_page_322.jpg' }}

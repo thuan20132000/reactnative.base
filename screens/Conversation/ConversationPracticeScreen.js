@@ -26,7 +26,7 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitIdIntertitial, {
 
 const ConversationPracticeScreen = (props) => {
 
-    const { groupConversation, group,conversationId } = props?.route?.params ?? ''
+    const { groupConversation, group, conversationId } = props?.route?.params ?? ''
     const [isCalling, setIsCalling] = useState(false);
     const [conversation, setConversation] = useState(null);
     const [memberList, setMemberList] = useState([]);
@@ -40,7 +40,6 @@ const ConversationPracticeScreen = (props) => {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        interstitial.load();
 
         RNProgressHud.show();
         let PracticeProgress = new PracticeProgressModel()
@@ -72,34 +71,9 @@ const ConversationPracticeScreen = (props) => {
         props.navigation.setOptions({
             title: ""
         })
-
-
-
-        // Adv
-        const eventListener = interstitial.onAdEvent(type => {
-            if (type === AdEventType.LOADED) {
-                setLoaded(true);
-                RNProgressHud.dismiss()
-            }
-        });
-
-        // Start loading the interstitial straight away
-        const unsubscribe = props.navigation.addListener('beforeRemove', () => {
-            try {
-                interstitial.show()
-            } catch (error) {
-                console.warn('error: adv has not loaded yet', error)
-            }
-
-        });
-
-
         // Unsubscribe from events on unmount
         return () => {
-            unsubscribe()
-            eventListener()
             PracticeProgress.endPractice()
-
         };
 
 

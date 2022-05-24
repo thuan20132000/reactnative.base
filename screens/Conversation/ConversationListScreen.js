@@ -53,7 +53,7 @@ const ConversationList = (props) => {
 
 
 
-       
+
 
 
     }, []);
@@ -112,52 +112,10 @@ const ConversationList = (props) => {
                 flex: 1
             }}
         >
-
             <ScrollView
-                stickyHeaderIndices={[1]}
+                stickyHeaderIndices={[0]}
                 showsVerticalScrollIndicator={false}
             >
-
-                {/* <View
-                    style={[{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                        alignItems: 'center',
-                        // borderBottomWidth:0.4,
-                        // borderBottomColor:"gray",
-                        alignSelf: 'center',
-                        paddingVertical: 8
-                    }]}
-                >
-
-                    <SelectionItem
-                        imagePath={require('../../app/assets/images/ic_tutor.png')}
-                        label={'Learners'}
-                        onPress={_onNavigateLearner}
-
-
-                    />
-                </View> */}
-
-
-                <View
-                    style={{
-                        display: 'flex',
-                        alignSelf: 'center',
-                        backgroundColor: 'transparent'
-                    }}
-                >
-                    <BannerAd
-                        unitId={adUnitId}
-                        size={BannerAdSize.BANNER}
-                        requestOptions={{
-                            requestNonPersonalizedAdsOnly: true,
-                        }}
-                    />
-
-                </View>
-
                 <View
                     style={{
                         borderBottomLeftRadius: 12,
@@ -199,10 +157,8 @@ const ConversationList = (props) => {
                     />
 
                 </View>
-
                 {/* body */}
                 <FlatList
-
                     showsVerticalScrollIndicator={false}
                     data={readingPost}
                     renderItem={({ item, index }) => {
@@ -214,9 +170,7 @@ const ConversationList = (props) => {
                                 onPracticePress={() => _onOpenPostPractice(item)}
                                 // onGroupPress={() => _onOpenConversationgroups(item)}
                                 conversation={item}
-
                             />
-
                         )
                     }}
                     keyExtractor={(item) => item?.id?.toString()}
